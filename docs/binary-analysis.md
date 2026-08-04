@@ -172,6 +172,14 @@ The halfword at `0x1915A` is part of `MultiBootMain` after an inline literal poo
 function: it resumes with live registers and shares the enclosing function's epilogue. The corrected
 `MultiBootMain` extent is therefore `0x18C8C-0x191A8`.
 
+The adjacent Nintendo `sio32_multi_load` object at `0x19568-0x198B0` also compiles byte-for-byte
+with agbcc `-O2 -mthumb-interwork`. Its three real functions own the complete 0x348-byte `.text`
+section: `Sio32MultiLoadMain` (0x1E4), `Sio32MultiLoadIntr` (0xC8), and `Sio32MultiLoadInit`
+(0x9C). The alleged function at `0x19808` is instead the interrupt routine's trailing literal pool;
+the values are independently consumed as `0x2002`, `0x04000128`, and `0x0400010E`. The work-area
+literal fixes `gSio32MultiLoadArea` at `0x03003D70`, with the public SDK layout establishing its
+24-byte common-storage size.
+
 The retained `MultiSioSync4Sio32Load020820` string identifies the serial library revision used by
 Sonic Battle. A [public reconstruction of the same MultiSioSync family](https://github.com/testyourmine/cvaos/blob/bc23d849d578c35ae12a5cec4e66549c3021a5be/src/agb_multi_sio_sync.c)
 at cvaos commit `bc23d849d578c35ae12a5cec4e66549c3021a5be` independently correlates the register operations,

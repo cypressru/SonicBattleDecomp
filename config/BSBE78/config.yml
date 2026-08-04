@@ -217,8 +217,46 @@ units:
   - name: engine/sio32_multi_load
     start: 0x019568
     end: 0x0198B0
-    category: game
+    category: sdk
     function_map: config/BSBE78/functions.csv
+    source: src/sio32_multi_load.c
+    complete: true
+    cflags: [-O2, -mthumb-interwork]
+    mappings:
+      - { offset: 0x1A, mode: data }
+      - { offset: 0x38, mode: thumb }
+      - { offset: 0x4A, mode: data }
+      - { offset: 0x50, mode: thumb }
+      - { offset: 0x9E, mode: data }
+      - { offset: 0xB8, mode: thumb }
+      - { offset: 0xE2, mode: data }
+      - { offset: 0xEC, mode: thumb }
+      - { offset: 0x1B0, mode: data }
+      - { offset: 0x1CC, mode: thumb }
+      - { offset: 0x206, mode: data }
+      - { offset: 0x214, mode: thumb }
+      - { offset: 0x226, mode: data }
+      - { offset: 0x230, mode: thumb }
+      - { offset: 0x242, mode: data }
+      - { offset: 0x248, mode: thumb }
+      - { offset: 0x25A, mode: data }
+      - { offset: 0x260, mode: thumb }
+      - { offset: 0x270, mode: data }
+      - { offset: 0x274, mode: thumb }
+      - { offset: 0x29E, mode: data }
+      - { offset: 0x2AC, mode: thumb }
+      - { offset: 0x326, mode: data }
+    relocations:
+      - { offset: 0x1C, type: abs32, symbol: gSio32MultiLoadArea }
+      - { offset: 0x20, type: abs32, symbol: .text, addend: 0x24 }
+      - { offset: 0x24, type: abs32, symbol: .text, addend: 0x38 }
+      - { offset: 0x28, type: abs32, symbol: .text, addend: 0x50 }
+      - { offset: 0x2C, type: abs32, symbol: .text, addend: 0xEC }
+      - { offset: 0x30, type: abs32, symbol: .text, addend: 0x15E }
+      - { offset: 0x34, type: abs32, symbol: .text, addend: 0x1CC }
+      - { offset: 0x20C, type: abs32, symbol: gSio32MultiLoadArea }
+      - { offset: 0x2D8, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x334, type: abs32, symbol: gSio32MultiLoadArea }
   - name: main/unknown_080198B0
     start: 0x0198B0
     end: 0x04833C

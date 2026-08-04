@@ -224,7 +224,6 @@ address,name,mode,confidence
 0x08019520,MultiBootWaitSendDone,thumb,direct-call+sa2-object-correlation
 0x08019568,Sio32MultiLoadMain,thumb,direct-call+sa2-relocation-masked-byte-match
 0x0801974C,Sio32MultiLoadIntr,thumb,rom-pointer+sa2-object-correlation
-0x08019808,FUN_08019808,thumb,rom-pointer
 0x08019814,Sio32MultiLoadInit,thumb,direct-call+sa2-object-correlation
 0x080198B0,FUN_080198b0,thumb,direct-call
 0x08019B5C,FUN_08019b5c,thumb,direct-call
