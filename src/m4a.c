@@ -26,21 +26,26 @@ struct MP2KPlayerState {
 
 struct MP2KTrack {
     u8 status;
-    u8 padding1[10];
+    u8 padding1[7];
+    s8 keyShiftCalculated;
+    u8 pitchCalculated;
+    s8 keyShift;
     s8 keyShiftPublic;
-    u8 padding12;
+    s8 tune;
     u8 pitchPublic;
-    u8 padding14;
+    s8 bend;
     u8 bendRange;
-    u8 padding16[3];
+    u8 volRightCalculated;
+    u8 volLeftCalculated;
+    u8 volume;
     u8 volPublic;
-    u8 padding20;
+    s8 pan;
     s8 panPublic;
-    u8 lfoSpeedCounter;
+    s8 modCalculated;
     u8 modDepth;
     u8 modType;
     u8 lfoSpeed;
-    u8 modCalculated;
+    u8 lfoSpeedCounter;
     u8 padding27[3];
     u8 echoVolume;
     u8 echoLength;
@@ -143,7 +148,7 @@ extern void MP2K_event_mod(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void MP2K_event_xcmd(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void MP2K_event_endtie(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void TrackStop(void);
-extern void TrkVolPitSet(void);
+extern void TrkVolPitSet(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void CgbSound(void);
 extern void CgbOscOff(u8 channel);
 extern void MidiKeyToCgbFreq(void);
@@ -723,13 +728,49 @@ void m4aMPlayPanpotControl(struct MP2KPlayerState *player, u16 trackBits, u8 pan
 }
 
 void ClearModM(struct MP2KTrack *track) {
-    track->modCalculated = 0;
     track->lfoSpeedCounter = 0;
+    track->modCalculated = 0;
     if (track->modType == 0) {
         track->status |= 12;
     } else {
         track->status |= 3;
     }
+}
+
+void TrkVolPitSet(struct MP2KPlayerState *player, struct MP2KTrack *track) {
+    if (track->status & 1) {
+        s32 x;
+        s32 y;
+
+        x = (u32)(track->volume * track->volPublic) >> 5;
+        if (track->modType == 1) {
+            x = (u32)(x * (track->modCalculated + 128)) >> 7;
+        }
+        y = 2 * track->pan + track->panPublic;
+        if (track->modType == 2) {
+            y += track->modCalculated;
+        }
+        if (y < -128) {
+            y = -128;
+        } else if (y > 127) {
+            y = 127;
+        }
+        track->volRightCalculated = (u32)((y + 128) * x) >> 8;
+        track->volLeftCalculated = (u32)((127 - y) * x) >> 8;
+    }
+
+    if (track->status & 4) {
+        s32 bend = track->bend * track->bendRange;
+        s32 x = (track->tune + bend) * 4 + (track->keyShift << 8) + (track->keyShiftPublic << 8) +
+                track->pitchPublic;
+
+        if (track->modType == 0) {
+            x += 16 * track->modCalculated;
+        }
+        track->keyShiftCalculated = x >> 8;
+        track->pitchCalculated = x;
+    }
+    track->status &= 0xFA;
 }
 
 void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {
