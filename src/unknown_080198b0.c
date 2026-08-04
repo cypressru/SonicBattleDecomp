@@ -434,6 +434,7 @@ extern void FUN_080290b4(struct UnknownListNode *node);
 extern void FUN_08028158(struct UnknownListNode *node);
 extern void FUN_08028190(struct UnknownListNode *node);
 extern void FUN_0802a480(struct UnknownListNode *node);
+extern void FUN_0802a804(struct UnknownListNode *node);
 extern const u8 gUnknown_0811c0d0[];
 extern const u16 gUnknown_08edbb34[][4];
 extern u32 gUnknown_03005264;
@@ -5088,4 +5089,14 @@ void FUN_0802a3f4(struct UnknownListNode *node) {
     } else {
         gUnknown_03005268[data->index] &= 0xFE;
     }
+}
+
+void FUN_0802afb0(struct UnknownListNode *node) {
+    FUN_0802a34c(node);
+    FUN_0802a804(node);
+}
+
+void FUN_0802afc4(struct UnknownListNode *node) {
+    FUN_0802a3f4(node);
+    FUN_0802a804(node);
 }
