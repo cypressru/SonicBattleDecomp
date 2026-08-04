@@ -6416,3 +6416,53 @@ void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, 
     ((struct UnknownTransferRecord403c0 *)offset)->flags = storedFlags;
     current->records[0].flags = index + 1;
 }
+
+void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s32 offset) {
+    register const u16 *sourceCursor asm("r4") = source;
+    register u16 *destinationCursor asm("r1") = destination;
+    register s32 rawWidth asm("r2") = width;
+    register u32 encodedRows asm("r3");
+    register u32 rawOffset asm("r0");
+    register s32 columns asm("r5");
+    register u16 tileOffset asm("r6");
+    register u32 rowStride asm("r2");
+
+    asm volatile("" : "+r"(sourceCursor));
+    rawOffset = offset;
+    asm volatile("" : "+r"(rawOffset));
+    rawWidth <<= 24;
+    asm volatile("" : "+r"(rawWidth));
+    columns = (u32)rawWidth >> 24;
+    encodedRows = height << 24;
+    asm volatile("" : "+r"(columns), "+r"(encodedRows));
+    rawOffset <<= 16;
+    tileOffset = rawOffset >> 16;
+    asm volatile("" : "+r"(tileOffset));
+    rawOffset = 32 - columns;
+    rawOffset <<= 24;
+    rowStride = rawOffset >> 24;
+
+    {
+        register u32 decrement asm("r0") = 0xFFu << 24;
+
+        asm volatile("" : "+r"(decrement));
+        encodedRows += decrement;
+    }
+    rawOffset = encodedRows >> 24;
+    if (rawOffset != 0xFF) {
+        register u32 strideBytes = rowStride << 1;
+
+        asm volatile("" : "+r"(strideBytes));
+        do {
+            s16 column = 0;
+
+            encodedRows = rawOffset - 1;
+            while (column < columns) {
+                *destinationCursor++ = tileOffset + *sourceCursor++;
+                column++;
+            }
+            destinationCursor = (u16 *)((u8 *)destinationCursor + strideBytes);
+            rawOffset = (encodedRows << 24) >> 24;
+        } while (rawOffset != 0xFF);
+    }
+}
