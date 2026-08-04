@@ -22,6 +22,7 @@ extern volatile u16 gUnknown_03003178[];
 #define REG_BG2CNT (*(volatile u16 *)0x0400000c)
 #define REG_BG3CNT (*(volatile u16 *)0x0400000e)
 #define REG_SIOCNT (*(volatile u32 *)0x04000128)
+#define REG_IME (*(volatile u16 *)0x04000208)
 extern u8 gUnknown_030016d0;
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
@@ -179,6 +180,16 @@ extern u32 gUnknown_03001730;
 extern u8 gUnknown_030017c4;
 extern u32 FUN_08018730(s16 *slots);
 extern void FUN_08018c20(void);
+
+extern u8 gUnknown_0300138c;
+extern u16 gUnknown_03001378;
+extern volatile u16 gUnknown_03007ff8;
+extern unsigned long long gUnknown_03002610;
+extern void MultiSioSyncVSync(void);
+extern void FUN_0801f60c(void);
+extern void FUN_0801694c(void);
+extern void FUN_0801ffa4(u32 first);
+extern void FUN_0801fbd8(void);
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
@@ -552,6 +563,75 @@ void FUN_08015f6c(void) {
         gUnknown_030033e0[i].fields.seventh = 0;
         gUnknown_030033e0[i].fields.eighth = 0;
         gUnknown_030033e0[i].fields.ninth = 0;
+    }
+}
+
+/* The v-blank handler: services the link, bumps the frame counter, raises the
+   v-blank bit in the BIOS interrupt-check word, and on the frame after a mode
+   change reinitialises OAM and the affine matrices. */
+void FUN_08015fa4(void) {
+    volatile u16 *entry;
+    s32 i;
+
+    if (gUnknown_0300138c != 0) {
+        MultiSioSyncVSync();
+    }
+    FUN_0801f60c();
+    gUnknown_03001378++;
+    REG_IME = 0;
+    gUnknown_03007ff8 |= 1;
+    REG_IME = 1;
+    if (gUnknown_030013a0 != 0) {
+        entry = (volatile u16 *)0x07000000;
+        for (i = 0; i < 32; i++) {
+            *entry++ = 0x200;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0x100;
+            *entry++ = 0x200;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0x200;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0x200;
+            *entry++ = 0;
+            *entry++ = 0;
+            *entry++ = 0x100;
+        }
+        FUN_0801694c();
+        FUN_0801ffa4(1);
+        FUN_0801fbd8();
+    }
+    gUnknown_030013a0 = 0;
+    gUnknown_03002610++;
+}
+
+/* Advances every participant's input ring by one slot, deriving the pressed
+   and released masks from the newly latched button word. */
+void FUN_080178d0(void) {
+    u32 value;
+    u32 previous;
+    u32 changed;
+    u16 pressed;
+    u16 released;
+    u8 i;
+
+    for (i = 0; i <= 3; i++) {
+        value = gUnknown_03001c40[i].value;
+        previous = gUnknown_03001b30[i].first[gUnknown_03001b30[i].position];
+        changed = value ^ previous;
+        pressed = value & changed;
+        released = previous & changed;
+        gUnknown_03001b30[i].position++;
+        if (gUnknown_03001b30[i].position > 9) {
+            gUnknown_03001b30[i].position = 0;
+        }
+        gUnknown_03001b30[i].flags[gUnknown_03001b30[i].position] = pressed;
+        gUnknown_03001b30[i].third[gUnknown_03001b30[i].position] = released;
+        gUnknown_03001b30[i].first[gUnknown_03001b30[i].position] = value;
     }
 }
 
