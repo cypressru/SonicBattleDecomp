@@ -75,6 +75,15 @@ function order, literal-pool ownership, private-data references, alignment, rela
 order, or independently correlated metadata supports the boundary. Arbitrary visual subdivision
 would misrepresent guesses as original TUs.
 
+Related-title linker order is supporting evidence, not a boundary by itself. The public
+[Sonic Advance 3 linker script](https://github.com/SAT-R/sa3/blob/master/ldscript.txt) places
+`core.o`, `main.o`, and `task.o` consecutively, which makes the start
+of `main/unknown_080007FC` a reasonable place to test for a task-module boundary. We compiled its
+public `task.c` and `background.c` with the same pinned agbcc toolchain and compared normalized Thumb
+instruction streams against every analyzed function in the placeholder. Neither module produced a
+strong function-level correlation. The proposed `task.o` split is therefore rejected for now; no
+unit boundary or source name is inferred from linker order alone.
+
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
 every in-range destination to be present either in the analyzed function inventory or as an
