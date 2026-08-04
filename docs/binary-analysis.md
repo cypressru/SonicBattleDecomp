@@ -56,7 +56,7 @@ as proof of translation-unit boundaries.
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
 every in-range destination to be present either in the analyzed function inventory or as an
-explicit SDK/runtime symbol in the unit configuration. It also checks every aligned Thumb-tagged
+explicit SDK/runtime symbol in the unit configuration. It also checks every halfword-aligned Thumb-tagged
 pointer found outside accepted instruction extents. This proves direct-call and function-pointer
 closure for the current inventory and prevents newly exposed call targets from remaining anonymous.
 

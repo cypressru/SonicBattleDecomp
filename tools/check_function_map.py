@@ -100,7 +100,7 @@ def main() -> None:
         raise SystemExit(f"direct calls target unrecorded functions: {details}")
 
     missing_pointers: dict[int, list[int]] = {}
-    for offset in range(0, min(len(data), executable_end - ROM_BASE) - 3, 4):
+    for offset in range(0, min(len(data), executable_end - ROM_BASE) - 3, 2):
         if any(instruction_bytes[offset : offset + 4]):
             continue
         value = int.from_bytes(data[offset : offset + 4], "little")
@@ -119,7 +119,7 @@ def main() -> None:
         raise SystemExit(f"Thumb pointers target unrecorded functions: {details}")
     print(
         f"Function map verified: {len(extents)} analyzed extents; "
-        "every in-range Thumb BL and aligned function-pointer destination is symbolized"
+        "every in-range Thumb BL and halfword-aligned function-pointer destination is symbolized"
     )
 
 
