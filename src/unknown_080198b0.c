@@ -49,6 +49,9 @@ extern void FUN_080309e0(struct UnknownListNode *node);
 extern void FUN_0803878c(struct UnknownListNode *node);
 extern void FUN_0803bb54(struct UnknownListNode *node);
 extern void FUN_0803bc10(struct UnknownListNode *node);
+extern void FUN_080304e4(struct UnknownListNode *node);
+extern void FUN_08038448(struct UnknownListNode *node);
+extern void FUN_0803b82c(struct UnknownListNode *node);
 extern u16 gUnknown_03005378;
 extern void FUN_08041808(void);
 extern void FUN_0802fcb4(u8 value);
@@ -5734,4 +5737,40 @@ void FUN_0803bbc4(struct UnknownListNode *node) {
     FUN_0803a9dc(gUnknown_030052e0);
     gUnknown_030052f8++;
     node->data = (const void *)((u32)FUN_0803bbf0 + 1);
+}
+
+void FUN_08030a08(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 <= 7) {
+        gUnknown_030052f8 += 2;
+    } else {
+        gUnknown_030052f8 = 8;
+        node->data = (const void *)((u32)FUN_080304e4 + 1);
+    }
+}
+
+void FUN_080387b4(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 <= 3) {
+        gUnknown_030052f8++;
+    } else {
+        gUnknown_030052f8 = 4;
+        node->data = (const void *)((u32)FUN_08038448 + 1);
+    }
+}
+
+void FUN_0803bb54(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 <= 3) {
+        gUnknown_030052f8++;
+    } else {
+        gUnknown_030052f8 = 4;
+        node->data = (const void *)((u32)FUN_0803b82c + 1);
+    }
+}
+
+void FUN_0803bc10(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 <= 3) {
+        gUnknown_030052f8++;
+    } else {
+        gUnknown_030052f8 = 4;
+        node->data = (const void *)((u32)FUN_0803b82c + 1);
+    }
 }
