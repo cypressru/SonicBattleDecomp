@@ -300,7 +300,16 @@ struct UnknownState03002110 {
     u8 validity[0x200];
     u8 selector;
     u8 filler321;
-    u8 records[1];
+    u8 records[358];
+    u8 field1160;
+    u8 field1161;
+    u8 field1162;
+    u8 field1163;
+    u32 field1164;
+    u8 filler1168[8];
+    u16 field1176;
+    u16 field1178;
+    u8 rowMasks[64];
 };
 
 struct UnknownState03004dbc {
@@ -439,7 +448,10 @@ struct UnknownGlobalRenderState {
     u16 field8;
     u16 field10;
     u16 field12;
-    u8 filler14[15];
+    u8 filler14[10];
+    u16 field24;
+    u16 field26;
+    u8 filler28;
     u8 field29;
     u8 filler30;
     u8 field31;
@@ -448,13 +460,18 @@ struct UnknownGlobalRenderState {
     u8 field34;
     u8 field35;
     u8 field36;
-    u8 filler37[9];
+    u8 filler37[3];
+    u32 field40;
+    u8 field44;
+    u8 filler45;
     u8 field46;
 };
 
 extern struct UnknownGlobalRenderState gUnknown_03005440;
 extern u16 gUnknown_03005490;
 extern u16 gUnknown_03005494;
+extern u32 gUnknown_03005488;
+extern u32 gUnknown_03002610;
 extern struct UnknownState420dc *gUnknown_030001d0;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb660[];
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
@@ -6694,6 +6711,83 @@ foundTable:
     LZ77UnCompWram(source, (void *)0x02010600);
     FUN_0804033c((void *)0x02010600, (void *)0x06013200, 0x400);
     state->callback = (const void *)((u32)FUN_080420dc + 1);
+}
+
+void FUN_0804224c(u8 value) {
+    register u8 *state asm("r3") = (u8 *)&gUnknown_03002110;
+    register u32 offset asm("r2") = 0x488;
+
+    state[offset] = value;
+    {
+        register struct UnknownGlobalRenderState *global asm("r4") = &gUnknown_03005440;
+        register u32 field asm("r1") = global->filler30;
+
+        offset++;
+        state[offset] = field;
+        field = global->field31;
+        offset++;
+        state[offset] = field;
+        field = global->field44;
+        offset++;
+        state[offset] = field;
+        asm volatile("" : "+r"(offset));
+        {
+            register u32 *destination asm("r5") = (u32 *)(state + 0x48c);
+            register const u32 *firstAddress asm("r0") = &gUnknown_03002610;
+            register const u32 *secondAddress asm("r2") = &gUnknown_03005488;
+            register u32 difference asm("r1");
+            register u32 second asm("r0");
+
+            asm volatile("" : "+r"(firstAddress), "+r"(secondAddress));
+            difference = *firstAddress;
+            second = *secondAddress;
+            asm volatile("" : "+r"(difference), "+r"(second));
+            difference -= second;
+            {
+                register u32 total asm("r0") = global->field40 + difference;
+
+                *destination = total;
+            }
+        }
+        field = global->field24;
+        offset = 0x498;
+        *(u16 *)(state + offset) = field;
+        field = global->field26;
+        offset += 2;
+        *(u16 *)(state + offset) = field;
+    }
+
+    {
+        const s16 *source = (const s16 *)0x02000200;
+        s16 row = 0;
+        u32 one = 1;
+        register u32 destinationOffset asm("r0") = 0x49c;
+        u8 *destination;
+
+        asm volatile("" : "+r"(destinationOffset));
+        destination = state + destinationOffset;
+
+        do {
+            u16 mask = 0;
+            s16 column = 0;
+
+            do {
+                if (*source++ != 0) {
+                    register s32 shift asm("r1") = column;
+                    register u32 bits asm("r0") = one;
+
+                    asm volatile("" : "+r"(shift), "+r"(bits));
+                    bits <<= shift;
+                    bits |= mask;
+                    mask = bits;
+                }
+                column++;
+            } while (column <= 7);
+            *(u8 *)((u32)row + (u32)destination) = mask;
+            row++;
+        } while (row <= 63);
+    }
+    FUN_080217d0(0);
 }
 
 void FUN_08041f84(struct UnknownState420dc *state) {
