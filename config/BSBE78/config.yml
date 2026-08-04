@@ -672,8 +672,11 @@ units:
       FUN_080208ec: 0x48
       FUN_08020944: 0x26
       FUN_08020ecc: 0x46
+      FUN_08020f18: 0x4A
       FUN_08020f64: 0xE
+      FUN_08020f78: 0x2E
       FUN_08020fac: 0xC
+      FUN_08020fbc: 0x44
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -841,8 +844,12 @@ units:
       - { offset: 0x70C8, mode: thumb }
       - { offset: 0x7662, mode: data }
       - { offset: 0x7668, mode: thumb }
+      - { offset: 0x7694, mode: data }
+      - { offset: 0x7698, mode: thumb }
       - { offset: 0x76C2, mode: data }
       - { offset: 0x76C8, mode: thumb }
+      - { offset: 0x76F6, mode: data }
+      - { offset: 0x76FC, mode: thumb }
       - { offset: 0x7708, mode: data }
       - { offset: 0x770C, mode: thumb }
     relocations:
@@ -1060,6 +1067,7 @@ units:
       - { offset: 0x70C0, type: abs32, symbol: gUnknown_03004b00 }
       - { offset: 0x70C4, type: abs32, symbol: gUnknown_03004b08 }
       - { offset: 0x7664, type: abs32, symbol: gUnknown_03004b10 }
+      - { offset: 0x7694, type: abs32, symbol: gUnknown_03004b10 }
       - { offset: 0x76C4, type: abs32, symbol: gUnknown_03004b10 }
       - { offset: 0x7708, type: abs32, symbol: gUnknown_0807173c }
   - name: sdk/m4a0

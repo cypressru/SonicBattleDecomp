@@ -1049,6 +1049,43 @@ void FUN_08020ecc(u32 first, const u8 *source, u8 *destination, u32 width, u32 h
     gUnknown_03004b10.fill = pattern;
 }
 
+void FUN_08020f18(void) {
+    struct UnknownBufferState *state = &gUnknown_03004b10;
+    u32 *destination = (u32 *)state->destination;
+    u32 count = state->rowSize * state->width - 2;
+    u32 offset;
+    u32 i;
+
+    for (i = 0; i < count; i++) {
+        *destination = destination[2];
+        destination++;
+    }
+
+    offset = state->stride * 4 - 8;
+    destination = (u32 *)(state->destination + offset);
+    for (i = 0; i < state->width; i++) {
+        destination[0] = destination[1] = state->fill;
+        destination += state->stride;
+    }
+}
+
+void FUN_08020f78(u32 *data) {
+    u32 *start = data;
+    u32 i;
+
+    for (i = 0; i <= 0x3FD; i++) {
+        *data = data[2];
+        data++;
+    }
+
+    data = start + 30;
+    for (i = 0; i <= 31; i++) {
+        data[1] = 0;
+        data[0] = 0;
+        data += 32;
+    }
+}
+
 u8 FUN_08020f64(u16 value) {
     struct UnknownBufferState *state = &gUnknown_03004b10;
 
@@ -1061,4 +1098,17 @@ u8 FUN_08020fac(u16 value) {
 
     value &= 0x7FFF;
     return source[value];
+}
+
+void FUN_08020fbc(u16 *destination, const u16 *source, u16 width, u16 rows) {
+    u16 row;
+
+    for (row = 0; row < rows; row++) {
+        u16 column;
+
+        for (column = 0; column < width; column++) {
+            *destination++ = *source++;
+        }
+        destination += 32 - width;
+    }
 }
