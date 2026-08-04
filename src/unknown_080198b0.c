@@ -339,6 +339,7 @@ extern struct UnknownFourByteMessage gUnknown_03001b1c;
 extern u8 gUnknown_030051f0;
 extern struct Unknown16ByteRecord gUnknown_030016fc[];
 extern void FUN_08027b84(struct UnknownListNode *node);
+extern void FUN_08027d18(struct UnknownListNode *node);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2404,6 +2405,36 @@ void FUN_08027bfc(struct UnknownListNode *node) {
         record = &gUnknown_030016fc[index];
         if (record->field0 <= 6) {
             node->data = FUN_08027b84;
+        }
+    }
+}
+
+void FUN_08027c8c(struct UnknownListNode *node) {
+    u32 value;
+
+    gUnknown_03001b1c.type = 14;
+    gUnknown_03001b1c.index = gUnknown_030051f0;
+    gUnknown_03001b1c.value = gUnknown_03004dd4;
+    value = FUN_0801f9e8(0x3579);
+    gUnknown_03005248 = value;
+    if (gUnknown_0300525c != (u8)value) {
+        gUnknown_030051f4++;
+        if (gUnknown_030051f4 > 29) {
+            node->data = (const void *)((u32)FUN_08027d18 + 1);
+            return;
+        }
+    } else {
+        gUnknown_030051f4 = 0;
+    }
+
+    {
+        register struct Unknown16ByteRecord *record asm("r1");
+        register u8 index asm("r0");
+
+        index = gUnknown_030051f0;
+        record = &gUnknown_030016fc[index];
+        if (record->field0 <= 6) {
+            node->data = (const void *)((u32)FUN_08027d18 + 1);
         }
     }
 }
