@@ -34,6 +34,8 @@ extern u8 gUnknown_030001b0[4];
 extern u8 gUnknown_030001b8;
 extern u8 (*gUnknown_030001b4)[2];
 extern u8 (*gUnknown_030001c0)[2];
+extern u8 *gUnknown_030001bc;
+extern u8 *gUnknown_030001c4;
 struct UnknownPoolNode404ec;
 extern struct UnknownPoolNode404ec *volatile gUnknown_0300547c;
 extern u8 gUnknown_030001ac;
@@ -5530,6 +5532,22 @@ void FUN_08040470(void) {
     asm volatile("" : "+r"(poolCopy));
     dma[1] = (u32)*poolCopy;
     dma[2] = 0x8500000b;
+    dma[2];
+}
+
+void FUN_08040624(void) {
+    u32 fill;
+    volatile u32 *dma;
+
+    gUnknown_030001b4 = (u8(*)[2])0x02002200;
+    gUnknown_030001bc = (u8 *)0x02002300;
+    gUnknown_030001c0 = (u8(*)[2])0x02002400;
+    gUnknown_030001c4 = (u8 *)0x02002500;
+    fill = 160;
+    dma = (volatile u32 *)0x040000d4;
+    dma[0] = (u32)&fill;
+    dma[1] = 0x030044d0;
+    dma[2] = 0x85000100;
     dma[2];
 }
 
