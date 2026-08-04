@@ -4751,3 +4751,15 @@ void FUN_08029c2c(u32 index) {
         FUN_0802036c(0x06016200, (u32)gUnknown_08118368, 2048);
     }
 }
+
+void FUN_08029cc8(u32 index, u32 selection) {
+    register u32 playerIndex asm("r2") = index;
+
+    if (selection > 9) {
+        selection = 10;
+    } else if (selection > 8) {
+        selection = 9;
+    }
+
+    FUN_08020408(0x06013800 + ((playerIndex * 5) << 9), (u32)gUnknown_08edbadc[selection]);
+}
