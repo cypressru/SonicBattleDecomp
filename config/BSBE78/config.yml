@@ -10,8 +10,30 @@ units:
   # boundaries are corroborated. It is excluded from claimed progress.
   - name: main/unknown_08000000
     start: 0x000000
-    end: 0x04AF68
+    end: 0x04A590
     category: game
+    auto_generated: true
+  # Nintendo BIOS-call veneer archive objects. Boundaries are fixed by each
+  # veneer body and archive alignment; names correlate to the public SDK ABI.
+  - { name: libagbsyscall/ArcTan2, start: 0x04A590, end: 0x04A594, category: sdk }
+  - { name: libagbsyscall/CpuFastSet, start: 0x04A594, end: 0x04A598, category: sdk }
+  - { name: libagbsyscall/CpuSet, start: 0x04A598, end: 0x04A59C, category: sdk }
+  - { name: libagbsyscall/Div, start: 0x04A59C, end: 0x04A5A0, category: sdk }
+  - { name: libagbsyscall/DivArm, start: 0x04A5A0, end: 0x04A5A4, category: sdk }
+  - { name: libagbsyscall/Mod, start: 0x04A5A4, end: 0x04A5AC, category: sdk }
+  - { name: libagbsyscall/IntrWait, start: 0x04A5AC, end: 0x04A5B4, category: sdk }
+  - { name: libagbsyscall/LZ77UnCompWram, start: 0x04A5B4, end: 0x04A5B8, category: sdk }
+  - { name: libagbsyscall/LZ77UnCompVram, start: 0x04A5B8, end: 0x04A5BC, category: sdk }
+  - { name: libagbsyscall/MultiBoot, start: 0x04A5BC, end: 0x04A5C4, category: sdk }
+  - { name: libagbsyscall/RLUnCompWram, start: 0x04A5C4, end: 0x04A5C8, category: sdk }
+  - { name: libagbsyscall/SoftReset, start: 0x04A5C8, end: 0x04A5CC, category: sdk }
+  - { name: libagbsyscall/Sqrt, start: 0x04A5CC, end: 0x04A5D0, category: sdk }
+  - { name: libagbsyscall/VBlankIntrWait, start: 0x04A5D0, end: 0x04A5D8, category: sdk }
+  - { name: libagbsyscall/SoftResetExram, start: 0x04A5D8, end: 0x04A5F8, category: sdk }
+  - name: sdk/unknown_backup_library
+    start: 0x04A5F8
+    end: 0x04AF68
+    category: sdk
     auto_generated: true
   # Exact runtime object boundaries established by matching the pinned agbcc
   # library objects, including non-relocated instruction sequences and sizes.

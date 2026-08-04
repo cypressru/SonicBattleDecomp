@@ -12,6 +12,70 @@ rule copy_rom
 
 build build/BSBE78/target/main/unknown_08000000.o: slice_object rom/baserom.gba
   start = 0
+  end = 304528
+
+build build/BSBE78/target/libagbsyscall/ArcTan2.o: slice_object rom/baserom.gba
+  start = 304528
+  end = 304532
+
+build build/BSBE78/target/libagbsyscall/CpuFastSet.o: slice_object rom/baserom.gba
+  start = 304532
+  end = 304536
+
+build build/BSBE78/target/libagbsyscall/CpuSet.o: slice_object rom/baserom.gba
+  start = 304536
+  end = 304540
+
+build build/BSBE78/target/libagbsyscall/Div.o: slice_object rom/baserom.gba
+  start = 304540
+  end = 304544
+
+build build/BSBE78/target/libagbsyscall/DivArm.o: slice_object rom/baserom.gba
+  start = 304544
+  end = 304548
+
+build build/BSBE78/target/libagbsyscall/Mod.o: slice_object rom/baserom.gba
+  start = 304548
+  end = 304556
+
+build build/BSBE78/target/libagbsyscall/IntrWait.o: slice_object rom/baserom.gba
+  start = 304556
+  end = 304564
+
+build build/BSBE78/target/libagbsyscall/LZ77UnCompWram.o: slice_object rom/baserom.gba
+  start = 304564
+  end = 304568
+
+build build/BSBE78/target/libagbsyscall/LZ77UnCompVram.o: slice_object rom/baserom.gba
+  start = 304568
+  end = 304572
+
+build build/BSBE78/target/libagbsyscall/MultiBoot.o: slice_object rom/baserom.gba
+  start = 304572
+  end = 304580
+
+build build/BSBE78/target/libagbsyscall/RLUnCompWram.o: slice_object rom/baserom.gba
+  start = 304580
+  end = 304584
+
+build build/BSBE78/target/libagbsyscall/SoftReset.o: slice_object rom/baserom.gba
+  start = 304584
+  end = 304588
+
+build build/BSBE78/target/libagbsyscall/Sqrt.o: slice_object rom/baserom.gba
+  start = 304588
+  end = 304592
+
+build build/BSBE78/target/libagbsyscall/VBlankIntrWait.o: slice_object rom/baserom.gba
+  start = 304592
+  end = 304600
+
+build build/BSBE78/target/libagbsyscall/SoftResetExram.o: slice_object rom/baserom.gba
+  start = 304600
+  end = 304632
+
+build build/BSBE78/target/sdk/unknown_backup_library.o: slice_object rom/baserom.gba
+  start = 304632
   end = 307048
 
 build build/BSBE78/target/libgcc/_call_via_rX.o: slice_object rom/baserom.gba
@@ -56,6 +120,6 @@ build build/BSBE78/target/libc/memset.o: slice_object rom/baserom.gba
 
 build build/BSBE78/sonic_battle.gba: copy_rom rom/baserom.gba
 
-build objects: phony build/BSBE78/target/main/unknown_08000000.o build/BSBE78/target/libgcc/_call_via_rX.o build/BSBE78/target/libgcc/_divsi3.o build/BSBE78/target/libgcc/_dvmd_tls.o build/BSBE78/target/libgcc/_modsi3.o build/BSBE78/target/libgcc/_udivdi3.o build/BSBE78/target/libgcc/_udivsi3.o build/BSBE78/target/libgcc/_umodsi3.o build/BSBE78/target/libc/memcmp.o build/BSBE78/target/libc/memcpy.o build/BSBE78/target/libc/memset.o
+build objects: phony build/BSBE78/target/main/unknown_08000000.o build/BSBE78/target/libagbsyscall/ArcTan2.o build/BSBE78/target/libagbsyscall/CpuFastSet.o build/BSBE78/target/libagbsyscall/CpuSet.o build/BSBE78/target/libagbsyscall/Div.o build/BSBE78/target/libagbsyscall/DivArm.o build/BSBE78/target/libagbsyscall/Mod.o build/BSBE78/target/libagbsyscall/IntrWait.o build/BSBE78/target/libagbsyscall/LZ77UnCompWram.o build/BSBE78/target/libagbsyscall/LZ77UnCompVram.o build/BSBE78/target/libagbsyscall/MultiBoot.o build/BSBE78/target/libagbsyscall/RLUnCompWram.o build/BSBE78/target/libagbsyscall/SoftReset.o build/BSBE78/target/libagbsyscall/Sqrt.o build/BSBE78/target/libagbsyscall/VBlankIntrWait.o build/BSBE78/target/libagbsyscall/SoftResetExram.o build/BSBE78/target/sdk/unknown_backup_library.o build/BSBE78/target/libgcc/_call_via_rX.o build/BSBE78/target/libgcc/_divsi3.o build/BSBE78/target/libgcc/_dvmd_tls.o build/BSBE78/target/libgcc/_modsi3.o build/BSBE78/target/libgcc/_udivdi3.o build/BSBE78/target/libgcc/_udivsi3.o build/BSBE78/target/libgcc/_umodsi3.o build/BSBE78/target/libc/memcmp.o build/BSBE78/target/libc/memcpy.o build/BSBE78/target/libc/memset.o
 build check: phony build/BSBE78/sonic_battle.gba
 default build/BSBE78/sonic_battle.gba objects

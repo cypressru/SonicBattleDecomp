@@ -61,6 +61,7 @@ def main() -> None:
         "units": units,
         "progress_categories": [
             {"id": "game", "name": "Game"},
+            {"id": "sdk", "name": "SDK"},
             {"id": "runtime", "name": "Runtime"},
         ],
     }
