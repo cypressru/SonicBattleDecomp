@@ -800,6 +800,113 @@ units:
     start: 0x04A5F8
     end: 0x04AAF8
     category: sdk
+    source: src/agb_flash.c
+    cflags: [-O1, -mthumb-interwork]
+    synthetic_sections:
+      - { name: .bss, size: 0xA }
+    base_symbol_size_overrides:
+      SwitchFlashBank: 0x24
+      ReadFlashId: 0x9C
+      FlashTimerIntr: 0x28
+      SetFlashTimerIntr: 0x3C
+      StartFlashTimer: 0xA8
+      StopFlashTimer: 0x44
+      ReadFlash1: 0x4
+      SetReadFlash1: 0x40
+      ReadFlash_Core: 0x24
+      ReadFlash: 0x9C
+      VerifyFlashSector_Core: 0x30
+      VerifyFlashSector: 0x98
+      VerifyFlashSectorNBytes: 0x98
+      ProgramFlashSectorAndVerify: 0x44
+      ProgramFlashSectorAndVerifyNBytes: 0x48
+    mappings:
+      - { offset: 0x1C, mode: data }
+      - { offset: 0x24, mode: thumb }
+      - { offset: 0x4A, mode: data }
+      - { offset: 0x58, mode: thumb }
+      - { offset: 0x96, mode: data }
+      - { offset: 0xA8, mode: thumb }
+      - { offset: 0xBE, mode: data }
+      - { offset: 0xC0, mode: thumb }
+      - { offset: 0xE0, mode: data }
+      - { offset: 0xE8, mode: thumb }
+      - { offset: 0x10C, mode: data }
+      - { offset: 0x11C, mode: thumb }
+      - { offset: 0x122, mode: data }
+      - { offset: 0x124, mode: thumb }
+      - { offset: 0x1A6, mode: data }
+      - { offset: 0x1CC, mode: thumb }
+      - { offset: 0x1FA, mode: data }
+      - { offset: 0x210, mode: thumb }
+      - { offset: 0x22E, mode: data }
+      - { offset: 0x23C, mode: thumb }
+      - { offset: 0x252, mode: data }
+      - { offset: 0x254, mode: thumb }
+      - { offset: 0x276, mode: data }
+      - { offset: 0x278, mode: thumb }
+      - { offset: 0x2C2, mode: data }
+      - { offset: 0x2D8, mode: thumb }
+      - { offset: 0x310, mode: data }
+      - { offset: 0x314, mode: thumb }
+      - { offset: 0x342, mode: data }
+      - { offset: 0x344, mode: thumb }
+      - { offset: 0x38A, mode: data }
+      - { offset: 0x3A0, mode: thumb }
+      - { offset: 0x3D6, mode: data }
+      - { offset: 0x3DC, mode: thumb }
+      - { offset: 0x424, mode: data }
+      - { offset: 0x438, mode: thumb }
+      - { offset: 0x46E, mode: data }
+      - { offset: 0x474, mode: thumb }
+      - { offset: 0x4B4, mode: data }
+      - { offset: 0x4B8, mode: thumb }
+      - { offset: 0x4FC, mode: data }
+    relocations:
+      - { offset: 0x2A, type: thumb_call, symbol: SetReadFlash1 }
+      - { offset: 0x66, type: thumb_call, symbol: _call_via_r5 }
+      - { offset: 0x72, type: thumb_call, symbol: _call_via_r5 }
+      - { offset: 0xE0, type: abs32, symbol: .bss, addend: 0x2 }
+      - { offset: 0xE4, type: abs32, symbol: gFlashTimeoutFlag }
+      - { offset: 0x10C, type: abs32, symbol: .bss }
+      - { offset: 0x110, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x118, type: abs32, symbol: FlashTimerIntr }
+      - { offset: 0x1A8, type: abs32, symbol: gFlashMaxTime }
+      - { offset: 0x1AC, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x1B4, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x1BC, type: abs32, symbol: .bss, addend: 0x2 }
+      - { offset: 0x1C0, type: abs32, symbol: gFlashTimeoutFlag }
+      - { offset: 0x1C4, type: abs32, symbol: .bss }
+      - { offset: 0x200, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x208, type: abs32, symbol: .bss }
+      - { offset: 0x20C, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x230, type: abs32, symbol: PollFlashStatus }
+      - { offset: 0x234, type: abs32, symbol: ReadFlash1 }
+      - { offset: 0x238, type: abs32, symbol: SetReadFlash1 }
+      - { offset: 0x2A8, type: thumb_call, symbol: SwitchFlashBank }
+      - { offset: 0x2CC, type: abs32, symbol: gFlash }
+      - { offset: 0x2D0, type: abs32, symbol: ReadFlash_Core }
+      - { offset: 0x2D4, type: abs32, symbol: ReadFlash }
+      - { offset: 0x304, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x310, type: abs32, symbol: gFlash }
+      - { offset: 0x370, type: thumb_call, symbol: SwitchFlashBank }
+      - { offset: 0x394, type: abs32, symbol: gFlash }
+      - { offset: 0x398, type: abs32, symbol: VerifyFlashSector_Core }
+      - { offset: 0x39C, type: abs32, symbol: VerifyFlashSector }
+      - { offset: 0x3CA, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x3D8, type: abs32, symbol: gFlash }
+      - { offset: 0x3FC, type: thumb_call, symbol: SwitchFlashBank }
+      - { offset: 0x424, type: abs32, symbol: gFlash }
+      - { offset: 0x430, type: abs32, symbol: VerifyFlashSector_Core }
+      - { offset: 0x434, type: abs32, symbol: VerifyFlashSector }
+      - { offset: 0x462, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x470, type: abs32, symbol: gFlash }
+      - { offset: 0x492, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x4A2, type: thumb_call, symbol: VerifyFlashSector }
+      - { offset: 0x4B4, type: abs32, symbol: ProgramFlashSector }
+      - { offset: 0x4D8, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x4EA, type: thumb_call, symbol: VerifyFlashSectorNBytes }
+      - { offset: 0x4FC, type: abs32, symbol: ProgramFlashSector }
     symbols:
       - { name: SwitchFlashBank, address: 0x04A5F8 }
       - { name: ReadFlashId, address: 0x04A61C }
