@@ -547,6 +547,7 @@ units:
       m4aMPlayFadeOut: 0x0E
       m4aMPlayFadeOutTemporarily: 0x1C
       m4aMPlayFadeIn: 0x24
+      m4aMPlayImmInit: 0x62
       ClearChain: 0x0E
       Clear64byte: 0x0E
       MP2K_event_xcmd: 0x1A
@@ -556,6 +557,7 @@ units:
       - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }
       - { offset: 0x22A, type: thumb_call, symbol: MPlayContinue }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
+      - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
       - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }

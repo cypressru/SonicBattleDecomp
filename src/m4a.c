@@ -3,11 +3,14 @@
 struct MP2KPlayerState {
     u32 padding0;
     u32 status;
-    u8 padding8[28];
+    u8 trackCount;
+    u8 padding9[27];
     u16 fadeCounter;
     u16 fadeInterval;
     u16 fadeVolume;
-    u8 padding42[10];
+    u8 padding42[2];
+    struct MP2KTrack *tracks;
+    u8 padding48[4];
     u32 lockStatus;
 };
 
@@ -27,6 +30,7 @@ struct MP2KTrack {
     u8 release;
     u8 padding48[16];
     u8 *command;
+    u8 padding68[12];
 };
 
 extern void SoundMain(void);
@@ -34,6 +38,7 @@ extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
 extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
+void Clear64byte(void *memory);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -76,6 +81,32 @@ void m4aMPlayFadeIn(struct MP2KPlayerState *player, u16 speed) {
         player->fadeCounter = speed;
         player->fadeVolume = 2;
         player->status &= 0x7FFFFFFF;
+        player->lockStatus = 0x68736D53;
+    }
+}
+
+void m4aMPlayImmInit(struct MP2KPlayerState *player) {
+    if (player->lockStatus == 0x68736D53) {
+        s32 trackCount;
+        struct MP2KTrack *track;
+
+        player->lockStatus++;
+        trackCount = player->trackCount;
+        track = player->tracks;
+        while (trackCount > 0) {
+            if (track->padding0[0] & 0x80) {
+                if (track->padding0[0] & 0x40) {
+                    Clear64byte(track);
+                    track->padding0[0] = 0x80;
+                    track->padding0[15] = 2;
+                    track->padding0[19] = 64;
+                    track->padding0[25] = 22;
+                    track->voiceType = 1;
+                }
+            }
+            trackCount--;
+            track++;
+        }
         player->lockStatus = 0x68736D53;
     }
 }

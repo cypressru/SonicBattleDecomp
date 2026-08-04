@@ -1254,7 +1254,7 @@ address,name,mode,confidence
 0x080491D4,m4aMPlayFadeOut,thumb,direct-call+sa2-relocation-masked-byte-match
 0x080491E4,m4aMPlayFadeOutTemporarily,thumb,direct-call+sdk-correlation
 0x08049208,m4aMPlayFadeIn,thumb,recursive-disassembly+sdk-correlation
-0x08049234,FUN_08049234,thumb,direct-call
+0x08049234,m4aMPlayImmInit,thumb,direct-call+sdk-correlation
 0x0804929C,FUN_0804929c,thumb,direct-call
 0x080493B8,ClearChain,thumb,direct-call+sdk-correlation
 0x080493CC,Clear64byte,thumb,direct-call+sdk-correlation
