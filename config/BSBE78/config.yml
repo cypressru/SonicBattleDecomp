@@ -768,6 +768,8 @@ units:
       FUN_0802786c: 0x38
       FUN_080278b4: 0x34
       FUN_080278f8: 0x20
+      FUN_08027920: 0x48
+      FUN_0802797c: 0x38
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -1131,6 +1133,10 @@ units:
       - { offset: 0xE048, mode: thumb }
       - { offset: 0xE068, mode: data }
       - { offset: 0xE070, mode: thumb }
+      - { offset: 0xE0B8, mode: data }
+      - { offset: 0xE0CC, mode: thumb }
+      - { offset: 0xE104, mode: data }
+      - { offset: 0xE114, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1677,6 +1683,18 @@ units:
       - { offset: 0xE05E, type: thumb_call, symbol: _call_via_r5 }
       - { offset: 0xE068, type: abs32, symbol: FUN_08025fd4, addend: 1 }
       - { offset: 0xE06C, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0xE07E, type: thumb_call, symbol: FUN_080184c8 }
+      - { offset: 0xE082, type: thumb_call, symbol: FUN_08018c3c }
+      - { offset: 0xE08E, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0xE0A2, type: thumb_call, symbol: FUN_08020b74 }
+      - { offset: 0xE0B8, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0xE0C4, type: abs32, symbol: gUnknown_03005240 }
+      - { offset: 0xE0C8, type: abs32, symbol: FUN_08026634, addend: 1 }
+      - { offset: 0xE0F4, type: thumb_call, symbol: FUN_08020b74 }
+      - { offset: 0xE104, type: abs32, symbol: gUnknown_08edb450 }
+      - { offset: 0xE108, type: abs32, symbol: gUnknown_03002110 }
+      - { offset: 0xE10C, type: abs32, symbol: gUnknown_03004dd4 }
+      - { offset: 0xE110, type: abs32, symbol: FUN_080279c4, addend: 1 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
