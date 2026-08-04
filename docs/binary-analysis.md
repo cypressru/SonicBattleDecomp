@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018678` | 197 | 70,494 | 27,422 |
+| `main/unknown_080007FC` | `0x0007FC-0x018678` | 193 | 70,490 | 27,426 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -88,7 +88,15 @@ The boundary audit also recovered an otherwise unreferenced function at `0x08018
 Thumb body constructs two DMA descriptors, terminates with a normal return, and owns the aligned
 literal pool ending at the next accepted function at `0x08018444`. It has no decoded direct caller
 or stored function pointer, which explains why call-closure discovery missed it. The function is
-included in the inventory, but the surrounding TU boundary remains unresolved.
+reconstructed in C and matches all 30 instruction bytes in objdiff. Its source is attached to the
+conservative placeholder object and does not assert an original filename or TU boundary; the
+surrounding TU boundary remains unresolved.
+
+The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
+`0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
+asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive
+linear disassembly. None can contain a complete Thumb instruction, so they are retained as rejected
+analyzer evidence rather than counted as functions.
 
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires

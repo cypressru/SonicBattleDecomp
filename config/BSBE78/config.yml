@@ -11,6 +11,13 @@ rejected_function_pointers:
   # lands in the middle of EngineMain's inline DMA source/destination/control
   # literal sequence and is reached only as data, not as executable code.
   - { source: 0x0514CD0, destination: 0x08000422 }
+  # These asset words happen to encode Thumb-tagged addresses into ROM pointer
+  # tables. Each destination begins in table data and cannot contain even one
+  # complete Thumb instruction.
+  - { source: 0x1708B8, destination: 0x0800B210 }
+  - { source: 0x13BE12, destination: 0x0800B770 }
+  - { source: 0x13FA20, destination: 0x0800B770 }
+  - { source: 0x152C4C, destination: 0x0800B904 }
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true
@@ -182,6 +189,12 @@ units:
     end: 0x018678
     category: game
     function_map: config/BSBE78/functions.csv
+    source: src/unknown_080007fc.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      FUN_08018410: 0x1E
+    relocations:
+      - { offset: 0x17C34, type: abs32, symbol: gUnknown_03001740 }
   - name: engine/multi_sio_sync
     start: 0x018678
     end: 0x018C8C
