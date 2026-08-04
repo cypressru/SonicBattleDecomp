@@ -427,7 +427,7 @@ address,name,mode,confidence
 0x080213E4,FUN_080213e4,thumb,rom-pointer
 0x08021484,FUN_08021484,thumb,direct-call
 0x080214C0,FUN_080214c0,thumb,direct-call
-0x08021514,FUN_08021514,thumb,rom-pointer
+0x08021518,FUN_08021518,thumb,recursive-disassembly
 0x08021534,FUN_08021534,thumb,direct-call
 0x08021564,FUN_08021564,thumb,direct-call
 0x0802158C,FUN_0802158c,thumb,recursive-disassembly

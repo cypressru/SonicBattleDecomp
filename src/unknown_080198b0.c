@@ -185,6 +185,12 @@ extern u32 gUnknown_03004d34;
 extern u32 gUnknown_03004d38;
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern struct UnknownState08021484 gUnknown_03004d40;
+extern u32 gUnknown_020000e0;
+extern const void *gUnknown_03004d94;
+extern void SoftResetExram(u32 flags);
+extern void LZ77UnCompWram(const void *source, void *destination);
+extern u32 FUN_08018c8c(void *state);
+extern u32 FUN_0801950c(void *state);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1184,4 +1190,24 @@ u8 FUN_08021484(void) {
         }
     }
     return result;
+}
+
+void FUN_08021518(void) {
+    gUnknown_020000e0 = 0x12345678;
+    SoftResetExram(0x40);
+}
+
+u32 FUN_08021534(void) {
+    if (FUN_08018c8c(&gUnknown_03004d40) != 0) {
+        return 0xFF;
+    }
+    if (FUN_0801950c(&gUnknown_03004d40) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+u32 FUN_0802158c(void) {
+    LZ77UnCompWram(gUnknown_03004d94, (void *)0x02000100);
+    return 0;
 }
