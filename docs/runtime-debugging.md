@@ -28,7 +28,7 @@ sb-state                        show call registers and nearby instructions
 sb-break 0x08018318             break at a candidate function
 sb-watch8 0x030016C4            watch an 8-bit global
 sb-watch16 0x03001B04           watch a 16-bit global
-break FUN_080183d0              names from functions.csv also work
+sb-break FUN_080183d0           names from functions.csv also work
 ```
 
 The frame command stops at `0x080007CA`, the top of `AgbMain`'s persistent loop immediately before
