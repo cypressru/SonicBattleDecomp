@@ -544,6 +544,8 @@ units:
       - { offset: 0x128, mode: thumb }
       - { offset: 0x16A, mode: data }
       - { offset: 0x174, mode: thumb }
+      - { offset: 0x89A, mode: data }
+      - { offset: 0x8A8, mode: thumb }
       - { offset: 0x986, mode: data }
       - { offset: 0x98C, mode: thumb }
       - { offset: 0xA0A, mode: data }
@@ -554,6 +556,7 @@ units:
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       MPlayStart: 0xDE
+      MPlayOpen: 0x6A
       m4aMPlayTempoControl: 0x20
       m4aMPlayVolumeControl: 0x64
       m4aMPlayPitchControl: 0x70
@@ -608,6 +611,9 @@ units:
       - { offset: 0x25C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
+      - { offset: 0x856, type: thumb_call, symbol: Clear64byte }
+      - { offset: 0x89C, type: abs32, symbol: gSoundInfo }
+      - { offset: 0x8A4, type: abs32, symbol: m4aSoundVSync }
       - { offset: 0x920, type: thumb_call, symbol: FUN_08048c08 }
       - { offset: 0x956, type: thumb_call, symbol: FUN_08048c08 }
       - { offset: 0x974, type: thumb_call, symbol: FUN_08049544 }

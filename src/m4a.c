@@ -20,6 +20,8 @@ struct MP2KPlayerState {
     struct MP2KTrack *tracks;
     u8 padding48[4];
     u32 lockStatus;
+    void (*nextPlayerFunction)(void);
+    struct MP2KPlayerState *nextPlayer;
 };
 
 struct MP2KTrack {
@@ -80,12 +82,21 @@ struct MP2KSongHeader {
     const u8 *parts[1];
 };
 
+struct SoundMixerState {
+    u32 lockStatus;
+    u8 padding4[28];
+    void (*playerMain)(void);
+    struct MP2KPlayerState *playerHead;
+};
+
 extern void SoundMain(void);
 extern void FUN_08048c08(struct MP2KPlayerState *player, struct MP2KTrack *track);
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
 extern u8 gNumMusicPlayers[];
 extern void FUN_08049544(u32 mode);
+extern struct SoundMixerState *gSoundInfo;
+extern void m4aSoundVSync(void);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -94,6 +105,7 @@ void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
 void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
+void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -228,6 +240,42 @@ void MPlayStart(struct MP2KPlayerState *player, const void *header) {
             FUN_08049544(songHeader->reverb);
         }
     }
+    player->lockStatus = 0x68736D53;
+}
+
+void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount) {
+    struct SoundMixerState *soundInfo;
+
+    if (trackCount == 0) {
+        return;
+    }
+    if (trackCount > 16) {
+        trackCount = 16;
+    }
+
+    soundInfo = gSoundInfo;
+    if (soundInfo->lockStatus != 0x68736D53) {
+        return;
+    }
+    soundInfo->lockStatus++;
+    Clear64byte(player);
+    player->tracks = tracks;
+    player->trackCount = trackCount;
+    player->status = 0x80000000;
+    while (trackCount != 0) {
+        tracks->status = 0;
+        trackCount--;
+        tracks++;
+    }
+
+    if (soundInfo->playerMain != 0) {
+        player->nextPlayerFunction = soundInfo->playerMain;
+        player->nextPlayer = soundInfo->playerHead;
+        soundInfo->playerMain = 0;
+    }
+    soundInfo->playerHead = player;
+    soundInfo->playerMain = m4aSoundVSync;
+    soundInfo->lockStatus = 0x68736D53;
     player->lockStatus = 0x68736D53;
 }
 
