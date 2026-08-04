@@ -75,10 +75,10 @@ build build/BSBE78/target/engine/multi_sio_sync.o: slice_object rom/baserom.gba 
   start = 99960
   end = 101516
   kind = code
-  symbols = MultiSioSyncInitialize:99960:thumb:150 FUN_08018730:100144:thumb:316 FUN_0801886c:100460:thumb:158 FUN_08018918:100632:thumb:372 MultiSioSyncVSync:101004:thumb:142 MultiSioSyncInterrupt:101156:thumb:224 FUN_08018c20:101408:thumb:22 FUN_08018c3c:101436:thumb:52 @rel:72:thumb_call:CpuSet @rel:176:abs32:gMultiSioSyncState @rel:216:abs32:gMultiSioSyncState @rel:376:abs32:gMultiSioSyncState @rel:386:thumb_call:FUN_08018918 @rel:444:abs32:gMultiSioSyncState @rel:620:thumb_call:CpuSet @rel:660:abs32:gMultiSioSyncState @rel:664:abs32:gMultiSioSendState @map:212:data @map:220:thumb @map:354:data @map:380:thumb @map:442:data @map:448:thumb
+  symbols = MultiSioSyncInitialize:99960:thumb:150 FUN_08018730:100144:thumb:316 FUN_0801886c:100460:thumb:158 FUN_08018918:100632:thumb:372 MultiSioSyncVSync:101004:thumb:142 MultiSioSyncInterrupt:101156:thumb:224 FUN_08018c20:101408:thumb:22 FUN_08018c3c:101436:thumb:52 @rel:72:thumb_call:CpuSet @rel:176:abs32:gMultiSioSyncState @rel:216:abs32:gMultiSioSyncState @rel:376:abs32:gMultiSioSyncState @rel:386:thumb_call:FUN_08018918 @rel:444:abs32:gMultiSioSyncState @rel:620:thumb_call:CpuSet @rel:660:abs32:gMultiSioSyncState @rel:664:abs32:gMultiSioSendState @rel:828:thumb_call:CpuSet @rel:842:thumb_call:CpuSet @rel:972:abs32:gMultiSioSyncState @rel:1136:abs32:gMultiSioSyncState @rel:1424:abs32:gMultiSioSyncState @rel:1472:abs32:gMultiSioSyncState @rel:1552:abs32:gMultiSioSyncState @map:212:data @map:220:thumb @map:354:data @map:380:thumb @map:442:data @map:448:thumb @map:966:data @map:984:thumb @map:1134:data @map:1152:thumb @map:1186:data @map:1448:thumb @map:1470:data @map:1476:thumb @map:1528:data
 
 build build/BSBE78/base/engine/multi_sio_sync.o: compile_agbcc src/multi_sio_sync.c | include/types.h tools/compile_agbcc.py
-  cflags = -O2 -mthumb-interwork @symbol-size:MultiSioSyncInitialize:150 @symbol-size:FUN_0801886c:158
+  cflags = -O2 -mthumb-interwork @symbol-size:MultiSioSyncInitialize:150 @symbol-size:FUN_0801886c:158 @symbol-size:MultiSioSyncVSync:142 @symbol-size:MultiSioSyncInterrupt:224 @symbol-size:FUN_08018c20:22 @symbol-size:FUN_08018c3c:52
 
 build build/BSBE78/target/engine/multi_boot.o: slice_object rom/baserom.gba | tools/slice_object.py config/BSBE78/function_extents.csv
   start = 101516
