@@ -313,6 +313,28 @@ struct UnknownTriple47c30 {
     u16 third;
 };
 
+struct UnknownTransferRecord4033c {
+    const void *source;
+    void *destination;
+    u32 size;
+};
+
+struct UnknownTransferList4033c {
+    struct UnknownTransferRecord4033c records[1];
+};
+
+struct UnknownTransferRecord403c0 {
+    const void *source;
+    void *destination;
+    u8 width;
+    u8 height;
+    u16 flags;
+};
+
+struct UnknownTransferList403c0 {
+    struct UnknownTransferRecord403c0 records[1];
+};
+
 struct UnknownGlobalRenderState {
     const void *callback;
     u8 filler4[4];
@@ -334,7 +356,7 @@ extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
 extern void FUN_08047c30(struct UnknownState482d0 *state);
-extern void FUN_0804033c(void *destination, const void *source, u32 size);
+extern void FUN_0804033c(const void *source, void *destination, u32 size);
 extern void FUN_0804051c(struct UnknownState482d0 *state);
 extern void FUN_0803fe98(u16 first, u16 second, u16 third);
 extern void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags);
@@ -350,6 +372,8 @@ extern const u8 gUnknown_081a7f88[];
 extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
 extern struct UnknownTriple47c30 gUnknown_030002d0;
 extern const u8 gUnknown_030044d6[];
+extern struct UnknownTransferList4033c *gUnknown_030001a0;
+extern struct UnknownTransferList403c0 *gUnknown_030001a4;
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5897,7 +5921,7 @@ void FUN_080482a8(struct UnknownState482d0 *state) {
 }
 
 void FUN_08048300(struct UnknownState482d0 *state) {
-    FUN_0804033c((void *)0x02028000, (const void *)0x06013200, 0x800);
+    FUN_0804033c((const void *)0x02028000, (void *)0x06013200, 0x800);
     state->field12.half.high = -32;
     state->field20 = 0;
     state->field39 = 16;
@@ -6078,4 +6102,14 @@ void FUN_08047c30(struct UnknownState482d0 *state) {
         }
     }
     FUN_080405a8(state->field2, 1);
+}
+
+void FUN_08040328(void) {
+    gUnknown_030001a0 = (struct UnknownTransferList4033c *)0x02001600;
+    gUnknown_030001a0->records[0].size = 1;
+}
+
+void FUN_080403ac(void) {
+    gUnknown_030001a4 = (struct UnknownTransferList403c0 *)0x02001700;
+    gUnknown_030001a4->records[0].flags = 1;
 }
