@@ -3225,3 +3225,29 @@ void FUN_08028f98(struct UnknownListNode *node) {
     }
     FUN_0801fed8(owner->field6, 0);
 }
+
+void FUN_08029014(struct UnknownListNode *node) {
+    register struct UnknownPosition *position asm("r2") = node->position;
+    register u32 zero asm("r4");
+    register u32 halfwordZero asm("r1");
+
+    position->field0 = gUnknown_08edb97c;
+    zero = 0;
+    halfwordZero = 0;
+    position->tile = halfwordZero;
+    {
+        register struct UnknownPosition *selected asm("r3") = node->position;
+        register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
+        register u32 offset asm("r1") = selected->field13 * 8;
+
+        selected->x = *(const u16 *)(offset + (u32)table);
+        selected = node->position;
+        offset = selected->field13 * 8;
+        table += 2;
+        selected->y = *(const u16 *)(offset + (u32)table);
+    }
+    node->position->field10 = zero;
+    node->position->field11 = zero;
+    node->position->field12 = zero;
+    node->data = (const void *)((u32)FUN_08028f98 + 1);
+}
