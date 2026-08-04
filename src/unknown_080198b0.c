@@ -197,6 +197,8 @@ extern u32 VerifyFlashSector(u16 sector, u8 *source);
 extern u16 SetFlashTimerIntr(u8 timer, void (**handler)(void));
 extern void (*gUnknown_0300315c)(void);
 extern void (*gUnknown_03006788)(void);
+extern u32 (*gUnknown_0300677c)(u16 sector, u8 *source);
+extern const u8 gUnknown_0807b780[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1238,4 +1240,28 @@ u32 FUN_0802188c(void) {
     SetFlashTimerIntr(2, &gUnknown_0300315c);
     gUnknown_03006788();
     return 0;
+}
+
+u32 FUN_080218dc(u8 sector, u8 *data) {
+    SetFlashTimerIntr(2, &gUnknown_0300315c);
+    if ((u16)gUnknown_0300677c(sector, data) != 0) {
+        return 1;
+    }
+    if (VerifyFlashSector(sector, data) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+void FUN_08021a10(u8 *data, u32 count) {
+    u32 end = count - 1;
+    u8 previous = data[0];
+    u32 i;
+
+    for (i = 0; i < end; i++) {
+        u8 next = data[1];
+        data[1] = next - gUnknown_0807b780[previous];
+        previous = next;
+        data++;
+    }
 }

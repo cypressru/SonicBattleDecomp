@@ -696,6 +696,8 @@ units:
       FUN_0802158c: 0x12
       FUN_080218ac: 0x30
       FUN_0802188c: 0x18
+      FUN_080218dc: 0x44
+      FUN_08021a10: 0x2A
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -907,6 +909,12 @@ units:
       - { offset: 0x7CF8, mode: thumb }
       - { offset: 0x7FF4, mode: data }
       - { offset: 0x7FFC, mode: thumb }
+      - { offset: 0x805E, mode: data }
+      - { offset: 0x8068, mode: thumb }
+      - { offset: 0x815C, mode: data }
+      - { offset: 0x8160, mode: thumb }
+      - { offset: 0x818A, mode: data }
+      - { offset: 0x8190, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1153,6 +1161,13 @@ units:
       - { offset: 0x7FEA, type: thumb_call, symbol: _call_via_r0 }
       - { offset: 0x7FF4, type: abs32, symbol: gUnknown_0300315c }
       - { offset: 0x7FF8, type: abs32, symbol: gUnknown_03006788 }
+      - { offset: 0x8038, type: thumb_call, symbol: SetFlashTimerIntr }
+      - { offset: 0x8044, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x8052, type: thumb_call, symbol: VerifyFlashSector }
+      - { offset: 0x8060, type: abs32, symbol: gUnknown_0300315c }
+      - { offset: 0x8064, type: abs32, symbol: gUnknown_0300677c }
+      - { offset: 0x815C, type: abs32, symbol: gUnknown_0807b780 }
+      - { offset: 0x818C, type: abs32, symbol: gUnknown_0807b780 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
