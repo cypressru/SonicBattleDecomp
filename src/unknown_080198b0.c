@@ -36,6 +36,9 @@ extern void FUN_080411fc(void);
 extern u32 gUnknown_03005430;
 extern void FUN_08047bd8(void);
 extern void FUN_080311b4(struct UnknownListNode *node);
+extern u8 gUnknown_0300537c;
+extern const u8 gUnknown_081734d8[];
+extern void FUN_08041c14(void);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -249,6 +252,17 @@ struct UnknownAllocation3128c {
     u8 filler0[2];
     u16 field2;
     u16 field4;
+};
+
+struct UnknownState43e28 {
+    u8 filler0[4];
+    const void *callback;
+    u8 filler8[8];
+    const void *graphics;
+    u8 filler20[2];
+    u8 field22;
+    u8 filler23;
+    u8 field24;
 };
 
 struct UnknownRecordValue28c80 {
@@ -5424,4 +5438,25 @@ void FUN_0803128c(struct UnknownListNode *node) {
     allocation->field4 = 30;
     allocation->field2 = 0;
     node->data = (const void *)((u32)FUN_080311b4 + 1);
+}
+
+void FUN_080368c0(u8 index) { gUnknown_0300537c &= ~gUnknown_0807163c[index]; }
+
+void FUN_08043e28(struct UnknownState43e28 *state) {
+    state->graphics = gUnknown_081734d8;
+    state->field22 = 4;
+    state->field24 = 44;
+    state->callback = (const void *)((u32)FUN_08041c14 + 1);
+}
+
+u8 FUN_08043e44(s16 x, s16 y) {
+    register s32 row asm("r1") = y >> 3;
+    register s32 column asm("r0") = x >> 3;
+    register const u8 *map asm("r2") = (const u8 *)0x02020c00;
+
+    row <<= 6;
+    row += (u32)map;
+    asm volatile("" : "+r"(row));
+    row += column;
+    return *(const u8 *)row;
 }
