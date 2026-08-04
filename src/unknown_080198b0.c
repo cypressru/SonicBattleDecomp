@@ -374,6 +374,7 @@ extern struct UnknownTriple47c30 gUnknown_030002d0;
 extern const u8 gUnknown_030044d6[];
 extern struct UnknownTransferList4033c *gUnknown_030001a0;
 extern struct UnknownTransferList403c0 *gUnknown_030001a4;
+extern volatile struct UnknownTransferRecord4033c gUnknown_030000d4;
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -6123,6 +6124,34 @@ void FUN_0804033c(const void *source, void *destination, u32 size) {
     record->destination = destination;
     record->size = size;
     list->records[0].size = index + 1;
+}
+
+void FUN_08040360(void) {
+    register u32 index asm("r4") = 1;
+    register struct UnknownTransferList4033c **queue asm("r6");
+    register struct UnknownTransferList4033c **globalAddress asm("r0") = &gUnknown_030001a0;
+    register struct UnknownTransferList4033c *list asm("r3") = *globalAddress;
+    register u32 count asm("r1") = list->records[0].size;
+
+    queue = globalAddress;
+    asm volatile("" : "+r"(queue), "+r"(list), "+r"(count));
+    if (index < count) {
+        register volatile struct UnknownTransferRecord4033c *destination asm("r2") =
+            &gUnknown_030000d4;
+        register struct UnknownTransferRecord4033c *record asm("r1") = &list->records[1];
+        register u32 flags asm("r5") = 0x84000000;
+
+        asm volatile("" : "+r"(destination), "+r"(record), "+r"(flags));
+        do {
+            destination->source = record->source;
+            destination->destination = record->destination;
+            destination->size = (record->size >> 2) | flags;
+            destination->size;
+            record++;
+            index++;
+        } while (index < list->records[0].size);
+    }
+    (*queue)->records[0].size = 1;
 }
 
 void FUN_080403ac(void) {
