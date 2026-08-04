@@ -90,7 +90,16 @@ struct MP2KSongHeader {
 struct MixerSource {
     u8 status;
     u8 type;
-    u8 padding2[26];
+    u8 rightVolume;
+    u8 leftVolume;
+    u8 padding4[2];
+    u8 sustain;
+    u8 padding7[3];
+    u8 envelopeGoal;
+    u8 padding11[14];
+    u8 sustainGoal;
+    u8 padding26;
+    u8 pan;
     u8 panMask;
     u8 padding29[35];
 };
@@ -827,6 +836,40 @@ void CgbOscOff(u8 channel) {
         *(volatile u8 *)0x0400007D = 0x80;
         break;
     }
+}
+
+static inline int CgbPan(struct MixerSource *channel) {
+    u32 rightRaw = channel->rightVolume;
+    u32 leftRaw = channel->leftVolume;
+    u32 rightVolume = (u8)rightRaw;
+    u32 leftVolume = (u8)leftRaw;
+
+    if (rightVolume >= leftVolume) {
+        if (rightVolume / 2 >= leftVolume) {
+            channel->pan = 0x0F;
+            return 1;
+        }
+    } else {
+        if (leftVolume / 2 >= rightVolume) {
+            channel->pan = 0xF0;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void CgbModVol(struct MixerSource *channel) {
+    if (!CgbPan(channel)) {
+        channel->pan = 0xFF;
+        channel->envelopeGoal = (u32)(channel->rightVolume + channel->leftVolume) / 16;
+    } else {
+        channel->envelopeGoal = (u32)(channel->rightVolume + channel->leftVolume) / 16;
+        if (channel->envelopeGoal > 15) {
+            channel->envelopeGoal = 15;
+        }
+    }
+    channel->sustainGoal = (channel->envelopeGoal * channel->sustain + 15) >> 4;
+    channel->pan &= channel->panMask;
 }
 
 void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {

@@ -586,6 +586,7 @@ units:
       TrkVolPitSet: 0xB2
       MidiKeyToCgbFreq: 0xA0
       CgbOscOff: 0x50
+      CgbModVol: 0x66
       MPlayStart: 0xDE
       MPlayExtender: 0xC8
       SoundInit: 0xB8

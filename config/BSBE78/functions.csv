@@ -1275,7 +1275,7 @@ address,name,mode,confidence
 0x08049A08,TrkVolPitSet,thumb,rom-pointer+direct-call+sdk-correlation
 0x08049ABC,MidiKeyToCgbFreq,thumb,rom-pointer+sdk-correlation
 0x08049B64,CgbOscOff,thumb,rom-pointer+direct-call+sdk-correlation
-0x08049BB8,FUN_08049bb8,thumb,direct-call
+0x08049BB8,CgbModVol,thumb,direct-call+sdk-correlation
 0x08049C20,CgbSound,thumb,rom-pointer+sdk-correlation
 0x0804A0A0,m4aMPlayTempoControl,thumb,direct-call+sdk-correlation
 0x0804A0C4,m4aMPlayVolumeControl,thumb,direct-call+sdk-correlation
