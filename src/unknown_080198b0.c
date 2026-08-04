@@ -394,10 +394,12 @@ extern u8 gUnknown_03005268[];
 extern u8 gUnknown_0300524c[];
 extern void FUN_08029250(void);
 extern void FUN_0803281c(void);
+extern void FUN_0803d1a0(void);
 extern void FUN_08028d30(struct UnknownListNode *node);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
 extern void FUN_0801fab0(u16 value);
+extern void FUN_080214c0(u32 value);
 extern u8 gUnknown_03005260;
 extern u32 gUnknown_03005258;
 extern struct UnknownRecords28c80 gUnknown_030016f0;
@@ -3120,4 +3122,24 @@ void FUN_08028c80(struct UnknownListNode *node) {
     if (gUnknown_03005258 > 299) {
         owner->data = (const void *)((u32)FUN_08028f1c + 1);
     }
+}
+
+void FUN_08028f1c(struct UnknownListNode *node) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_0803d1a0;
+        FUN_0801fb60();
+        FUN_0801fb94();
+        FUN_0801ff30();
+        FUN_0801f780();
+        FUN_080210d8();
+        FUN_0802110c();
+    }
+}
+
+void FUN_08028f5c(void) {
+    FUN_08021484();
+    if ((gUnknown_030048e0.third & 1) != 0) {
+        FUN_080214c0(0);
+    }
+    FUN_08021534();
 }
