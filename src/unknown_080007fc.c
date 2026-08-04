@@ -69,7 +69,8 @@ union UnknownQueueRecord030033e0 {
         u16 first;
         u16 second;
         s16 zero;
-        u16 constant;
+        /* FUN_080175D4 sorts on this field with `ldrsh`, so it is signed. */
+        s16 constant;
         u16 fourth;
         u8 third;
         u8 sixth;
@@ -399,6 +400,27 @@ void FUN_080158e4(void) {
     gUnknown_03003120[3] = 0;
 }
 
+/* Bubble-sorts the live part of the 0x030033E0 queue into descending order of
+   the halfword at offset 6, so FUN_08017690 submits records back to front. */
+void FUN_080175d4(void) {
+    union UnknownQueueRecord030033e0 temp;
+    u8 i;
+    u8 j;
+    u8 pass;
+
+    pass = 1;
+    for (i = gUnknown_030017c8 + 1; i < gUnknown_030017cc; i++) {
+        for (j = gUnknown_030017c8; j < gUnknown_030017cc - pass; j++) {
+            if (gUnknown_030033e0[j].fields.constant < gUnknown_030033e0[j + 1].fields.constant) {
+                temp = gUnknown_030033e0[j];
+                gUnknown_030033e0[j] = gUnknown_030033e0[j + 1];
+                gUnknown_030033e0[j + 1] = temp;
+            }
+        }
+        pass++;
+    }
+}
+
 void FUN_08017690(void) {
     u8 i;
     union UnknownQueueRecord030033e0 *record;
@@ -413,6 +435,29 @@ void FUN_08017690(void) {
         }
         record = &gUnknown_030033e0[i];
         FUN_08016b30(record->words[0], record->words[1], record->words[2], record->words[3]);
+    }
+}
+
+/* Eases 0x03001B08 towards a target angle on a 0x2000-unit circle, taking the
+   short way round and renormalising both the argument and the result. */
+void FUN_080176e4(s16 target) {
+    while (target > 0x2000) {
+        target -= 0x2000;
+    }
+    while (target < 0) {
+        target += 0x2000;
+    }
+    if (gUnknown_03001b08 - target > 0x1000) {
+        gUnknown_03001b08 -= 0x2000;
+    } else if (gUnknown_03001b08 - target < -0x1000) {
+        gUnknown_03001b08 += 0x2000;
+    }
+    gUnknown_03001b08 -= (gUnknown_03001b08 - target) >> 3;
+    while (gUnknown_03001b08 > 0x1fff) {
+        gUnknown_03001b08 -= 0x2000;
+    }
+    while (gUnknown_03001b08 < 0) {
+        gUnknown_03001b08 += 0x2000;
     }
 }
 

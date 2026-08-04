@@ -217,6 +217,9 @@ units:
       # FUN_08017690 branches around a two-word in-function literal island.
       - { offset: 0x16EB4, mode: data }
       - { offset: 0x16EBC, mode: thumb }
+      # FUN_080176E4 branches around a two-word in-function literal island.
+      - { offset: 0x16F40, mode: data }
+      - { offset: 0x16F48, mode: thumb }
       # FUN_08015858 branches around two in-function literal islands.
       - { offset: 0x15076, mode: data }
       - { offset: 0x1507C, mode: thumb }
@@ -276,7 +279,9 @@ units:
       FUN_08015f40: 0x12
       FUN_08015f58: 0x0E
       FUN_080163c0: 0x72
+      FUN_080175d4: 0xB0
       FUN_08017690: 0x4E
+      FUN_080176e4: 0xC8
       FUN_08017964: 0x62
       FUN_08017c5c: 0x10
       FUN_08017c74: 0x2E
@@ -338,6 +343,7 @@ units:
       - { offset: 0x15124, type: abs32, symbol: gUnknown_03003120 }
       - { offset: 0x150DC, type: abs32, symbol: gUnknown_030030d0 }
       - { offset: 0x157A4, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x16F40, type: abs32, symbol: gUnknown_03001b08 }
       - { offset: 0x15758, type: abs32, symbol: gUnknown_03003100 }
       - { offset: 0x1576C, type: abs32, symbol: gUnknown_03003118 }
       - { offset: 0x17470, type: abs32, symbol: gUnknown_03003140 }
