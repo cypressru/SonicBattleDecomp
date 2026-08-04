@@ -103,11 +103,15 @@ struct SoundMixerState {
     struct MixerSource *cgbChans;
     void (*playerMain)(void);
     struct MP2KPlayerState *playerHead;
-    u8 padding40[4];
+    void (*cgbSound)(void);
     void (*cgbOscOff)(u8 channel);
-    u8 padding48[32];
+    void (*midiKeyToCgbFreq)(void);
+    void **mplayJumpTable;
+    void (*playNote)(void);
+    void (*extVolPit)(void);
+    u8 padding64[16];
     struct MixerSource channels[12];
-    u8 pcmBuffer[0x630];
+    u8 pcmBuffer[0xC60];
 };
 
 extern void SoundMain(void);
@@ -124,6 +128,10 @@ extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
 extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void *gMPlayJumpTable[];
+extern void MP2K_event_nxx(void);
+extern void MP2K_event_null(void);
+extern void MPlayJumpTableCopy(void **table);
 void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
@@ -135,6 +143,7 @@ void m4aSoundVSyncOff(void);
 void m4aSoundVSyncOn(void);
 void SampleFreqSet(u32 frequency);
 void m4aSoundMode(u32 mode);
+void SoundInit(struct SoundMixerState *soundInfo);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -460,6 +469,43 @@ void m4aSoundMode(u32 mode) {
     if (value != 0) {
         SampleFreqSet(value);
     }
+    soundInfo->lockStatus = 0x68736D53;
+}
+
+void SoundInit(struct SoundMixerState *soundInfo) {
+    u32 zero;
+
+    soundInfo->lockStatus = 0;
+    if (*(volatile u32 *)0x040000C4 & 0x02000000) {
+        *(volatile u32 *)0x040000C4 = 0x84400004;
+    }
+    if (*(volatile u32 *)0x040000D0 & 0x02000000) {
+        *(volatile u32 *)0x040000D0 = 0x84400004;
+    }
+    *(volatile u16 *)0x040000C6 = 0x0400;
+    *(volatile u16 *)0x040000D2 = 0x0400;
+    *(volatile u16 *)0x04000084 = 0x008F;
+    *(volatile u16 *)0x04000082 = 0xA90E;
+    *(volatile u8 *)0x04000089 = (*(volatile u8 *)0x04000089 & 0x3F) | 0x40;
+
+    *(volatile u32 *)0x040000BC = (u32)soundInfo->pcmBuffer;
+    *(volatile u32 *)0x040000C0 = 0x040000A0;
+    *(volatile u32 *)0x040000C8 = (u32)(soundInfo->pcmBuffer + 0x630);
+    *(volatile u32 *)0x040000CC = 0x040000A4;
+    gSoundInfo = soundInfo;
+    zero = 0;
+    CpuSet(&zero, soundInfo, 0x050003EC);
+
+    soundInfo->numChannels = 8;
+    soundInfo->masterVolume = 15;
+    soundInfo->playNote = MP2K_event_nxx;
+    soundInfo->cgbSound = MP2K_event_null;
+    soundInfo->cgbOscOff = (void (*)(u8))MP2K_event_null;
+    soundInfo->midiKeyToCgbFreq = MP2K_event_null;
+    soundInfo->extVolPit = MP2K_event_null;
+    MPlayJumpTableCopy(gMPlayJumpTable);
+    soundInfo->mplayJumpTable = gMPlayJumpTable;
+    SampleFreqSet(0x40000);
     soundInfo->lockStatus = 0x68736D53;
 }
 

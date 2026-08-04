@@ -1234,7 +1234,7 @@ address,name,mode,confidence
 0x08048BF8,FUN_08048bf8,thumb,direct-call
 0x08048C08,FUN_08048c08,thumb,rom-pointer+direct-call
 0x08048C4C,ChnVolSetAsm,thumb,direct-call+sa2-relocation-masked-byte-match
-0x08048C7C,FUN_08048c7c,thumb,rom-pointer
+0x08048C7C,MP2K_event_nxx,thumb,rom-pointer+sdk-correlation
 0x08048E7C,MP2K_event_endtie,thumb,rom-pointer+sa2-relocation-masked-byte-match
 0x08048EBC,clear_modM,thumb,direct-call+sa2-relocation-masked-byte-match
 0x08048ED8,FUN_08048ed8,thumb,direct-call
@@ -1261,7 +1261,7 @@ address,name,mode,confidence
 0x080493B4,MusicPlayerJumpTableCopy,thumb,sdk-correlation
 0x080493B8,ClearChain,thumb,direct-call+sdk-correlation
 0x080493CC,Clear64byte,thumb,direct-call+sdk-correlation
-0x080493E0,FUN_080493e0,thumb,direct-call
+0x080493E0,SoundInit,thumb,direct-call+sdk-correlation
 0x080494D8,SampleFreqSet,thumb,rom-pointer+direct-call+sdk-correlation
 0x08049544,m4aSoundMode,thumb,direct-call+sdk-correlation
 0x080495D8,SoundClear,thumb,recursive-disassembly+sdk-correlation
