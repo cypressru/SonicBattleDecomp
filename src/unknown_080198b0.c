@@ -195,6 +195,12 @@ struct UnknownAllocation27db8 {
     u16 field22;
 };
 
+struct UnknownAllocation28770 {
+    u32 field0;
+    u8 field4;
+    u8 field5;
+};
+
 struct UnknownCallbackState03005330 {
     UnknownCallback callback;
     s16 field4;
@@ -366,6 +372,10 @@ extern void FUN_08028318(struct UnknownListNode *node);
 extern void FUN_08028350(struct UnknownListNode *node);
 extern void FUN_08028388(struct UnknownListNode *node);
 extern void FUN_080283c0(struct UnknownListNode *node);
+extern void FUN_08028814(struct UnknownListNode *node);
+extern void FUN_08029014(struct UnknownListNode *node);
+extern void FUN_080290b4(struct UnknownListNode *node);
+extern u32 gUnknown_03005264;
 extern u32 FUN_0801fd18(s16 value, u32 other);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
@@ -2948,4 +2958,32 @@ void FUN_080283f8(u32 index) {
         asm volatile("" : : "r"(x));
         FUN_08020b74(x, 0, data, 5, 6);
     }
+}
+
+void FUN_08028760(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08028770(struct UnknownListNode *node) {
+    struct UnknownAllocation28770 *allocation = node->allocation;
+    struct UnknownListNode *created;
+
+    allocation->field0 = 1;
+    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created->position->field13 = 0;
+    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created->position->field13 = 1;
+    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created->position->field13 = 2;
+    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created->position->field13 = 3;
+    created = FUN_0801f7d0(FUN_080290b4, 16, gUnknown_03003e20, 0);
+    allocation->field5 = created->field6;
+    if (gUnknown_03005264 == 4) {
+        FUN_080283f8(0);
+    } else {
+        FUN_080283f8(1);
+    }
+    node->data = (const void *)((u32)FUN_08028814 + 1);
 }
