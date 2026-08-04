@@ -53,6 +53,12 @@ These analyzer-derived extents remain provisional: the inventory is sufficient t
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
 
+The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
+rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
+every in-range destination to be present either in the analyzed function inventory or as an
+explicit SDK/runtime symbol in the unit configuration. This proves direct-call closure for the
+current inventory and prevents newly exposed call targets from remaining anonymous.
+
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM
 data/assets occupy `0x4B718-0xEEB690`, and the embedded payload occupies

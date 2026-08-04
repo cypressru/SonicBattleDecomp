@@ -75,6 +75,7 @@ jobs:
           sha1sum -c config/BSBE78/build.sha1
           python tools/check_payload_map.py rom/baserom.gba
           python tools/check_debug_metadata.py rom/baserom.gba
+          python tools/check_function_map.py config/BSBE78/config.yml rom/baserom.gba
       - name: Generate truthful objdiff report
         run: |
           curl -L --fail -o objdiff-cli \
