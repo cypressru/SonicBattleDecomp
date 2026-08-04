@@ -6,6 +6,12 @@ extern u8 gUnknown_03001388;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03003140;
 extern u8 gUnknown_030013b0[];
+extern u8 gUnknown_03002684;
+extern u8 gUnknown_030028c0[];
+extern u16 gUnknown_030030f8[];
+extern u16 gUnknown_03003108[];
+extern u16 gUnknown_03003110[];
+extern u8 gUnknown_03003120[];
 extern u16 gUnknown_03003100[];
 extern s16 gUnknown_03003118[];
 extern volatile u16 gUnknown_03003178[];
@@ -100,11 +106,38 @@ extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
+extern void FUN_0800baac(u8 index);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
 extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801ff30(void);
+
+void FUN_08007e24(void) {
+    volatile u32 *dma;
+
+    dma = (volatile u32 *)0x040000d4;
+    dma[0] = 0x0847ab98;
+    dma[1] = 0x05000280;
+    dma[2] = 0x80000010;
+    dma[2];
+    dma[0] = 0x0847abb8;
+    dma[1] = 0x06011200;
+    dma[2] = 0x80000080;
+    dma[2];
+    dma[0] = 0x0847acb8;
+    dma[1] = 0x06011300;
+    dma[2] = 0x80000080;
+    dma[2];
+    dma[0] = 0x0847adb8;
+    dma[1] = 0x06011400;
+    dma[2] = 0x80000080;
+    dma[2];
+    dma[0] = 0x0847aeb8;
+    dma[1] = 0x06011500;
+    dma[2] = 0x80000080;
+    dma[2];
+}
 
 void FUN_08007e9c(u8 index) {
     u8 i;
@@ -112,6 +145,18 @@ void FUN_08007e9c(u8 index) {
     for (i = 0; i <= 68; i++) {
         gUnknown_030013b0[i + index * 156] = 9;
     }
+}
+
+void FUN_0800fd8c(void) {
+    u8 i;
+
+    for (i = 0; i <= 11; i++) {
+        FUN_0800baac(i);
+    }
+    for (i = 0; i <= 26; i++) {
+        gUnknown_030028c0[i] = 0;
+    }
+    gUnknown_03002684 = 0;
 }
 
 void FUN_08012b60(void) {
@@ -129,6 +174,25 @@ void FUN_08012b60(void) {
 }
 
 u8 FUN_0801584c(void) { return gUnknown_030030d0.first; }
+
+void FUN_080158e4(void) {
+    gUnknown_03003108[0] = 0;
+    gUnknown_03003108[1] = 0;
+    gUnknown_03003108[2] = 0;
+    gUnknown_03003108[3] = 0;
+    gUnknown_03003110[0] = 0;
+    gUnknown_03003110[1] = 0;
+    gUnknown_03003110[2] = 0;
+    gUnknown_03003110[3] = 0;
+    gUnknown_030030f8[0] = 0;
+    gUnknown_030030f8[1] = 0;
+    gUnknown_030030f8[2] = 0;
+    gUnknown_030030f8[3] = 0;
+    gUnknown_03003120[0] = 0;
+    gUnknown_03003120[1] = 0;
+    gUnknown_03003120[2] = 0;
+    gUnknown_03003120[3] = 0;
+}
 
 u8 FUN_080158c0(void) {
     gUnknown_030030d0.counter++;
