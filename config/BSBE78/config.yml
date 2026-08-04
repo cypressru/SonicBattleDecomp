@@ -838,6 +838,23 @@ units:
     start: 0x04AEBC
     end: 0x04AF68
     category: sdk
+    source: src/agb_flash_mx_512k.c
+    cflags: [-O1, -mthumb-interwork]
+    base_symbol_size_overrides:
+      ProgramFlashSector_MX: 0xAC
+    mappings:
+      - { offset: 0x18, mode: data }
+      - { offset: 0x20, mode: thumb }
+      - { offset: 0x5A, mode: data }
+      - { offset: 0x6C, mode: thumb }
+      - { offset: 0xA4, mode: data }
+    relocations:
+      - { offset: 0x18, type: abs32, symbol: gFlash }
+      - { offset: 0x22, type: thumb_call, symbol: EraseFlashSector_LE }
+      - { offset: 0x30, type: thumb_call, symbol: SetReadFlash1 }
+      - { offset: 0x64, type: abs32, symbol: gFlash }
+      - { offset: 0x68, type: abs32, symbol: gFlashNumRemainingBytes }
+      - { offset: 0x80, type: thumb_call, symbol: ProgramByte }
     symbols:
       - { name: ProgramFlashSector_MX, address: 0x04AEBC }
   # Exact runtime object boundaries established by matching the pinned agbcc
