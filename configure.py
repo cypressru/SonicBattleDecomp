@@ -59,9 +59,15 @@ def main() -> None:
         with (ROOT / range_map).open(newline="", encoding="utf-8") as stream:
             rows = list(csv.DictReader(stream))
         if unit.get("derive_m4a_ranges"):
-            rows.extend(derive_m4a_ranges(data))
+            existing = {int(row["address"], 0) for row in rows}
+            rows.extend(row for row in derive_m4a_ranges(data) if int(row["address"], 0) not in existing)
         if unit.get("derive_raw_asset_ranges"):
-            rows.extend(derive_raw_asset_ranges(data, function_ends))
+            existing = {int(row["address"], 0) for row in rows}
+            rows.extend(
+                row
+                for row in derive_raw_asset_ranges(data, function_ends)
+                if int(row["address"], 0) not in existing
+            )
         if unit.get("derive_m4a_ranges") or unit.get("derive_raw_asset_ranges"):
             rows.sort(key=lambda row: int(row["address"], 0))
             addresses = [int(row["address"], 0) for row in rows]
@@ -70,9 +76,18 @@ def main() -> None:
         starts = [int(row["address"], 0) - 0x08000000 for row in rows]
         if not starts or starts[0] != int(unit["start"]):
             fail(f"range map for {unit['name']} does not begin at its configured start")
+        palette_indices = [
+            index for index, row in enumerate(rows) if row["name"].startswith("palette_")
+        ]
+        if unit.get("derive_raw_asset_ranges") and len(palette_indices) != 20:
+            fail(f"expected 20 independently identified character palettes, found {len(palette_indices)}")
+        for index in palette_indices:
+            next_start = starts[index + 1] if index + 1 < len(starts) else int(unit["end"])
+            if next_start - starts[index] != 32:
+                fail(f"palette {rows[index]['name']} is not an isolated 32-byte record")
         for index, (row, start) in enumerate(zip(rows, starts)):
             end = starts[index + 1] if index + 1 < len(starts) else int(unit["end"])
-            is_asset = row["name"].startswith(("lz77_asset_", "raw_asset_"))
+            is_asset = row["name"].startswith(("lz77_asset_", "raw_asset_", "palette_"))
             derived_unit = {
                 "name": f"{'assets' if is_asset else 'rodata'}/{row['name']}",
                 "start": start,

@@ -86,6 +86,12 @@ reconstruction in `src/libgcc/clz_tab.c` independently compiles to a byte-identi
 section. The objdiff target keeps the table in its original `_udivdi3` translation unit rather than
 counting it again as a standalone object.
 
+Twenty 32-byte character-palette objects within the raw asset area are separately identified from
+the offsets published by the public [`sbhax/docs`](https://github.com/sbhax/docs) research project.
+The retail ROM independently confirms a complete 16-entry record at every cited offset; explicit
+end markers keep adjacent unknown bytes out of each palette unit. Only symbolic offsets and record
+sizes are recorded here—no extracted palettes or other asset bytes are included.
+
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`
 independently reparses the streams and verifies the padding. The semantic types of the decompressed
