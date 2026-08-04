@@ -213,6 +213,13 @@ struct UnknownRecords28c80 {
     struct UnknownRecordValue28c80 records[1];
 };
 
+struct UnknownCoordinatePairs28f98 {
+    s16 firstX;
+    s16 firstY;
+    s16 secondX;
+    s16 secondY;
+};
+
 struct UnknownCallbackState03005330 {
     UnknownCallback callback;
     s16 field4;
@@ -398,6 +405,9 @@ extern void FUN_0803d1a0(void);
 extern void FUN_080315bc(void);
 extern void FUN_08039e20(void);
 extern void FUN_08021268(u32 value);
+extern const u8 gUnknown_08edb97c[];
+extern const u8 gUnknown_08edb984[];
+extern const struct UnknownCoordinatePairs28f98 gUnknown_08edb98c[];
 extern void FUN_08028d30(struct UnknownListNode *node);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
@@ -3160,4 +3170,58 @@ void FUN_08028ed8(struct UnknownListNode *node) {
 void FUN_08028f80(struct UnknownListNode *node) {
     FUN_08021268(0);
     node->data = (const void *)((u32)FUN_08028f5c + 1);
+}
+
+void FUN_08028f98(struct UnknownListNode *node) {
+    register struct UnknownListNode *owner asm("r4") = node;
+    register struct UnknownPosition *position asm("r2") = owner->position;
+    register s32 index asm("r3");
+
+    position->field0 = gUnknown_08edb97c;
+    if (gUnknown_0300525c >= (index = position->field13) + 1) {
+        register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
+        register u32 offset asm("r3") = index * 8;
+        register u32 zero asm("r5");
+        register const s16 *xAddress asm("r0") = (const s16 *)(table + 4);
+        register const s16 *yAddress asm("r3");
+        register u32 zero0 asm("r0");
+        register s32 x asm("r1");
+        register s32 y asm("r2");
+
+        xAddress = (const s16 *)(offset + (u32)xAddress);
+        zero = 0;
+        x = xAddress[zero];
+        asm volatile("" : : "r"(x));
+        table += 6;
+        offset += (u32)table;
+        yAddress = (const s16 *)offset;
+        asm volatile("" : : "r"(yAddress));
+        zero0 = 0;
+        y = *(const s16 *)((u32)yAddress + zero0);
+
+        if ((u8)FUN_0801f92c(owner, x, y) != 0) {
+            owner->position->field0 = gUnknown_08edb984;
+        }
+    } else {
+        register const u8 *table asm("r0") = (const u8 *)gUnknown_08edb98c;
+        register u32 offset asm("r2") = index * 8;
+        register u32 zero3 asm("r3");
+        register u32 zero5 asm("r5");
+        register const s16 *xAddress asm("r1") = (const s16 *)(offset + (u32)table);
+        register const s16 *yAddress asm("r2");
+        register s32 x asm("r1");
+        register s32 y asm("r2");
+
+        zero3 = 0;
+        x = xAddress[zero3];
+        asm volatile("" : : "r"(x));
+        table += 2;
+        yAddress = (const s16 *)(offset + (u32)table);
+        asm volatile("" : : "r"(yAddress));
+        zero5 = 0;
+        y = yAddress[zero5];
+
+        FUN_0801f92c(owner, x, y);
+    }
+    FUN_0801fed8(owner->field6, 0);
 }
