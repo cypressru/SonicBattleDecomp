@@ -3141,6 +3141,160 @@ void FUN_08028c80(struct UnknownListNode *node) {
     }
 }
 
+void FUN_08028d30(struct UnknownListNode *node) {
+    struct UnknownListNode *volatile owner[1];
+    register u16 *command asm("r1");
+    register u32 zero asm("r0");
+    register u32 commandCode asm("r4");
+    register const u8 *state asm("r2");
+    register u32 failed asm("r6");
+    register u32 i asm("r5");
+    register const void *next asm("r0");
+
+    owner[0] = node;
+    asm volatile("" : : : "memory");
+    command = gUnknown_03001b10;
+    zero = 0;
+    commandCode = 0x2346;
+    command[1] = commandCode;
+    command[2] = zero;
+    state = (const u8 *)&gUnknown_03002110;
+    command[3] = *(const u16 *)(state + 96);
+    command[4] = *(const u16 *)(state + 98);
+    command[5] = *(const u16 *)(state + 100);
+    command[6] = *(const u16 *)(state + 102);
+    command[7] = *(const u16 *)(state + 104);
+    asm volatile("" : : "r"(state));
+    FUN_0801fab0(0x1357);
+
+    failed = 0;
+    i = 0;
+    if (failed < gUnknown_0300525c) {
+        register u32 expected asm("r10") = commandCode;
+        register u16 *destinationBase asm("r12") = gUnknown_03005200[0];
+        register u8 *localIndex asm("r9") = &gUnknown_03005260;
+        register const u8 *records asm("r3") = (const u8 *)&gUnknown_030016f0;
+        register const u8 *count asm("r8") = &gUnknown_0300525c;
+        register u16 *destination asm("r4") = destinationBase;
+        u32 sentinel = 0xFFFE;
+
+        asm volatile("" : : "r"(count));
+        asm volatile("" : : "r"(destination));
+        asm volatile("" : : "r"(sentinel));
+
+        do {
+            if (i != *localIndex) {
+                register u32 offset asm("r2") = i * 16;
+                register const u8 *address asm("r0") = records + 2;
+                register u32 addressZero asm("r1") = 0;
+
+                address = (const u8 *)(offset + (u32)address);
+                if (*(const s16 *)((u32)address + addressZero) == expected) {
+                    register const u8 *sourceAddress asm("r0") = records + 6;
+                    register u8 *destinationAddress asm("r1");
+
+                    sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
+                    destination[0] = *(const u16 *)sourceAddress;
+                    destinationAddress = (u8 *)destinationBase + 2;
+                    destinationAddress = (u8 *)(offset + (u32)destinationAddress);
+                    sourceAddress = records + 8;
+                    sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
+                    *(u16 *)destinationAddress = *(const u16 *)sourceAddress;
+                    destinationAddress = (u8 *)destinationBase + 4;
+                    destinationAddress = (u8 *)(offset + (u32)destinationAddress);
+                    sourceAddress = records + 10;
+                    sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
+                    *(u16 *)destinationAddress = *(const u16 *)sourceAddress;
+                    destinationAddress = (u8 *)destinationBase + 6;
+                    destinationAddress = (u8 *)(offset + (u32)destinationAddress);
+                    sourceAddress = records + 12;
+                    sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
+                    *(u16 *)destinationAddress = *(const u16 *)sourceAddress;
+                    destinationAddress = (u8 *)destinationBase + 8;
+                    destinationAddress = (u8 *)(offset + (u32)destinationAddress);
+                    sourceAddress = records + 14;
+                    sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
+                    *(u16 *)destinationAddress = *(const u16 *)sourceAddress;
+                    destination[5] = sentinel;
+                } else {
+                    failed = 1;
+                }
+            }
+            destination += 8;
+            i++;
+        } while (i < *count);
+    }
+
+    if (failed != 0) {
+        gUnknown_03005258++;
+        if (gUnknown_03005258 > 299) {
+            next = (const void *)((u32)FUN_08028f1c + 1);
+        } else {
+            return;
+        }
+    } else {
+        register u16 *destinationBase asm("r2") = gUnknown_03005200[0];
+        register u8 *localIndex asm("r3") = &gUnknown_03005260;
+        register const u8 *source asm("r4");
+
+        *(u16 *)((u8 *)destinationBase + *localIndex * 16) =
+            *(const u16 *)((source = (const u8 *)&gUnknown_03002110) + 96);
+        {
+            register u32 offset asm("r0") = *localIndex * 16;
+            register u8 *destinationOffset asm("r1");
+            register u8 *destinationAddress asm("r0");
+
+            destinationOffset = (u8 *)destinationBase + 2;
+            destinationAddress = (u8 *)(offset + (u32)destinationOffset);
+            asm volatile("" : : "r"(destinationAddress));
+            *(u16 *)destinationAddress = *(const u16 *)(source + 98);
+        }
+        {
+            register u32 offset asm("r0") = *localIndex * 16;
+            register u8 *destinationOffset asm("r1");
+            register u8 *destinationAddress asm("r0");
+
+            destinationOffset = (u8 *)destinationBase + 4;
+            destinationAddress = (u8 *)(offset + (u32)destinationOffset);
+            asm volatile("" : : "r"(destinationAddress));
+            *(u16 *)destinationAddress = *(const u16 *)(source + 100);
+        }
+        {
+            register u32 offset asm("r0") = *localIndex * 16;
+            register u8 *destinationOffset asm("r1");
+            register u8 *destinationAddress asm("r0");
+
+            destinationOffset = (u8 *)destinationBase + 6;
+            destinationAddress = (u8 *)(offset + (u32)destinationOffset);
+            asm volatile("" : : "r"(destinationAddress));
+            *(u16 *)destinationAddress = *(const u16 *)(source + 102);
+        }
+        {
+            register u32 offset asm("r0") = *localIndex * 16;
+            register u8 *destinationOffset asm("r1");
+            register u8 *destinationAddress asm("r0");
+
+            destinationOffset = (u8 *)destinationBase + 8;
+            destinationAddress = (u8 *)(offset + (u32)destinationOffset);
+            asm volatile("" : : "r"(destinationAddress));
+            *(u16 *)destinationAddress = *(const u16 *)(source + 104);
+        }
+        {
+            register u32 offset asm("r0") = *localIndex * 16;
+            register u8 *destinationAddress asm("r0");
+            register u32 sentinel asm("r1");
+
+            destinationBase = (u16 *)((u8 *)destinationBase + 10);
+            destinationAddress = (u8 *)(offset + (u32)destinationBase);
+            sentinel = 0xFFFE;
+            *(u16 *)destinationAddress = sentinel;
+        }
+        asm volatile("" : : "r"(source));
+        next = (const void *)((u32)FUN_08028bec + 1);
+    }
+    owner[0]->data = next;
+}
+
 void FUN_08028f1c(struct UnknownListNode *node) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_0803d1a0;

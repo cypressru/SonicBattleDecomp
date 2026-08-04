@@ -789,6 +789,7 @@ units:
       FUN_08028814: 0x9A
       FUN_08028bec: 0x8A
       FUN_08028c80: 0x98
+      FUN_08028d30: 0x194
       FUN_08028f1c: 0x36
       FUN_08028f5c: 0x20
       FUN_08028ed8: 0x3A
@@ -1271,6 +1272,12 @@ units:
       - { offset: 0xF43C, mode: thumb }
       - { offset: 0xF468, mode: data }
       - { offset: 0xF480, mode: thumb }
+      - { offset: 0xF548, mode: data }
+      - { offset: 0xF56C, mode: thumb }
+      - { offset: 0xF590, mode: data }
+      - { offset: 0xF59C, mode: thumb }
+      - { offset: 0xF614, mode: data }
+      - { offset: 0xF628, mode: thumb }
       - { offset: 0xF64A, mode: data }
       - { offset: 0xF658, mode: thumb }
       - { offset: 0xF662, mode: data }
@@ -2040,6 +2047,19 @@ units:
       - { offset: 0xF470, type: abs32, symbol: gUnknown_03005258 }
       - { offset: 0xF474, type: abs32, symbol: FUN_08028d30, addend: 1 }
       - { offset: 0xF47C, type: abs32, symbol: FUN_08028f1c, addend: 1 }
+      - { offset: 0xF4C4, type: thumb_call, symbol: FUN_0801fab0 }
+      - { offset: 0xF548, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0xF550, type: abs32, symbol: gUnknown_03002110 }
+      - { offset: 0xF558, type: abs32, symbol: gUnknown_0300525c }
+      - { offset: 0xF55C, type: abs32, symbol: gUnknown_03005200 }
+      - { offset: 0xF560, type: abs32, symbol: gUnknown_03005260 }
+      - { offset: 0xF564, type: abs32, symbol: gUnknown_030016f0 }
+      - { offset: 0xF590, type: abs32, symbol: gUnknown_03005258 }
+      - { offset: 0xF598, type: abs32, symbol: FUN_08028f1c, addend: 1 }
+      - { offset: 0xF614, type: abs32, symbol: gUnknown_03005200 }
+      - { offset: 0xF618, type: abs32, symbol: gUnknown_03005260 }
+      - { offset: 0xF61C, type: abs32, symbol: gUnknown_03002110 }
+      - { offset: 0xF624, type: abs32, symbol: FUN_08028bec, addend: 1 }
       - { offset: 0xF632, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0xF64C, type: abs32, symbol: gUnknown_03005264 }
       - { offset: 0xF650, type: abs32, symbol: gUnknown_03002030 }
