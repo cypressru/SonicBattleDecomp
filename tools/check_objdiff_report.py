@@ -11,6 +11,7 @@ from pathlib import Path
 EXPECTED_ROM_SIZE = 0x1000000
 EXPECTED_CODE = 309104
 EXPECTED_FUNCTIONS = 1350
+EXPECTED_UNITS = 1269
 
 
 def fail(message: str) -> None:
@@ -30,6 +31,8 @@ def main() -> None:
         fail(f"code size is {total_code}, expected {EXPECTED_CODE}")
     if int(measures.get("total_functions", 0)) != EXPECTED_FUNCTIONS:
         fail("function count changed without updating the reviewed inventory")
+    if int(measures.get("total_units", 0)) != EXPECTED_UNITS:
+        fail("unit count changed without updating the reviewed inventory")
 
     for owner in [report, *report["categories"], *report["units"]]:
         owner_measures = owner["measures"]

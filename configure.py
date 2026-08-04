@@ -11,6 +11,8 @@ from pathlib import Path
 
 import yaml
 
+from tools.m4a_map import derive_m4a_ranges
+
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config/BSBE78/config.yml"
 
@@ -21,6 +23,17 @@ def fail(message: str) -> None:
 
 def main() -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    rom = ROOT / config["rom"]
+    if not rom.is_file():
+        fail(f"place the verified ROM at {rom.relative_to(ROOT)}")
+
+    data = rom.read_bytes()
+    actual_sha1 = hashlib.sha1(data).hexdigest()
+    if actual_sha1 != config["sha1"]:
+        fail(f"unexpected ROM SHA-1: {actual_sha1} (expected {config['sha1']})")
+    if len(data) != int(config["rom_size"]):
+        fail(f"unexpected ROM size: 0x{len(data):X}")
+
     configured_units = []
     for unit in config["units"]:
         range_map = unit.get("range_map")
@@ -29,6 +42,12 @@ def main() -> None:
             continue
         with (ROOT / range_map).open(newline="", encoding="utf-8") as stream:
             rows = list(csv.DictReader(stream))
+        if unit.get("derive_m4a_ranges"):
+            rows.extend(derive_m4a_ranges(data))
+            rows.sort(key=lambda row: int(row["address"], 0))
+            addresses = [int(row["address"], 0) for row in rows]
+            if len(addresses) != len(set(addresses)):
+                fail(f"range map for {unit['name']} has duplicate derived addresses")
         starts = [int(row["address"], 0) - 0x08000000 for row in rows]
         if not starts or starts[0] != int(unit["start"]):
             fail(f"range map for {unit['name']} does not begin at its configured start")
@@ -45,17 +64,6 @@ def main() -> None:
                     "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
                 }
             )
-    rom = ROOT / config["rom"]
-    if not rom.is_file():
-        fail(f"place the verified ROM at {rom.relative_to(ROOT)}")
-
-    data = rom.read_bytes()
-    actual_sha1 = hashlib.sha1(data).hexdigest()
-    if actual_sha1 != config["sha1"]:
-        fail(f"unexpected ROM SHA-1: {actual_sha1} (expected {config['sha1']})")
-    if len(data) != int(config["rom_size"]):
-        fail(f"unexpected ROM size: 0x{len(data):X}")
-
     build_dir = ROOT / "build" / config["version"]
     build_dir.mkdir(parents=True, exist_ok=True)
     units = []

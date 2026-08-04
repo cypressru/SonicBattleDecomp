@@ -149,6 +149,7 @@ units:
     category: rodata
     kind: rodata
     range_map: config/BSBE78/data_symbols.csv
+    derive_m4a_ranges: true
   - name: payload/agb_test_header
     start: 0xEEB690
     end: 0xEEB750
