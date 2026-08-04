@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 rom_path=${1:-"$repo_root/rom/baserom.gba"}
-symbol_path="$repo_root/build/debug/sonic_battle_symbols.o"
+symbol_path="$repo_root/build/debug/sonic_battle_symbols.elf"
 log_path="$repo_root/build/debug/mgba.log"
 
 if [[ ! -f "$rom_path" ]]; then

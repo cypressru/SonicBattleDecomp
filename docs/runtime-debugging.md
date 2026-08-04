@@ -14,9 +14,9 @@ tools/mgba_debug.sh
 ```
 
 The launcher uses the locally supplied `rom/baserom.gba`, starts mGBA's GDB server on loopback port
-2345, generates `build/debug/sonic_battle_symbols.o` from the reviewed function CSV, and opens a
-persistent GDB session. The generated object contains names and absolute addresses only; it embeds
-no ROM bytes. The launcher closes its mGBA child when GDB exits.
+2345, generates `build/debug/sonic_battle_symbols.elf` from the reviewed function CSV, and opens a
+persistent GDB session. The generated ELF contains names, addresses, and zero-filled section space
+only; it embeds no ROM bytes. The launcher closes its mGBA child when GDB exits.
 
 Useful commands:
 
