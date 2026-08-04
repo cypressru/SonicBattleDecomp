@@ -186,6 +186,12 @@ struct UnknownAllocation25a98 {
     u8 childIds[7];
 };
 
+struct UnknownAllocation27db8 {
+    u8 filler0[20];
+    u16 field20;
+    u16 field22;
+};
+
 struct UnknownCallbackState03005330 {
     UnknownCallback callback;
     s16 field4;
@@ -342,6 +348,8 @@ extern void FUN_08027b84(struct UnknownListNode *node);
 extern void FUN_08027d18(struct UnknownListNode *node);
 extern void FUN_080274ac(struct UnknownListNode *node);
 extern void FUN_080217d0(u32 value);
+extern void FUN_080282a8(struct UnknownListNode *node);
+extern u32 FUN_0801fd18(s16 value, u32 other);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2477,4 +2485,30 @@ void FUN_08027d54(struct UnknownListNode *node) {
         FUN_080217d0(0);
         node->data = FUN_080274ac;
     }
+}
+
+void FUN_08027db8(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    s16 value;
+    s32 offset;
+
+    if (node->position->field14 > 15) {
+        node->data = (const void *)((u32)FUN_080282a8 + 1);
+        value = 0;
+    } else if (node->position->field14 > 3) {
+        value = 4 - FUN_0804afa4(node->position->field14 - 4, 3);
+    } else {
+        value = node->position->field14;
+    }
+    {
+        struct UnknownPosition *position = node->position;
+
+        offset = value + 32;
+        position->x = allocation->field20 - offset;
+    }
+    node->position->y = allocation->field22 - 32;
+    node->position->field10 = 3;
+    node->position->field11 = FUN_0801fd18(value * 16 + 256, 0) * 2;
+    FUN_0801fed8(node->field6, 0);
+    node->position->field14++;
 }

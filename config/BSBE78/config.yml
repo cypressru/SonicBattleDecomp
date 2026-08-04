@@ -1175,6 +1175,8 @@ units:
       - { offset: 0xE4F4, mode: thumb }
       - { offset: 0xE504, mode: data }
       - { offset: 0xE508, mode: thumb }
+      - { offset: 0xE51E, mode: data }
+      - { offset: 0xE524, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1814,6 +1816,10 @@ units:
       - { offset: 0xE4F0, type: abs32, symbol: gUnknown_03005248 }
       - { offset: 0xE4F6, type: thumb_call, symbol: FUN_080217d0 }
       - { offset: 0xE504, type: abs32, symbol: FUN_080274ac, addend: 1 }
+      - { offset: 0xE520, type: abs32, symbol: FUN_080282a8, addend: 1 }
+      - { offset: 0xE52E, type: thumb_call, symbol: FUN_0804afa4 }
+      - { offset: 0xE568, type: thumb_call, symbol: FUN_0801fd18 }
+      - { offset: 0xE576, type: thumb_call, symbol: FUN_0801fed8 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
