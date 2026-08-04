@@ -28,7 +28,7 @@ extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
 extern void FUN_0804af6c(struct UnknownListNode *node, const void *data);
-extern u16 FUN_0804afa4(u16 value, u16 divisor);
+extern u16 FUN_0804afa4(u32 value, u32 divisor);
 
 typedef void (*UnknownCallback)(void);
 
@@ -233,6 +233,8 @@ extern u16 *gUnknown_03004db0;
 extern const u16 data_gap_003[];
 extern u32 gUnknown_03004dc0;
 extern u32 gUnknown_03004dc8;
+extern u16 gUnknown_03004dd8;
+extern u16 gUnknown_03004ddc;
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -1395,6 +1397,29 @@ void FUN_080243d4(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 8;
     node->data = FUN_0802440c;
+}
+
+void FUN_0802440c(struct UnknownListNode *node) {
+    struct UnknownState03004dbc *state = gUnknown_03004dbc;
+
+    if (state->field3 != 0) {
+        FUN_0801f8c0(node);
+    } else {
+        u16 *count = &gUnknown_03004dd8;
+
+        if (*count <= 12) {
+            return;
+        }
+        {
+            struct UnknownPosition *position = node->position;
+            u32 numerator = 115 * gUnknown_03004ddc;
+            u32 denominator = ((*count + 3) & -4) - 12;
+
+            position->y = FUN_0804afa4(numerator, denominator) + 34;
+        }
+        node->position->x = state->field12 + 231;
+        FUN_0801fed8(node->field6, 0);
+    }
 }
 
 void FUN_0802446c(struct UnknownListNode *node) {
