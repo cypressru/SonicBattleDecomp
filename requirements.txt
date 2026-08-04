@@ -1,1 +1,2 @@
 PyYAML==6.0.2
+clang-format==22.1.8
