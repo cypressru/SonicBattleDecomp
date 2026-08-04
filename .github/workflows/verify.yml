@@ -13,10 +13,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: verify-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   public_checks:
     name: Public checks
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,7 +35,7 @@ jobs:
       - name: Validate Python syntax
         run: python -m compileall -q configure.py tools
       - name: Check C formatting
-        run: clang-format --dry-run --Werror src/libc/*.c src/libgcc/*.c include/types.h
+        run: git ls-files -z 'src/*.c' 'src/**/*.c' 'include/*.h' 'include/**/*.h' | xargs -0 -r clang-format --dry-run --Werror
 
   private_build:
     name: Private build (BSBE78)
@@ -38,6 +43,7 @@ jobs:
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ secrets.PRIVATE_INPUT_TOKEN }}
     steps:

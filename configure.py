@@ -200,6 +200,10 @@ def main() -> None:
             if "size" in symbol:
                 spec += f":{int(symbol['size'])}"
             symbol_specs.append(spec)
+        for relocation in unit.get("relocations", []):
+            symbol_specs.append(
+                f"@rel:{int(relocation['offset'])}:{relocation['type']}:{relocation['symbol']}"
+            )
         if not unit.get("auto_generated", False) and not symbol_specs:
             symbol_name = unit["name"].rsplit("/", 1)[-1]
             symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")

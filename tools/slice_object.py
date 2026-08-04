@@ -19,9 +19,10 @@ def main() -> None:
     symbol_specs = sys.argv[6:]
     if kind not in {"code", "data", "rodata"}:
         raise ValueError(f"unsupported slice kind: {kind}")
-    payload = source.read_bytes()[start:end]
+    payload = bytearray(source.read_bytes()[start:end])
     symbols = []
-    for spec in symbol_specs:
+    relocation_specs = [spec for spec in symbol_specs if spec.startswith("@rel:")]
+    for spec in (spec for spec in symbol_specs if not spec.startswith("@rel:")):
         parts = spec.rsplit(":", 3)
         if len(parts) == 4:
             name, address, mode, size_text = parts
@@ -34,6 +35,22 @@ def main() -> None:
             raise ValueError(f"symbol {name} is outside slice")
         symbols.append((relative, name, mode, explicit_size))
     symbols.sort()
+
+    relocations: list[tuple[int, int, str]] = []
+    relocation_types = {"abs32": 2, "thumb_call": 10}
+    for spec in relocation_specs:
+        _tag, offset_text, relocation_type, name = spec.split(":", 3)
+        offset = int(offset_text, 0)
+        if relocation_type not in relocation_types:
+            raise ValueError(f"unsupported relocation type: {relocation_type}")
+        width = 4
+        if not 0 <= offset <= len(payload) - width:
+            raise ValueError(f"relocation for {name} is outside slice")
+        if relocation_type == "abs32":
+            payload[offset : offset + 4] = b"\0\0\0\0"
+        else:
+            payload[offset : offset + 4] = b"\xff\xf7\xfe\xff"
+        relocations.append((offset, relocation_types[relocation_type], name))
 
     strtab = bytearray(b"\0")
     symbol_table = bytearray(b"\0" * 16)
@@ -64,24 +81,43 @@ def main() -> None:
         symbol_type = 0x11 if mode == "data" or kind != "code" else 0x12
         symbol_table.extend(struct.pack("<IIIBBH", name_offset, value, size, symbol_type, 0, 1))
 
+    external_symbol_indices: dict[str, int] = {}
+    for _offset, _relocation_type, name in relocations:
+        if name in external_symbol_indices:
+            continue
+        name_offset = len(strtab)
+        strtab.extend(name.encode("utf-8") + b"\0")
+        external_symbol_indices[name] = len(symbol_table) // 16
+        symbol_table.extend(struct.pack("<IIIBBH", name_offset, 0, 0, 0x10, 0, 0))
+
+    relocation_table = bytearray()
+    for offset, relocation_type, name in relocations:
+        info = external_symbol_indices[name] << 8 | relocation_type
+        relocation_table.extend(struct.pack("<II", offset, info))
+
     section_name = {"code": b".text", "data": b".data", "rodata": b".rodata"}[kind]
-    shstr = b"\0" + section_name + b"\0.symtab\0.strtab\0.shstrtab\0"
-    symtab_name = 1 + len(section_name) + 1
+    shstr = b"\0" + section_name + b"\0.rel.text\0.symtab\0.strtab\0.shstrtab\0"
+    reltab_name = 1 + len(section_name) + 1
+    symtab_name = reltab_name + len(b".rel.text") + 1
     strtab_name = symtab_name + len(b".symtab") + 1
     shstrtab_name = strtab_name + len(b".strtab") + 1
     text_offset = 52
-    symtab_offset = align(text_offset + len(payload), 4)
+    reltab_offset = align(text_offset + len(payload), 4)
+    symtab_offset = reltab_offset + len(relocation_table)
     strtab_offset = symtab_offset + len(symbol_table)
     shstr_offset = strtab_offset + len(strtab)
     shoff = align(shstr_offset + len(shstr), 4)
     header = struct.pack(
         "<16sHHIIIIIHHHHHH",
         b"\x7fELF\x01\x01\x01" + b"\0" * 9,
-        1, 40, 1, 0, 0, shoff, 0x05000000, 52, 0, 0, 40, 5, 4,
+        1, 40, 1, 0, 0, shoff, 0x05000000, 52, 0, 0, 40, 6, 5,
     )
     null_section = b"\0" * 40
     section_flags = 0x6 if kind == "code" else (0x2 if kind == "rodata" else 0x3)
     text_section = struct.pack("<IIIIIIIIII", 1, 1, section_flags, 0, text_offset, len(payload), 0, 0, 4, 0)
+    reltab_section = struct.pack(
+        "<IIIIIIIIII", reltab_name, 9, 0, 0, reltab_offset, len(relocation_table), 3, 1, 4, 8
+    )
     symtab_section = struct.pack(
         "<IIIIIIIIII",
         symtab_name,
@@ -90,7 +126,7 @@ def main() -> None:
         0,
         symtab_offset,
         len(symbol_table),
-        3,
+        4,
         1 + local_symbol_count,
         4,
         16,
@@ -102,9 +138,9 @@ def main() -> None:
         "<IIIIIIIIII", shstrtab_name, 3, 0, 0, shstr_offset, len(shstr), 0, 0, 1, 0
     )
     result = header + payload
-    result += b"\0" * (symtab_offset - len(result)) + symbol_table + strtab + shstr
+    result += b"\0" * (reltab_offset - len(result)) + relocation_table + symbol_table + strtab + shstr
     result += b"\0" * (shoff - len(result))
-    result += null_section + text_section + symtab_section + strtab_section + shstr_section
+    result += null_section + text_section + reltab_section + symtab_section + strtab_section + shstr_section
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(result)
 
