@@ -24,6 +24,11 @@ extern void FUN_080491e4(const void *value, u16 other);
 extern void FUN_08049234(const void *value);
 extern void FUN_0804962c(void);
 extern void FUN_080496ac(void);
+extern void FUN_08049030(void);
+extern void FUN_08049724(void);
+extern void FUN_08049170(void);
+extern void *gUnknown_03005478;
+extern u8 gUnknown_030001c8;
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -5230,3 +5235,17 @@ void FUN_0802b3c8(struct UnknownListNode *node) {
     node->position->field12 = 8;
     node->data = (const void *)((u32)FUN_0802b424 + 1);
 }
+
+void FUN_08025060(void) {}
+
+void FUN_08043e5c(void) {}
+
+void FUN_0801f600(void) { FUN_08049030(); }
+
+void FUN_0801f60c(void) { FUN_08049724(); }
+
+void FUN_0801f638(void) { FUN_08049170(); }
+
+void FUN_08040460(void) { gUnknown_03005478 = (void *)0x03001800; }
+
+void FUN_080405e8(void) { gUnknown_030001c8 = 0; }
