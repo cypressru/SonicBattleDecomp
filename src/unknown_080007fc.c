@@ -147,7 +147,9 @@ struct UnknownState080180f0 {
 };
 
 struct UnknownRecord03001c40 {
-    u8 padding0[200];
+    u8 padding0[159];
+    u8 style;
+    u8 padding160[40];
     u16 value;
     u8 padding202[50];
 };
@@ -161,6 +163,7 @@ extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
+extern const u8 gUnknown_0806b2d4[][10];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
@@ -173,6 +176,37 @@ extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801f618(u32 index);
 extern void FUN_0801ff30(void);
+
+/* The buttons currently held by participant `index`, taken from the newest
+   slot of that participant's input ring. */
+#define HELD_BUTTONS (gUnknown_03001b30[index].first[gUnknown_03001b30[index].position])
+
+/* Selects one of the ten columns of the 0x0806B2D4 move table for the
+   participant's fighting style, according to the buttons held. */
+u8 FUN_080034f0(u8 index) {
+    u8 result;
+
+    if ((HELD_BUTTONS & 0x20) && (HELD_BUTTONS & 0x80)) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][1];
+    } else if ((HELD_BUTTONS & 0x10) && (HELD_BUTTONS & 0x80)) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][3];
+    } else if ((HELD_BUTTONS & 0x20) && (HELD_BUTTONS & 0x40)) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][7];
+    } else if ((HELD_BUTTONS & 0x10) && (HELD_BUTTONS & 0x40)) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][9];
+    } else if (HELD_BUTTONS & 0x80) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][2];
+    } else if (HELD_BUTTONS & 0x20) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][4];
+    } else if (HELD_BUTTONS & 0x10) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][6];
+    } else if (HELD_BUTTONS & 0x40) {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][8];
+    } else {
+        result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][0];
+    }
+    return result;
+}
 
 void FUN_08007e24(void) {
     volatile u32 *dma;
