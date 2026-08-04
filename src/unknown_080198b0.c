@@ -1,5 +1,7 @@
 #include "types.h"
 
+struct UnknownListNode;
+
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
 extern void FUN_0801bcac(void);
@@ -12,6 +14,7 @@ extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
+extern void *FUN_08021180(void *value);
 extern void FUN_08049108(u16 value);
 extern void FUN_080490b4(u16 value);
 extern void FUN_080491d4(const void *value, u16 other);
@@ -22,6 +25,7 @@ extern void FUN_080496ac(void);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
+extern void FUN_0804af6c(struct UnknownListNode *node, const void *data);
 
 typedef void (*UnknownCallback)(void);
 
@@ -73,10 +77,13 @@ struct UnknownPosition {
 };
 
 struct UnknownListNode {
-    u8 filler0[6];
+    const void *data;
+    u8 field4;
+    u8 previous;
     u8 field6;
-    u8 filler7;
+    u8 next;
     struct UnknownPosition *position;
+    void *allocation;
 };
 
 extern void (*gUnknown_03002030)(void);
@@ -98,6 +105,9 @@ extern const u8 gUnknown_08ed8aac[];
 extern const u8 gUnknown_08ed8ae4[];
 extern const struct UnknownSoundIndex gUnknown_08bf7244[];
 extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
+extern u8 gUnknown_03000008[100];
+extern u8 gUnknown_0300006c;
+extern struct UnknownListNode gUnknown_03003e20[100];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -525,6 +535,31 @@ void FUN_0801f744(u16 value, u16 other) {
 }
 
 void FUN_0801f770(u16 value) { FUN_080490b4(value); }
+
+void FUN_0801f89c(void) {
+    u8 index = 0;
+
+    do {
+        struct UnknownListNode *node = &gUnknown_03003e20[index];
+
+        FUN_0804af6c(node, node->data);
+        index = node->next;
+    } while (index != 0);
+}
+
+void FUN_0801f8c0(struct UnknownListNode *node) {
+    gUnknown_03003e20[node->previous].next = node->next;
+    gUnknown_03003e20[node->next].previous = node->previous;
+
+    gUnknown_03000008[gUnknown_0300006c++] = node->field6;
+    if (gUnknown_0300006c > 99) {
+        gUnknown_0300006c = 0;
+    }
+
+    if (node->allocation != 0) {
+        FUN_08021180(node->allocation);
+    }
+}
 
 s16 FUN_0801f914(s16 first, s16 second) { return first + (second - first) / 2; }
 
