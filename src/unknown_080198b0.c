@@ -199,6 +199,17 @@ struct UnknownUnsignedHalfword {
     u32 value : 16;
 };
 
+struct UnknownFourByteMessage {
+    u8 type;
+    u8 index;
+    u16 value;
+};
+
+struct Unknown16ByteRecord {
+    u8 field0;
+    u8 filler1[15];
+};
+
 extern void (*gUnknown_03002030)(void);
 extern struct UnknownCallbackState03005330 gUnknown_03005330;
 extern u8 gUnknown_03001620;
@@ -324,6 +335,10 @@ extern u8 gUnknown_03005248;
 extern u8 gUnknown_0300525c;
 extern u8 gUnknown_030051f4;
 extern u16 gUnknown_03005244;
+extern struct UnknownFourByteMessage gUnknown_03001b1c;
+extern u8 gUnknown_030051f0;
+extern struct Unknown16ByteRecord gUnknown_030016fc[];
+extern void FUN_08027b84(struct UnknownListNode *node);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2262,5 +2277,33 @@ void FUN_080279c4(struct UnknownListNode *node) {
     if ((gUnknown_030048e0.third & 0x100) != 0) {
         node->data = FUN_08026844;
         FUN_0801f618(420);
+    }
+}
+
+void FUN_08027a4c(struct UnknownListNode *node) {
+    u32 value;
+    register struct Unknown16ByteRecord *record asm("r1");
+    register u8 index asm("r0");
+
+    gUnknown_03001b1c.type = 13;
+    gUnknown_03001b1c.index = gUnknown_030051f0;
+    gUnknown_03001b1c.value = gUnknown_03004dd4;
+    value = FUN_0801f9e8(0x3579);
+    gUnknown_03005248 = value;
+    if (gUnknown_0300525c != (u8)value) {
+        gUnknown_030051f4++;
+        if (gUnknown_030051f4 > 29) {
+            node->data = (const void *)((u32)FUN_08027920 + 1);
+            FUN_0801f618(419);
+            return;
+        }
+    } else {
+        gUnknown_030051f4 = 0;
+    }
+
+    index = gUnknown_030051f0;
+    record = &gUnknown_030016fc[index];
+    if (record->field0 == 10) {
+        node->data = FUN_08027b84;
     }
 }
