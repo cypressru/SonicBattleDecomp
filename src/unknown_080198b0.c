@@ -278,7 +278,8 @@ struct UnknownState482d0 {
     u16 field12;
     u16 field14;
     const void *graphics;
-    u8 filler20[6];
+    u16 field20;
+    u8 filler22[4];
     u8 field26;
     u8 field27;
     u8 filler28[2];
@@ -298,6 +299,9 @@ struct UnknownPair4825c {
 extern struct UnknownState482d0 gUnknown_03005440;
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
+extern void FUN_08047acc(struct UnknownState482d0 *state);
+extern void FUN_08047c30(struct UnknownState482d0 *state);
+extern void FUN_0804033c(void *destination, const void *source, u32 size);
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5838,4 +5842,16 @@ void FUN_0804825c(struct UnknownState482d0 *state) {
     second += secondOffset;
     state->field14 = second;
     FUN_080405f4(state->field2, state->field39);
+}
+
+void FUN_080482a8(struct UnknownState482d0 *state) {
+    state->callback = (const void *)((u32)FUN_08047acc + 1);
+}
+
+void FUN_08048300(struct UnknownState482d0 *state) {
+    FUN_0804033c((void *)0x02028000, (const void *)0x06013200, 0x800);
+    state->field14 = -32;
+    state->field20 = 0;
+    state->field39 = 16;
+    state->callback = (const void *)((u32)FUN_08047c30 + 1);
 }
