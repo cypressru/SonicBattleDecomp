@@ -49,6 +49,12 @@ extern void FUN_0803878c(struct UnknownListNode *node);
 extern void FUN_0803bb54(struct UnknownListNode *node);
 extern void FUN_0803bc10(struct UnknownListNode *node);
 extern u16 gUnknown_03005378;
+extern void FUN_08041808(void);
+extern void FUN_0802fcb4(u8 value);
+extern u8 gUnknown_030052f8;
+extern void FUN_08030a08(struct UnknownListNode *node);
+extern const u8 gUnknown_081a7f60[];
+extern void FUN_08046aa4(void);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -256,7 +262,8 @@ struct UnknownState482d0 {
     u16 field10;
     u8 filler12[2];
     u16 field14;
-    u8 filler16[14];
+    const void *graphics;
+    u8 filler20[10];
     u16 field30;
     u8 filler32[6];
     u8 field38;
@@ -5596,4 +5603,48 @@ void FUN_0803cb38(struct UnknownListNode *node) {
     if (gUnknown_030052e0 <= 10) {
         FUN_0801fed8(node->field6, 0);
     }
+}
+
+void FUN_08039c3c(void) {
+    u32 zero = 0;
+
+    FUN_0804a594(&zero, (const void *)0x06008000, 0x01000b68);
+}
+
+void FUN_08043ee4(struct UnknownState482d0 *state) {
+    FUN_0801fba0(82, 4096);
+    state->callback = (const void *)((u32)FUN_08041808 + 1);
+}
+
+void FUN_08034ef4(struct UnknownListNode *node) {
+    FUN_0801f978(node, -48);
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08030d20(struct UnknownListNode *node) {
+    u32 *counter = node->allocation;
+    u32 value = --*counter;
+
+    FUN_0801fba0(30, (value & 0x1FE) >> 1);
+}
+
+void FUN_08030d3c(struct UnknownListNode *node) {
+    u32 *counter = node->allocation;
+    u32 value = --*counter;
+
+    FUN_0801fba0(28, (value & 0x1FE) >> 1);
+}
+
+void FUN_080309e0(struct UnknownListNode *node) {
+    FUN_0802fcb4(gUnknown_030052e0);
+    gUnknown_030052f8 = 1;
+    node->data = (const void *)((u32)FUN_08030a08 + 1);
+}
+
+void FUN_08048284(struct UnknownState482d0 *state) {
+    state->field10 = 226;
+    state->field14 = 153;
+    state->graphics = gUnknown_081a7f60;
+    state->callback = (const void *)((u32)FUN_08046aa4 + 1);
+    FUN_0804af6c((struct UnknownListNode *)state, state->callback);
 }
