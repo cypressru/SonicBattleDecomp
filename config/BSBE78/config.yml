@@ -582,6 +582,11 @@ units:
       FUN_0801f718: 0x24
       FUN_0801f744: 0x24
       FUN_0801f770: 0xE
+      FUN_0801f914: 0x18
+      FUN_0801f92c: 0x4C
+      FUN_0801f978: 0x2E
+      FUN_0801f9a8: 0x2E
+      FUN_0801f9d8: 0xE
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -805,6 +810,7 @@ units:
       - { offset: 0x5EB8, type: abs32, symbol: gUnknown_08bf71fc }
       - { offset: 0x5EBC, type: abs32, symbol: gUnknown_08bf7244 }
       - { offset: 0x5EC6, type: thumb_call, symbol: FUN_080490b4 }
+      - { offset: 0x612E, type: thumb_call, symbol: FUN_0801fed8 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

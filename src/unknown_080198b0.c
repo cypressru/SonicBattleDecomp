@@ -11,6 +11,7 @@ extern u32 FUN_0801cfc8(u8 value);
 extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
+extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08049108(u16 value);
 extern void FUN_080490b4(u16 value);
 extern void FUN_080491d4(const void *value, u16 other);
@@ -63,6 +64,19 @@ struct UnknownSoundIndex {
 struct UnknownSoundEntry {
     const void *value;
     u8 filler4[8];
+};
+
+struct UnknownPosition {
+    u8 filler0[4];
+    s16 x;
+    s16 y;
+};
+
+struct UnknownListNode {
+    u8 filler0[6];
+    u8 field6;
+    u8 filler7;
+    struct UnknownPosition *position;
 };
 
 extern void (*gUnknown_03002030)(void);
@@ -511,3 +525,33 @@ void FUN_0801f744(u16 value, u16 other) {
 }
 
 void FUN_0801f770(u16 value) { FUN_080490b4(value); }
+
+s16 FUN_0801f914(s16 first, s16 second) { return first + (second - first) / 2; }
+
+u32 FUN_0801f92c(struct UnknownListNode *node, s16 x, s16 y) {
+    node->position->x = x + (node->position->x - x) / 2;
+    node->position->y = y + (node->position->y - y) / 2;
+
+    if (node->position->x == x && node->position->y == y) {
+        return 1;
+    }
+    return 0;
+}
+
+u32 FUN_0801f978(struct UnknownListNode *node, s16 x) {
+    node->position->x = x + (node->position->x - x) / 2;
+    if (node->position->x == x) {
+        return 1;
+    }
+    return 0;
+}
+
+u32 FUN_0801f9a8(struct UnknownListNode *node, s16 y) {
+    node->position->y = y + (node->position->y - y) / 2;
+    if (node->position->y == y) {
+        return 1;
+    }
+    return 0;
+}
+
+void FUN_0801f9d8(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
