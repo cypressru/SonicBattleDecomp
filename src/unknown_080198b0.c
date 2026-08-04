@@ -8,6 +8,8 @@ extern void FUN_0801c770(void);
 extern void FUN_08020840(u32 value);
 extern void FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
+extern u8 FUN_0801d068(u8 value);
+extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 
 typedef void (*UnknownCallback)(void);
@@ -61,7 +63,9 @@ extern void FUN_0801e174(void);
 extern void FUN_0801e4f4(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u16 value);
+extern u32 FUN_08020144(void);
 extern void FUN_0801eea8(u8 value);
+extern u16 gUnknown_08071250[];
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -288,7 +292,37 @@ void FUN_0801eee0(u8 value) {
     entity->callback = (UnknownCallback)FUN_0801e4f4;
 }
 
+void FUN_0801ef14(u8 value, const void *data) {
+    gUnknown_03003db0[value].data = data;
+    gUnknown_03003db0[value].field14 = 0;
+    gUnknown_03003db0[value].field16 = gUnknown_03001c40[value].field16;
+}
+
+u16 FUN_0801ef4c(void) {
+    u32 random = FUN_08020144();
+    u16 *table = gUnknown_08071250;
+    u16 *base = &table[gUnknown_03003e10];
+
+    return *base + ((random & 0xFFF) * *base >> 12);
+}
+
 void FUN_0801f024(u8 value) { gUnknown_03003e10 = value; }
+
+void FUN_0801f030(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+
+    entity->callback = FUN_0801d618;
+    entity->field15 = FUN_0801d068(value);
+}
+
+void FUN_0801f058(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+
+    entity->callback = FUN_0801d618;
+    entity->field15 = FUN_0801d188(value);
+}
 
 u32 FUN_0801f308(u8 value, u8 other, const u32 **stream) {
     u32 word = *(*stream)++;

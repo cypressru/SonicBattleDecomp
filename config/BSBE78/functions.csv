@@ -304,7 +304,13 @@ address,name,mode,confidence
 0x0801EE4C,FUN_0801ee4c,thumb,direct-call
 0x0801EEA8,FUN_0801eea8,thumb,rom-pointer
 0x0801EEE0,FUN_0801eee0,thumb,direct-call
+0x0801EF14,FUN_0801ef14,thumb,structured-entry+return
+0x0801EF4C,FUN_0801ef4c,thumb,structured-entry+return
+0x0801EF7C,FUN_0801ef7c,thumb,structured-entry+return
+0x0801EFD4,FUN_0801efd4,thumb,structured-entry+return
 0x0801F024,FUN_0801f024,thumb,direct-call
+0x0801F030,FUN_0801f030,thumb,structured-entry+return
+0x0801F058,FUN_0801f058,thumb,structured-entry+return
 0x0801F080,FUN_0801f080,thumb,rom-pointer
 0x0801F128,FUN_0801f128,thumb,rom-pointer
 0x0801F1D0,FUN_0801f1d0,thumb,rom-pointer
