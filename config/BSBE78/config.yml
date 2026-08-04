@@ -7,6 +7,9 @@ rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 rejected_function_pointers:
+  # Opaque ROM data points into a live basic block of FUN_08021050. The block
+  # at 0x08021088 depends on registers initialized by the true entry.
+  - { source: 0x0F8B000, destination: 0x08021088 }
   # An odd pointer-like word inside opaque ROM data lands on the padding and
   # literal word following FUN_08020ecc, not on executable instructions.
   - { source: 0x0D872DC, destination: 0x08020F12 }
@@ -677,6 +680,11 @@ units:
       FUN_08020f78: 0x2E
       FUN_08020fac: 0xC
       FUN_08020fbc: 0x44
+      FUN_08021000: 0x4E
+      FUN_080210d8: 0x18
+      FUN_080210f8: 0x14
+      FUN_0802110c: 0x10
+      FUN_080211d8: 0x10
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -852,6 +860,20 @@ units:
       - { offset: 0x76FC, mode: thumb }
       - { offset: 0x7708, mode: data }
       - { offset: 0x770C, mode: thumb }
+      - { offset: 0x779E, mode: data }
+      - { offset: 0x77A0, mode: thumb }
+      - { offset: 0x77B0, mode: data }
+      - { offset: 0x77B4, mode: thumb }
+      - { offset: 0x7822, mode: data }
+      - { offset: 0x7828, mode: thumb }
+      - { offset: 0x7840, mode: data }
+      - { offset: 0x7848, mode: thumb }
+      - { offset: 0x7858, mode: data }
+      - { offset: 0x785C, mode: thumb }
+      - { offset: 0x786C, mode: data }
+      - { offset: 0x7878, mode: thumb }
+      - { offset: 0x7938, mode: data }
+      - { offset: 0x7940, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1070,6 +1092,14 @@ units:
       - { offset: 0x7694, type: abs32, symbol: gUnknown_03004b10 }
       - { offset: 0x76C4, type: abs32, symbol: gUnknown_03004b10 }
       - { offset: 0x7708, type: abs32, symbol: gUnknown_0807173c }
+      - { offset: 0x77B0, type: abs32, symbol: gUnknown_03004b30 }
+      - { offset: 0x7836, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x7840, type: abs32, symbol: gUnknown_03004b30 }
+      - { offset: 0x7858, type: abs32, symbol: gUnknown_03004b30 }
+      - { offset: 0x786C, type: abs32, symbol: gUnknown_03004d30 }
+      - { offset: 0x7870, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x7938, type: abs32, symbol: gUnknown_03004d38 }
+      - { offset: 0x793C, type: abs32, symbol: gUnknown_03004d34 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

@@ -9,7 +9,7 @@ ROM_BASE = 0x08000000
 CODE_END = 0x04B718
 RAW_ASSET_START = 0x3F4418
 RAW_ASSET_END = 0xBF2118
-EXPECTED_STARTS = 152
+EXPECTED_STARTS = 151
 
 
 def derive_raw_asset_ranges(data: bytes, function_ends: dict[int, int]) -> list[dict[str, str]]:

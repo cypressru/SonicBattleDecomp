@@ -126,6 +126,11 @@ struct UnknownBufferState {
     u32 fill;
 };
 
+struct UnknownHeapBlock {
+    struct UnknownHeapBlock *next;
+    s32 size;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -167,6 +172,12 @@ extern u8 gUnknown_03004b04;
 extern u16 gUnknown_03004b08;
 extern struct UnknownBufferState gUnknown_03004b10;
 extern const u8 gUnknown_0807173c[];
+extern u16 gUnknown_03004b30[];
+extern struct UnknownHeapBlock *gUnknown_03004d30;
+extern struct UnknownHeapBlock gUnknown_030033e0;
+extern u32 gUnknown_03004d34;
+extern u32 gUnknown_03004d38;
+extern void CpuSet(const void *source, void *destination, u32 mode);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1111,4 +1122,38 @@ void FUN_08020fbc(u16 *destination, const u16 *source, u16 width, u16 rows) {
         }
         destination += 32 - width;
     }
+}
+
+void FUN_08021000(u16 *destination, const u16 *source, u16 width, u16 rows, u16 offset) {
+    u16 row;
+
+    for (row = 0; row < rows; row++) {
+        u16 column;
+
+        for (column = 0; column < width; column++) {
+            *destination = offset + *source;
+            destination++;
+            source++;
+        }
+        destination += 32 - width;
+    }
+}
+
+void FUN_080210d8(void) {
+    u32 zero = 0;
+
+    CpuSet(&zero, gUnknown_03004b30, 0x05000080);
+}
+
+void FUN_080210f8(u16 value) { gUnknown_03004b30[value >> 2] = 0; }
+
+void FUN_0802110c(void) {
+    gUnknown_03004d30 = &gUnknown_030033e0;
+    gUnknown_030033e0.next = 0;
+    gUnknown_030033e0.size = 0xFF8;
+}
+
+void FUN_080211d8(u8 value) {
+    gUnknown_03004d38 = value;
+    gUnknown_03004d34 = 0;
 }

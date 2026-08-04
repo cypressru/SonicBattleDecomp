@@ -414,8 +414,9 @@ address,name,mode,confidence
 0x08020FAC,FUN_08020fac,thumb,direct-call
 0x08020FBC,FUN_08020fbc,thumb,recursive-disassembly
 0x08021000,FUN_08021000,thumb,direct-call
-0x08021088,FUN_08021088,thumb,rom-pointer
+0x08021050,FUN_08021050,thumb,recursive-disassembly
 0x080210D8,FUN_080210d8,thumb,direct-call
+0x080210F8,FUN_080210f8,thumb,recursive-disassembly
 0x0802110C,FUN_0802110c,thumb,direct-call
 0x08021128,FUN_08021128,thumb,direct-call
 0x08021180,FUN_08021180,thumb,direct-call
