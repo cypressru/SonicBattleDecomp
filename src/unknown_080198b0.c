@@ -69,7 +69,7 @@ extern void FUN_0803b82c(struct UnknownListNode *node);
 extern void FUN_08032f34(struct UnknownListNode *node);
 extern u8 gUnknown_03005300;
 extern u16 gUnknown_03005378;
-extern void FUN_08041808(void);
+extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
 extern void FUN_08030a08(struct UnknownListNode *node);
@@ -175,6 +175,12 @@ struct UnknownPoolCommand4051c {
     u8 node;
     u8 replacement;
     u8 value;
+};
+
+struct UnknownFadeState41808 {
+    u8 padding0[26];
+    u8 step;
+    u8 progress;
 };
 
 struct UnknownState080201f8 {
@@ -6464,5 +6470,32 @@ void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s3
             destinationCursor = (u16 *)((u8 *)destinationCursor + strideBytes);
             rawOffset = (encodedRows << 24) >> 24;
         } while (rawOffset != 0xFF);
+    }
+}
+
+void FUN_08041808(void *value) {
+    register struct UnknownFadeState41808 *state asm("r4") = value;
+    register u32 progress asm("r0") = state->step;
+    register u32 oldProgress asm("r1") = state->progress;
+
+    asm volatile("" : "+r"(state), "+r"(progress), "+r"(oldProgress));
+    progress += oldProgress;
+    state->progress = progress;
+    asm volatile("" : "+r"(progress));
+    progress = (u8)progress;
+    if (progress > 15) {
+        state->progress = 16;
+    }
+    {
+        register u32 blend asm("r1") = state->progress;
+        register u32 inverse asm("r0") = 16 - blend;
+
+        asm volatile("" : "+r"(blend), "+r"(inverse));
+        blend |= inverse << 8;
+        FUN_0801fba0(0x52, (u16)blend);
+    }
+    if ((gUnknown_03005440.field8 & 2) == 0 && state->progress > 15) {
+        gUnknown_03005440.field8 &= 0xFEFF;
+        FUN_0804051c(state);
     }
 }
