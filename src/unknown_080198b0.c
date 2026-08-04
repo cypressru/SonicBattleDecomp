@@ -187,10 +187,16 @@ extern void CpuSet(const void *source, void *destination, u32 mode);
 extern struct UnknownState08021484 gUnknown_03004d40;
 extern u32 gUnknown_020000e0;
 extern const void *gUnknown_03004d94;
+extern u32 gUnknown_03004d8c;
 extern void SoftResetExram(u32 flags);
 extern void LZ77UnCompWram(const void *source, void *destination);
 extern u32 FUN_08018c8c(void *state);
 extern u32 FUN_0801950c(void *state);
+extern void ReadFlash(u16 sector, u32 offset, void *destination, u32 size);
+extern u32 VerifyFlashSector(u16 sector, u8 *source);
+extern u16 SetFlashTimerIntr(u8 timer, void (**handler)(void));
+extern void (*gUnknown_0300315c)(void);
+extern void (*gUnknown_03006788)(void);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1209,5 +1215,27 @@ u32 FUN_08021534(void) {
 
 u32 FUN_0802158c(void) {
     LZ77UnCompWram(gUnknown_03004d94, (void *)0x02000100);
+    return 0;
+}
+
+u32 FUN_08021564(void) {
+    const void *source = gUnknown_03004d94;
+    u32 size = gUnknown_03004d8c;
+
+    CpuSet(source, (void *)(0x0203B000 - size), (size << 10) >> 11);
+    return 0;
+}
+
+u32 FUN_080218ac(u8 sector, u8 *data) {
+    ReadFlash(sector, 0, data, 0x1000);
+    if (VerifyFlashSector(sector, data) == 0) {
+        return 0;
+    }
+    return 1;
+}
+
+u32 FUN_0802188c(void) {
+    SetFlashTimerIntr(2, &gUnknown_0300315c);
+    gUnknown_03006788();
     return 0;
 }
