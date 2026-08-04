@@ -285,7 +285,8 @@ struct UnknownState482d0 {
     } field12;
     const void *graphics;
     u16 field20;
-    u8 filler22[4];
+    u8 field22;
+    u8 filler23[3];
     u8 field26;
     u8 field27;
     u8 filler28[2];
@@ -293,16 +294,23 @@ struct UnknownState482d0 {
     u8 filler32[2];
     u16 field34;
     u8 field36;
-    u8 filler37;
+    u8 field37;
     u8 field38;
     u8 field39;
-    u8 filler40[6];
+    u16 field40;
+    u8 filler42[4];
     u8 field46;
 };
 
 struct UnknownPair4825c {
     u16 first;
     u16 second;
+};
+
+struct UnknownTriple47c30 {
+    u16 first;
+    u16 second;
+    u16 third;
 };
 
 struct UnknownGlobalRenderState {
@@ -339,6 +347,9 @@ extern void FUN_080405a8(u8 first, u8 second);
 extern s16 FUN_08040698(u8 value);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern const u8 gUnknown_081a7f88[];
+extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
+extern struct UnknownTriple47c30 gUnknown_030002d0;
+extern const u8 gUnknown_030044d6[];
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -6008,4 +6019,63 @@ void FUN_08047b40(struct UnknownState482d0 *state) {
     } else {
         FUN_080405a8(state->field2, 1);
     }
+}
+
+void FUN_08047c30(struct UnknownState482d0 *state) {
+    register u32 zero asm("r2");
+    register u32 mask asm("r1");
+
+    switch (state->field37) {
+    case 0:
+        state->field12.fixed += 0x8000;
+        if ((s16)state->field12.half.high > 79) {
+            state->field37++;
+        }
+        break;
+    case 1:
+        state->field40++;
+        if ((u16)state->field40 > 59) {
+            state->field37++;
+        }
+        break;
+    case 2: {
+        register u32 fade asm("r1");
+
+        state->field22 = 1;
+        fade = FUN_0804a59c(4096, state->field39);
+        asm volatile("" : "+r"(fade));
+        gUnknown_030002d0.second = fade;
+        gUnknown_030002d0.first = fade;
+        gUnknown_030002d0.third = 0;
+        FUN_0804a5c4(&gUnknown_030002d0, gUnknown_030044d6, 1, 8);
+        state->field39--;
+        if ((u8)state->field39 == 0) {
+            gUnknown_03005440.field8 &= ~4;
+            FUN_0804051c(state);
+            return;
+        }
+        break;
+    }
+    }
+
+    {
+        u32 frame = state->field26 + 1;
+
+        zero = 0;
+        asm volatile("" : "+r"(zero));
+        state->field26 = frame;
+        mask = 0xFF;
+        asm volatile("" : "+r"(mask));
+        if ((u8)frame > 4) {
+            state->field26 = zero;
+            frame = state->field27 + 1;
+            state->field27 = frame;
+            frame &= mask;
+            if (frame > 5) {
+                state->field27 = zero;
+            }
+            FUN_0804033c((void *)(0x02028000 + state->field27 * 0x800), (void *)0x06013200, 0x800);
+        }
+    }
+    FUN_080405a8(state->field2, 1);
 }
