@@ -352,11 +352,6 @@ units:
     source: src/multi_sio_sync.c
     complete: true
     cflags: [-O2, -mthumb-interwork]
-    mappings:
-      - { offset: 0x11E, mode: data }
-      - { offset: 0x128, mode: thumb }
-      - { offset: 0x16A, mode: data }
-      - { offset: 0x174, mode: thumb }
     base_symbol_size_overrides:
       MultiSioSyncInitialize: 0x96
       FUN_0801886c: 0x9E
@@ -549,9 +544,13 @@ units:
       - { offset: 0x128, mode: thumb }
       - { offset: 0x16A, mode: data }
       - { offset: 0x174, mode: thumb }
+      - { offset: 0xA0A, mode: data }
+      - { offset: 0xA10, mode: thumb }
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
+      MPlayStop: 0x3C
+      FadeOutBody: 0xC8
       m4aSoundMain: 0x0A
       m4aSongNumStart: 0x24
       m4aSongNumStartOrContinue: 0x54
@@ -584,13 +583,13 @@ units:
       - { offset: 0x170, type: abs32, symbol: gSongTable }
       - { offset: 0x180, type: thumb_call, symbol: FUN_0804981c }
       - { offset: 0x18C, type: thumb_call, symbol: MPlayContinue }
-      - { offset: 0x1B6, type: thumb_call, symbol: FUN_08049900 }
+      - { offset: 0x1B6, type: thumb_call, symbol: MPlayStop }
       - { offset: 0x1C0, type: abs32, symbol: gMPlayTable }
       - { offset: 0x1C4, type: abs32, symbol: gSongTable }
       - { offset: 0x1EA, type: thumb_call, symbol: MPlayContinue }
       - { offset: 0x1F4, type: abs32, symbol: gMPlayTable }
       - { offset: 0x1F8, type: abs32, symbol: gSongTable }
-      - { offset: 0x20E, type: thumb_call, symbol: FUN_08049900 }
+      - { offset: 0x20E, type: thumb_call, symbol: MPlayStop }
       - { offset: 0x220, type: abs32, symbol: gNumMusicPlayers }
       - { offset: 0x224, type: abs32, symbol: gMPlayTable }
       - { offset: 0x22A, type: thumb_call, symbol: MPlayContinue }
@@ -599,6 +598,8 @@ units:
       - { offset: 0x25C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
+      - { offset: 0x9B2, type: thumb_call, symbol: FUN_08048c08 }
+      - { offset: 0xA2A, type: thumb_call, symbol: FUN_08048c08 }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
       - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }

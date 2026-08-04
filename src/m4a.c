@@ -5,8 +5,8 @@ struct MP2KPlayerState {
     u32 status;
     u8 trackCount;
     u8 padding9[27];
-    u16 fadeCounter;
     u16 fadeInterval;
+    u16 fadeCounter;
     u16 fadeVolume;
     u8 padding42[2];
     struct MP2KTrack *tracks;
@@ -48,7 +48,7 @@ struct Song {
 };
 
 extern void SoundMain(void);
-extern void FUN_08049900(struct MP2KPlayerState *player);
+extern void FUN_08048c08(struct MP2KPlayerState *player, struct MP2KTrack *track);
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
 extern u8 gNumMusicPlayers[];
@@ -59,6 +59,7 @@ extern void (*gMPlayJumpTable0)(void *, void *);
 extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
 void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
+void MPlayStop(struct MP2KPlayerState *player);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -93,7 +94,7 @@ void m4aSongNumStop(u16 number) {
     const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
 
     if (musicPlayer->player->songHeader == song->header) {
-        FUN_08049900(musicPlayer->player);
+        MPlayStop(musicPlayer->player);
     }
 }
 
@@ -119,10 +120,86 @@ void MPlayContinue(struct MP2KPlayerState *player) {
 void MPlayFadeOut(struct MP2KPlayerState *player, u16 speed) {
     if (player->lockStatus == 0x68736D53) {
         player->lockStatus++;
-        player->fadeInterval = speed;
         player->fadeCounter = speed;
+        player->fadeInterval = speed;
         player->fadeVolume = 0x100;
         player->lockStatus = 0x68736D53;
+    }
+}
+
+void MPlayStop(struct MP2KPlayerState *player) {
+    s32 i;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+
+    player->lockStatus++;
+    player->status |= 0x80000000;
+    i = player->trackCount;
+    track = player->tracks;
+    while (i > 0) {
+        FUN_08048c08(player, track);
+        i--;
+        track++;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void FadeOutBody(struct MP2KPlayerState *player) {
+    s32 i;
+    struct MP2KTrack *track;
+    u16 fadeVolume;
+
+    if (player->fadeInterval == 0) {
+        return;
+    }
+    if (--player->fadeCounter != 0) {
+        return;
+    }
+
+    player->fadeCounter = player->fadeInterval;
+    if (player->fadeVolume & 2) {
+        if ((u16)(player->fadeVolume += 16) >= 0x100) {
+            player->fadeVolume = 0x100;
+            player->fadeInterval = 0;
+        }
+    } else if ((s16)(player->fadeVolume -= 16) <= 0) {
+        i = player->trackCount;
+        track = player->tracks;
+        while (i > 0) {
+            u32 temporary;
+
+            FUN_08048c08(player, track);
+            fadeVolume = player->fadeVolume;
+            temporary = 1;
+            temporary &= fadeVolume;
+            if (!temporary) {
+                track->padding0[0] = 0;
+            }
+            i--;
+            track++;
+        }
+
+        if (player->fadeVolume & 1) {
+            player->status |= 0x80000000;
+        } else {
+            player->status = 0x80000000;
+        }
+        player->fadeInterval = 0;
+        return;
+    }
+
+    i = player->trackCount;
+    track = player->tracks;
+    while (i > 0) {
+        if (track->padding0[0] & 0x80) {
+            track->padding0[19] = player->fadeVolume >> 2;
+            track->padding0[0] |= 3;
+        }
+        i--;
+        track++;
     }
 }
 
@@ -132,7 +209,7 @@ void m4aMPlayAllStop(void) {
     s32 i;
 
     for (i = 0; i < (u16)(u32)gNumMusicPlayers; i++) {
-        FUN_08049900(gMPlayTable[i].player);
+        MPlayStop(gMPlayTable[i].player);
     }
 }
 
@@ -149,8 +226,8 @@ void m4aMPlayFadeOut(struct MP2KPlayerState *player, u16 speed) { MPlayFadeOut(p
 void m4aMPlayFadeOutTemporarily(struct MP2KPlayerState *player, u16 speed) {
     if (player->lockStatus == 0x68736D53) {
         player->lockStatus++;
-        player->fadeInterval = speed;
         player->fadeCounter = speed;
+        player->fadeInterval = speed;
         player->fadeVolume = 0x101;
         player->lockStatus = 0x68736D53;
     }
@@ -159,8 +236,8 @@ void m4aMPlayFadeOutTemporarily(struct MP2KPlayerState *player, u16 speed) {
 void m4aMPlayFadeIn(struct MP2KPlayerState *player, u16 speed) {
     if (player->lockStatus == 0x68736D53) {
         player->lockStatus++;
-        player->fadeInterval = speed;
         player->fadeCounter = speed;
+        player->fadeInterval = speed;
         player->fadeVolume = 2;
         player->status &= 0x7FFFFFFF;
         player->lockStatus = 0x68736D53;
