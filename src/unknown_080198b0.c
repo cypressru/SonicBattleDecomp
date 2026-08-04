@@ -373,9 +373,18 @@ extern void FUN_08028350(struct UnknownListNode *node);
 extern void FUN_08028388(struct UnknownListNode *node);
 extern void FUN_080283c0(struct UnknownListNode *node);
 extern void FUN_08028814(struct UnknownListNode *node);
+extern void FUN_080288b4(struct UnknownListNode *node);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
 extern u32 gUnknown_03005264;
+extern u16 gUnknown_05000080[];
+extern u16 gUnknown_050001c0[];
+extern u16 gUnknown_050001e0[];
+extern u16 gUnknown_05000200[];
+extern const u16 gUnknown_0810c5f4[];
+extern const u16 gUnknown_0815e67c[];
+extern const u16 gUnknown_081326f4[];
+extern const u16 gUnknown_0810c634[];
 extern u32 FUN_0801fd18(s16 value, u32 other);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
@@ -1071,7 +1080,7 @@ void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth) {
     }
 }
 
-u32 FUN_08020500(u16 *destination, const u16 *source, u16 count) {
+u8 FUN_08020500(u16 *destination, const u16 *source, u16 count) {
     u32 result = 1;
     u16 i = 0;
 
@@ -2986,4 +2995,19 @@ void FUN_08028770(struct UnknownListNode *node) {
         FUN_080283f8(1);
     }
     node->data = (const void *)((u32)FUN_08028814 + 1);
+}
+
+void FUN_08028814(struct UnknownListNode *node) {
+    u8 pending = FUN_08020500(gUnknown_05000080, gUnknown_0810c5f4, 32) == 0;
+    u8 result;
+
+    result = FUN_08020500(gUnknown_050001c0, gUnknown_0815e67c, 16);
+    pending |= result == 0;
+    result = FUN_08020500(gUnknown_050001e0, gUnknown_081326f4, 16);
+    pending |= result == 0;
+    result = FUN_08020500(gUnknown_05000200, gUnknown_0810c634, 64);
+    pending |= result == 0;
+    if (pending == 0) {
+        node->data = (const void *)((u32)FUN_080288b4 + 1);
+    }
 }
