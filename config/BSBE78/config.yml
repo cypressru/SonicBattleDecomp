@@ -566,12 +566,17 @@ units:
       - { offset: 0x98C, mode: thumb }
       - { offset: 0xA0A, mode: data }
       - { offset: 0xA10, mode: thumb }
+      - { offset: 0xB7A, mode: data }
+      - { offset: 0xB80, mode: thumb }
+      - { offset: 0xBE8, mode: data }
+      - { offset: 0xBF0, mode: thumb }
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       TrkVolPitSet: 0xB2
+      MidiKeyToCgbFreq: 0xA0
       MPlayStart: 0xDE
       MPlayExtender: 0xC8
       SoundInit: 0xB8
@@ -683,6 +688,9 @@ units:
       - { offset: 0x974, type: thumb_call, symbol: FUN_08049544 }
       - { offset: 0x9B2, type: thumb_call, symbol: FUN_08048c08 }
       - { offset: 0xA2A, type: thumb_call, symbol: FUN_08048c08 }
+      - { offset: 0xB7C, type: abs32, symbol: gNoiseTable }
+      - { offset: 0xBE8, type: abs32, symbol: gCgbScaleTable }
+      - { offset: 0xBEC, type: abs32, symbol: gCgbFreqTable }
       - { offset: 0x1306, type: thumb_call, symbol: ClearModM }
       - { offset: 0x137A, type: thumb_call, symbol: ClearModM }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }

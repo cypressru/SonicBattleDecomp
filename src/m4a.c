@@ -114,7 +114,7 @@ struct SoundMixerState {
     struct MP2KPlayerState *playerHead;
     void (*cgbSound)(void);
     void (*cgbOscOff)(u8 channel);
-    void (*midiKeyToCgbFreq)(void);
+    u32 (*midiKeyToCgbFreq)(u8, u8, u8);
     void **mplayJumpTable;
     void (*playNote)(void);
     void (*extVolPit)(void);
@@ -134,6 +134,9 @@ extern void MP2KPlayerMain(void);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern const u16 gPcmSamplesPerVBlankTable[];
 extern u8 gMaxLines[];
+extern const u8 gNoiseTable[];
+extern const u8 gCgbScaleTable[];
+extern const s16 gCgbFreqTable[];
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -151,7 +154,7 @@ extern void TrackStop(void);
 extern void TrkVolPitSet(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void CgbSound(void);
 extern void CgbOscOff(u8 channel);
-extern void MidiKeyToCgbFreq(void);
+extern u32 MidiKeyToCgbFreq(u8 channel, u8 key, u8 fineAdjust);
 void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
@@ -523,7 +526,7 @@ void SoundInit(struct SoundMixerState *soundInfo) {
     soundInfo->playNote = MP2K_event_nxx;
     soundInfo->cgbSound = MP2K_event_null;
     soundInfo->cgbOscOff = (void (*)(u8))MP2K_event_null;
-    soundInfo->midiKeyToCgbFreq = MP2K_event_null;
+    soundInfo->midiKeyToCgbFreq = (u32 (*)(u8, u8, u8))MP2K_event_null;
     soundInfo->extVolPit = MP2K_event_null;
     MPlayJumpTableCopy(gMPlayJumpTable);
     soundInfo->mplayJumpTable = gMPlayJumpTable;
@@ -771,6 +774,39 @@ void TrkVolPitSet(struct MP2KPlayerState *player, struct MP2KTrack *track) {
         track->pitchCalculated = x;
     }
     track->status &= 0xFA;
+}
+
+u32 MidiKeyToCgbFreq(u8 channel, u8 key, u8 fineAdjust) {
+    if (channel == 4) {
+        if (key <= 20) {
+            key = 0;
+        } else {
+            key -= 21;
+            if (key > 59) {
+                key = 59;
+            }
+        }
+        return gNoiseTable[key];
+    } else {
+        s32 value1;
+        s32 value2;
+
+        if (key <= 35) {
+            fineAdjust = 0;
+            key = 0;
+        } else {
+            key -= 36;
+            if (key > 130) {
+                key = 130;
+                fineAdjust = 255;
+            }
+        }
+        value1 = gCgbScaleTable[key];
+        value1 = gCgbFreqTable[value1 & 0xF] >> (value1 >> 4);
+        value2 = gCgbScaleTable[key + 1];
+        value2 = gCgbFreqTable[value2 & 0xF] >> (value2 >> 4);
+        return value1 + ((fineAdjust * (value2 - value1)) >> 8) + 2048;
+    }
 }
 
 void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {
