@@ -157,7 +157,9 @@ struct UnknownState03004dbc {
     u8 field3;
     u8 filler4[8];
     u16 field12;
-    u8 filler14[6];
+    u16 field14;
+    u16 field16;
+    u8 filler18[2];
     u32 bits[16];
 };
 
@@ -232,12 +234,15 @@ extern const u8 gUnknown_08edb820[];
 extern const u8 gUnknown_08edb4f0[];
 extern const u8 gUnknown_08edb678[];
 extern const u16 gUnknown_08edb834[];
+extern const void *gUnknown_08edb750;
+extern const u16 gUnknown_08edb91c[];
 extern u16 *gUnknown_03004db0;
 extern const u16 data_gap_003[];
 extern u32 gUnknown_03004dc0;
 extern u32 gUnknown_03004dc8;
 extern u16 gUnknown_03004dd8;
 extern u16 gUnknown_03004ddc;
+extern u16 gUnknown_03004de0;
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -265,6 +270,8 @@ void FUN_0802440c(struct UnknownListNode *node);
 void FUN_080243a4(struct UnknownListNode *node);
 void FUN_080245a0(struct UnknownListNode *node);
 void FUN_08024794(struct UnknownListNode *node);
+void FUN_08024a34(struct UnknownListNode *node);
+void FUN_08024aac(struct UnknownListNode *node);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -1562,4 +1569,34 @@ void FUN_08024738(struct UnknownListNode *node) {
 void FUN_08024794(struct UnknownListNode *node) {
     node->position->x = gUnknown_03004dbc->field12 + gUnknown_08edb834[node->position->field13 * 2];
     FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_080247c4(struct UnknownListNode *node) {
+    u32 difference = gUnknown_03004dbc->field16 - gUnknown_03004dbc->field14;
+    u32 remainder = difference % 6;
+    u32 quotient = difference / 6;
+
+    node->position->field0 = gUnknown_08edb750;
+    node->position->tile = 336;
+    node->position->x = remainder * 32 + 24;
+    node->position->y = quotient * 40 + 32;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_08024a34;
+}
+
+void FUN_0802482c(struct UnknownListNode *node) {
+    u32 difference = gUnknown_03004de0 - gUnknown_03004ddc;
+    u32 column = difference & 3;
+    u32 row = difference >> 2;
+
+    node->position->field0 = gUnknown_08edb750;
+    node->position->tile = 336;
+    node->position->x = gUnknown_08edb91c[column];
+    node->position->y = gUnknown_08edb91c[row + 4];
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_08024aac;
 }
