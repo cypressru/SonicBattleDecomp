@@ -62,6 +62,9 @@ rejected_function_pointers:
   - { source: 0x0319D82, destination: 0x080200A4 }
   - { source: 0x031D80C, destination: 0x080200A4 }
   - { source: 0x031DF12, destination: 0x080200A4 }
+  # Bytes in a raw audio asset happen to encode 0x0802015B. The destination
+  # lands two bytes into FUN_08020144's multiplier/addend literal pool.
+  - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true
@@ -760,6 +763,8 @@ units:
       - { offset: 0x6828, mode: thumb }
       - { offset: 0x6842, mode: data }
       - { offset: 0x6848, mode: thumb }
+      - { offset: 0x68A4, mode: data }
+      - { offset: 0x68B0, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -916,6 +921,7 @@ units:
       - { offset: 0x6824, type: abs32, symbol: gUnknown_030044d0 }
       - { offset: 0x6844, type: abs32, symbol: gUnknown_030044d0 }
       - { offset: 0x6890, type: abs32, symbol: gUnknown_0300019c }
+      - { offset: 0x68A4, type: abs32, symbol: gUnknown_0300019c }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

@@ -379,7 +379,6 @@ address,name,mode,confidence
 0x080200F8,FUN_080200f8,thumb,rom-pointer-corrected-entry
 0x08020134,FUN_08020134,thumb,direct-call
 0x08020144,FUN_08020144,thumb,direct-call
-0x0802015A,FUN_0802015a,thumb,rom-pointer
 0x08020160,FUN_08020160,thumb,direct-call
 0x08020198,FUN_08020198,thumb,direct-call
 0x080201F8,FUN_080201f8,thumb,direct-call
