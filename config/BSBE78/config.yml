@@ -820,6 +820,37 @@ units:
     start: 0x04AAF8
     end: 0x04AC14
     category: sdk
+    source: src/agb_flash_512k.c
+    cflags: [-O1, -mthumb-interwork]
+    base_symbol_size_overrides:
+      IdentifyFlash: 0x94
+      WaitForFlashWrite512K_Common: 0x88
+    mappings:
+      - { offset: 0x1E, mode: data }
+      - { offset: 0x2C, mode: thumb }
+      - { offset: 0x7A, mode: data }
+      - { offset: 0x94, mode: thumb }
+      - { offset: 0xBC, mode: data }
+      - { offset: 0xC0, mode: thumb }
+      - { offset: 0xD6, mode: data }
+      - { offset: 0xE0, mode: thumb }
+      - { offset: 0x118, mode: data }
+    relocations:
+      - { offset: 0x10, type: thumb_call, symbol: ReadFlashId }
+      - { offset: 0x28, type: abs32, symbol: gSetup512KInfos }
+      - { offset: 0x7C, type: abs32, symbol: ProgramFlashSector }
+      - { offset: 0x80, type: abs32, symbol: EraseFlashChip }
+      - { offset: 0x84, type: abs32, symbol: EraseFlashSector }
+      - { offset: 0x88, type: abs32, symbol: WaitForFlashWrite }
+      - { offset: 0x8C, type: abs32, symbol: gFlashMaxTime }
+      - { offset: 0x90, type: abs32, symbol: gFlash }
+      - { offset: 0xAC, type: thumb_call, symbol: StartFlashTimer }
+      - { offset: 0xBC, type: abs32, symbol: PollFlashStatus }
+      - { offset: 0xD8, type: abs32, symbol: gFlash }
+      - { offset: 0xE4, type: thumb_call, symbol: _call_via_r1 }
+      - { offset: 0xFC, type: thumb_call, symbol: _call_via_r1 }
+      - { offset: 0x108, type: thumb_call, symbol: StopFlashTimer }
+      - { offset: 0x118, type: abs32, symbol: gFlashTimeoutFlag }
     symbols:
       - { name: IdentifyFlash, address: 0x04AAF8 }
       - { name: WaitForFlashWrite512K_Common, address: 0x04AB8C }
