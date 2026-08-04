@@ -93,16 +93,28 @@ struct MixerSource {
     u8 type;
     u8 rightVolume;
     u8 leftVolume;
-    u8 padding4[2];
+    u8 attack;
+    u8 decay;
     u8 sustain;
-    u8 padding7[3];
+    u8 release;
+    u8 key;
+    u8 envelopeVolume;
     u8 envelopeGoal;
-    u8 padding11[14];
+    u8 envelopeCounter;
+    u8 echoVolume;
+    u8 echoLength;
+    u8 padding14[11];
     u8 sustainGoal;
-    u8 padding26;
+    u8 nrx4;
     u8 pan;
     u8 panMask;
-    u8 padding29[35];
+    u8 cgbStatus;
+    u8 length;
+    u8 sweep;
+    u32 frequency;
+    void *wave;
+    void *current;
+    u8 padding44[20];
 };
 
 struct SoundMixerState {
@@ -112,7 +124,8 @@ struct SoundMixerState {
     u8 numChannels;
     u8 masterVolume;
     u8 freqOption;
-    u8 padding9[2];
+    u8 extensionFlags;
+    u8 cgbCounter15;
     u8 framesPerDmaCycle;
     u8 maxScanlines;
     u8 padding13[3];
@@ -152,6 +165,7 @@ extern u8 gMPlayMemAccArea[];
 extern const u8 gNoiseTable[];
 extern const u8 gCgbScaleTable[];
 extern const s16 gCgbFreqTable[];
+extern const u8 gCgb3Vol[];
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -999,6 +1013,280 @@ void CgbModVol(struct MixerSource *channel) {
     }
     channel->sustainGoal = (channel->envelopeGoal * channel->sustain + 15) >> 4;
     channel->pan &= channel->panMask;
+}
+
+void CgbSound(void) {
+    s32 channelNumber;
+    struct MixerSource *channel;
+    s32 previousCounter;
+    struct SoundMixerState *soundInfo = gSoundInfo;
+    volatile u8 *nrx0;
+    volatile u8 *nrx1;
+    volatile u8 *nrx2;
+    volatile u8 *nrx3;
+    volatile u8 *nrx4;
+    s32 envelopeDirection;
+    volatile u8 channelIndex;
+    volatile u8 *channelIndexPointer;
+    int mask = 0xFF;
+
+    if (soundInfo->cgbCounter15) {
+        soundInfo->cgbCounter15--;
+    } else {
+        soundInfo->cgbCounter15 = 14;
+    }
+
+    for (channelNumber = 1, channel = soundInfo->cgbChans; channelNumber <= 4;
+         channelNumber++, channel++) {
+        channelIndexPointer = &channelIndex;
+        if (!(channel->status & 0xC7)) {
+            continue;
+        }
+
+        switch (channelNumber) {
+        case 1:
+            nrx0 = (volatile u8 *)0x04000060;
+            nrx1 = (volatile u8 *)0x04000062;
+            nrx2 = (volatile u8 *)0x04000063;
+            nrx3 = (volatile u8 *)0x04000064;
+            nrx4 = (volatile u8 *)0x04000065;
+            *channelIndexPointer = 0;
+            break;
+        case 2:
+            nrx0 = (volatile u8 *)0x04000061;
+            nrx1 = (volatile u8 *)0x04000068;
+            nrx2 = (volatile u8 *)0x04000069;
+            nrx3 = (volatile u8 *)0x0400006C;
+            nrx4 = (volatile u8 *)0x0400006D;
+            *channelIndexPointer = 1;
+            break;
+        case 3:
+            nrx0 = (volatile u8 *)0x04000070;
+            nrx1 = (volatile u8 *)0x04000072;
+            nrx2 = (volatile u8 *)0x04000073;
+            nrx3 = (volatile u8 *)0x04000074;
+            nrx4 = (volatile u8 *)0x04000075;
+            *channelIndexPointer = 2;
+            break;
+        default:
+            nrx0 = (volatile u8 *)0x04000071;
+            nrx1 = (volatile u8 *)0x04000078;
+            nrx2 = (volatile u8 *)0x04000079;
+            nrx3 = (volatile u8 *)0x0400007C;
+            nrx4 = (volatile u8 *)0x0400007D;
+            *channelIndexPointer = 3;
+            break;
+        }
+
+        previousCounter = soundInfo->cgbCounter15;
+        envelopeDirection = *nrx2;
+
+        if (channel->status & 0x80) {
+            if (!(channel->status & 0x40)) {
+                channel->status = 3;
+                channel->cgbStatus = 3;
+                CgbModVol(channel);
+                switch (channelNumber) {
+                case 1:
+                    *nrx0 = channel->sweep;
+                case 2:
+                    *nrx1 = ((u32)channel->wave << 6) + channel->length;
+                    goto initializeEnvelope;
+                case 3:
+                    if (channel->wave != channel->current) {
+                        *nrx0 = 0x40;
+                        *(volatile u32 *)0x04000090 = ((u32 *)channel->wave)[0];
+                        *(volatile u32 *)0x04000094 = ((u32 *)channel->wave)[1];
+                        *(volatile u32 *)0x04000098 = ((u32 *)channel->wave)[2];
+                        *(volatile u32 *)0x0400009C = ((u32 *)channel->wave)[3];
+                        channel->current = channel->wave;
+                    }
+                    *nrx0 = 0;
+                    *nrx1 = channel->length;
+                    if (channel->length) {
+                        channel->nrx4 = 0xC0;
+                    } else {
+                        channel->nrx4 = 0x80;
+                    }
+                    break;
+                default:
+                    *nrx1 = channel->length;
+                    *nrx3 = (u32)channel->wave << 3;
+                initializeEnvelope:
+                    envelopeDirection = channel->attack + 8;
+                    if (channel->length) {
+                        channel->nrx4 = 0x40;
+                    } else {
+                        channel->nrx4 = 0;
+                    }
+                    break;
+                }
+                channel->envelopeCounter = channel->attack;
+                if ((s8)(channel->attack & mask)) {
+                    channel->envelopeVolume = 0;
+                    goto envelopeStepComplete;
+                } else {
+                    goto envelopeDecayStart;
+                }
+            } else {
+                goto oscillatorOff;
+            }
+        } else if ((channel->status & 4) ||
+                   !(*(volatile u8 *)0x04000084 & (1 << *channelIndexPointer))) {
+            channel->echoLength--;
+            if ((s8)(channel->echoLength & mask) <= 0) {
+            oscillatorOff:
+                CgbOscOff(channelNumber);
+                channel->status = 0;
+                goto channelComplete;
+            }
+            goto envelopeComplete;
+        } else if ((channel->status & 0x40) && (channel->status & 3)) {
+            channel->status &= ~3;
+            channel->envelopeCounter = channel->release;
+            if ((s8)(channel->release & mask)) {
+                channel->cgbStatus |= 1;
+                if (channelNumber != 3) {
+                    envelopeDirection = channel->release;
+                }
+                goto envelopeStepComplete;
+            } else {
+                goto envelopePseudoEchoStart;
+            }
+        } else {
+        envelopeStepRepeat:
+            if (channel->envelopeCounter == 0) {
+                if (channelNumber == 3) {
+                    channel->cgbStatus |= 1;
+                }
+                CgbModVol(channel);
+                if ((channel->status & 3) == 0) {
+                    channel->envelopeVolume--;
+                    if ((s8)(channel->envelopeVolume & mask) <= 0) {
+                    envelopePseudoEchoStart:
+                        channel->envelopeVolume =
+                            ((channel->envelopeGoal * channel->echoVolume) + 0xFF) >> 8;
+                        if (channel->envelopeVolume) {
+                            channel->status |= 4;
+                            channel->cgbStatus |= 1;
+                            if (channelNumber != 3) {
+                                envelopeDirection = 8;
+                            }
+                            goto envelopeComplete;
+                        } else {
+                            goto oscillatorOff;
+                        }
+                    } else {
+                        channel->envelopeCounter = channel->release;
+                    }
+                } else if ((channel->status & 3) == 1) {
+                envelopeSustain:
+                    channel->envelopeVolume = channel->sustainGoal;
+                    channel->envelopeCounter = 7;
+                } else if ((channel->status & 3) == 2) {
+                    int envelopeVolume;
+                    int sustainGoal;
+
+                    channel->envelopeVolume--;
+                    envelopeVolume = (s8)(channel->envelopeVolume & mask);
+                    sustainGoal = (s8)channel->sustainGoal;
+                    if (envelopeVolume <= sustainGoal) {
+                    envelopeSustainStart:
+                        if (channel->sustain == 0) {
+                            channel->status &= ~3;
+                            goto envelopePseudoEchoStart;
+                        } else {
+                            channel->status--;
+                            channel->cgbStatus |= 1;
+                            if (channelNumber != 3) {
+                                envelopeDirection = 8;
+                            }
+                            goto envelopeSustain;
+                        }
+                    } else {
+                        channel->envelopeCounter = channel->decay;
+                    }
+                } else {
+                    channel->envelopeVolume++;
+                    if ((u8)(channel->envelopeVolume & mask) >= channel->envelopeGoal) {
+                    envelopeDecayStart:
+                        channel->status--;
+                        channel->envelopeCounter = channel->decay;
+                        if ((u8)(channel->envelopeCounter & mask)) {
+                            channel->cgbStatus |= 1;
+                            channel->envelopeVolume = channel->envelopeGoal;
+                            if (channelNumber != 3) {
+                                envelopeDirection = channel->decay;
+                            }
+                        } else {
+                            goto envelopeSustainStart;
+                        }
+                    } else {
+                        channel->envelopeCounter = channel->attack;
+                    }
+                }
+            }
+        }
+
+    envelopeStepComplete:
+        channel->envelopeCounter--;
+        if (previousCounter == 0) {
+            previousCounter--;
+            goto envelopeStepRepeat;
+        }
+
+    envelopeComplete:
+        if (channel->cgbStatus & 2) {
+            int pwmRate;
+
+            if (channelNumber < 4 && (channel->type & 8)) {
+                pwmRate = *(volatile u8 *)0x04000089;
+
+                // This is unreachable for the byte-wide register read, but keeps agbcc's promoted
+                // temporary distinct from the volatile load result as in the retail emission.
+                if (pwmRate < 0) {
+                    channel->frequency = 0;
+                }
+
+                if (pwmRate < 0x40) {
+                    channel->frequency = (channel->frequency + 2) & 0x7FC;
+                } else if (pwmRate < 0x80) {
+                    channel->frequency = (channel->frequency + 1) & 0x7FE;
+                }
+            }
+            if (channelNumber != 4) {
+                *nrx3 = channel->frequency;
+            } else {
+                *nrx3 = (*nrx3 & 8) | channel->frequency;
+            }
+            channel->nrx4 = (channel->nrx4 & 0xC0) + ((channel->frequency & 0x3F00) >> 8);
+            *nrx4 = (s8)(channel->nrx4 & mask);
+        }
+
+        if (channel->cgbStatus & 1) {
+            *(volatile u8 *)0x04000081 =
+                (*(volatile u8 *)0x04000081 & ~channel->panMask) | channel->pan;
+            if (channelNumber == 3) {
+                *nrx2 = gCgb3Vol[channel->envelopeVolume];
+                if (channel->nrx4 & 0x80) {
+                    *nrx0 = 0x80;
+                    *nrx4 = channel->nrx4;
+                    channel->nrx4 &= 0x7F;
+                }
+            } else {
+                u32 envelopeMask = 0xF;
+
+                *nrx2 = (envelopeDirection & envelopeMask) + (channel->envelopeVolume << 4);
+                *nrx4 = channel->nrx4 | 0x80;
+                if (channelNumber == 1 && !(*nrx0 & 8)) {
+                    *nrx4 = channel->nrx4 | 0x80;
+                }
+            }
+        }
+
+    channelComplete:
+        channel->cgbStatus = 0;
+    }
 }
 
 void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {

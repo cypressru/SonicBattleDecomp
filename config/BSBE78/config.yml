@@ -580,6 +580,26 @@ units:
       - { offset: 0xC30, mode: thumb }
       - { offset: 0xC40, mode: data }
       - { offset: 0xC44, mode: thumb }
+      - { offset: 0xCCC, mode: data }
+      - { offset: 0xCD0, mode: thumb }
+      - { offset: 0xD20, mode: data }
+      - { offset: 0xD2C, mode: thumb }
+      - { offset: 0xD42, mode: data }
+      - { offset: 0xD50, mode: thumb }
+      - { offset: 0xD66, mode: data }
+      - { offset: 0xD74, mode: thumb }
+      - { offset: 0xDDA, mode: data }
+      - { offset: 0xDE8, mode: thumb }
+      - { offset: 0xE3A, mode: data }
+      - { offset: 0xE40, mode: thumb }
+      - { offset: 0xEC6, mode: data }
+      - { offset: 0xECC, mode: thumb }
+      - { offset: 0x103C, mode: data }
+      - { offset: 0x1044, mode: thumb }
+      - { offset: 0x105A, mode: data }
+      - { offset: 0x1060, mode: thumb }
+      - { offset: 0x10D4, mode: data }
+      - { offset: 0x10DC, mode: thumb }
       - { offset: 0x13CE, mode: data }
       - { offset: 0x141C, mode: thumb }
       - { offset: 0x14E6, mode: data }
@@ -594,6 +614,7 @@ units:
       MidiKeyToCgbFreq: 0xA0
       CgbOscOff: 0x50
       CgbModVol: 0x66
+      CgbSound: 0x480
       MP2K_event_memacc: 0x158
       MPlayStart: 0xDE
       MPlayExtender: 0xC8
@@ -722,6 +743,11 @@ units:
       - { offset: 0xB7C, type: abs32, symbol: gNoiseTable }
       - { offset: 0xBE8, type: abs32, symbol: gCgbScaleTable }
       - { offset: 0xBEC, type: abs32, symbol: gCgbFreqTable }
+      - { offset: 0xCCC, type: abs32, symbol: gSoundInfo }
+      - { offset: 0xDC6, type: thumb_call, symbol: CgbModVol }
+      - { offset: 0xEBC, type: thumb_call, symbol: CgbOscOff }
+      - { offset: 0xF20, type: thumb_call, symbol: CgbModVol }
+      - { offset: 0x10D8, type: abs32, symbol: gCgb3Vol }
       - { offset: 0x1306, type: thumb_call, symbol: ClearModM }
       - { offset: 0x137A, type: thumb_call, symbol: ClearModM }
       - { offset: 0x13D0, type: abs32, symbol: .text, addend: 0x13D4 }
