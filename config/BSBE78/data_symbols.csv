@@ -523,4 +523,4 @@ address,name,mode,confidence
 0x083F2CC8,lz77_asset_437,data,lz77-pointer-1
 0x083F3500,lz77_asset_438,data,lz77-pointer-1
 0x083F3CC4,lz77_asset_439,data,lz77-pointer-1
-0x083F4418,data_gap_084,data,range-gap
+0x083F4418,raw_asset_tail,data,post-compressed-asset-region

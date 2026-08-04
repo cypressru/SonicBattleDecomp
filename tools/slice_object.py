@@ -17,7 +17,7 @@ def main() -> None:
     start, end = int(sys.argv[3]), int(sys.argv[4])
     kind = sys.argv[5]
     symbol_specs = sys.argv[6:]
-    if kind not in {"code", "data"}:
+    if kind not in {"code", "data", "rodata"}:
         raise ValueError(f"unsupported slice kind: {kind}")
     payload = source.read_bytes()[start:end]
     symbols = []
@@ -39,8 +39,11 @@ def main() -> None:
         symbol_type = 0x12 if kind == "code" else 0x11
         symbol_table.extend(struct.pack("<IIIBBH", name_offset, value, next_relative - relative, symbol_type, 0, 1))
 
-    section_name = b".text" if kind == "code" else b".data"
+    section_name = {"code": b".text", "data": b".data", "rodata": b".rodata"}[kind]
     shstr = b"\0" + section_name + b"\0.symtab\0.strtab\0.shstrtab\0"
+    symtab_name = 1 + len(section_name) + 1
+    strtab_name = symtab_name + len(b".symtab") + 1
+    shstrtab_name = strtab_name + len(b".strtab") + 1
     text_offset = 52
     symtab_offset = align(text_offset + len(payload), 4)
     strtab_offset = symtab_offset + len(symbol_table)
@@ -52,13 +55,17 @@ def main() -> None:
         1, 40, 1, 0, 0, shoff, 0x05000000, 52, 0, 0, 40, 5, 4,
     )
     null_section = b"\0" * 40
-    section_flags = 0x6 if kind == "code" else 0x3
+    section_flags = 0x6 if kind == "code" else (0x2 if kind == "rodata" else 0x3)
     text_section = struct.pack("<IIIIIIIIII", 1, 1, section_flags, 0, text_offset, len(payload), 0, 0, 4, 0)
     symtab_section = struct.pack(
-        "<IIIIIIIIII", 7, 2, 0, 0, symtab_offset, len(symbol_table), 3, 1, 4, 16
+        "<IIIIIIIIII", symtab_name, 2, 0, 0, symtab_offset, len(symbol_table), 3, 1, 4, 16
     )
-    strtab_section = struct.pack("<IIIIIIIIII", 15, 3, 0, 0, strtab_offset, len(strtab), 0, 0, 1, 0)
-    shstr_section = struct.pack("<IIIIIIIIII", 23, 3, 0, 0, shstr_offset, len(shstr), 0, 0, 1, 0)
+    strtab_section = struct.pack(
+        "<IIIIIIIIII", strtab_name, 3, 0, 0, strtab_offset, len(strtab), 0, 0, 1, 0
+    )
+    shstr_section = struct.pack(
+        "<IIIIIIIIII", shstrtab_name, 3, 0, 0, shstr_offset, len(shstr), 0, 0, 1, 0
+    )
     result = header + payload
     result += b"\0" * (symtab_offset - len(result)) + symbol_table + strtab + shstr
     result += b"\0" * (shoff - len(result))

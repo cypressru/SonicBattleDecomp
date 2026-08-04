@@ -21,6 +21,30 @@ def fail(message: str) -> None:
 
 def main() -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    configured_units = []
+    for unit in config["units"]:
+        range_map = unit.get("range_map")
+        if not range_map:
+            configured_units.append(unit)
+            continue
+        with (ROOT / range_map).open(newline="", encoding="utf-8") as stream:
+            rows = list(csv.DictReader(stream))
+        starts = [int(row["address"], 0) - 0x08000000 for row in rows]
+        if not starts or starts[0] != int(unit["start"]):
+            fail(f"range map for {unit['name']} does not begin at its configured start")
+        for index, (row, start) in enumerate(zip(rows, starts)):
+            end = starts[index + 1] if index + 1 < len(starts) else int(unit["end"])
+            is_asset = row["name"].startswith(("lz77_asset_", "raw_asset_"))
+            configured_units.append(
+                {
+                    "name": f"{'assets' if is_asset else 'rodata'}/{row['name']}",
+                    "start": start,
+                    "end": end,
+                    "category": "assets" if is_asset else "rodata",
+                    "kind": "rodata",
+                    "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
+                }
+            )
     rom = ROOT / config["rom"]
     if not rom.is_file():
         fail(f"place the verified ROM at {rom.relative_to(ROOT)}")
@@ -37,7 +61,7 @@ def main() -> None:
     units = []
     ninja_targets = []
     symbol_maps: dict[str, list[dict[str, object]]] = {}
-    for unit in config["units"]:
+    for unit in configured_units:
         map_path = unit.get("symbol_map", unit.get("function_map"))
         if not map_path:
             continue
@@ -50,7 +74,7 @@ def main() -> None:
         if not rows:
             fail(f"function map for {unit['name']} contains no symbols")
         symbol_maps[unit["name"]] = rows
-    for unit in config["units"]:
+    for unit in configured_units:
         target_path = build_dir / "target" / f"{unit['name']}.o"
         base_path = build_dir / "base" / f"{unit['name']}.o" if unit.get("source") else None
         target_path.parent.mkdir(parents=True, exist_ok=True)
@@ -80,6 +104,7 @@ def main() -> None:
             {"id": "sdk", "name": "SDK"},
             {"id": "runtime", "name": "Runtime"},
             {"id": "assets", "name": "Data and assets"},
+            {"id": "rodata", "name": "Read-only data"},
             {"id": "payload", "name": "Embedded payload"},
         ],
     }
@@ -103,7 +128,7 @@ def main() -> None:
         "  description = CC $out",
         "",
     ]
-    for unit, target in zip(config["units"], ninja_targets):
+    for unit, target in zip(configured_units, ninja_targets):
         symbol_specs = []
         for symbol in [*unit.get("symbols", []), *symbol_maps.get(unit["name"], [])]:
             symbol_specs.append(

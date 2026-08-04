@@ -6,12 +6,33 @@ sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
 units:
-  # The game and SDK region is intentionally grouped until its internal object
-  # boundaries are corroborated. It is excluded from claimed progress.
-  - name: main/unknown_08000000
+  - name: data/gba_header
     start: 0x000000
-    end: 0x04A590
+    end: 0x0000C0
+    category: assets
+    kind: data
+    symbols: [{ name: gba_header, address: 0x000000, mode: data }]
+  - name: sdk/crt0
+    start: 0x0000C0
+    end: 0x000210
+    category: sdk
+    function_map: config/BSBE78/functions.csv
+  # Game code remains grouped until internal object boundaries are corroborated;
+  # the startup, M4A, BIOS veneer, backup, and runtime objects are separated.
+  - name: main/unknown_08000000
+    start: 0x000210
+    end: 0x04833C
     category: game
+    function_map: config/BSBE78/functions.csv
+  - name: sdk/m4a0
+    start: 0x04833C
+    end: 0x048F74
+    category: sdk
+    function_map: config/BSBE78/functions.csv
+  - name: sdk/m4a
+    start: 0x048F74
+    end: 0x04A590
+    category: sdk
     function_map: config/BSBE78/functions.csv
   # Nintendo BIOS-call veneer archive objects. Boundaries are fixed by each
   # veneer body and archive alignment; names correlate to the public SDK ABI.
@@ -30,11 +51,50 @@ units:
   - { name: libagbsyscall/Sqrt, start: 0x04A5CC, end: 0x04A5D0, category: sdk }
   - { name: libagbsyscall/VBlankIntrWait, start: 0x04A5D0, end: 0x04A5D8, category: sdk }
   - { name: libagbsyscall/SoftResetExram, start: 0x04A5D8, end: 0x04A5F8, category: sdk }
-  - name: sdk/unknown_backup_library
+  - name: sdk/agb_flash
     start: 0x04A5F8
+    end: 0x04AAF8
+    category: sdk
+    symbols:
+      - { name: SwitchFlashBank, address: 0x04A5F8 }
+      - { name: ReadFlashId, address: 0x04A61C }
+      - { name: FlashTimerIntr, address: 0x04A6B8 }
+      - { name: SetFlashTimerIntr, address: 0x04A6E0 }
+      - { name: StartFlashTimer, address: 0x04A71C }
+      - { name: StopFlashTimer, address: 0x04A7C4 }
+      - { name: ReadFlash1, address: 0x04A808 }
+      - { name: SetReadFlash1, address: 0x04A80C }
+      - { name: ReadFlash_Core, address: 0x04A84C }
+      - { name: ReadFlash, address: 0x04A870 }
+      - { name: VerifyFlashSector_Core, address: 0x04A90C }
+      - { name: VerifyFlashSector, address: 0x04A93C }
+      - { name: VerifyFlashSectorNBytes, address: 0x04A9D4 }
+      - { name: ProgramFlashSectorAndVerify, address: 0x04AA6C }
+      - { name: ProgramFlashSectorAndVerifyNBytes, address: 0x04AAB0 }
+  - name: sdk/agb_flash_512k
+    start: 0x04AAF8
+    end: 0x04AC14
+    category: sdk
+    symbols:
+      - { name: IdentifyFlash, address: 0x04AAF8 }
+      - { name: WaitForFlashWrite512K_Common, address: 0x04AB8C }
+  - name: sdk/agb_flash_le_512k
+    start: 0x04AC14
+    end: 0x04AEBC
+    category: sdk
+    symbols:
+      - { name: EraseFlashChip_LE, address: 0x04AC14 }
+      - { name: EraseFlashSector_LE, address: 0x04AC88 }
+      - { name: ProgramByte, address: 0x04AD24 }
+      - { name: ProgramFlashSector_LE, address: 0x04AD5C }
+      - { name: VerifyEraseSector_Core, address: 0x04AE80 }
+      - { name: VerifyEraseSector, address: 0x04AEA4 }
+  - name: sdk/agb_flash_mx_512k
+    start: 0x04AEBC
     end: 0x04AF68
     category: sdk
-    auto_generated: true
+    symbols:
+      - { name: ProgramFlashSector_MX, address: 0x04AEBC }
   # Exact runtime object boundaries established by matching the pinned agbcc
   # library objects, including non-relocated instruction sequences and sizes.
   - name: libgcc/_call_via_rX
@@ -86,9 +146,9 @@ units:
   - name: data/main_rom_data
     start: 0x04B718
     end: 0xEEB690
-    category: assets
-    kind: data
-    symbol_map: config/BSBE78/data_symbols.csv
+    category: rodata
+    kind: rodata
+    range_map: config/BSBE78/data_symbols.csv
   - name: payload/agb_test_header
     start: 0xEEB690
     end: 0xEEB750
