@@ -90,7 +90,9 @@ struct MixerSource {
 struct SoundMixerState {
     u32 lockStatus;
     volatile u8 dmaCounter;
-    u8 padding5[3];
+    u8 reverb;
+    u8 numChannels;
+    u8 masterVolume;
     u8 freqOption;
     u8 padding9[2];
     u8 framesPerDmaCycle;
@@ -132,6 +134,7 @@ void SoundClear(void);
 void m4aSoundVSyncOff(void);
 void m4aSoundVSyncOn(void);
 void SampleFreqSet(u32 frequency);
+void m4aSoundMode(u32 mode);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -412,6 +415,52 @@ void SampleFreqSet(u32 frequency) {
     soundInfo->sampleRate = (597275 * samplesPerFrame + 5000) / 10000;
     soundInfo->sampleRateReciprocal = ((0x1000000 / soundInfo->sampleRate) + 1) >> 1;
     m4aSoundVSyncOn();
+}
+
+void m4aSoundMode(u32 mode) {
+    struct SoundMixerState *soundInfo = gSoundInfo;
+    u32 value;
+
+    if (soundInfo->lockStatus != 0x68736D53) {
+        return;
+    }
+    soundInfo->lockStatus++;
+
+    value = mode & 0xFF;
+    if (value != 0) {
+        soundInfo->reverb = value & 0x7F;
+    }
+
+    value = mode & 0xF00;
+    if (value != 0) {
+        struct MixerSource *channel;
+
+        soundInfo->numChannels = value >> 8;
+        value = 12;
+        channel = soundInfo->channels;
+        while (value != 0) {
+            channel->status = 0;
+            value--;
+            channel++;
+        }
+    }
+
+    value = mode & 0xF000;
+    if (value != 0) {
+        soundInfo->masterVolume = value >> 12;
+    }
+
+    value = mode & 0xB00000;
+    if (value != 0) {
+        value = (value & 0x300000) >> 14;
+        *(volatile u8 *)0x04000089 = (*(volatile u8 *)0x04000089 & 0x3F) | value;
+    }
+
+    value = mode & 0xF0000;
+    if (value != 0) {
+        SampleFreqSet(value);
+    }
+    soundInfo->lockStatus = 0x68736D53;
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {

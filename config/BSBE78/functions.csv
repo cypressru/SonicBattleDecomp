@@ -1263,7 +1263,7 @@ address,name,mode,confidence
 0x080493CC,Clear64byte,thumb,direct-call+sdk-correlation
 0x080493E0,FUN_080493e0,thumb,direct-call
 0x080494D8,SampleFreqSet,thumb,rom-pointer+direct-call+sdk-correlation
-0x08049544,FUN_08049544,thumb,direct-call
+0x08049544,m4aSoundMode,thumb,direct-call+sdk-correlation
 0x080495D8,SoundClear,thumb,recursive-disassembly+sdk-correlation
 0x0804962C,m4aSoundVSyncOff,thumb,direct-call+sdk-correlation
 0x080496AC,m4aSoundVSyncOn,thumb,direct-call+sdk-correlation
