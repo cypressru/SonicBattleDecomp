@@ -29,10 +29,20 @@ struct UnknownQueueEntry08017f34 {
     void *second;
 };
 
+struct UnknownState080180d4 {
+    u16 first;
+    u16 unused;
+    u16 second;
+    u16 third;
+};
+
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern struct UnknownQueueEntry08017f00 gUnknown_030033e0[];
+extern struct UnknownState080180d4 gUnknown_030048e0;
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
+extern s32 __divsi3(s32 numerator, s32 denominator);
+extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 
 void FUN_08017ed0(void) {
     gUnknown_030017cc = 0;
@@ -73,11 +83,27 @@ void FUN_08017f58(u8 first, u8 second) {
 
 void FUN_08017f6c(void) { gUnknown_030017c8 = gUnknown_030017cc; }
 
+void FUN_0801808c(u16 first, u16 second, u16 third, u16 fourth) {
+    FUN_080200d8(gUnknown_03003170, first, second, third, fourth);
+    gUnknown_03003170++;
+}
+
+void FUN_080180d4(u16 *first, u16 *second, u16 *third) {
+    *first = gUnknown_030048e0.first;
+    *second = gUnknown_030048e0.second;
+    *third = gUnknown_030048e0.third;
+}
+
 void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY) {
     s32 signedFactorX = (s16)factorX;
 
     *outputX = ((gUnknown_03001b04 * signedFactorX) >> 13) + 120;
     *outputY = ((DivArm(gUnknown_030016c8, gUnknown_03001b04 << 8) * factorY) >> 13) + 80;
+}
+
+void FUN_0801824c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY) {
+    *outputX = __divsi3((inputX - 120) << 13, gUnknown_03001b04);
+    *outputY = __divsi3(((inputY - 80) << 13) * gUnknown_030016c8, gUnknown_03001b04 << 8);
 }
 
 void FUN_080182ac(void) {

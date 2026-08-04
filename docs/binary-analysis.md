@@ -52,7 +52,7 @@ and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x39530 instruction bytes and 0xD9C4 owned non-code bytes.
+game category consequently contains 0x39546 instruction bytes and 0xD9AE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 184 | 70,078 | 27,274 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 185 | 70,100 | 27,252 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -115,6 +115,12 @@ ratio, and the third performs two mode-dependent smoothing updates. All 214 inst
 with ordinary C. `0x08018318` contains a branch-skipped two-word literal island; marking that island
 as data is required for an honest instruction comparison and does not change its accepted function
 extent.
+
+The next inverse-projection and queue pass reconstructed `0x0801808C`, `0x080180D4`, and
+`0x0801824C`, totaling 168 matching instruction bytes. `0x080180D4-0x080180EA` is another coherent
+leaf with an owned literal that closure missed; it copies three halfwords from the shared state at
+`0x030048E0` and is now counted as code. The projection helper uses the already identified runtime
+`__divsi3` routine, while the queue wrapper preserves the five-argument call ABI naturally in C.
 
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
