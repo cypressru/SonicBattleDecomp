@@ -68,7 +68,11 @@ its 16-byte header, with its following alignment or inter-record gap represented
 song table also establishes 249 distinct validated song-header starts. `configure.py` derives these
 target units from the verified ROM and rejects unexpected counts, pointer ranges, record strides,
 sample sizes, overlaps, or song headers. The preceding `0x3F4418-0xBF2118` raw graphics/asset tail
-and the tail following the final known song start still require finer format-specific parsing.
+and most of the tail following the final known song start still require finer format-specific
+parsing. The latter tail now excludes the exact 256-byte compiler `__clz_tab` at
+`0xED66A8-0xED67A8`: its bytes uniquely match `_udivdi3.o` from the pinned source-built `libgcc`
+archive and are independently validated as the complete 0-through-255 bit-length table. The compact
+reconstruction in `src/libgcc/clz_tab.c` compiles to a byte-identical `.rodata` base section.
 
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`

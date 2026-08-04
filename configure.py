@@ -33,6 +33,10 @@ def main() -> None:
         fail(f"unexpected ROM SHA-1: {actual_sha1} (expected {config['sha1']})")
     if len(data) != int(config["rom_size"]):
         fail(f"unexpected ROM size: 0x{len(data):X}")
+    clz_table_start = 0xED66A8
+    expected_clz_table = bytes(value.bit_length() for value in range(256))
+    if data[clz_table_start : clz_table_start + 0x100] != expected_clz_table:
+        fail("unexpected libgcc __clz_tab contents")
 
     configured_units = []
     for unit in config["units"]:
@@ -54,8 +58,7 @@ def main() -> None:
         for index, (row, start) in enumerate(zip(rows, starts)):
             end = starts[index + 1] if index + 1 < len(starts) else int(unit["end"])
             is_asset = row["name"].startswith(("lz77_asset_", "raw_asset_"))
-            configured_units.append(
-                {
+            derived_unit = {
                     "name": f"{'assets' if is_asset else 'rodata'}/{row['name']}",
                     "start": start,
                     "end": end,
@@ -63,7 +66,8 @@ def main() -> None:
                     "kind": "rodata",
                     "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
                 }
-            )
+            derived_unit.update(config.get("range_overrides", {}).get(row["name"], {}))
+            configured_units.append(derived_unit)
     function_ends: dict[int, int] = {}
     function_size_map = config.get("function_size_map")
     if function_size_map:

@@ -535,3 +535,5 @@ address,name,mode,confidence
 0x08BF238C,gClockTable,data,sdk-table-correlation
 0x08BF23C0,gXcmdTable,data,sdk-table-correlation
 0x08BF23F0,m4a_voicegroup_000,data,song-header-pointer+tone-record-size
+0x08ED66A8,libgcc_clz_tab,data,source-built-libgcc-unique-byte-match
+0x08ED67A8,data_gap_after_libgcc_clz_tab,data,libgcc-table-size

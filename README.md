@@ -38,9 +38,10 @@ Sonic Battle's emitted-code evidence before a unit is marked matching.
 
 ## Progress
 
-The source-built `memcmp`, `memcpy`, and `memset` runtime objects match their complete target
-sections byte-for-byte using the pinned old-agbcc library compiler path. Function and data
-inventories outside reconstructed units remain evidence maps rather than reconstructed source.
+Nine source-built runtime code objects currently match complete target sections byte-for-byte:
+six `libgcc` members plus `memcmp`, `memcpy`, and `memset`. The reconstructed 256-byte
+`libgcc_clz_tab` read-only-data object also matches completely. Function and data inventories
+outside reconstructed units remain evidence maps rather than reconstructed source.
 
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.

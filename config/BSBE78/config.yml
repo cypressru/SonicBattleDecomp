@@ -6,6 +6,11 @@ sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
+range_overrides:
+  libgcc_clz_tab:
+    source: src/libgcc/clz_tab.c
+    cflags: [-O2]
+    complete: true
 units:
   - name: data/gba_header
     start: 0x000000
