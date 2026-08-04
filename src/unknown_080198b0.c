@@ -36,6 +36,10 @@ extern u8 (*gUnknown_030001b4)[2];
 extern u8 (*gUnknown_030001c0)[2];
 struct UnknownPoolNode404ec;
 extern struct UnknownPoolNode404ec *volatile gUnknown_0300547c;
+extern u8 gUnknown_030001ac;
+extern u8 gUnknown_030001ad;
+extern u8 *gUnknown_030001a8;
+extern u8 gUnknown_03005480;
 extern const s16 gUnknown_081231d6[];
 extern void FUN_08048fb8(void);
 extern void FUN_08049544(const void *value);
@@ -163,6 +167,12 @@ struct UnknownPoolNode404ec {
     u8 padding2[2];
     const void *data;
     u8 padding8[36];
+};
+
+struct UnknownPoolCommand4051c {
+    u8 node;
+    u8 replacement;
+    u8 value;
 };
 
 struct UnknownState080201f8 {
@@ -371,7 +381,7 @@ extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
 extern void FUN_08047c30(struct UnknownState482d0 *state);
 extern void FUN_0804033c(const void *source, void *destination, u32 size);
-extern void FUN_0804051c(struct UnknownState482d0 *state);
+extern void FUN_0804051c(void *state);
 extern void FUN_0803fe98(u16 first, u16 second, u16 third);
 extern void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags);
 extern const u8 gUnknown_081a81d0[];
@@ -5474,6 +5484,53 @@ void FUN_080404ec(void) {
             index = ((struct UnknownPoolNode404ec *)index)->next;
         } while (index != 0);
     }
+}
+
+void FUN_0804051c(void *value) {
+    struct UnknownPoolCommand4051c *command = value;
+
+    gUnknown_0300547c[command->node].next = command->replacement;
+    gUnknown_0300547c[command->replacement].field0 = command->node;
+    gUnknown_030001a8[gUnknown_030001ac++] = command->value;
+    if (gUnknown_030001ac > 126) {
+        gUnknown_030001ac = 0;
+    }
+    gUnknown_03005480--;
+}
+
+void FUN_08040470(void) {
+    s16 index;
+    u32 zero;
+    volatile u32 *dma;
+    u8 *recycleIndex;
+    u8 *secondaryIndex;
+    u8 *activeCount;
+    register struct UnknownPoolNode404ec **poolAddress asm("r12");
+    register struct UnknownPoolNode404ec **poolCopy asm("r2");
+
+    gUnknown_030001a8 = (u8 *)0x02002580;
+    gUnknown_0300547c = (struct UnknownPoolNode404ec *)0x02002600;
+    index = 0;
+    poolAddress = (struct UnknownPoolNode404ec **)&gUnknown_0300547c;
+    asm volatile("" : "+r"(poolAddress));
+    recycleIndex = &gUnknown_030001ac;
+    secondaryIndex = &gUnknown_030001ad;
+    activeCount = &gUnknown_03005480;
+    do {
+        gUnknown_030001a8[index] = index + 1;
+        index++;
+    } while (index <= 126);
+    *activeCount = 0;
+    *secondaryIndex = 0;
+    *recycleIndex = 0;
+    zero = 0;
+    dma = (volatile u32 *)0x040000d4;
+    dma[0] = (u32)&zero;
+    poolCopy = poolAddress;
+    asm volatile("" : "+r"(poolCopy));
+    dma[1] = (u32)*poolCopy;
+    dma[2] = 0x8500000b;
+    dma[2];
 }
 
 void FUN_0802cfd0(void) {
