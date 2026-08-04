@@ -2647,3 +2647,22 @@ void FUN_08028038(struct UnknownListNode *node) {
     FUN_0801fed8(node->field6, 0);
     node->position->field14++;
 }
+
+u32 FUN_080280b8(struct UnknownListNode *node, s32 x, s32 y) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    register s32 newX asm("r3") = (s16)allocation->field20;
+    register s32 targetX asm("r1") = (s16)x;
+    register s32 newY asm("r0");
+    register s32 targetY asm("r5");
+
+    newX = targetX + (newX - targetX) / 2;
+    allocation->field20 = newX;
+    newY = (s16)allocation->field22;
+    targetY = (s16)y;
+    newY = targetY + (newY - targetY) / 2;
+    allocation->field22 = newY;
+    if ((s16)newX == targetX && (s16)newY == targetY) {
+        return 1;
+    }
+    return 0;
+}
