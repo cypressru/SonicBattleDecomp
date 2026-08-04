@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import csv
 import json
 import sys
 from pathlib import Path
@@ -35,6 +36,20 @@ def main() -> None:
     build_dir.mkdir(parents=True, exist_ok=True)
     units = []
     ninja_targets = []
+    function_maps: dict[str, list[dict[str, object]]] = {}
+    for unit in config["units"]:
+        map_path = unit.get("function_map")
+        if not map_path:
+            continue
+        rows: list[dict[str, object]] = []
+        with (ROOT / map_path).open(newline="", encoding="utf-8") as stream:
+            for row in csv.DictReader(stream):
+                address = int(row["address"], 0) - 0x08000000
+                if int(unit["start"]) <= address < int(unit["end"]):
+                    rows.append({"name": row["name"], "address": address, "mode": row["mode"]})
+        if not rows:
+            fail(f"function map for {unit['name']} contains no symbols")
+        function_maps[unit["name"]] = rows
     for unit in config["units"]:
         target_path = build_dir / "target" / f"{unit['name']}.o"
         target_path.parent.mkdir(parents=True, exist_ok=True)
@@ -63,6 +78,8 @@ def main() -> None:
             {"id": "game", "name": "Game"},
             {"id": "sdk", "name": "SDK"},
             {"id": "runtime", "name": "Runtime"},
+            {"id": "assets", "name": "Data and assets"},
+            {"id": "payload", "name": "Embedded payload"},
         ],
     }
     (ROOT / "objdiff.json").write_text(json.dumps(objdiff, indent=2) + "\n", encoding="utf-8")
@@ -73,7 +90,7 @@ def main() -> None:
         "builddir = build/BSBE78",
         "",
         "rule slice_object",
-        "  command = python3 tools/slice_object.py $in $out $start $end",
+        "  command = python3 tools/slice_object.py $in $out $start $end $kind $symbols",
         "  description = SLICE $out",
         "",
         "rule copy_rom",
@@ -82,11 +99,21 @@ def main() -> None:
         "",
     ]
     for unit, target in zip(config["units"], ninja_targets):
+        symbol_specs = []
+        for symbol in [*unit.get("symbols", []), *function_maps.get(unit["name"], [])]:
+            symbol_specs.append(
+                f"{symbol['name']}:{int(symbol['address'])}:{symbol.get('mode', 'thumb')}"
+            )
+        if not unit.get("auto_generated", False) and not symbol_specs:
+            symbol_name = unit["name"].rsplit("/", 1)[-1]
+            symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")
         ninja.extend(
             [
                 f"build {target}: slice_object {config['rom']}",
                 f"  start = {int(unit['start'])}",
                 f"  end = {int(unit['end'])}",
+                f"  kind = {unit.get('kind', 'code')}",
+                "  symbols =" + (f" {' '.join(symbol_specs)}" if symbol_specs else ""),
                 "",
             ]
         )

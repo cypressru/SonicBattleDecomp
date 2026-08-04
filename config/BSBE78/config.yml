@@ -12,7 +12,7 @@ units:
     start: 0x000000
     end: 0x04A590
     category: game
-    auto_generated: true
+    function_map: config/BSBE78/functions.csv
   # Nintendo BIOS-call veneer archive objects. Boundaries are fixed by each
   # veneer body and archive alignment; names correlate to the public SDK ABI.
   - { name: libagbsyscall/ArcTan2, start: 0x04A590, end: 0x04A594, category: sdk }
@@ -77,3 +77,19 @@ units:
     start: 0x04B6C4
     end: 0x04B718
     category: runtime
+  # These range objects make undecompiled non-code bytes visible to objdiff and
+  # decomp.dev without committing any extracted data. Their internal asset and
+  # data-symbol boundaries remain analysis work, so each has one conservative
+  # object symbol and a null base object.
+  - name: data/main_rom_data
+    start: 0x04B718
+    end: 0xEEB690
+    category: assets
+    kind: data
+    symbols: [{ name: main_rom_data, address: 0x04B718, mode: data }]
+  - name: payload/agb_test_program
+    start: 0xEEB690
+    end: 0x1000000
+    category: payload
+    kind: data
+    symbols: [{ name: agb_test_program, address: 0xEEB690, mode: data }]

@@ -3,6 +3,12 @@ name: Verify
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      report_gzip_base64:
+        description: Locally generated, gzip-compressed objdiff report
+        required: false
+        type: string
 
 jobs:
   policy:
@@ -36,6 +42,22 @@ jobs:
           chmod +x objdiff-cli
       - name: Generate objdiff report
         run: ./objdiff-cli report generate -o build/report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BSBE78_report
+          path: build/report.json
+
+  publish-local-report:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.report_gzip_base64 != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore locally verified report
+        env:
+          REPORT_GZIP_BASE64: ${{ inputs.report_gzip_base64 }}
+        run: |
+          mkdir -p build
+          printf '%s' "$REPORT_GZIP_BASE64" | base64 -d | gzip -d > build/report.json
+          python -m json.tool build/report.json >/dev/null
       - uses: actions/upload-artifact@v4
         with:
           name: BSBE78_report

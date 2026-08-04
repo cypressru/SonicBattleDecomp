@@ -29,8 +29,17 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Control-flow analysis currently finds 731 reachable functions in the main executable. Function
-discovery is not itself accepted as proof of translation-unit boundaries.
+Static analysis currently records 1,298 non-thunk function starts before the confirmed SDK
+veneers. The inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
+recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
+provenance. It is sufficient to give objdiff symbol-bearing target code, but it is not accepted as
+proof that every start is a true function or as proof of translation-unit boundaries.
+
+All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
+are conservatively split at the independently validated embedded-program header: main ROM
+data/assets occupy `0x4B718-0xEEB690`, and the embedded payload occupies
+`0xEEB690-0x1000000`. Internal asset boundaries and the payload's own code/data split remain
+unresolved and are not presented as established facts.
 
 ## Runtime boundary evidence
 
