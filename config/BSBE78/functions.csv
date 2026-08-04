@@ -331,9 +331,9 @@ address,name,mode,confidence
 0x0801F600,FUN_0801f600,thumb,direct-call
 0x0801F60C,FUN_0801f60c,thumb,direct-call
 0x0801F618,FUN_0801f618,thumb,direct-call
+0x0801F628,FUN_0801f628,thumb,structured-entry+return
 0x0801F638,FUN_0801f638,thumb,direct-call
 0x0801F644,FUN_0801f644,thumb,direct-call
-0x0801F64A,FUN_0801f64a,thumb,recursive-disassembly
 0x0801F66C,FUN_0801f66c,thumb,direct-call
 0x0801F6A0,FUN_0801f6a0,thumb,direct-call
 0x0801F6EA,FUN_0801f6ea,thumb,rom-pointer

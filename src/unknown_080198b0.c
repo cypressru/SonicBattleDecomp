@@ -11,6 +11,8 @@ extern u32 FUN_0801cfc8(u8 value);
 extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
+extern void FUN_08049108(u16 value);
+extern void FUN_08049234(const void *value);
 
 typedef void (*UnknownCallback)(void);
 
@@ -18,7 +20,7 @@ struct UnknownEntity {
     UnknownCallback callback;
     const void *data;
     u16 field8;
-    u8 filler10[2];
+    u16 field10;
     u8 field12;
     u8 field13;
     u8 field14;
@@ -39,7 +41,20 @@ struct UnknownEntityData {
     s16 field62[4];
     u8 filler70[110];
     u32 field180;
-    u8 filler184[68];
+    u8 filler184[7];
+    u8 field191;
+    u8 filler192[60];
+};
+
+struct UnknownSoundIndex {
+    u8 filler0[4];
+    u16 index;
+    u8 filler6[2];
+};
+
+struct UnknownSoundEntry {
+    const void *value;
+    u8 filler4[8];
 };
 
 extern void (*gUnknown_03002030)(void);
@@ -59,6 +74,8 @@ extern const u8 gUnknown_08ed8a8c[];
 extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
 extern const u8 gUnknown_08ed8ae4[];
+extern const struct UnknownSoundIndex gUnknown_08bf7244[];
+extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -416,4 +433,47 @@ u32 FUN_0801f418(u8 value, u8 other, const u32 **stream) {
         u16 operand = word >> 16;
         return gUnknown_03001c40[value].field20 == operand;
     }
+}
+
+u32 FUN_0801f448(u8 value, u8 other, const u32 **stream) {
+    *stream += 1;
+    return gUnknown_03003db0[value].field10 == 0;
+}
+
+u32 FUN_0801f474(u8 value, u8 other, const u32 **stream) {
+    u32 word = *(*stream)++;
+    u16 operand = word >> 16;
+    u8 operation = (word & 0xFF00) >> 8;
+    u32 result = 0;
+
+    switch (operation) {
+    case 0:
+        if (gUnknown_03001c40[value].field191 == operand) {
+            result = 1;
+        }
+        break;
+    case 1:
+        if (gUnknown_03001c40[value].field191 < operand) {
+            result = 1;
+        }
+        break;
+    case 2:
+        if (gUnknown_03001c40[value].field191 > operand) {
+            result = 1;
+        }
+        break;
+    }
+
+    return result;
+}
+
+u32 FUN_0801f4f4(u8 value, u8 other, const u32 **stream) {
+    *stream += 1;
+    return (u16)(gUnknown_03001c40[other].field20 - 252) <= 3;
+}
+
+void FUN_0801f628(u16 value) { FUN_08049108(value); }
+
+void FUN_0801f644(u16 value) {
+    FUN_08049234(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value);
 }
