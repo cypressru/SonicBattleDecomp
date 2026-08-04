@@ -5,6 +5,9 @@ extern u8 gUnknown_03001740[];
 extern u8 gUnknown_03001388;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03003140;
+extern u8 gUnknown_030013b0[];
+extern u16 gUnknown_03003100[];
+extern s16 gUnknown_03003118[];
 extern volatile u16 gUnknown_03003178[];
 
 #define REG_BG0CNT (*(volatile u16 *)0x04000008)
@@ -51,6 +54,26 @@ struct UnknownQueueEntry08018004 {
     u8 ninth;
 };
 
+struct UnknownState030030d0 {
+    u8 first;
+    u8 padding1[3];
+    u16 counter;
+    u8 padding6[30];
+    u8 flag;
+};
+
+struct UnknownEntry03002cd0 {
+    u16 first;
+    u16 second;
+    u16 unused;
+    u16 third;
+    u16 fourth;
+    u8 padding10[2];
+    u8 fifth;
+    u8 sixth;
+    u8 padding14[2];
+};
+
 struct UnknownState080180d4 {
     u16 first;
     u16 unused;
@@ -67,7 +90,9 @@ struct UnknownState080180f0 {
 };
 
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
-extern struct UnknownQueueEntry08017f00 gUnknown_030033e0[];
+extern struct UnknownQueueEntry08018004 gUnknown_030033e0[];
+extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
+extern struct UnknownState030030d0 gUnknown_030030d0;
 extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern const s16 gUnknown_0804df7c[];
@@ -80,6 +105,60 @@ extern void FUN_08017eec(void);
 extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801ff30(void);
+
+void FUN_08007e9c(u8 index) {
+    u8 i;
+
+    for (i = 0; i <= 68; i++) {
+        gUnknown_030013b0[i + index * 156] = 9;
+    }
+}
+
+void FUN_08012b60(void) {
+    u8 i;
+
+    gUnknown_030030d0.flag = 0;
+    for (i = 0; i <= 63; i++) {
+        gUnknown_03002cd0[i].first = 0;
+        gUnknown_03002cd0[i].second = 0;
+        gUnknown_03002cd0[i].third = 0;
+        gUnknown_03002cd0[i].fourth = 0;
+        gUnknown_03002cd0[i].fifth = 0;
+        gUnknown_03002cd0[i].sixth = 0;
+    }
+}
+
+u8 FUN_0801584c(void) { return gUnknown_030030d0.first; }
+
+u8 FUN_080158c0(void) {
+    gUnknown_030030d0.counter++;
+    if (gUnknown_030030d0.counter > 119) {
+        return 1;
+    }
+    return 0;
+}
+
+s16 FUN_08015f40(u8 index) { return -gUnknown_03003100[index]; }
+
+s16 FUN_08015f58(u8 index) { return gUnknown_03003118[index]; }
+
+void FUN_08015f6c(void) {
+    u8 i;
+
+    for (i = 0; (s8)i >= 0; i++) {
+        gUnknown_030033e0[i].first = 0;
+        gUnknown_030033e0[i].second = 0;
+        gUnknown_030033e0[i].zero = 0;
+        gUnknown_030033e0[i].constant = 0;
+        gUnknown_030033e0[i].fourth = 0;
+        gUnknown_030033e0[i].third = 0;
+        gUnknown_030033e0[i].sixth = 0;
+        gUnknown_030033e0[i].fifth = 0;
+        gUnknown_030033e0[i].seventh = 0;
+        gUnknown_030033e0[i].eighth = 0;
+        gUnknown_030033e0[i].ninth = 0;
+    }
+}
 
 void FUN_08017c5c(void) {
     gUnknown_03003140 ^= 1;

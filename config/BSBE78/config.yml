@@ -195,6 +195,9 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # FUN_080158C0 branches around an aligned in-function literal island.
+      - { offset: 0x150DA, mode: data }
+      - { offset: 0x150E0, mode: thumb }
       # The BG-control helpers at 0x08017D78, 0x08017DE8 and 0x08017E5C each
       # branch around four in-function literal islands inside their switch.
       - { offset: 0x175A8, mode: data }
@@ -231,6 +234,13 @@ units:
       - { offset: 0x17B44, mode: data }
       - { offset: 0x17B4C, mode: thumb }
     base_symbol_size_overrides:
+      FUN_08007e9c: 0x26
+      FUN_08012b60: 0x30
+      FUN_0801584c: 0x06
+      FUN_080158c0: 0x22
+      FUN_08015f6c: 0x34
+      FUN_08015f40: 0x12
+      FUN_08015f58: 0x0E
       FUN_08017c5c: 0x10
       FUN_08017c74: 0x2E
       FUN_08017cb0: 0x1E
@@ -262,6 +272,14 @@ units:
       FUN_080183d0: 0x36
       FUN_08018410: 0x1E
     relocations:
+      - { offset: 0x076C8, type: abs32, symbol: gUnknown_030013b0 }
+      - { offset: 0x12394, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x12398, type: abs32, symbol: gUnknown_03002cd0 }
+      - { offset: 0x15058, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x150DC, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x157A4, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x15758, type: abs32, symbol: gUnknown_03003100 }
+      - { offset: 0x1576C, type: abs32, symbol: gUnknown_03003118 }
       - { offset: 0x17470, type: abs32, symbol: gUnknown_03003140 }
       - { offset: 0x17474, type: abs32, symbol: gUnknown_030013a0 }
       - { offset: 0x174E6, type: thumb_call, symbol: CpuSet }
