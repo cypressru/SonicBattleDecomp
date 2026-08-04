@@ -3,6 +3,8 @@
 extern u8 gUnknown_03001740[];
 
 extern u8 gUnknown_03001388;
+extern u8 gUnknown_030013a0;
+extern u8 gUnknown_03003140;
 extern u8 gUnknown_030016d0;
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
@@ -64,9 +66,58 @@ extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern const s16 gUnknown_0804df7c[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
+extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
+extern void FUN_08017690(void);
+extern void FUN_08017eec(void);
+extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
+extern void FUN_0801ff30(void);
+
+void FUN_08017c5c(void) {
+    gUnknown_03003140 ^= 1;
+    gUnknown_030013a0 = 1;
+}
+
+void FUN_08017c74(void) {
+    volatile u32 zero;
+    volatile u32 *dma;
+
+    zero = 0;
+    dma = (volatile u32 *)0x040000d4;
+    dma[0] = (u32)&zero;
+    dma[1] = 0x02000000;
+    dma[2] = 0x85010000;
+    dma[2];
+    zero = 0;
+    dma[0] = (u32)&zero;
+    dma[1] = 0x03000000;
+    dma[2] = 0x85001f80;
+    dma[2];
+}
+
+void FUN_08017cb0(void) {
+    volatile u16 zero;
+    volatile u32 *dma;
+
+    zero = 0;
+    dma = (volatile u32 *)0x040000d4;
+    dma[0] = (u32)&zero;
+    dma[1] = 0x06000000;
+    dma[2] = 0x8100c000;
+    dma[2];
+}
+
+void FUN_08017cd8(void) { CpuSet((void *)0x05000000, (void *)0x05000002, 0x1ff); }
+
+void FUN_08017d58(void) {
+    FUN_08017eec();
+    FUN_0801ff30();
+    FUN_08017690();
+    FUN_08017fb0();
+    gUnknown_030013a0 = 1;
+}
 
 void FUN_08017ed0(void) {
     gUnknown_030017cc = 0;
