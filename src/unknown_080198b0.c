@@ -131,6 +131,12 @@ struct UnknownHeapBlock {
     s32 size;
 };
 
+struct UnknownState08021484 {
+    u8 filler0[29];
+    u8 firstFlags;
+    u8 secondFlags;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -178,6 +184,7 @@ extern struct UnknownHeapBlock gUnknown_030033e0;
 extern u32 gUnknown_03004d34;
 extern u32 gUnknown_03004d38;
 extern void CpuSet(const void *source, void *destination, u32 mode);
+extern struct UnknownState08021484 gUnknown_03004d40;
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1156,4 +1163,25 @@ void FUN_0802110c(void) {
 void FUN_080211d8(u8 value) {
     gUnknown_03004d38 = value;
     gUnknown_03004d34 = 0;
+}
+
+void FUN_08021244(u8 index) {
+    u32 bit = 1 << index;
+
+    if (gUnknown_03004d34 & bit) {
+        gUnknown_03004d34 &= ~bit;
+    }
+}
+
+u8 FUN_08021484(void) {
+    u8 result = 1;
+    u8 index;
+
+    for (index = 1; index <= 3; index++) {
+        if (((gUnknown_03004d40.firstFlags >> index) & 1) &&
+            ((gUnknown_03004d40.secondFlags >> index) & 1)) {
+            result++;
+        }
+    }
+    return result;
 }
