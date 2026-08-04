@@ -809,6 +809,26 @@ u32 MidiKeyToCgbFreq(u8 channel, u8 key, u8 fineAdjust) {
     }
 }
 
+void CgbOscOff(u8 channel) {
+    switch (channel) {
+    case 1:
+        *(volatile u8 *)0x04000063 = 8;
+        *(volatile u8 *)0x04000065 = 0x80;
+        break;
+    case 2:
+        *(volatile u8 *)0x04000069 = 8;
+        *(volatile u8 *)0x0400006D = 0x80;
+        break;
+    case 3:
+        *(volatile u8 *)0x04000070 = 0;
+        break;
+    default:
+        *(volatile u8 *)0x04000079 = 8;
+        *(volatile u8 *)0x0400007D = 0x80;
+        break;
+    }
+}
+
 void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {
     s32 i;
     u32 bit;

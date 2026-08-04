@@ -570,6 +570,14 @@ units:
       - { offset: 0xB80, mode: thumb }
       - { offset: 0xBE8, mode: data }
       - { offset: 0xBF0, mode: thumb }
+      - { offset: 0xC16, mode: data }
+      - { offset: 0xC1C, mode: thumb }
+      - { offset: 0xC20, mode: data }
+      - { offset: 0xC24, mode: thumb }
+      - { offset: 0xC2A, mode: data }
+      - { offset: 0xC30, mode: thumb }
+      - { offset: 0xC40, mode: data }
+      - { offset: 0xC44, mode: thumb }
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
@@ -577,6 +585,7 @@ units:
       FadeOutBody: 0xC8
       TrkVolPitSet: 0xB2
       MidiKeyToCgbFreq: 0xA0
+      CgbOscOff: 0x50
       MPlayStart: 0xDE
       MPlayExtender: 0xC8
       SoundInit: 0xB8
