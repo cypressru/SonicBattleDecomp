@@ -2366,3 +2366,44 @@ void FUN_08027b84(struct UnknownListNode *node) {
     }
     node->data = FUN_080266ac;
 }
+
+void FUN_08027bfc(struct UnknownListNode *node) {
+    u32 value;
+
+    {
+        register struct UnknownFourByteMessage *message asm("r1") = &gUnknown_03001b1c;
+        register u32 byteZero asm("r0") = 0;
+
+        message->type = byteZero;
+        message->index = byteZero;
+        asm volatile("" : : : "r0");
+        {
+            register u16 halfwordZero asm("r0") = 0;
+
+            message->value = halfwordZero;
+        }
+    }
+    value = FUN_0801f9e8(0x3579);
+    gUnknown_03005248 = value;
+    if (gUnknown_0300525c != (u8)value) {
+        gUnknown_030051f4++;
+        if (gUnknown_030051f4 > 29) {
+            node->data = (const void *)((u32)FUN_08027920 + 1);
+            FUN_0801f618(419);
+            return;
+        }
+    } else {
+        gUnknown_030051f4 = 0;
+    }
+
+    {
+        register struct Unknown16ByteRecord *record asm("r1");
+        register u8 index asm("r0");
+
+        index = gUnknown_030051f0;
+        record = &gUnknown_030016fc[index];
+        if (record->field0 <= 6) {
+            node->data = FUN_08027b84;
+        }
+    }
+}
