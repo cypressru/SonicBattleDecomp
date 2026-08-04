@@ -213,6 +213,11 @@ extern const u32 gUnknown_0807b880[];
 extern struct UnknownState03004dbc *gUnknown_03004dbc;
 extern struct UnknownState03002110 gUnknown_03002110;
 extern const u32 gUnknown_0807163c[];
+extern u32 gUnknown_03004dc0;
+extern u32 gUnknown_03004dc8;
+extern void FUN_0801f89c(void);
+extern void FUN_0801fda0(void);
+extern void FUN_08021b0c(void);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1302,4 +1307,22 @@ u32 FUN_08021e48(u16 value) {
 
 void FUN_08021e70(u16 value) {
     gUnknown_03004dbc->bits[value >> 5] |= gUnknown_0807163c[value & 0x1F];
+}
+
+u32 FUN_08021ec8(u16 value) {
+    if ((gUnknown_03004dbc->bits[value >> 5] & gUnknown_0807163c[value & 0x1F]) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+void FUN_08021f04(void) {
+    gUnknown_03004dc0++;
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08021f20(void) {
+    FUN_08021b0c();
+    gUnknown_03004dc8 = 1;
 }
