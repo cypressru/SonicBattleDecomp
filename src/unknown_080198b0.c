@@ -3134,7 +3134,7 @@ void FUN_08028814(struct UnknownListNode *node) {
 }
 
 void FUN_080288b4(struct UnknownListNode *node) {
-    struct UnknownListNode *current = node;
+    register struct UnknownListNode *current asm("r2") = node;
     register struct UnknownAllocation28770 *allocation asm("r8") = current->allocation;
     u8 count;
     u16 keys;
@@ -5156,4 +5156,27 @@ void FUN_0802b638(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 184;
     node->data = (const void *)((u32)FUN_0802b688 + 1);
+}
+
+void FUN_0802b688(struct UnknownListNode *node) {
+    register struct UnknownListNode *current asm("r2") = node;
+
+    asm volatile("" : "+r"(current));
+    {
+        u8 *states = gUnknown_0300524c;
+        struct UnknownPosition *position = current->position;
+
+        if (states[position->field13] > 9) {
+            position->tile = 256;
+            current->position->field12 = 168;
+        } else {
+            if (gUnknown_03002600[4] != 0 && (gUnknown_03005268[position->field13] & 2) != 0) {
+                position->tile = 160;
+            } else {
+                current->position->tile = 64;
+            }
+            current->position->field12 = 184;
+        }
+        FUN_0801fed8(current->field6, 0);
+    }
 }
