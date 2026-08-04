@@ -20,8 +20,23 @@ units:
     function_map: config/BSBE78/functions.csv
   # Game code remains grouped until internal object boundaries are corroborated;
   # the startup, M4A, BIOS veneer, backup, and runtime objects are separated.
-  - name: main/unknown_08000000
+  - name: main/unknown_08000210
     start: 0x000210
+    end: 0x018C8C
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: engine/multi_boot
+    start: 0x018C8C
+    end: 0x019568
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: engine/sio32_multi_load
+    start: 0x019568
+    end: 0x0198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: main/unknown_080198B0
+    start: 0x0198B0
     end: 0x04833C
     category: game
     function_map: config/BSBE78/functions.csv

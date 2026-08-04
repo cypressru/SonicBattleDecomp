@@ -20,7 +20,10 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 |---|---|---|---|
 | `0x000000-0x0000C0` | `0x08000000-0x080000C0` | GBA header/reset branch | Exact |
 | `0x0000C0-0x000210` | `0x080000C0-0x08000210` | ARM startup/interrupt object (`crt0`) | Exact |
-| `0x000210-0x04833C` | `0x08000210-0x0804833C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x000210-0x018C8C` | `0x08000210-0x08018C8C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x018C8C-0x019568` | `0x08018C8C-0x08019568` | Nintendo `multi_boot` object | Exact |
+| `0x019568-0x0198B0` | `0x08019568-0x080198B0` | Nintendo `sio32_multi_load` object | Exact |
+| `0x0198B0-0x04833C` | `0x080198B0-0x0804833C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
 | `0x04833C-0x048F74` | `0x0804833C-0x08048F74` | Nintendo M4A `m4a0` object | Exact |
 | `0x048F74-0x04A590` | `0x08048F74-0x0804A590` | Nintendo M4A `m4a` object | Exact |
 | `0x04A590-0x04A5F8` | `0x0804A590-0x0804A5F8` | Nintendo BIOS-call veneer archive objects | Exact |
@@ -91,6 +94,17 @@ library used by Sonic Advance 2. Compiled object sizes, including the previously
 writer (`0x4AAF8-0x4AC14`), `agb_flash_le_512k` (`0x4AC14-0x4AEBC`), and
 `agb_flash_mx_512k` (`0x4AEBC-0x4AF68`). Names here come from that public SDK correlation rather
 than from retail symbols.
+
+The public Sonic Advance 2 reconstruction at commit
+`393357f7c9d46b5c10b6c41a57b80fe3b58f3c8d` builds byte-identically with the same compiler family
+and retains separate `multi_boot.o` and `sio32_multi_load.o` objects. Relocation-masked comparisons
+match `MultiBootStartProbe`, `MultiBootStartMaster`, `MultiBootHandShake`,
+`MultiBootCheckComplete`, and `Sio32MultiLoadMain` uniquely against Sonic Battle. The complete
+`multi_boot` function sequence has the same object-relative starts, and its 0x8DC-byte extent lands
+exactly at `0x19568`. The following 0x348-byte serial-loader object begins with the matching
+`Sio32MultiLoadMain` and lands exactly at the next accepted function at `0x198B0`. Those independent
+size, order, offset, and byte correlations establish both object boundaries. Names that did not
+individually byte-match are recorded as object-order correlations rather than direct matches.
 
 The openly licensed newlib-correlated `memcmp`, `memcpy`, and `memset` sources compile through the
 pinned `old_agbcc -O2 -fno-builtin` library path and match their full target sections byte-for-byte.
