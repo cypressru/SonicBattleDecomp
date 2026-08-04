@@ -12,11 +12,13 @@ class NormalizeObjdiffReportTest(unittest.TestCase):
                     "name": "code",
                     "measures": {"total_code": "20", "total_functions": 2,
                                  "matched_data_percent": 100.0},
+                    "sections": [{"name": ".text", "size": "20"}],
                     "metadata": {"progress_categories": ["game"]},
                 },
                 {
                     "name": "data",
                     "measures": {"total_data": "80", "matched_code_percent": 100.0},
+                    "sections": [{"name": ".rodata", "size": "80"}],
                     "metadata": {"progress_categories": ["game"]},
                 },
             ],
@@ -36,13 +38,30 @@ class NormalizeObjdiffReportTest(unittest.TestCase):
         report = {
             "measures": {},
             "units": [
-                {"measures": {"total_code": "25", "matched_code_percent": 100.0}, "metadata": {}},
-                {"measures": {"total_code": "75"}, "metadata": {}},
+                {"measures": {"total_code": "25", "matched_code_percent": 100.0}, "sections": [{"size": "25"}], "metadata": {}},
+                {"measures": {"total_code": "75"}, "sections": [{"size": "75"}], "metadata": {}},
             ],
             "categories": [],
         }
         normalize(report)
         self.assertEqual(report["measures"]["matched_code_percent"], 25.0)
+
+    def test_section_matched_anonymous_padding_is_counted_as_matched_data(self):
+        report = {
+            "measures": {},
+            "units": [{
+                "name": "libc/memcpy",
+                "measures": {"total_code": "94", "matched_code_percent": 100.0},
+                "sections": [{"name": ".text", "size": "96", "fuzzy_match_percent": 100.0}],
+                "metadata": {},
+            }],
+            "categories": [],
+        }
+        normalize(report)
+        measures = report["units"][0]["measures"]
+        self.assertEqual(measures["total_data"], "2")
+        self.assertEqual(measures["matched_data_percent"], 100.0)
+        self.assertEqual(measures["complete_data_percent"], 100.0)
 
 
 if __name__ == "__main__":

@@ -130,15 +130,26 @@ units:
     end: 0x04B664
     category: runtime
     source: src/libc/memcmp.c
-    cflags: [-O2]
+    cflags: [--old-agbcc, -O2, -fno-builtin]
+    complete: true
   - name: libc/memcpy
     start: 0x04B664
     end: 0x04B6C4
     category: runtime
+    source: src/libc/memcpy.c
+    cflags: [--old-agbcc, -O2, -fno-builtin]
+    complete: true
+    symbols:
+      - { name: memcpy, address: 0x04B664, mode: thumb, size: 0x5E }
   - name: libc/memset
     start: 0x04B6C4
     end: 0x04B718
     category: runtime
+    source: src/libc/memset.c
+    cflags: [--old-agbcc, -O2, -fno-builtin]
+    complete: true
+    symbols:
+      - { name: memset, address: 0x04B6C4, mode: thumb, size: 0x52 }
   # These range objects make undecompiled non-code bytes visible to objdiff and
   # decomp.dev without committing any extracted data. Their internal asset and
   # data-symbol boundaries remain analysis work, so each has one conservative

@@ -30,7 +30,7 @@ jobs:
       - name: Validate Python syntax
         run: python -m compileall -q configure.py tools
       - name: Check C formatting
-        run: clang-format --dry-run --Werror src/libc/memcmp.c include/types.h
+        run: clang-format --dry-run --Werror src/libc/*.c include/types.h
 
   private_build:
     name: Private build (BSBE78)

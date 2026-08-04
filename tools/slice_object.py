@@ -22,22 +22,47 @@ def main() -> None:
     payload = source.read_bytes()[start:end]
     symbols = []
     for spec in symbol_specs:
-        name, address, mode = spec.rsplit(":", 2)
+        parts = spec.rsplit(":", 3)
+        if len(parts) == 4:
+            name, address, mode, size_text = parts
+            explicit_size = int(size_text, 0)
+        else:
+            name, address, mode = parts
+            explicit_size = None
         relative = int(address, 0) - start
         if not 0 <= relative < len(payload):
             raise ValueError(f"symbol {name} is outside slice")
-        symbols.append((relative, name, mode))
+        symbols.append((relative, name, mode, explicit_size))
     symbols.sort()
 
     strtab = bytearray(b"\0")
     symbol_table = bytearray(b"\0" * 16)
-    for index, (relative, name, mode) in enumerate(symbols):
+    local_symbol_count = 0
+    if kind == "code":
+        mappings: set[tuple[int, str]] = set()
+        for index, (relative, _name, mode, explicit_size) in enumerate(symbols):
+            if mode in {"arm", "thumb"}:
+                mappings.add((relative, "$a" if mode == "arm" else "$t"))
+            elif mode == "data":
+                mappings.add((relative, "$d"))
+            next_relative = symbols[index + 1][0] if index + 1 < len(symbols) else len(payload)
+            if explicit_size is not None and relative + explicit_size < next_relative:
+                mappings.add((relative + explicit_size, "$d"))
+        for relative, mapping_name in sorted(mappings):
+            name_offset = len(strtab)
+            strtab.extend(mapping_name.encode("ascii") + b"\0")
+            symbol_table.extend(struct.pack("<IIIBBH", name_offset, relative, 0, 0, 0, 1))
+            local_symbol_count += 1
+    for index, (relative, name, mode, explicit_size) in enumerate(symbols):
         name_offset = len(strtab)
         strtab.extend(name.encode("utf-8") + b"\0")
         next_relative = symbols[index + 1][0] if index + 1 < len(symbols) else len(payload)
+        size = explicit_size if explicit_size is not None else next_relative - relative
+        if size < 0 or relative + size > len(payload):
+            raise ValueError(f"symbol {name} size is outside slice")
         value = relative | (1 if kind == "code" and mode == "thumb" else 0)
-        symbol_type = 0x12 if kind == "code" else 0x11
-        symbol_table.extend(struct.pack("<IIIBBH", name_offset, value, next_relative - relative, symbol_type, 0, 1))
+        symbol_type = 0x11 if mode == "data" or kind != "code" else 0x12
+        symbol_table.extend(struct.pack("<IIIBBH", name_offset, value, size, symbol_type, 0, 1))
 
     section_name = {"code": b".text", "data": b".data", "rodata": b".rodata"}[kind]
     shstr = b"\0" + section_name + b"\0.symtab\0.strtab\0.shstrtab\0"
@@ -58,7 +83,17 @@ def main() -> None:
     section_flags = 0x6 if kind == "code" else (0x2 if kind == "rodata" else 0x3)
     text_section = struct.pack("<IIIIIIIIII", 1, 1, section_flags, 0, text_offset, len(payload), 0, 0, 4, 0)
     symtab_section = struct.pack(
-        "<IIIIIIIIII", symtab_name, 2, 0, 0, symtab_offset, len(symbol_table), 3, 1, 4, 16
+        "<IIIIIIIIII",
+        symtab_name,
+        2,
+        0,
+        0,
+        symtab_offset,
+        len(symbol_table),
+        3,
+        1 + local_symbol_count,
+        4,
+        16,
     )
     strtab_section = struct.pack(
         "<IIIIIIIIII", strtab_name, 3, 0, 0, strtab_offset, len(strtab), 0, 0, 1, 0

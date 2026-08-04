@@ -1,25 +1,35 @@
-#include "types.h"
+/* Correlated to newlib's openly licensed libc/string/memcmp.c. */
+#include <string.h>
 
-int memcmp(const void *left, const void *right, u32 count) {
-    const u8 *left8 = left;
-    const u8 *right8 = right;
+#define UNALIGNED(X, Y) (((long)(X) & (sizeof(long) - 1)) | ((long)(Y) & (sizeof(long) - 1)))
+#define LBLOCKSIZE (sizeof(long))
+#define TOO_SMALL(LEN) ((LEN) < LBLOCKSIZE)
 
-    if (count > 3 && (((u32)left8 | (u32)right8) & 3) == 0) {
-        while (count > 3) {
-            if (*(const u32 *)left8 != *(const u32 *)right8)
+int memcmp(const void *m1, const void *m2, size_t n) {
+    unsigned char *s1 = (unsigned char *)m1;
+    unsigned char *s2 = (unsigned char *)m2;
+    unsigned long *a1;
+    unsigned long *a2;
+
+    if (!TOO_SMALL(n) && !UNALIGNED(s1, s2)) {
+        a1 = (unsigned long *)s1;
+        a2 = (unsigned long *)s2;
+        while (n >= LBLOCKSIZE) {
+            if (*a1 != *a2)
                 break;
-            left8 += 4;
-            right8 += 4;
-            count -= 4;
+            a1++;
+            a2++;
+            n -= LBLOCKSIZE;
         }
+        s1 = (char *)a1;
+        s2 = (char *)a2;
     }
 
-    while (count-- != 0) {
-        int difference = *left8 - *right8;
-        if (difference != 0)
-            return difference;
-        left8++;
-        right8++;
+    while (n--) {
+        if (*s1 != *s2)
+            return *s1 - *s2;
+        s1++;
+        s2++;
     }
     return 0;
 }

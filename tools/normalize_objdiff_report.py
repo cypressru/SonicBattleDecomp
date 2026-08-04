@@ -29,6 +29,28 @@ def amount(measures: dict[str, object], key: str) -> int:
 def normalize_unit(unit: dict[str, object]) -> None:
     measures = unit.setdefault("measures", {})
     assert isinstance(measures, dict)
+    section_total = sum(int(section["size"]) for section in unit.get("sections", []))
+    measured_total = amount(measures, "total_code") + amount(measures, "total_data")
+    if section_total < measured_total:
+        raise ValueError(f"{unit.get('name', 'unit')}: measures exceed owned sections")
+    if section_total > measured_total:
+        # Mapping-symbol padding is owned non-code data even when objdiff does
+        # not emit a symbol-derived total for it.
+        measures["total_data"] = str(
+            amount(measures, "total_data") + section_total - measured_total
+        )
+        full_section_match = all(
+            float(section.get("fuzzy_match_percent", 0.0)) == 100.0
+            for section in unit.get("sections", [])
+        )
+        if full_section_match:
+            # objdiff's section-level comparison includes anonymous alignment
+            # bytes even though its symbol-derived data totals omit them.
+            measures["matched_data_percent"] = 100.0
+            measures["complete_data_percent"] = 100.0
+        elif not unit.get("metadata", {}).get("has_base", False):
+            measures.pop("matched_data_percent", None)
+            measures.pop("complete_data_percent", None)
     for total_key, percent_keys in DIMENSIONS.values():
         total = amount(measures, total_key)
         for percent_key in percent_keys:

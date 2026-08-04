@@ -94,6 +94,8 @@ def main() -> None:
                 "metadata": {
                     "progress_categories": [unit["category"]],
                     "auto_generated": unit.get("auto_generated", False),
+                    "has_base": base_path is not None,
+                    "complete": unit.get("complete", False),
                 },
             }
         )
@@ -139,15 +141,16 @@ def main() -> None:
     for unit, target in zip(configured_units, ninja_targets):
         symbol_specs = []
         for symbol in [*unit.get("symbols", []), *symbol_maps.get(unit["name"], [])]:
-            symbol_specs.append(
-                f"{symbol['name']}:{int(symbol['address'])}:{symbol.get('mode', 'thumb')}"
-            )
+            spec = f"{symbol['name']}:{int(symbol['address'])}:{symbol.get('mode', 'thumb')}"
+            if "size" in symbol:
+                spec += f":{int(symbol['size'])}"
+            symbol_specs.append(spec)
         if not unit.get("auto_generated", False) and not symbol_specs:
             symbol_name = unit["name"].rsplit("/", 1)[-1]
             symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")
         ninja.extend(
             [
-                f"build {target}: slice_object {config['rom']}",
+                f"build {target}: slice_object {config['rom']} | tools/slice_object.py",
                 f"  start = {int(unit['start'])}",
                 f"  end = {int(unit['end'])}",
                 f"  kind = {unit.get('kind', 'code')}",
@@ -159,7 +162,7 @@ def main() -> None:
             base = build_dir / "base" / f"{unit['name']}.o"
             ninja.extend(
                 [
-                    f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h",
+                    f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py",
                     f"  cflags = {' '.join(unit.get('cflags', ['-O2']))}",
                     "",
                 ]

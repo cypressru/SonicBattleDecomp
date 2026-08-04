@@ -85,9 +85,10 @@ writer (`0x4AAF8-0x4AC14`), `agb_flash_le_512k` (`0x4AC14-0x4AEBC`), and
 `agb_flash_mx_512k` (`0x4AEBC-0x4AF68`). Names here come from that public SDK correlation rather
 than from retail symbols.
 
-`src/libc/memcmp.c` is the first reconstructed-source candidate and is compiled into a real base
-object by `tools/compile_agbcc.py`. It does not yet match the retail function and is not documented
-as complete; its purpose is to verify the base-object build and diff path before matching work.
+The openly licensed newlib-correlated `memcmp`, `memcpy`, and `memset` sources compile through the
+pinned `old_agbcc -O2 -fno-builtin` library path and match their full target sections byte-for-byte.
+`memcpy` and `memset` have respective 0x5E and 0x52 function sizes followed by two owned
+zero-padding bytes; mapping symbols prevent that padding from inflating the function sizes.
 
 ## Original source language
 

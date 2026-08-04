@@ -9,7 +9,8 @@ from pathlib import Path
 
 
 EXPECTED_ROM_SIZE = 0x1000000
-EXPECTED_CODE = 309104
+EXPECTED_CODE = 309100
+EXPECTED_DATA = 16468116
 EXPECTED_FUNCTIONS = 1350
 EXPECTED_UNITS = 1269
 
@@ -29,6 +30,8 @@ def main() -> None:
         fail(f"coverage is 0x{total_code + total_data:X}, expected 0x{EXPECTED_ROM_SIZE:X}")
     if total_code != EXPECTED_CODE:
         fail(f"code size is {total_code}, expected {EXPECTED_CODE}")
+    if total_data != EXPECTED_DATA:
+        fail(f"data size is {total_data}, expected {EXPECTED_DATA}")
     if int(measures.get("total_functions", 0)) != EXPECTED_FUNCTIONS:
         fail("function count changed without updating the reviewed inventory")
     if int(measures.get("total_units", 0)) != EXPECTED_UNITS:
