@@ -124,6 +124,9 @@ extern u32 gUnknown_0300019c;
 extern s8 gUnknown_030048d4;
 extern u8 gUnknown_030048d0;
 extern struct UnknownQueuedValue gUnknown_030044d0[];
+extern u8 gUnknown_0300019a;
+extern u8 gUnknown_030044c0;
+extern u8 gUnknown_030000c8[4];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -675,6 +678,16 @@ void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth) {
     entries[1].fourth = second;
     entries[2].fourth = third;
     entries[3].fourth = fourth;
+}
+
+void FUN_080200f8(void) {
+    s16 i;
+
+    for (i = 0; i <= 3; i++) {
+        gUnknown_030000c8[i] = 0;
+    }
+    gUnknown_0300019a = 1;
+    gUnknown_030044c0 = 0;
 }
 
 void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
