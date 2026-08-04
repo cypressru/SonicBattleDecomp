@@ -1,4 +1,5 @@
 set architecture arm
+set arm force-mode thumb
 set pagination off
 set confirm off
 set remotetimeout 5
