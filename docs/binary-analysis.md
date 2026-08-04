@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018678` | 196 | 70,464 | 27,452 |
+| `main/unknown_080007FC` | `0x0007FC-0x018678` | 197 | 70,494 | 27,422 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -83,6 +83,12 @@ public `task.c` and `background.c` with the same pinned agbcc toolchain and comp
 instruction streams against every analyzed function in the placeholder. Neither module produced a
 strong function-level correlation. The proposed `task.o` split is therefore rejected for now; no
 unit boundary or source name is inferred from linker order alone.
+
+The boundary audit also recovered an otherwise unreferenced function at `0x08018410`. Its 30-byte
+Thumb body constructs two DMA descriptors, terminates with a normal return, and owns the aligned
+literal pool ending at the next accepted function at `0x08018444`. It has no decoded direct caller
+or stored function pointer, which explains why call-closure discovery missed it. The function is
+included in the inventory, but the surrounding TU boundary remains unresolved.
 
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires

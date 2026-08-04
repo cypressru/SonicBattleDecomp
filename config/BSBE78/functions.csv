@@ -196,6 +196,7 @@ address,name,mode,confidence
 0x08018390,FUN_08018390,thumb,direct-call
 0x0801839C,FUN_0801839c,thumb,recursive-disassembly
 0x080183D0,FUN_080183d0,thumb,direct-call
+0x08018410,FUN_08018410,thumb,coherent-leaf+owned-literal-pool
 0x08018444,FUN_08018444,thumb,direct-call
 0x080184C8,FUN_080184c8,thumb,direct-call
 0x08018530,FUN_08018530,thumb,direct-call
