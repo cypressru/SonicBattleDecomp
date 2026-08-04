@@ -212,12 +212,12 @@ s32 FUN_08018918(void *receive) {
             if ((gMultiSioSyncState.receivedFlags & 3) &&
                 (gMultiSioSyncState.receivedFlags == gMultiSioSyncState.connectedFlags))
                 gMultiSioSyncState.status4 = 1;
+
+            if ((gMultiSioSyncState.unknown6Low & 0xE) == (gMultiSioSyncState.connectedFlags & 0xE))
+                gMultiSioSyncState.status6 = 1;
         } else {
             gMultiSioSyncState.status6 = ((struct MultiSioPacket *)packet)->flag6;
         }
-
-        if ((gMultiSioSyncState.unknown6Low & 0xE) == (gMultiSioSyncState.connectedFlags & 0xE))
-            gMultiSioSyncState.status6 = 1;
 
         gMultiSioSyncState.status5 = ((struct MultiSioPacket *)packet)->flag4;
     }
