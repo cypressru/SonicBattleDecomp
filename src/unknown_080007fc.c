@@ -80,6 +80,35 @@ union UnknownQueueRecord030033e0 {
     } fields;
 };
 
+struct UnknownRecord030017d0 {
+    u8 slots[4];
+    u8 first;
+    u8 second;
+    u8 third;
+    u8 padding7;
+    u16 fourth[4];
+    u8 fifth;
+    u8 sixth;
+    u16 seventh[3];
+    u8 eighth;
+    u8 padding25;
+    u16 ninth;
+    s16 tenth[3];
+    u16 eleventh[4];
+    u16 twelfth[4];
+    u8 thirteenth;
+    u8 fourteenth;
+    u8 fifteenth;
+    u8 sixteenth;
+    u8 padding54[2];
+    u16 seventeenth;
+    u16 eighteenth[3];
+    u8 nineteenth;
+    u8 twentieth;
+    u8 twentyfirst;
+    u8 padding67;
+};
+
 struct UnknownState030030d0 {
     u8 first;
     u8 second;
@@ -129,6 +158,7 @@ extern struct UnknownState030030d0 gUnknown_030030d0;
 extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern struct UnknownRecord03001c40 gUnknown_03001c40[];
+extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
@@ -175,6 +205,66 @@ void FUN_08007e9c(u8 index) {
     for (i = 0; i <= 68; i++) {
         gUnknown_030013b0[i + index * 156] = 9;
     }
+}
+
+void FUN_0800baac(u8 index) {
+    struct UnknownRecord030017d0 *record;
+    struct UnknownRecord030017d0 *table;
+
+    table = gUnknown_030017d0;
+    record = table + index;
+    if (record->slots[0] != 255) {
+        gUnknown_030028c0[record->slots[0]] = 0;
+    }
+    if (record->slots[1] != 255) {
+        gUnknown_030028c0[record->slots[1]] = 0;
+    }
+    if (record->slots[2] != 255) {
+        gUnknown_030028c0[record->slots[2]] = 0;
+    }
+    if (record->slots[3] != 255) {
+        gUnknown_030028c0[record->slots[3]] = 0;
+    }
+    record->fifteenth = 255;
+    record->slots[0] = -1;
+    record->slots[1] = -1;
+    record->slots[2] = -1;
+    record->slots[3] = -1;
+    record->first = 0;
+    record->nineteenth = 0;
+    record->second = 0;
+    record->third = 0;
+    record->fourth[0] = 0;
+    record->fourth[1] = 0;
+    record->fourth[2] = 0;
+    record->fourth[3] = 0;
+    record->eighteenth[0] = 0;
+    record->eighteenth[1] = 0;
+    record->eighteenth[2] = 0;
+    record->fifth = 0;
+    record->sixth = 0;
+    record->seventh[0] = 0;
+    record->seventh[1] = 0;
+    record->seventh[2] = 0;
+    record->eighth = 0;
+    record->ninth = 0xffff;
+    record->tenth[0] = -1;
+    record->tenth[1] = -1;
+    record->tenth[2] = -1;
+    record->eleventh[0] = 0;
+    record->twelfth[0] = 0;
+    record->eleventh[1] = 0;
+    record->twelfth[1] = 0;
+    record->eleventh[2] = 0;
+    record->twelfth[2] = 0;
+    record->eleventh[3] = 0;
+    record->twelfth[3] = 0;
+    record->seventeenth = 0;
+    record->sixteenth = 8;
+    record->fourteenth = 0;
+    record->thirteenth = 1;
+    record->twentieth = 0;
+    record->twentyfirst = 0;
 }
 
 void FUN_0800fd8c(void) {

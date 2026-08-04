@@ -263,6 +263,7 @@ units:
     base_symbol_size_overrides:
       FUN_08007e24: 0x44
       FUN_08007e9c: 0x26
+      FUN_0800baac: 0xCE
       FUN_0800fd8c: 0x34
       FUN_08012b60: 0x30
       FUN_08015384: 0x5A
@@ -309,6 +310,8 @@ units:
       FUN_08018410: 0x1E
     relocations:
       - { offset: 0x076C8, type: abs32, symbol: gUnknown_030013b0 }
+      - { offset: 0x0B380, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0x0B384, type: abs32, symbol: gUnknown_030028c0 }
       - { offset: 0x0F596, type: thumb_call, symbol: FUN_0800baac }
       - { offset: 0x0F5C4, type: abs32, symbol: gUnknown_03002684 }
       - { offset: 0x0F5C8, type: abs32, symbol: gUnknown_030028c0 }
