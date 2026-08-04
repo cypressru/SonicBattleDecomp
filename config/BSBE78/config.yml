@@ -537,6 +537,29 @@ units:
     end: 0x04A590
     category: sdk
     function_map: config/BSBE78/functions.csv
+    source: src/m4a.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      m4aSoundMain: 0x0A
+      m4aMPlayContinue: 0x0A
+      m4aMPlayFadeOut: 0x0E
+      ClearChain: 0x0E
+      Clear64byte: 0x0E
+      MP2K_event_xcmd: 0x1A
+      MP2K_event_xxx: 0x0E
+      MP2K_event_null: 0x02
+    relocations:
+      - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }
+      - { offset: 0x22A, type: thumb_call, symbol: FUN_08048f74 }
+      - { offset: 0x266, type: thumb_call, symbol: FUN_08048f94 }
+      - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
+      - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
+      - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }
+      - { offset: 0x468, type: abs32, symbol: gMPlayJumpTable35 }
+      - { offset: 0x150A, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x1514, type: abs32, symbol: gXcmdTable }
+      - { offset: 0x151E, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x1528, type: abs32, symbol: gMPlayJumpTable0 }
   # Nintendo BIOS-call veneer archive objects. Boundaries are fixed by each
   # veneer body and archive alignment; names correlate to the public SDK ABI.
   - { name: libagbsyscall/ArcTan2, start: 0x04A590, end: 0x04A594, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: ArcTan2, complete: true, symbols: [{ name: ArcTan2, address: 0x04A590, size: 4 }] }
