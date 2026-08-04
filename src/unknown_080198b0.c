@@ -2175,3 +2175,13 @@ void FUN_08026d6c(void) {
         gUnknown_03002030 = FUN_08034f28;
     }
 }
+
+void FUN_080278f8(struct UnknownListNode *node) {
+    void (*callback)(struct UnknownListNode *) = FUN_08025fd4;
+
+    node->data = callback;
+    gUnknown_03001b10[7] = 0;
+    gUnknown_03001b10[6] = 0;
+    FUN_08018444();
+    callback(node);
+}
