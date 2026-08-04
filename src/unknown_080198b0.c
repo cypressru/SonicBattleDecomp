@@ -187,7 +187,9 @@ struct UnknownAllocation25a98 {
 };
 
 struct UnknownAllocation27db8 {
-    u8 filler0[20];
+    u8 filler0[16];
+    u16 field16;
+    u16 field18;
     u16 field20;
     u16 field22;
 };
@@ -2691,4 +2693,106 @@ u32 FUN_0802812c(struct UnknownListNode *node, s32 y) {
         return 1;
     }
     return 0;
+}
+
+void FUN_08028158(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 16;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 16;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_080282a8 + 1);
+}
+
+void FUN_08028190(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 16;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 16;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_080282e0 + 1);
+}
+
+void FUN_080281c8(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 16;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 16;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_08028318 + 1);
+}
+
+void FUN_08028200(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 16;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 16;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_08028350 + 1);
+}
+
+void FUN_08028238(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 32;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 32;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_08028388 + 1);
+}
+
+void FUN_08028270(struct UnknownListNode *node) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    struct UnknownPosition *position = node->position;
+    s32 x = allocation->field20 - 32;
+    register u32 byteZero asm("r4") = 0;
+    register u16 halfwordZero asm("r5") = 0;
+
+    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    position->x = x;
+    node->position->y = allocation->field22 - 32;
+    node->position->field10 = byteZero;
+    node->position->field11 = byteZero;
+    allocation->field16 = 256;
+    allocation->field18 = halfwordZero;
+    node->data = (const void *)((u32)FUN_080283c0 + 1);
 }
