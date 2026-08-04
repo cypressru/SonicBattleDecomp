@@ -376,6 +376,9 @@ extern u32 FUN_0801f9e8(u16 value);
 extern void FUN_0801f618(u16 value);
 extern u8 gUnknown_03005248;
 extern u8 gUnknown_0300525c;
+extern u8 gUnknown_030017c4;
+extern u32 gUnknown_03001380;
+extern u32 gUnknown_03005254;
 extern u8 gUnknown_030051f4;
 extern u16 gUnknown_03005244;
 extern struct UnknownFourByteMessage gUnknown_03001b1c;
@@ -393,6 +396,10 @@ extern void FUN_08028388(struct UnknownListNode *node);
 extern void FUN_080283c0(struct UnknownListNode *node);
 extern void FUN_08028814(struct UnknownListNode *node);
 extern void FUN_080288b4(struct UnknownListNode *node);
+extern void FUN_08028bec(void);
+extern void FUN_08028c80(struct UnknownListNode *node);
+extern void FUN_08028ed8(struct UnknownListNode *node);
+extern void FUN_080291a8(void);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
 extern u32 gUnknown_03005264;
@@ -408,6 +415,7 @@ extern void FUN_08021268(u32 value);
 extern const u8 gUnknown_08edb97c[];
 extern const u8 gUnknown_08edb984[];
 extern const u8 gUnknown_08edb94c[];
+extern const u8 gUnknown_08edb974[];
 extern const struct UnknownCoordinatePairs28f98 gUnknown_08edb98c[];
 extern const u8 gUnknown_0804df7c[];
 extern u16 gUnknown_03005200[][8];
@@ -3053,6 +3061,225 @@ void FUN_08028814(struct UnknownListNode *node) {
     if (pending == 0) {
         node->data = (const void *)((u32)FUN_080288b4 + 1);
     }
+}
+
+void FUN_080288b4(struct UnknownListNode *node) {
+    struct UnknownListNode *current = node;
+    register struct UnknownAllocation28770 *allocation asm("r8") = current->allocation;
+    u8 count;
+    u16 keys;
+    u32 ready;
+    register u32 one asm("r9");
+    register u32 oneAgain asm("r10");
+    register u32 secondOne asm("r2");
+    register u32 keyMask asm("r5");
+    register u32 zero asm("r4");
+    register u8 *countAddress asm("r6");
+    register u8 *selectionAddress asm("r2");
+    register u8 *validationAddress asm("r3");
+    register u32 selectionValue asm("r0");
+    register u32 secondMask asm("r0");
+    register struct UnknownAllocation28770 *selectionRead asm("r4");
+    register struct UnknownAllocation28770 *selectionWrite asm("r5");
+    register u16 *resetWords asm("r0");
+    register u32 *resetFlagAddress asm("r0");
+    register u8 *resetCountAddress asm("r0");
+    register struct UnknownListNode *nodesAddress asm("r1");
+    register s32 recordType asm("r1");
+    u8 limitedSelection;
+
+    gUnknown_03001b10[1] = 0x1234;
+    if (gUnknown_03005264 == 4) {
+        gUnknown_0300525c = FUN_08021484();
+    } else {
+        count = FUN_0801f9e8(0x1357);
+        if (gUnknown_030016f0.field2 != 0x2345) {
+            gUnknown_0300525c = count;
+        }
+    }
+
+    selectionValue = (u32)&gUnknown_0300525c;
+    limitedSelection = *(u8 *)selectionValue;
+    validationAddress = (u8 *)selectionValue;
+    if (limitedSelection == 0xff || limitedSelection == 0) {
+        gUnknown_030017c4 = 0;
+        *validationAddress = 1;
+    }
+    selectionAddress = validationAddress;
+    limitedSelection = *selectionAddress;
+    selectionValue = limitedSelection;
+    selectionRead = allocation;
+    if (selectionValue != *(u8 *)selectionRead) {
+        if (selectionValue > 4) {
+            limitedSelection = 4;
+        }
+        *selectionAddress = limitedSelection;
+        selectionValue = *selectionAddress;
+        selectionWrite = allocation;
+        selectionWrite->field0 = selectionValue;
+        if (gUnknown_03005264 == 4) {
+            if (*selectionAddress <= 1) {
+                FUN_080283f8(0);
+            } else {
+                FUN_080283f8(*selectionAddress + 4);
+            }
+        } else {
+            FUN_080283f8(*validationAddress);
+        }
+    }
+
+    keys = gUnknown_030048e0.third;
+    one = 1;
+    secondOne = 1;
+    asm volatile("" : "+r"(secondOne));
+    oneAgain = secondOne;
+    keyMask = oneAgain;
+    asm volatile("" : "+r"(keyMask));
+    keyMask &= keys;
+    if (keyMask != 0) {
+        if (gUnknown_03005264 == 4) {
+            if (gUnknown_0300525c <= 1) {
+                goto update_child;
+            }
+            current->data = (const void *)((u32)FUN_08028bec + 1);
+            FUN_0801f618(404);
+            FUN_0801f718(2, 60);
+            goto update_child;
+        }
+
+        FUN_080291a8();
+        keyMask = gUnknown_030017c4;
+        if (keyMask != 0) {
+            keyMask = gUnknown_03001380;
+            if (keyMask != 0) {
+                goto update_child;
+            }
+            countAddress = &gUnknown_0300525c;
+            if (*countAddress == 1) {
+                resetWords = gUnknown_03001b10;
+                zero = 0;
+                resetWords[0] = keyMask;
+                resetWords[1] = keyMask;
+                FUN_080184c8();
+                FUN_08018c3c();
+                gUnknown_03005260 = zero;
+                validationAddress = (u8 *)one;
+                *countAddress = (u32)validationAddress;
+            } else {
+                gUnknown_03005260 = keyMask;
+                resetFlagAddress = &gUnknown_03005254;
+                zero = oneAgain;
+                asm volatile("" : "+r"(zero));
+                *resetFlagAddress = zero;
+                gUnknown_03005258 = keyMask;
+                current->data = (const void *)((u32)FUN_08028c80 + 1);
+                FUN_0801f618(402);
+                goto update_child;
+            }
+        } else {
+            if (gUnknown_03005264 == 4) {
+                goto update_child;
+            }
+            resetWords = gUnknown_03001b10;
+            zero = 0;
+            resetWords[0] = keyMask;
+            resetWords[1] = keyMask;
+            FUN_080184c8();
+            FUN_08018c3c();
+            gUnknown_03005260 = zero;
+            gUnknown_0300525c = one;
+        }
+        gUnknown_03005254 = keyMask;
+        current->data = (const void *)((u32)FUN_08028bec + 1);
+        FUN_0801f618(404);
+    } else {
+        secondMask = 2;
+        asm volatile("" : "+r"(secondMask));
+        secondMask &= keys;
+        if (secondMask == 0) {
+            goto update_child;
+        }
+        resetWords = gUnknown_03001b10;
+        zero = 0;
+        resetWords[0] = keyMask;
+        resetWords[1] = keyMask;
+        FUN_080184c8();
+        FUN_08018c3c();
+        gUnknown_03005260 = zero;
+        resetCountAddress = &gUnknown_0300525c;
+        secondOne = one;
+        *resetCountAddress = secondOne;
+        gUnknown_03005254 = keyMask;
+        current->data = (const void *)((u32)FUN_08028ed8 + 1);
+        FUN_0801f618(405);
+        FUN_0801f718(2, 120);
+        goto done;
+    }
+
+update_child:
+    if (gUnknown_03005264 == 4) {
+        if (gUnknown_0300525c <= 1) {
+            nodesAddress = gUnknown_03003e20;
+            validationAddress = (u8 *)allocation;
+            selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
+            asm volatile("" : "+r"(selectionValue));
+            nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
+            asm volatile("" : "+r"(nodesAddress));
+            selectionValue += (u32)nodesAddress;
+            asm volatile("" : "+r"(selectionValue));
+            (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
+        } else {
+            nodesAddress = gUnknown_03003e20;
+            selectionRead = allocation;
+            selectionValue = selectionRead->field5 * 16;
+            asm volatile("" : "+r"(selectionValue));
+            nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
+            asm volatile("" : "+r"(nodesAddress));
+            selectionValue += (u32)nodesAddress;
+            asm volatile("" : "+r"(selectionValue));
+            (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
+        }
+    } else if (gUnknown_030017c4 != 0 && gUnknown_03001380 != 0) {
+        nodesAddress = gUnknown_03003e20;
+        selectionWrite = allocation;
+        selectionValue = selectionWrite->field5 * 16;
+        asm volatile("" : "+r"(selectionValue));
+        nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
+        asm volatile("" : "+r"(nodesAddress));
+        selectionValue += (u32)nodesAddress;
+        asm volatile("" : "+r"(selectionValue));
+        (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
+    } else {
+        nodesAddress = gUnknown_03003e20;
+        validationAddress = (u8 *)allocation;
+        selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
+        asm volatile("" : "+r"(selectionValue));
+        nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
+        asm volatile("" : "+r"(nodesAddress));
+        selectionValue += (u32)nodesAddress;
+        asm volatile("" : "+r"(selectionValue));
+        (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
+    }
+
+    ready = gUnknown_03001380;
+    if (ready != 0) {
+        validationAddress = (u8 *)&gUnknown_030016f0;
+        zero = 2;
+        asm volatile("" : "+r"(zero));
+        asm volatile("ldrsh %0, [%1, %2]" : "=r"(recordType) : "r"(validationAddress), "r"(zero));
+        if (recordType == 0x2345) {
+            gUnknown_03005260 = ready;
+            gUnknown_03005254 = 1;
+            FUN_0802f428(validationAddress + 4);
+            gUnknown_03005258 = 0;
+            current->data = (const void *)((u32)FUN_08028c80 + 1);
+            FUN_0801f618(402);
+        }
+    }
+    if (gUnknown_03005264 == 4) {
+        FUN_08021534();
+    }
+done:
 }
 
 void FUN_08028bec(void) {
