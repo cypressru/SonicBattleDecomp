@@ -614,6 +614,16 @@ void FUN_0801fbd8(void) {
     }
 }
 
+void FUN_0801fbfc(const u16 *entries, u8 count) {
+    count--;
+    while (count != 0xFF) {
+        u16 offset = *entries++;
+
+        *(volatile u16 *)(0x04000000 + offset) = *entries++;
+        count--;
+    }
+}
+
 void FUN_0801fc30(u8 value, const void *data) {
     if (data == 0) {
         data = (const void *)FUN_08018664;

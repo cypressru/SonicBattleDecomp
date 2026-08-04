@@ -592,6 +592,7 @@ units:
       FUN_0801fb94: 0x8
       FUN_0801fba0: 0x30
       FUN_0801fbd8: 0x1C
+      FUN_0801fbfc: 0x32
       FUN_0801fc30: 0x1A
       FUN_0801fc54: 0x8
     mappings:
