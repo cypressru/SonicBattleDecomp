@@ -137,6 +137,16 @@ struct UnknownState08021484 {
     u8 secondFlags;
 };
 
+struct UnknownState03002110 {
+    u8 filler0[0x120];
+    u8 validity[1];
+};
+
+struct UnknownState03004dbc {
+    u8 filler0[0x14];
+    u32 bits[16];
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -200,6 +210,9 @@ extern void (*gUnknown_03006788)(void);
 extern u32 (*gUnknown_0300677c)(u16 sector, u8 *source);
 extern const u8 gUnknown_0807b780[];
 extern const u32 gUnknown_0807b880[];
+extern struct UnknownState03004dbc *gUnknown_03004dbc;
+extern struct UnknownState03002110 gUnknown_03002110;
+extern const u32 gUnknown_0807163c[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1278,4 +1291,15 @@ u32 FUN_08021a40(const u8 *data, u32 size) {
     }
     value = ~value;
     return value;
+}
+
+u32 FUN_08021e48(u16 value) {
+    if (gUnknown_03002110.validity[value] != 0xFF) {
+        return 1;
+    }
+    return 0;
+}
+
+void FUN_08021e70(u16 value) {
+    gUnknown_03004dbc->bits[value >> 5] |= gUnknown_0807163c[value & 0x1F];
 }
