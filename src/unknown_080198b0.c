@@ -151,7 +151,9 @@ struct UnknownState08021484 {
 struct UnknownState03002110 {
     u8 filler0[119];
     u8 field119;
-    u8 filler120[168];
+    u8 filler120;
+    u8 field121;
+    u8 filler122[166];
     u8 validity[0x200];
     u8 selector;
     u8 filler321;
@@ -5041,4 +5043,28 @@ void FUN_0802a298(struct UnknownListNode *node) {
     data->highFlags[1] = 0;
     data->highFlags[0] = 0;
     node->data = (const void *)((u32)FUN_0802a480 + 1);
+}
+
+void FUN_0802a34c(struct UnknownListNode *node) {
+    struct UnknownAllocation29d74 *data = node->allocation;
+    u8 *states = gUnknown_0300524c;
+    u16 player = data->index;
+
+    if (states[player] == 10) {
+        if (FUN_0802a220((u8)player) != 0) {
+            gUnknown_03005268[data->index] |= 1;
+        } else {
+            gUnknown_03005268[data->index] &= 0xFE;
+            gUnknown_0300524c[data->index] = 9;
+        }
+    } else {
+        gUnknown_03005268[player] &= 0xFE;
+    }
+
+    if (gUnknown_0300524c[data->index] == 8 && (gUnknown_03002110.field121 & 2) == 0) {
+        gUnknown_0300524c[data->index]--;
+    }
+    if (gUnknown_0300524c[data->index] == 7 && (gUnknown_03002110.field121 & 4) == 0) {
+        gUnknown_0300524c[data->index]--;
+    }
 }
