@@ -42,11 +42,13 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,298 non-thunk function starts before the confirmed SDK
+Static analysis currently records 1,297 non-thunk function starts before the confirmed SDK
 veneers. The inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Of these starts, 814 have aligned ROM pointers, 450 are direct-call targets,
-and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Each accepted
+and 47 currently rely on recursive-disassembly recovery alone (categories overlap). One additional
+pointer-shaped asset word is explicitly rejected because it lands in the middle of an inline DMA
+literal sequence rather than executable code. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
@@ -88,6 +90,20 @@ the preceding accepted function and its literals end exactly at `0x778`, while `
 literal pool end at the next accepted function at `0x7FC`. Together these facts support separate
 `engine/core` (`0x210-0x778`) and `main/main` (`0x778-0x7FC`) target objects. This is recorded as a
 strong linker-order correlation rather than a retail-symbol claim.
+
+The `core` object contains six real functions, not the seven initially inferred from raw pointer
+scanning. The candidate at `0x08000422` lands in the middle of an inline DMA descriptor sequence
+owned by the function at `0x080003A8`: surrounding words are consecutive graphics source,
+`0x06000000` destination, and DMA-control values, and live control flow resumes after the pool.
+The sole pointer-shaped word targeting `0x08000422` occurs at `0x08514CD0` in asset data and is
+therefore recorded as a rejected coincidence. CI verifies both that exact source word and the
+rejected destination so a changed ROM or mapping cannot silently preserve the exception.
+
+All Thumb/data transitions in `core` are now explicit. Three small helpers at `0x080006D0`,
+`0x080006EC`, and `0x08000724` compile from C with agbcc `-O2 -mthumb-interwork` and match their
+complete 28-, 38-, and 68-byte comparison extents. Their calls, IWRAM references, callback
+pointers, and trailing literal ownership all match. Generic names are retained because behavior
+establishes the implementations but does not yet supply original game symbol names.
 
 The `crt0` target is also source-backed. Clean ARM startup source reproduces both `start_vector`
 and `IntrMain`, including the IRQ/system stack literals, interrupt-vector installation, prioritized

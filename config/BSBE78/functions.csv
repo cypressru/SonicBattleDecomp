@@ -4,7 +4,6 @@ address,name,mode,confidence
 0x080001D0,MultiSioRecvBufChange,arm,public-multisio-abi+exact-arm-semantics
 0x08000210,FUN_08000210,thumb,known-entry+rom-pointer
 0x080003A8,FUN_080003a8,thumb,rom-pointer
-0x08000422,FUN_08000422,thumb,rom-pointer
 0x080005AC,FUN_080005ac,thumb,direct-call
 0x080006D0,FUN_080006d0,thumb,direct-call
 0x080006EC,FUN_080006ec,thumb,rom-pointer

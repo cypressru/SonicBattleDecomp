@@ -40,6 +40,18 @@ def main() -> None:
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     data = rom_path.read_bytes()
 
+    rejected_pointers = {
+        (ROM_BASE + int(item["source"]), int(item["destination"]))
+        for item in config.get("rejected_function_pointers", [])
+    }
+    for source, destination in rejected_pointers:
+        actual = int.from_bytes(data[source - ROM_BASE : source - ROM_BASE + 4], "little")
+        if actual != destination | 1:
+            raise SystemExit(
+                f"rejected function pointer changed at 0x{source:08X}: "
+                f"expected 0x{destination | 1:08X}, found 0x{actual:08X}"
+            )
+
     function_rows = read_csv(root / "config/BSBE78/functions.csv")
     accepted = {int(row["address"], 0) for row in function_rows}
     if len(accepted) != len(function_rows):
@@ -109,6 +121,7 @@ def main() -> None:
             value & 1
             and ROM_BASE <= destination < executable_end
             and destination not in accepted
+            and (ROM_BASE + offset, destination) not in rejected_pointers
         ):
             missing_pointers.setdefault(destination, []).append(ROM_BASE + offset)
     if missing_pointers:

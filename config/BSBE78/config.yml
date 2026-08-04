@@ -6,6 +6,11 @@ sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
+rejected_function_pointers:
+  # Asset word at 0x08514CD0 happens to encode this Thumb address. The target
+  # lands in the middle of EngineMain's inline DMA source/destination/control
+  # literal sequence and is reached only as data, not as executable code.
+  - { source: 0x0514CD0, destination: 0x08000422 }
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true
@@ -42,6 +47,51 @@ units:
     end: 0x000778
     category: game
     function_map: config/BSBE78/functions.csv
+    source: src/core.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      FUN_080006ec: 0x26
+      FUN_08000724: 0x44
+    mappings:
+      - { offset: 0x14C, mode: data }
+      - { offset: 0x198, mode: thumb }
+      - { offset: 0x1C0, mode: data }
+      - { offset: 0x1C4, mode: thumb }
+      - { offset: 0x208, mode: data }
+      - { offset: 0x224, mode: thumb }
+      - { offset: 0x238, mode: data }
+      - { offset: 0x24C, mode: thumb }
+      - { offset: 0x26C, mode: data }
+      - { offset: 0x27C, mode: thumb }
+      - { offset: 0x284, mode: data }
+      - { offset: 0x288, mode: thumb }
+      - { offset: 0x2B0, mode: data }
+      - { offset: 0x2CC, mode: thumb }
+      - { offset: 0x2F4, mode: data }
+      - { offset: 0x304, mode: thumb }
+      - { offset: 0x390, mode: data }
+      - { offset: 0x39C, mode: thumb }
+      - { offset: 0x492, mode: data }
+      - { offset: 0x4C0, mode: thumb }
+      - { offset: 0x4D0, mode: data }
+      - { offset: 0x4D4, mode: thumb }
+      - { offset: 0x502, mode: data }
+      - { offset: 0x514, mode: thumb }
+      - { offset: 0x558, mode: data }
+    relocations:
+      - { offset: 0x4CA, type: thumb_call, symbol: FUN_0804a3c0 }
+      - { offset: 0x4D0, type: abs32, symbol: gUnknown_0300138c }
+      - { offset: 0x4D4, type: thumb_call, symbol: FUN_0801835c }
+      - { offset: 0x4E8, type: thumb_call, symbol: FUN_080202f0 }
+      - { offset: 0x504, type: abs32, symbol: gUnknown_083270b4 }
+      - { offset: 0x508, type: abs32, symbol: gUnknown_030016c0 }
+      - { offset: 0x50C, type: abs32, symbol: gMainCallback }
+      - { offset: 0x510, type: abs32, symbol: FUN_080003a8 }
+      - { offset: 0x522, type: thumb_call, symbol: FUN_0802046c }
+      - { offset: 0x53A, type: thumb_call, symbol: FUN_080183d0 }
+      - { offset: 0x546, type: thumb_call, symbol: FUN_0804a384 }
+      - { offset: 0x55C, type: abs32, symbol: gMainCallback }
+      - { offset: 0x560, type: abs32, symbol: FUN_0803d748 }
   - name: main/main
     start: 0x000778
     end: 0x0007FC
