@@ -4736,3 +4736,18 @@ void FUN_08029ba0(void) {
     FUN_0801f89c();
     FUN_0801fda0();
 }
+
+void FUN_08029c2c(u32 index) {
+    register u32 selected asm("r1") = index;
+
+    if (selected <= 4) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected + 2) << 9), 512);
+        FUN_0802036c(0x06016200, (u32)gUnknown_08117368, 2048);
+    } else if (selected <= 9) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected - 4) << 9), 512);
+        FUN_0802036c(0x06016200, (u32)gUnknown_08117b68, 2048);
+    } else if (selected <= 14) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected - 10) << 9), 512);
+        FUN_0802036c(0x06016200, (u32)gUnknown_08118368, 2048);
+    }
+}
