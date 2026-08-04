@@ -410,7 +410,9 @@ extern const u8 gUnknown_08edb984[];
 extern const u8 gUnknown_08edb94c[];
 extern const struct UnknownCoordinatePairs28f98 gUnknown_08edb98c[];
 extern const u8 gUnknown_0804df7c[];
+extern u16 gUnknown_03005200[][8];
 extern void FUN_08028d30(struct UnknownListNode *node);
+extern void FUN_08020978(s32 x, u32 y, u16 tile, u32 attributes);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
 extern void FUN_0801fab0(u16 value);
@@ -1386,7 +1388,7 @@ u8 FUN_08020f64(u16 value) {
     return state->source[value];
 }
 
-u8 FUN_08020fac(u16 value) {
+u16 FUN_08020fac(u16 value) {
     const u8 *source = gUnknown_0807173c;
 
     value &= 0x7FFF;
@@ -3284,4 +3286,51 @@ void FUN_080290b4(struct UnknownListNode *node) {
     node->position->field11 = zero;
     node->position->field12 = zero;
     node->data = (const void *)((u32)FUN_08029060 + 1);
+}
+
+void FUN_080290e8(u32 index, u32 variant, u32 unused) {
+    u8 *destination = (u8 *)0x06016A00 + index * 640;
+    u32 fill = 0;
+
+    FUN_0804a594(&fill, destination, 0x010000A0);
+    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, destination, 10, 2, 0);
+    if (variant <= 3) {
+        u16 *entries = gUnknown_03005200[index];
+        register s32 y asm("r6") = 30;
+        register u32 stop asm("r1");
+        u32 i = 0;
+
+        if (entries[0] != (stop = 0xFFFE)) {
+            register u32 scanStop asm("r3") = stop;
+            const u16 *entry = entries;
+
+            do {
+                y -= 6;
+                entry++;
+                i++;
+                if (i > 4) {
+                    break;
+                }
+            } while (entry[0] != scanStop);
+        }
+        asm volatile("" : : : "memory");
+        if (entries[0] != (stop = 0xFFFE)) {
+            register u32 sentinel asm("r7") = stop;
+
+            do {
+                register s32 width asm("r0") = (s16)FUN_08020fac(entries[0]);
+                register s32 x asm("r4");
+
+                asm volatile("" : "+r"(width));
+                x = 12 - width;
+                x += (u32)x >> 31;
+                x = (s32)((u32)x << 15) >> 16;
+                x += y;
+                FUN_08020978(x + 1, 1, entries[0], 1);
+                FUN_08020978(x, 0, entries[0], 15);
+                y += 12;
+                entries++;
+            } while (entries[0] != sentinel);
+        }
+    }
 }
