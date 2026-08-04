@@ -29,6 +29,7 @@ extern void FUN_08049724(void);
 extern void FUN_08049170(void);
 extern void *gUnknown_03005478;
 extern u8 gUnknown_030001c8;
+extern const s16 gUnknown_081231d6[];
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -5249,3 +5250,69 @@ void FUN_0801f638(void) { FUN_08049170(); }
 void FUN_08040460(void) { gUnknown_03005478 = (void *)0x03001800; }
 
 void FUN_080405e8(void) { gUnknown_030001c8 = 0; }
+
+void FUN_0802cfd0(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_0803186c(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08032adc(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08033a1c(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08035258(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08036888(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_080380e4(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08039c5c(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_08037100(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
+void FUN_08039fd0(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_0803b53c(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_0803c844(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_0803cf9c(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
+void FUN_0803cb54(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
+s16 FUN_08040684(u8 index) { return gUnknown_081231d6[index]; }
