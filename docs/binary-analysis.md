@@ -106,8 +106,10 @@ object. The address-based name deliberately avoids claiming an original source f
 this split, the boundary audit recovered the previously missed function at
 `0x080185A8-0x080185C8`; its five calls and global-byte clear reconstruct as ordinary C and all 32
 instruction bytes match in objdiff.
-Six of the unit's ten functions currently match byte-for-byte, totaling 122 of its 446 instruction
-bytes; the unit is not marked complete.
+All ten functions in the unit now reconstruct as ordinary C with the pinned agbcc toolchain. Every
+owned section matches byte-for-byte in objdiff: 446 instruction bytes and 118 non-code bytes. The
+unit is marked complete. This establishes that C is sufficient to reproduce this TU's retail
+emission; it does not by itself settle the source language of the unresolved game TUs.
 
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
