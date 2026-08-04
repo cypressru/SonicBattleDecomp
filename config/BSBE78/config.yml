@@ -705,12 +705,17 @@ units:
       FUN_08021ec8: 0x3A
       FUN_08021f04: 0x16
       FUN_08021f20: 0x10
+      FUN_0802446c: 0x36
       FUN_080244ac: 0xE
       FUN_080244bc: 0x1A
       FUN_080244d8: 0x26
       FUN_0802450c: 0x26
+      FUN_08024540: 0x30
+      FUN_08024570: 0x30
       FUN_080245dc: 0xE
       FUN_080245ec: 0x1A
+      FUN_0802460c: 0x36
+      FUN_08024698: 0x30
       FUN_080246c8: 0x18
       FUN_08024708: 0x2A
     mappings:
@@ -950,6 +955,8 @@ units:
       - { offset: 0x8670, mode: thumb }
       - { offset: 0x8680, mode: data }
       - { offset: 0x8684, mode: thumb }
+      - { offset: 0xABF2, mode: data }
+      - { offset: 0xABFC, mode: thumb }
       - { offset: 0xAC26, mode: data }
       - { offset: 0xAC28, mode: thumb }
       - { offset: 0xAC4E, mode: data }
@@ -960,6 +967,8 @@ units:
       - { offset: 0xAD3C, mode: thumb }
       - { offset: 0xAD56, mode: data }
       - { offset: 0xAD5C, mode: thumb }
+      - { offset: 0xAD92, mode: data }
+      - { offset: 0xAD9C, mode: thumb }
       - { offset: 0xAE54, mode: data }
       - { offset: 0xAE58, mode: thumb }
       - { offset: 0xAE82, mode: data }
@@ -1236,15 +1245,31 @@ units:
       - { offset: 0x8672, type: thumb_call, symbol: FUN_08021b0c }
       - { offset: 0x8680, type: abs32, symbol: gUnknown_03004dc8 }
       - { offset: 0xAC02, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xABF4, type: abs32, symbol: gUnknown_08edb498 }
+      - { offset: 0xABF8, type: abs32, symbol: FUN_080244ac }
       - { offset: 0xAC14, type: thumb_call, symbol: FUN_0801f92c }
       - { offset: 0xAC1C, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xAC50, type: abs32, symbol: gUnknown_08edb498 }
       - { offset: 0xAC58, type: abs32, symbol: FUN_080244ac }
       - { offset: 0xAC84, type: abs32, symbol: gUnknown_08edb498 }
       - { offset: 0xAC8C, type: abs32, symbol: FUN_080244bc }
+      - { offset: 0xAC98, type: thumb_call, symbol: FUN_0801f978 }
+      - { offset: 0xACA6, type: thumb_call, symbol: FUN_08021244 }
+      - { offset: 0xACAC, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0xACB6, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xACC8, type: thumb_call, symbol: FUN_0801f978 }
+      - { offset: 0xACD6, type: thumb_call, symbol: FUN_08021244 }
+      - { offset: 0xACDC, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0xACE6, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xAD32, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xAD4E, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xAD58, type: abs32, symbol: gUnknown_03004dbc }
+      - { offset: 0xAD94, type: abs32, symbol: gUnknown_08edb498 }
+      - { offset: 0xAD98, type: abs32, symbol: FUN_080245a0 }
+      - { offset: 0xADF0, type: thumb_call, symbol: FUN_0801f978 }
+      - { offset: 0xADFE, type: thumb_call, symbol: FUN_08021244 }
+      - { offset: 0xAE04, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0xAE0E, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xAE20, type: thumb_call, symbol: FUN_08021244 }
       - { offset: 0xAE26, type: thumb_call, symbol: FUN_0801f8c0 }
       - { offset: 0xAE38, type: thumb_call, symbol: FUN_0801f92c }

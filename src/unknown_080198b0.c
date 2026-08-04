@@ -252,6 +252,8 @@ void FUN_0801ebf4(u8 value);
 void FUN_0801ed50(u8 value);
 void FUN_0801edc0(u8 value);
 void FUN_0801ee30(u8 value);
+void FUN_080244ac(struct UnknownListNode *node);
+void FUN_080245a0(struct UnknownListNode *node);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -1371,6 +1373,16 @@ void FUN_08021f20(void) {
     gUnknown_03004dc8 = 1;
 }
 
+void FUN_0802446c(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb498;
+    node->position->x = 256;
+    node->position->y = node->position->field13 * 24 + 16;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 12;
+    node->data = FUN_080244ac;
+}
+
 void FUN_080244ac(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
 
 void FUN_080244bc(struct UnknownListNode *node) {
@@ -1398,11 +1410,48 @@ void FUN_0802450c(struct UnknownListNode *node) {
     node->data = FUN_080244bc;
 }
 
+void FUN_08024540(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f978(node, 256) != 0) {
+        FUN_08021244(node->position->field14);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_08024570(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f978(node, -128) != 0) {
+        FUN_08021244(node->position->field14);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
 void FUN_080245dc(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
 
 void FUN_080245ec(struct UnknownListNode *node) {
     node->position->x = gUnknown_03004dbc->field12 + 0x68;
     FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_0802460c(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb498;
+    node->position->x = 256;
+    node->position->y = node->position->field13 * 24 + 36;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 12;
+    node->data = FUN_080245a0;
+}
+
+void FUN_08024698(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f978(node, 256) != 0) {
+        FUN_08021244(node->position->field14);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
 }
 
 void FUN_080246c8(struct UnknownListNode *node) {
