@@ -276,8 +276,13 @@ struct UnknownState482d0 {
     const void *callback;
     u16 field8;
     u16 field10;
-    u16 field12;
-    u16 field14;
+    union {
+        u32 fixed;
+        struct {
+            u16 low;
+            u16 high;
+        } half;
+    } field12;
     const void *graphics;
     u16 field20;
     u8 filler22[4];
@@ -331,6 +336,9 @@ extern u8 gUnknown_03005380;
 extern void FUN_08036560(void);
 extern void FUN_080412dc(void);
 extern void FUN_080405a8(u8 first, u8 second);
+extern s16 FUN_08040698(u8 value);
+extern s32 FUN_0804a59c(s32 value, s32 divisor);
+extern const u8 gUnknown_081a7f88[];
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5508,13 +5516,13 @@ void FUN_0803b588(void) {
 }
 
 void FUN_080482d0(struct UnknownState482d0 *state) {
-    state->field14 = 96;
+    state->field12.half.high = 96;
     state->field38 = 5;
     state->callback = (const void *)((u32)FUN_08047bd8 + 1);
 }
 
 void FUN_080482e8(struct UnknownState482d0 *state) {
-    state->field14 = 96;
+    state->field12.half.high = 96;
     state->field38 = 7;
     state->callback = (const void *)((u32)FUN_08047bd8 + 1);
 }
@@ -5569,7 +5577,7 @@ void FUN_0803bbf0(struct UnknownListNode *node) {
 }
 
 void FUN_080482b4(struct UnknownState482d0 *state) {
-    state->field14 = 96;
+    state->field12.half.high = 96;
     state->field30 = state->field10;
     state->field39 = 64;
     state->callback = (const void *)((u32)FUN_08047b40 + 1);
@@ -5708,7 +5716,7 @@ void FUN_080309e0(struct UnknownListNode *node) {
 
 void FUN_08048284(struct UnknownState482d0 *state) {
     state->field10 = 226;
-    state->field14 = 153;
+    state->field12.half.high = 153;
     state->graphics = gUnknown_081a7f60;
     state->callback = (const void *)((u32)FUN_08046aa4 + 1);
     FUN_0804af6c((struct UnknownListNode *)state, state->callback);
@@ -5850,7 +5858,7 @@ void FUN_08047fc0(struct UnknownState482d0 *state) {
 
 void FUN_08047fe4(struct UnknownState482d0 *state) {
     state->field30 = state->field10;
-    state->field34 = state->field14;
+    state->field34 = state->field12.half.high;
     state->graphics = gUnknown_081a7f18 + ((state->field3 & 4) << 3);
     state->callback = (const void *)((u32)FUN_0804825c + 1);
     FUN_0804af6c((struct UnknownListNode *)state, state->callback);
@@ -5869,7 +5877,7 @@ void FUN_0804825c(struct UnknownState482d0 *state) {
     secondOffset = state->field34;
     asm volatile("" : "+r"(second), "+r"(secondOffset));
     second += secondOffset;
-    state->field14 = second;
+    state->field12.half.high = second;
     FUN_080405f4(state->field2, state->field39);
 }
 
@@ -5879,7 +5887,7 @@ void FUN_080482a8(struct UnknownState482d0 *state) {
 
 void FUN_08048300(struct UnknownState482d0 *state) {
     FUN_0804033c((void *)0x02028000, (const void *)0x06013200, 0x800);
-    state->field14 = -32;
+    state->field12.half.high = -32;
     state->field20 = 0;
     state->field39 = 16;
     state->callback = (const void *)((u32)FUN_08047c30 + 1);
@@ -5929,7 +5937,7 @@ void FUN_08047f20(struct UnknownState482d0 *state) {
     }
     FUN_080403c0(gUnknown_081a81d0 + variant * 360, (void *)0x06019b80, 30, 6, 0);
     gUnknown_03005440.field46 = variant;
-    state->field14 = 48;
+    state->field12.half.high = 48;
     state->callback = (const void *)((u32)FUN_0804542c + 1);
 }
 
@@ -5968,4 +5976,36 @@ void FUN_08047bd8(struct UnknownState482d0 *state) {
     }
     state->field20 = state->field27 << 4;
     FUN_080405a8(state->field2, 1);
+}
+
+void FUN_08047b40(struct UnknownState482d0 *state) {
+    register u32 zero asm("r2");
+    register u32 mask asm("r1");
+    u32 value = state->field26 + 1;
+
+    zero = 0;
+    asm volatile("" : "+r"(zero));
+    state->field26 = value;
+    mask = 0xFF;
+    asm volatile("" : "+r"(mask));
+    if ((u8)value > 6) {
+        state->field26 = zero;
+        value = state->field27 + 1;
+        state->field27 = value;
+        value &= mask;
+        if (value > 5) {
+            state->field27 = zero;
+        }
+    }
+
+    state->field20 = gUnknown_081a7f88[state->field27];
+    state->field10 = state->field30 + FUN_0804a59c(FUN_08040698(state->field39), 1536);
+    state->field39 += 3;
+    state->field12.fixed += 0xFFFF6000;
+    if ((s16)state->field12.half.high <= -16) {
+        gUnknown_03005440.field8 &= ~4;
+        FUN_0804051c(state);
+    } else {
+        FUN_080405a8(state->field2, 1);
+    }
 }
