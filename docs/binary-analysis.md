@@ -10,6 +10,11 @@ DWARF/STABS records, compiler banner, source paths, assertion filenames, mangled
 other surviving developer symbol table. Random byte sequences resembling file extensions were
 rejected after inspecting their surrounding non-text data.
 
+`python tools/check_debug_metadata.py rom/baserom.gba` repeats the conservative string-level audit
+in the private CI build. A passing result establishes absence of common embedded debug-section,
+symbol-table, compiler-banner, and source-path strings; it cannot establish that no information was
+discarded when the original ELF was converted to the retail flat binary.
+
 The ROM does retain Nintendo library identification strings inside auxiliary payloads. These are
 library/version evidence, not game debug symbols. An embedded GBA test program begins at ROM
 offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
