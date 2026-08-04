@@ -264,6 +264,19 @@ they are collections of leaf helpers called from elsewhere. The best candidate r
 placeholder, `0x080110F0-0x08011C7C`, scores 0.40, which is far *above* both known objects and
 therefore evidence against it being a whole TU rather than for it.
 
+Compiler-flag change, the remaining boundary indicator, was tested last and is also negative. If
+part of this placeholder had been built at a different optimization level, the unmatched routines
+would fit some other level better than the `-O2 -mthumb-interwork` that the 46 matched functions
+use. They do not. On `0x080066D8`, whose address arithmetic diverges most from the pinned
+compiler's, `-O2` scores 35.1% against retail while `-Os` scores 21.8% and `-O1` 14.4%; `-Os` only
+appears closer in isolated prologue instructions. The residual differences in the unmatched routines
+are therefore source shape, not build settings, and no flag boundary exists to split on.
+
+That exhausts every boundary indicator this project recognizes: literal-pool ownership and alignment
+(via the calibrated control-flow walk), private-data and static-symbol reuse, contiguous data
+ownership, related-title linker order, call-graph cohesion, and compiler-flag change. All have been
+tested against known object boundaries and none supports a split inside this placeholder.
+
 No split is therefore proposed. Three independent lines of evidence have now been tested and
 calibrated against known object boundaries: private-static reference locality excludes 113 of 184
 candidate splits but confirms none, referenced-`.rodata` ordering does not apply because these
