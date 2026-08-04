@@ -2,6 +2,7 @@
 #include <string.h>
 
 struct UnknownListNode;
+struct UnknownState482d0;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
@@ -34,8 +35,8 @@ extern void FUN_08048fb8(void);
 extern void FUN_08049544(const void *value);
 extern void FUN_080411fc(void);
 extern u32 gUnknown_03005430;
-extern void FUN_08047bd8(void);
-extern void FUN_08047b40(void);
+extern void FUN_08047bd8(struct UnknownState482d0 *state);
+extern void FUN_08047b40(struct UnknownState482d0 *state);
 extern void FUN_080311b4(struct UnknownListNode *node);
 extern u8 gUnknown_0300537c;
 extern const u8 gUnknown_081734d8[];
@@ -329,6 +330,7 @@ extern void FUN_0804542c(struct UnknownState482d0 *state);
 extern u8 gUnknown_03005380;
 extern void FUN_08036560(void);
 extern void FUN_080412dc(void);
+extern void FUN_080405a8(u8 first, u8 second);
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5942,4 +5944,28 @@ void FUN_08047ec4(struct UnknownState482d0 *state) {
     gUnknown_03005440.field8 |= 1;
     gUnknown_03002030 = FUN_080412dc;
     FUN_0804051c(state);
+}
+
+void FUN_08047bd8(struct UnknownState482d0 *state) {
+    register u32 mask asm("r2");
+    u32 value;
+    u8 *limit;
+
+    state->field26++;
+    mask = 0xFF;
+    asm volatile("" : "+r"(mask));
+    if ((u8)state->field26 > 2) {
+        state->field26 = 0;
+        value = state->field27 + 1;
+        state->field27 = value;
+        limit = &state->field38;
+        asm volatile("" : "+r"(limit));
+        if ((value & mask) >= *limit) {
+            gUnknown_03005440.field8 &= ~4;
+            FUN_0804051c(state);
+            return;
+        }
+    }
+    state->field20 = state->field27 << 4;
+    FUN_080405a8(state->field2, 1);
 }
