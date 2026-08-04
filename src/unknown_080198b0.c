@@ -59,10 +59,11 @@ extern const void *gUnknown_0817adc8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
 extern void FUN_08041f84(struct UnknownState420dc *state);
+extern void FUN_0804230c(struct UnknownState420dc *state);
 extern void FUN_08041860(u8 value);
 extern void FUN_08041920(void);
 extern void FUN_080419d4(void);
-extern void FUN_0804280c(void);
+extern void FUN_0804280c(struct UnknownState420dc *state);
 extern void FUN_08043e5c(void);
 extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
@@ -448,7 +449,9 @@ struct UnknownGlobalRenderState {
     u16 field8;
     u16 field10;
     u16 field12;
-    u8 filler14[10];
+    u8 filler14[6];
+    u16 field20;
+    u16 field22;
     u16 field24;
     u16 field26;
     u8 filler28;
@@ -472,6 +475,17 @@ extern u16 gUnknown_03005490;
 extern u16 gUnknown_03005494;
 extern u32 gUnknown_03005488;
 extern u32 gUnknown_03002610;
+extern void *gUnknown_03007c54;
+extern struct UnknownState420dc *gUnknown_030001d4;
+extern u32 gUnknown_0300023c;
+extern u32 gUnknown_03000240;
+extern u16 gUnknown_030001e0;
+extern u16 gUnknown_030001f0;
+extern u16 gUnknown_03000200;
+extern u16 gUnknown_03000210;
+extern const u8 gUnknown_08173510[];
+extern void FUN_08045d30(void);
+extern u8 FUN_08043cf8(s16 x, s16 y);
 extern struct UnknownState420dc *gUnknown_030001d0;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb660[];
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
@@ -6788,6 +6802,40 @@ void FUN_0804224c(u8 value) {
         } while (row <= 63);
     }
     FUN_080217d0(0);
+}
+
+void FUN_0804280c(struct UnknownState420dc *state) {
+    register u16 *first asm("r0");
+    register u16 *second asm("r1");
+
+    gUnknown_030001d4 = FUN_0803ff98((const void *)((u32)FUN_08045d30 + 14), gUnknown_03007c54, 0);
+    gUnknown_0300023c = (s16)gUnknown_03005494 << 16;
+    gUnknown_03000240 = (s16)gUnknown_03005490 << 16;
+    state->baseX = gUnknown_03005440.field20;
+    state->baseY = gUnknown_03005440.field22;
+    state->graphics = gUnknown_08173510;
+    state->field24 = 40;
+    if (FUN_08043cf8(state->baseX, state->baseY) == 0) {
+        register u16 *address asm("r2") = &gUnknown_030001e0;
+
+        *address = state->baseX;
+        second = &gUnknown_030001f0;
+        *second = state->baseY;
+        first = address;
+    } else {
+        first = &gUnknown_030001e0;
+        second = &gUnknown_030001f0;
+        *second = 0;
+        *first = 0;
+    }
+    {
+        register u16 *secondCopy asm("r2") = second;
+
+        asm volatile("" : "+r"(secondCopy));
+        gUnknown_03000200 = *first;
+        gUnknown_03000210 = *secondCopy;
+    }
+    state->callback = (const void *)((u32)FUN_0804230c + 1);
 }
 
 void FUN_08041f84(struct UnknownState420dc *state) {
