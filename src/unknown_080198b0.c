@@ -206,6 +206,12 @@ struct UnknownRecordValue28c80 {
     u8 filler2[14];
 };
 
+struct UnknownLookupRecord29250 {
+    u8 filler0[4];
+    u8 value;
+    u8 filler5[3];
+};
+
 struct UnknownRecords28c80 {
     u8 filler0[2];
     s16 field2;
@@ -407,6 +413,29 @@ extern u8 gUnknown_03002600[];
 extern u8 gUnknown_03005268[];
 extern u8 gUnknown_0300524c[];
 extern void FUN_08029250(void);
+extern u8 gUnknown_030013b0[];
+extern u8 gUnknown_03005250;
+extern u8 gUnknown_03002170[];
+extern const u16 gUnknown_0810db14[];
+extern const u8 gUnknown_0810b32c[];
+extern const u8 gUnknown_0810dbcc[];
+extern const u8 gUnknown_08132544[];
+extern const u8 gUnknown_08116444[];
+extern const u16 gUnknown_081327d4[];
+extern const u8 gUnknown_0810df04[];
+extern const u8 gUnknown_08116568[];
+extern const u8 gUnknown_08117368[];
+extern const u8 gUnknown_08117b68[];
+extern const u8 gUnknown_08118368[];
+extern const void *gUnknown_08edbadc[];
+extern const u8 gUnknown_08edbaac[];
+extern const struct UnknownPosition gUnknown_08edbabc[];
+extern void FUN_08030d20(struct UnknownListNode *node);
+extern void FUN_0802a0ec(struct UnknownListNode *node);
+extern void FUN_0802b2d4(struct UnknownListNode *node);
+extern void FUN_0802b3c8(struct UnknownListNode *node);
+extern void FUN_0802b638(struct UnknownListNode *node);
+extern void FUN_08029ba0(void);
 extern void FUN_0803281c(void);
 extern void FUN_0803d1a0(void);
 extern void FUN_080315bc(void);
@@ -3773,4 +3802,708 @@ void FUN_08029200(void) {
         *address0 = value1;
         asm volatile("" : : "r"(destination));
     }
+}
+
+void FUN_08029250(void) {
+    u32 fills[3];
+    u32 *volatile fillAddresses[2];
+    s32 entryOffset;
+    u32 i;
+    u32 j;
+    struct UnknownListNode *node;
+
+    {
+        register u8 *scene asm("r4") = &gUnknown_03001620;
+        register u32 zero asm("r0") = 0;
+        register u32 one asm("r2");
+        register u8 *state asm("r1");
+        register u32 stateOffset asm("r3");
+
+        scene[1] = zero;
+        one = 1;
+        scene[2] = one;
+        state = (u8 *)&gUnknown_03002110;
+        stateOffset = 0x473;
+        asm volatile("" : "+r"(stateOffset));
+        {
+            register u8 *checkAddress asm("r0") = state + stateOffset;
+
+            asm volatile("" : "+r"(checkAddress));
+            if (*checkAddress != 0) {
+                register u32 selectorOffset asm("r5") = 0x472;
+                register u32 selector asm("r0");
+                register u8 *selectorAddress asm("r0");
+
+                asm volatile("" : "+r"(selectorOffset));
+                selectorAddress = state + selectorOffset;
+                asm volatile("" : "+r"(selectorAddress));
+                {
+                    register u32 tableOffset asm("r6") = 0x474;
+
+                    asm volatile("" : "+r"(tableOffset));
+                    state += tableOffset;
+                }
+                selector = *selectorAddress;
+                state += selector;
+                scene[3] = *state - 1;
+            } else {
+                register u8 *address asm("r0") = state;
+                register u32 flags asm("r1");
+                register u32 test asm("r0");
+
+                address += 0x79;
+                flags = *address;
+                test = one;
+                test &= flags;
+                if (test != 0) {
+                    scene[3] = ((FUN_08020144() & 0xFFF) * 11) >> 12;
+                } else {
+                    scene[3] = ((FUN_08020144() & 0xFFF) * 5) >> 11;
+                }
+            }
+        }
+    }
+
+    FUN_0801fbfc(gUnknown_0810db14, 16);
+    FUN_0801fb60();
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+
+    fills[0] = 0;
+    CpuFastSet(&fills[0], (void *)0x05000000, 0x01000100);
+
+    {
+        u32 mode;
+        register u8 *config asm("r12");
+
+        {
+            register u32 *modeAddress asm("r6") = &gUnknown_03005254;
+
+            mode = *modeAddress;
+        }
+
+        if (mode != 0) {
+            u32 recordIndex = gUnknown_03005260;
+            u8 *record = gUnknown_030013b0;
+            u8 *recordAddress;
+            register u8 *destinationBase asm("r7");
+            register u8 *state asm("r3");
+            register u8 *selectedEntries asm("r9");
+            u8 metadata;
+            u8 group;
+
+            {
+                register u32 recordOffset asm("r4");
+
+                recordOffset = recordIndex * 156;
+                recordAddress = &record[recordOffset];
+                state = (u8 *)&gUnknown_03002110;
+                metadata = state[800];
+                recordAddress[150] = metadata;
+                group = 0;
+                entryOffset = 802;
+                selectedEntries = &state[entryOffset];
+                {
+                    register u8 *selectedConfig asm("r0") = gUnknown_0300524c;
+
+                    asm volatile("" : "+r"(selectedConfig));
+                    config = selectedConfig;
+                }
+                {
+                    register u32 *firstFill asm("r1");
+
+                    asm volatile("mov %0, sp" : "=r"(firstFill));
+                    firstFill += 2;
+                    fillAddresses[0] = firstFill;
+                }
+                {
+                    register u32 *secondFill asm("r3");
+
+                    asm volatile("mov %0, sp" : "=r"(secondFill));
+                    secondFill += 3;
+                    fillAddresses[1] = secondFill;
+                }
+                record += 69;
+                destinationBase = &record[recordOffset];
+            }
+            {
+                register const struct UnknownLookupRecord29250 *lookupTable asm("r4") =
+                    (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+
+                for (; group <= 2; group++) {
+                    u8 column;
+                    register u32 scaledGroup asm("r1") = group;
+                    register u32 destinationOffset asm("r0");
+                    register u8 *destination asm("r3");
+                    register const u16 *entries asm("r6");
+                    register u8 *entryBase asm("r0");
+
+                    scaledGroup <<= 3;
+                    scaledGroup -= group;
+                    destinationOffset = scaledGroup << 2;
+                    destinationOffset -= group;
+                    destination = &destinationBase[destinationOffset];
+                    scaledGroup <<= 3;
+                    entryBase = selectedEntries;
+                    entries = (const u16 *)(scaledGroup + (u32)entryBase);
+
+                    for (column = 0; column <= 26; column++) {
+                        u16 value;
+
+                        destination[column] = lookupTable[entries[column]].value;
+                    }
+                }
+            }
+        } else {
+            register u8 *record asm("r3") = gUnknown_030013b0;
+            register u8 *initialState asm("r2") = (u8 *)&gUnknown_03002110;
+            register u8 *state asm("r8");
+            register u8 *entryBytes asm("r9");
+
+            {
+                u8 initialMetadata;
+
+                {
+                    register u32 metadataOffset asm("r1") = 200;
+                    register u8 *metadataAddress asm("r0");
+
+                    asm volatile("" : "+r"(metadataOffset));
+                    metadataOffset <<= 2;
+                    asm volatile("" : "+r"(metadataOffset));
+                    metadataAddress = initialState + metadataOffset;
+                    asm volatile("" : "+r"(metadataAddress));
+                    initialMetadata = *metadataAddress;
+                }
+                {
+                    register u8 *recordAddress asm("r1");
+                    register u32 metadataValue asm("r0") = initialMetadata;
+
+                    asm volatile("" : "+r"(metadataValue));
+                    recordAddress = record;
+                    asm volatile("" : "+r"(recordAddress));
+                    recordAddress += 150;
+                    *recordAddress = metadataValue;
+                }
+            }
+            {
+                register u32 firstGroup asm("r4") = 0;
+
+                state = initialState;
+                asm volatile("" : "+r"(state));
+                {
+                    register u32 unselectedEntryOffset asm("r2") = 802;
+
+                    asm volatile("" : "+r"(unselectedEntryOffset));
+                    entryBytes = &state[unselectedEntryOffset];
+                    asm volatile("" : "+r"(entryBytes));
+                }
+                {
+                    register u8 *unselectedConfig asm("r5") = gUnknown_0300524c;
+
+                    asm volatile("" : "+r"(unselectedConfig));
+                    config = unselectedConfig;
+                }
+                {
+                    register u32 *firstFill asm("r6");
+
+                    asm volatile("mov %0, sp" : "=r"(firstFill));
+                    firstFill += 2;
+                    fillAddresses[0] = firstFill;
+                }
+                {
+                    register u32 *secondFill asm("r0");
+
+                    asm volatile("mov %0, sp" : "=r"(secondFill));
+                    secondFill += 3;
+                    fillAddresses[1] = secondFill;
+                }
+
+                do {
+                    register u8 *firstDestinationBase asm("r10");
+                    register u32 firstBaseAddress asm("r1") = 69;
+
+                    asm volatile("" : "+r"(firstBaseAddress));
+                    firstBaseAddress += (u32)record;
+                    asm volatile("" : "+r"(firstBaseAddress));
+                    firstDestinationBase = (u8 *)firstBaseAddress;
+                    {
+                        register const struct UnknownLookupRecord29250 *firstLookupTable asm("r7") =
+                            (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+
+                        do {
+                            u8 column;
+                            register u32 scaledGroup asm("r1") = firstGroup;
+                            register u32 scratch asm("r0");
+                            register u8 *destination asm("r6");
+                            register u8 *destinationAddress asm("r2");
+                            register const u16 *entries asm("r5");
+
+                            scaledGroup <<= 3;
+                            scaledGroup -= firstGroup;
+                            scratch = scaledGroup << 2;
+                            scratch -= firstGroup;
+                            destinationAddress = firstDestinationBase;
+                            asm volatile("" : "+r"(destinationAddress));
+                            destination = (u8 *)(scratch + (u32)destinationAddress);
+                            scaledGroup <<= 3;
+                            scratch = (u32)entryBytes;
+                            asm volatile("" : "+r"(scratch));
+                            entries = (const u16 *)(scaledGroup + scratch);
+                            column = 0;
+                            firstGroup += 1;
+
+                            for (; column <= 26; column++) {
+                                u16 value;
+
+                                destination[column] = firstLookupTable[entries[column]].value;
+                            }
+                            scratch = firstGroup << 24;
+                            firstGroup = scratch >> 24;
+                        } while (firstGroup <= 2);
+                    }
+                } while (0);
+            }
+            do {
+                {
+                    register u8 metadata asm("r0") = state[800];
+                    register u32 secondRecordOffset asm("r2") = 153;
+                    register u8 *secondRecordAddress asm("r1");
+
+                    asm volatile("" : "+r"(metadata));
+                    secondRecordOffset <<= 1;
+                    secondRecordAddress = record + secondRecordOffset;
+                    asm volatile("" : "+r"(secondRecordAddress));
+                    *secondRecordAddress = metadata;
+                }
+                {
+                    register u32 secondGroup asm("r4") = 0;
+                    register u8 *secondDestinationBase asm("r10");
+                    register u32 secondBaseAddress asm("r5") = 225;
+
+                    asm volatile("" : "+r"(secondGroup));
+                    asm volatile("" : "+r"(secondBaseAddress));
+                    secondBaseAddress += (u32)record;
+                    asm volatile("" : "+r"(secondBaseAddress));
+                    secondDestinationBase = (u8 *)secondBaseAddress;
+                    {
+                        register const struct UnknownLookupRecord29250 *secondLookupTable asm(
+                            "r7") = (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+
+                        do {
+                            u8 column;
+                            register u32 scaledGroup asm("r1") = secondGroup;
+                            register u32 scratch asm("r0");
+                            register u8 *destination asm("r6");
+                            register u8 *destinationAddress asm("r2");
+                            register const u16 *entries asm("r5");
+
+                            scaledGroup <<= 3;
+                            scaledGroup -= secondGroup;
+                            scratch = scaledGroup << 2;
+                            scratch -= secondGroup;
+                            destinationAddress = secondDestinationBase;
+                            asm volatile("" : "+r"(destinationAddress));
+                            destination = (u8 *)(scratch + (u32)destinationAddress);
+                            scaledGroup <<= 3;
+                            scratch = (u32)entryBytes;
+                            asm volatile("" : "+r"(scratch));
+                            entries = (const u16 *)(scaledGroup + scratch);
+                            column = 0;
+                            secondGroup += 1;
+
+                            for (; column <= 26; column++) {
+                                u16 value;
+
+                                destination[column] = secondLookupTable[entries[column]].value;
+                            }
+                            scratch = secondGroup << 24;
+                            secondGroup = scratch >> 24;
+                        } while (secondGroup <= 2);
+                    }
+                }
+            } while (0);
+            do {
+                {
+                    register u8 metadata asm("r0") = state[800];
+                    register u32 thirdRecordOffset asm("r2") = 231;
+                    register u8 *thirdRecordAddress asm("r1");
+
+                    asm volatile("" : "+r"(metadata));
+                    thirdRecordOffset <<= 1;
+                    thirdRecordAddress = record + thirdRecordOffset;
+                    asm volatile("" : "+r"(thirdRecordAddress));
+                    *thirdRecordAddress = metadata;
+                }
+                {
+                    register u32 thirdGroup asm("r4") = 0;
+                    register u8 *thirdDestinationBase asm("r10");
+                    register u32 thirdBaseAddress asm("r5") = 381;
+
+                    asm volatile("" : "+r"(thirdGroup));
+                    asm volatile("" : "+r"(thirdBaseAddress));
+                    thirdBaseAddress += (u32)record;
+                    asm volatile("" : "+r"(thirdBaseAddress));
+                    thirdDestinationBase = (u8 *)thirdBaseAddress;
+                    {
+                        register const struct UnknownLookupRecord29250 *thirdLookupTable asm("r7") =
+                            (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+
+                        do {
+                            u8 column;
+                            register u32 scaledGroup asm("r1") = thirdGroup;
+                            register u32 scratch asm("r0");
+                            register u8 *destination asm("r6");
+                            register u8 *destinationAddress asm("r2");
+                            register const u16 *entries asm("r5");
+
+                            scaledGroup <<= 3;
+                            scaledGroup -= thirdGroup;
+                            scratch = scaledGroup << 2;
+                            scratch -= thirdGroup;
+                            destinationAddress = thirdDestinationBase;
+                            asm volatile("" : "+r"(destinationAddress));
+                            destination = (u8 *)(scratch + (u32)destinationAddress);
+                            scaledGroup <<= 3;
+                            scratch = (u32)entryBytes;
+                            asm volatile("" : "+r"(scratch));
+                            entries = (const u16 *)(scaledGroup + scratch);
+                            column = 0;
+                            thirdGroup += 1;
+
+                            for (; column <= 26; column++) {
+                                u16 value;
+
+                                destination[column] = thirdLookupTable[entries[column]].value;
+                            }
+                            scratch = thirdGroup << 24;
+                            thirdGroup = scratch >> 24;
+                        } while (thirdGroup <= 2);
+                    }
+                }
+            } while (0);
+            do {
+                {
+                    register u32 metadataScratch asm("r0") = 200;
+                    register u8 metadata asm("r1");
+
+                    metadataScratch <<= 2;
+                    metadataScratch += (u32)state;
+                    metadata = *(u8 *)metadataScratch;
+                    asm volatile("" : "+r"(metadata));
+                    {
+                        register u32 fourthRecordOffset asm("r2") = 618;
+                        register u8 *fourthRecordAddress asm("r0");
+
+                        fourthRecordAddress = record + fourthRecordOffset;
+                        asm volatile("" : "+r"(fourthRecordAddress));
+                        *fourthRecordAddress = metadata;
+                    }
+                }
+                {
+                    register u32 fourthGroup asm("r4") = 0;
+                    register u8 *fourthDestinationBase asm("r7");
+                    register u32 fourthBaseAddress asm("r5") = 537;
+
+                    asm volatile("" : "+r"(fourthGroup));
+                    asm volatile("" : "+r"(fourthBaseAddress));
+                    fourthDestinationBase = record + fourthBaseAddress;
+                    asm volatile("" : "+r"(fourthDestinationBase));
+                    {
+                        register const struct UnknownLookupRecord29250 *fourthLookupTable asm(
+                            "r3") = (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+
+                        do {
+                            u8 column;
+                            register u32 scaledGroup asm("r1") = fourthGroup;
+                            register u32 scratch asm("r0");
+                            register u8 *destination asm("r6");
+                            register const u16 *entries asm("r5");
+
+                            scaledGroup <<= 3;
+                            scaledGroup -= fourthGroup;
+                            scratch = scaledGroup << 2;
+                            scratch -= fourthGroup;
+                            destination = (u8 *)(scratch + (u32)fourthDestinationBase);
+                            scaledGroup <<= 3;
+                            scratch = (u32)entryBytes;
+                            asm volatile("" : "+r"(scratch));
+                            entries = (const u16 *)(scaledGroup + scratch);
+                            column = 0;
+                            fourthGroup += 1;
+
+                            for (; column <= 26; column++) {
+                                u16 value;
+
+                                destination[column] = fourthLookupTable[entries[column]].value;
+                            }
+                            scratch = fourthGroup << 24;
+                            fourthGroup = scratch >> 24;
+                        } while (fourthGroup <= 2);
+                    }
+                }
+            } while (0);
+        }
+
+        {
+            register u8 *configAddress asm("r3") = config;
+
+            asm volatile("" : "+r"(configAddress));
+            if (configAddress[0] == 10) {
+                gUnknown_03005268[0] |= 1;
+            }
+            if (configAddress[1] == 10) {
+                gUnknown_03005268[1] |= 1;
+            }
+            if (configAddress[2] == 10) {
+                gUnknown_03005268[2] |= 1;
+            }
+        }
+        {
+            register u8 *configAddress asm("r1") = config;
+
+            asm volatile("" : "+r"(configAddress));
+            if (configAddress[3] == 10) {
+                gUnknown_03005268[3] |= 1;
+            }
+        }
+    }
+
+    {
+        u32 mode;
+
+        {
+            register u32 *modeAddress asm("r2") = &gUnknown_03005254;
+
+            asm volatile("" : "+r"(modeAddress));
+            mode = *modeAddress;
+        }
+        if (mode != 0) {
+            register u8 *scene asm("r0") = &gUnknown_03001620;
+
+            scene += 36;
+            {
+                register u32 four asm("r1") = 4;
+
+                *scene = four;
+            }
+            for (i = gUnknown_0300525c; i <= 3; i++) {
+                memcpy(gUnknown_03005200[i], gUnknown_08edbaac, 16);
+            }
+        } else {
+            register u8 *scene asm("r1") = &gUnknown_03001620;
+
+            scene += 36;
+            {
+                register u32 four asm("r0") = 4;
+
+                *scene = four;
+            }
+            gUnknown_03005250 = 1;
+            memcpy(gUnknown_03005200[0], gUnknown_03002170, 12);
+            memcpy(gUnknown_03005200[1], gUnknown_08edbaac, 16);
+            memcpy(gUnknown_03005200[2], gUnknown_08edbaac, 16);
+            memcpy(gUnknown_03005200[3], gUnknown_08edbaac, 16);
+        }
+    }
+
+    LZ77UnCompVram(gUnknown_0810dbcc, (void *)0x06000000);
+    LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
+    {
+        register u32 count asm("r5");
+
+        fills[1] = 0;
+        {
+            register void *destination asm("r1") = (void *)0x0600F800;
+            register const void *source asm("r0");
+
+            asm volatile("" : "+r"(destination));
+            count = 0x01000200;
+            asm volatile("" : "+r"(count));
+            source = fillAddresses[0];
+            asm volatile("" : "+r"(source));
+            CpuFastSet(source, destination, count);
+        }
+        fills[2] = 0;
+        {
+            register void *destination asm("r1") = (void *)0x0600F000;
+            register const void *source asm("r0");
+
+            asm volatile("" : "+r"(destination));
+            source = fillAddresses[1];
+            asm volatile("" : "+r"(source));
+            CpuFastSet(source, destination, count);
+        }
+    }
+    LZ77UnCompVram(gUnknown_08116444, (void *)0x0600E800);
+
+    {
+        u16 *destination = (u16 *)0x0600E000;
+
+        for (i = 0; i <= 3; i++) {
+            for (j = 0; j <= 3; j++) {
+                FUN_08021000(destination, gUnknown_081327d4, 8, 8, 0xF200);
+                destination += 8;
+            }
+            destination += 0xE0;
+        }
+    }
+
+    LZ77UnCompVram(gUnknown_0810df04, (void *)0x06010000);
+    {
+        register u32 selected asm("r1") = gUnknown_03005250;
+        register u32 selectedCopy asm("r0") = selected;
+
+        asm volatile("" : "+r"(selected), "+r"(selectedCopy));
+        if (selected <= 4) {
+            register u32 source asm("r1");
+
+            selected += 2;
+            selected <<= 9;
+            selected += (u32)gUnknown_08116568;
+            asm volatile("" : "+r"(selected));
+            FUN_0802036c(0x06016000, selected, 512);
+            source = (u32)gUnknown_08117368;
+            asm volatile("" : "+r"(source));
+            FUN_0802036c(0x06016200, source, 2048);
+        } else if (selected <= 9) {
+            register u32 source asm("r1");
+
+            selected -= 4;
+            selected <<= 9;
+            selected += (u32)gUnknown_08116568;
+            asm volatile("" : "+r"(selected));
+            FUN_0802036c(0x06016000, selected, 512);
+            source = (u32)gUnknown_08117b68;
+            asm volatile("" : "+r"(source));
+            FUN_0802036c(0x06016200, source, 2048);
+        } else if (selectedCopy <= 14) {
+            register u32 source asm("r1") = selectedCopy;
+
+            source -= 10;
+            source <<= 9;
+            source += (u32)gUnknown_08116568;
+            asm volatile("" : "+r"(source));
+            FUN_0802036c(0x06016000, source, 512);
+            source = (u32)gUnknown_08118368;
+            asm volatile("" : "+r"(source));
+            FUN_0802036c(0x06016200, source, 2048);
+        }
+    }
+
+#define LOAD_PLAYER_GRAPHICS(index, destination)                                                   \
+    do {                                                                                           \
+        register u32 value asm("r0") = gUnknown_0300524c[index];                                   \
+        asm volatile("" : "+r"(value));                                                            \
+        if (value > 9) {                                                                           \
+            value = 10;                                                                            \
+        } else if (value > 8) {                                                                    \
+            value = 9;                                                                             \
+        }                                                                                          \
+        {                                                                                          \
+            register u32 source asm("r1") = (u32)gUnknown_08edbadc[value];                         \
+            asm volatile("" : "+r"(source));                                                       \
+            FUN_08020408((destination), source);                                                   \
+        }                                                                                          \
+    } while (0)
+
+    LOAD_PLAYER_GRAPHICS(0, 0x06013800);
+    LOAD_PLAYER_GRAPHICS(1, 0x06014200);
+    LOAD_PLAYER_GRAPHICS(2, 0x06014C00);
+    LOAD_PLAYER_GRAPHICS(3, 0x06015600);
+#undef LOAD_PLAYER_GRAPHICS
+
+    {
+        register u8 *variants asm("r5") = gUnknown_03005268;
+
+        asm volatile("" : "+r"(variants));
+        FUN_080290e8(0, variants[0], 0);
+        FUN_080290e8(1, variants[1], 1);
+        FUN_080290e8(2, variants[2], 2);
+        FUN_080290e8(3, variants[3], 3);
+    }
+
+    FUN_0801f7d0(FUN_08030d20, 12, gUnknown_03003e20, 0);
+    FUN_0801f7d0(FUN_0802a0ec, 28, gUnknown_03003e20, 0);
+    FUN_0801f7d0(FUN_0802b2d4, 16, gUnknown_03003e20, 0);
+    node = FUN_0801f7d0(FUN_0802b3c8, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 0;
+    node = FUN_0801f7d0(FUN_0802b3c8, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 1;
+    node = FUN_0801f7d0(FUN_0802b3c8, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 2;
+    node = FUN_0801f7d0(FUN_0802b3c8, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 3;
+    node = FUN_0801f7d0(FUN_0801f9d8, 16, gUnknown_03003e20, 0);
+    *node->position = gUnknown_08edbabc[0];
+    node = FUN_0801f7d0(FUN_0801f9d8, 16, gUnknown_03003e20, 0);
+    *node->position = gUnknown_08edbabc[1];
+    node = FUN_0801f7d0(FUN_0802b638, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 0;
+    node = FUN_0801f7d0(FUN_0802b638, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 1;
+    node = FUN_0801f7d0(FUN_0802b638, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 2;
+    node = FUN_0801f7d0(FUN_0802b638, 16, gUnknown_03003e20, 0);
+    node->position->field13 = 3;
+
+    FUN_0801fba0(0, 8000);
+    gUnknown_03002030 = FUN_08029ba0;
+    if (gUnknown_03005254 != 0) {
+        register u16 *command asm("r5");
+        register u8 *playerAddress asm("r3");
+        register u32 mask asm("r1");
+        register u32 packed asm("r2");
+        register u32 player asm("r0");
+        register u8 *selectionAddress asm("r0");
+        register u32 selection asm("r4");
+        register u8 *variants asm("r6");
+        register u8 *scene asm("r0");
+
+        command = gUnknown_03001b10;
+        asm volatile("" : "+r"(command));
+        {
+            register u32 commandValue asm("r0") = 0x3456;
+
+            asm volatile("" : "+r"(commandValue));
+            command[1] = commandValue;
+        }
+        playerAddress = &gUnknown_03005260;
+        asm volatile("" : "+r"(playerAddress));
+        player = *playerAddress;
+        mask = 15;
+        asm volatile("" : "+r"(mask));
+        packed = mask;
+        packed &= player;
+        packed <<= 12;
+        selectionAddress = gUnknown_0300524c;
+        playerAddress = (u8 *)(u32)*playerAddress;
+        selectionAddress = (u8 *)((u32)playerAddress + (u32)selectionAddress);
+        selection = *selectionAddress;
+        player = mask;
+        player &= selection;
+        player <<= 8;
+        packed |= player;
+        variants = gUnknown_03005268;
+        playerAddress += (u32)variants;
+        playerAddress = (u8 *)(u32)*playerAddress;
+        player = mask;
+        player &= (u32)playerAddress;
+        player <<= 4;
+        packed |= player;
+        scene = &gUnknown_03001620;
+        player = scene[3];
+        mask &= player;
+        mask |= packed;
+        command[2] = mask;
+        command[3] = 0;
+        command[4] = 0;
+        command[5] = 0;
+        command[6] = 0;
+        command[7] = 0;
+    }
+    FUN_0801f618(2);
+    gUnknown_03005258 = 0;
 }
