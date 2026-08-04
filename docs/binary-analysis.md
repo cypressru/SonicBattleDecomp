@@ -52,7 +52,7 @@ and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x3952E instruction bytes and 0xD9C6 owned non-code bytes.
+game category consequently contains 0x3952A instruction bytes and 0xD9CA owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 184 | 70,076 | 27,276 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 183 | 70,072 | 27,280 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -91,6 +91,17 @@ or stored function pointer, which explains why call-closure discovery missed it.
 reconstructed in C and matches all 30 instruction bytes in objdiff. Its source is attached to the
 conservative placeholder object and does not assert an original filename or TU boundary; the
 surrounding TU boundary remains unresolved.
+
+Six additional graphics-queue leaf routines in the unresolved tail now reconstruct as ordinary C:
+`0x08017ED0`, `0x08017EEC`, `0x08017F00`, `0x08017F34`, `0x08017F58`, and
+`0x08017F6C`. Their queue shapes and background-register state independently correlate with the
+public Sonic Advance 2 and Sonic Advance 3 engine interfaces, but that related-title evidence does
+not establish Sonic Battle's original filename or TU boundary. All 120 owned instruction bytes
+match in objdiff, so the functions remain attached to the conservative placeholder.
+
+That audit also rejected the pointer-closure candidate at `0x080182E0`. The four bytes decode as
+the IWRAM address `0x030016C8` and form a literal immediately before the real function at
+`0x080182E4`; they are now mapped as data rather than counted as a zero-body function.
 
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated

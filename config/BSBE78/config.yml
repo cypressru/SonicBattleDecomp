@@ -194,9 +194,33 @@ units:
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
+    mappings:
+      # The pointer-closure candidate at 0x080182E0 is a literal, not code.
+      - { offset: 0x17AE4, mode: data }
+      - { offset: 0x17AE8, mode: thumb }
     base_symbol_size_overrides:
+      FUN_08017ed0: 0x10
+      FUN_08017eec: 0x0C
+      FUN_08017f00: 0x2C
+      FUN_08017f34: 0x1C
+      FUN_08017f58: 0x0A
+      FUN_08017f6c: 0x0A
       FUN_08018410: 0x1E
     relocations:
+      - { offset: 0x176E4, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x176E8, type: abs32, symbol: gUnknown_030017c8 }
+      - { offset: 0x176EC, type: abs32, symbol: gUnknown_03001388 }
+      - { offset: 0x176FC, type: abs32, symbol: gUnknown_030033cc }
+      - { offset: 0x17700, type: abs32, symbol: gUnknown_03003170 }
+      - { offset: 0x1771E, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x17730, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x17734, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x17754, type: abs32, symbol: gUnknown_03003190 }
+      - { offset: 0x17758, type: abs32, symbol: gUnknown_03001388 }
+      - { offset: 0x17768, type: abs32, symbol: gUnknown_030016d0 }
+      - { offset: 0x1776C, type: abs32, symbol: gUnknown_030017c0 }
+      - { offset: 0x1777C, type: abs32, symbol: gUnknown_030017c8 }
+      - { offset: 0x17780, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x17C34, type: abs32, symbol: gUnknown_03001740 }
   - name: main/unknown_08018444
     start: 0x018444

@@ -185,7 +185,6 @@ address,name,mode,confidence
 0x08018204,FUN_08018204,thumb,direct-call
 0x0801824C,FUN_0801824c,thumb,recursive-disassembly
 0x080182AC,FUN_080182ac,thumb,direct-call
-0x080182E0,FUN_080182e0,thumb,rom-pointer
 0x080182E4,FUN_080182e4,thumb,direct-call
 0x08018300,FUN_08018300,thumb,direct-call
 0x08018318,FUN_08018318,thumb,direct-call
