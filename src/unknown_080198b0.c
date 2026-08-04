@@ -12,7 +12,15 @@ extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_08049108(u16 value);
+extern void FUN_080490b4(u16 value);
+extern void FUN_080491d4(const void *value, u16 other);
+extern void FUN_080491e4(const void *value, u16 other);
 extern void FUN_08049234(const void *value);
+extern void FUN_0804962c(void);
+extern void FUN_080496ac(void);
+extern void FUN_0804a0a0(const void *value, u16 other);
+extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
+extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
 
 typedef void (*UnknownCallback)(void);
 
@@ -477,3 +485,29 @@ void FUN_0801f628(u16 value) { FUN_08049108(value); }
 void FUN_0801f644(u16 value) {
     FUN_08049234(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value);
 }
+
+void FUN_0801f66c(u16 value, u16 first, s8 second) {
+    FUN_0804a1a0(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value, first, second);
+}
+
+void FUN_0801f6a0(u16 value, u16 first, u16 second) {
+    FUN_0804a0c4(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value, first, second);
+}
+
+void FUN_0801f6d4(u16 value, u16 other) {
+    FUN_0804a0a0(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value, other);
+}
+
+void FUN_0801f700(void) { FUN_0804962c(); }
+
+void FUN_0801f70c(void) { FUN_080496ac(); }
+
+void FUN_0801f718(u16 value, u16 other) {
+    FUN_080491d4(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value, other >> 4);
+}
+
+void FUN_0801f744(u16 value, u16 other) {
+    FUN_080491e4(gUnknown_08bf71fc[gUnknown_08bf7244[value].index].value, other);
+}
+
+void FUN_0801f770(u16 value) { FUN_080490b4(value); }

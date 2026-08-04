@@ -336,7 +336,9 @@ address,name,mode,confidence
 0x0801F644,FUN_0801f644,thumb,direct-call
 0x0801F66C,FUN_0801f66c,thumb,direct-call
 0x0801F6A0,FUN_0801f6a0,thumb,direct-call
-0x0801F6EA,FUN_0801f6ea,thumb,rom-pointer
+0x0801F6D4,FUN_0801f6d4,thumb,structured-entry+return
+0x0801F700,FUN_0801f700,thumb,structured-entry+return
+0x0801F70C,FUN_0801f70c,thumb,structured-entry+return
 0x0801F718,FUN_0801f718,thumb,direct-call
 0x0801F744,FUN_0801f744,thumb,direct-call
 0x0801F770,FUN_0801f770,thumb,direct-call
