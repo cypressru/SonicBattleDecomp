@@ -21,6 +21,47 @@ rejected_function_pointers:
   # Compressed asset bytes at 0x08CB08C4 happen to encode 0x0801E825. The
   # destination is the middle of FUN_0801e6a0's literal pool, not code.
   - { source: 0x0CB08C4, destination: 0x0801E824 }
+  # A repeated byte pattern in opaque data_gap_083 happens to encode the
+  # Thumb-tagged internal tail 0x080200A5. There are no direct calls to this
+  # address; execution reaches it only from FUN_08020074 with r4 already set.
+  - { source: 0x02FC0FC, destination: 0x080200A4 }
+  - { source: 0x02FC136, destination: 0x080200A4 }
+  - { source: 0x02FC16A, destination: 0x080200A4 }
+  - { source: 0x02FC4C8, destination: 0x080200A4 }
+  - { source: 0x02FC502, destination: 0x080200A4 }
+  - { source: 0x02FC536, destination: 0x080200A4 }
+  - { source: 0x02FCBA8, destination: 0x080200A4 }
+  - { source: 0x02FCBE2, destination: 0x080200A4 }
+  - { source: 0x02FCC16, destination: 0x080200A4 }
+  - { source: 0x02FD3F2, destination: 0x080200A4 }
+  - { source: 0x02FD44A, destination: 0x080200A4 }
+  - { source: 0x02FD460, destination: 0x080200A4 }
+  - { source: 0x02FD468, destination: 0x080200A4 }
+  - { source: 0x02FDAD8, destination: 0x080200A4 }
+  - { source: 0x02FDB30, destination: 0x080200A4 }
+  - { source: 0x02FDB46, destination: 0x080200A4 }
+  - { source: 0x02FDB4E, destination: 0x080200A4 }
+  - { source: 0x02FDEEE, destination: 0x080200A4 }
+  - { source: 0x02FDEF8, destination: 0x080200A4 }
+  - { source: 0x02FDF02, destination: 0x080200A4 }
+  - { source: 0x02FDF16, destination: 0x080200A4 }
+  - { source: 0x02FDF34, destination: 0x080200A4 }
+  - { source: 0x02FE1C8, destination: 0x080200A4 }
+  - { source: 0x02FE218, destination: 0x080200A4 }
+  - { source: 0x0302FA6, destination: 0x080200A4 }
+  - { source: 0x0302FFE, destination: 0x080200A4 }
+  - { source: 0x0303014, destination: 0x080200A4 }
+  - { source: 0x030301C, destination: 0x080200A4 }
+  - { source: 0x0303F58, destination: 0x080200A4 }
+  - { source: 0x0303FB0, destination: 0x080200A4 }
+  - { source: 0x0303FC6, destination: 0x080200A4 }
+  - { source: 0x0303FCE, destination: 0x080200A4 }
+  - { source: 0x0319D0C, destination: 0x080200A4 }
+  - { source: 0x0319D64, destination: 0x080200A4 }
+  - { source: 0x0319D7A, destination: 0x080200A4 }
+  - { source: 0x0319D82, destination: 0x080200A4 }
+  - { source: 0x031D80C, destination: 0x080200A4 }
+  - { source: 0x031DF12, destination: 0x080200A4 }
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true

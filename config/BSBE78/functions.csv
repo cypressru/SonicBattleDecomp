@@ -373,7 +373,6 @@ address,name,mode,confidence
 0x0802002C,FUN_0802002c,thumb,rom-pointer
 0x08020034,FUN_08020034,thumb,structured-entry+return
 0x08020074,FUN_08020074,thumb,structured-entry+return
-0x080200A4,FUN_080200a4,thumb,rom-pointer
 0x080200B4,FUN_080200b4,thumb,rom-pointer
 0x080200BC,FUN_080200bc,thumb,direct-call
 0x080200D8,FUN_080200d8,thumb,direct-call
