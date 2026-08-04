@@ -53,6 +53,7 @@ extern void FUN_080311b4(struct UnknownListNode *node);
 extern u8 gUnknown_0300537c;
 extern const u8 gUnknown_081734d8[];
 extern void FUN_08041c14(void);
+extern void FUN_08041e2c(void);
 extern u8 gUnknown_030052e0;
 extern void FUN_0802ea64(u8 value);
 extern void FUN_080375d8(u8 value);
@@ -181,6 +182,25 @@ struct UnknownFadeState41808 {
     u8 padding0[26];
     u8 step;
     u8 progress;
+};
+
+struct UnknownState41f24 {
+    u8 padding0[4];
+    const void *callback;
+    u8 padding8[8];
+    const void *graphics;
+    u16 field20;
+    u8 field22;
+    u8 padding23;
+    u8 field24;
+    u8 padding25[2];
+    u8 selector;
+};
+
+struct UnknownRecord41f24 {
+    u8 padding0[10];
+    u16 field10;
+    u8 padding12[20];
 };
 
 struct UnknownState080201f8 {
@@ -373,7 +393,8 @@ struct UnknownGlobalRenderState {
     u16 field8;
     u8 filler10[2];
     u16 field12;
-    u8 filler14[18];
+    u8 filler14[17];
+    u8 field31;
     u8 field32;
     u8 field33;
     u8 field34;
@@ -384,6 +405,7 @@ struct UnknownGlobalRenderState {
 };
 
 extern struct UnknownGlobalRenderState gUnknown_03005440;
+extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
@@ -6498,4 +6520,17 @@ void FUN_08041808(void *value) {
         gUnknown_03005440.field8 &= 0xFEFF;
         FUN_0804051c(state);
     }
+}
+
+void FUN_08041f24(struct UnknownState41f24 *state) {
+    state->graphics = gUnknown_081734d8;
+    state->field20 =
+        (gUnknown_08eeb678[gUnknown_03005440.field31][state->selector].field10 + 1) * 8;
+    state->field22 = 4;
+    if (gUnknown_08eeb678[gUnknown_03005440.field31][state->selector].field10 == 4) {
+        state->field24 = 0xcc;
+    } else {
+        state->field24 = 0x2c;
+    }
+    state->callback = (const void *)((u32)FUN_08041e2c + 1);
 }
