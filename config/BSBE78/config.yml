@@ -735,6 +735,11 @@ units:
       FUN_080249e4: 0x44
       FUN_08024a34: 0x68
       FUN_08024aac: 0x58
+      FUN_08024b1c: 0x50
+      FUN_08024b90: 0x3E
+      FUN_08024bd8: 0x3E
+      FUN_08024c20: 0xE
+      FUN_08024c30: 0x4E
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -1026,6 +1031,16 @@ units:
       - { offset: 0xB1FC, mode: thumb }
       - { offset: 0xB254, mode: data }
       - { offset: 0xB26C, mode: thumb }
+      - { offset: 0xB2BC, mode: data }
+      - { offset: 0xB2E0, mode: thumb }
+      - { offset: 0xB31E, mode: data }
+      - { offset: 0xB328, mode: thumb }
+      - { offset: 0xB366, mode: data }
+      - { offset: 0xB370, mode: thumb }
+      - { offset: 0xB37E, mode: data }
+      - { offset: 0xB380, mode: thumb }
+      - { offset: 0xB3CE, mode: data }
+      - { offset: 0xB3E0, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1401,6 +1416,24 @@ units:
       - { offset: 0xB260, type: abs32, symbol: gUnknown_08edb740 }
       - { offset: 0xB264, type: abs32, symbol: gUnknown_08edb84c }
       - { offset: 0xB268, type: abs32, symbol: gUnknown_03004dc0 }
+      - { offset: 0xB28E, type: thumb_call, symbol: FUN_0801f92c }
+      - { offset: 0xB2B2, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xB2BC, type: abs32, symbol: gUnknown_08edb834 }
+      - { offset: 0xB2C0, type: abs32, symbol: gUnknown_03004dbc }
+      - { offset: 0xB2C4, type: abs32, symbol: gUnknown_08edb760 }
+      - { offset: 0xB2C8, type: abs32, symbol: gUnknown_08edb84c }
+      - { offset: 0xB2CC, type: abs32, symbol: gUnknown_03004dc0 }
+      - { offset: 0xB320, type: abs32, symbol: gUnknown_08edb740 }
+      - { offset: 0xB324, type: abs32, symbol: FUN_08024994 }
+      - { offset: 0xB368, type: abs32, symbol: gUnknown_08edb740 }
+      - { offset: 0xB36C, type: abs32, symbol: FUN_080249e4 }
+      - { offset: 0xB376, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xB3A0, type: thumb_call, symbol: FUN_0801f92c }
+      - { offset: 0xB3C4, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xB3D0, type: abs32, symbol: gUnknown_08edb854 }
+      - { offset: 0xB3D4, type: abs32, symbol: gUnknown_08edb7f0 }
+      - { offset: 0xB3D8, type: abs32, symbol: gUnknown_08edb84c }
+      - { offset: 0xB3DC, type: abs32, symbol: gUnknown_03004dc0 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

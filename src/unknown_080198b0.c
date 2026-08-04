@@ -244,9 +244,9 @@ extern const u8 gUnknown_08edb678[];
 extern const u16 gUnknown_08edb834[];
 extern const void *gUnknown_08edb750;
 extern const u16 gUnknown_08edb91c[];
-extern const void *gUnknown_08edb760;
+extern const void *gUnknown_08edb760[];
 extern u8 gUnknown_08edb5c8[];
-extern const void *gUnknown_08edb7f0;
+extern const void *gUnknown_08edb7f0[];
 extern const u16 gUnknown_08edb854[];
 extern const void *gUnknown_08edb740[];
 extern const u8 gUnknown_08edb84c[];
@@ -1619,7 +1619,7 @@ void FUN_0802482c(struct UnknownListNode *node) {
 }
 
 void FUN_08024894(struct UnknownListNode *node) {
-    node->position->field0 = gUnknown_08edb760;
+    node->position->field0 = gUnknown_08edb760[0];
     node->position->tile = 336;
     node->position->x = gUnknown_08edb834[gUnknown_03004dbc->field2 * 2];
     node->position->y = gUnknown_08edb834[gUnknown_03004dbc->field2 * 2 + 1];
@@ -1646,7 +1646,7 @@ void FUN_080248f0(struct UnknownListNode *node) {
 }
 
 void FUN_08024940(struct UnknownListNode *node) {
-    node->position->field0 = gUnknown_08edb7f0;
+    node->position->field0 = gUnknown_08edb7f0[0];
     node->position->tile = 336;
     node->position->x = gUnknown_08edb854[node->position->field13 * 2];
     node->position->y = gUnknown_08edb854[node->position->field13 * 2 + 1];
@@ -1686,5 +1686,43 @@ void FUN_08024aac(struct UnknownListNode *node) {
 
     FUN_0801f92c(node, (s16)gUnknown_08edb91c[column], (s16)gUnknown_08edb91c[row + 4]);
     node->position->field0 = gUnknown_08edb740[gUnknown_08edb84c[(gUnknown_03004dc0 & 28) >> 2]];
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08024b1c(struct UnknownListNode *node) {
+    FUN_0801f92c(node, (s16)gUnknown_08edb834[gUnknown_03004dbc->field2 * 2],
+                 (s16)gUnknown_08edb834[gUnknown_03004dbc->field2 * 2 + 1]);
+    node->position->field0 = gUnknown_08edb760[gUnknown_08edb84c[(gUnknown_03004dc0 & 28) >> 2]];
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08024b90(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb740[0];
+    node->position->tile = 336;
+    node->position->x = 120;
+    node->position->y = node->position->field13 * 24 + 16;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_08024994;
+}
+
+void FUN_08024bd8(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb740[0];
+    node->position->tile = 336;
+    node->position->x = 120;
+    node->position->y = node->position->field13 * 24 + 36;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_080249e4;
+}
+
+void FUN_08024c20(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
+void FUN_08024c30(struct UnknownListNode *node) {
+    FUN_0801f92c(node, (s16)gUnknown_08edb854[node->position->field13 * 2],
+                 (s16)gUnknown_08edb854[node->position->field13 * 2 + 1]);
+    node->position->field0 = gUnknown_08edb7f0[gUnknown_08edb84c[(gUnknown_03004dc0 & 28) >> 2]];
     FUN_0801fed8(node->field6, 0);
 }
