@@ -84,7 +84,10 @@ struct MP2KSongHeader {
 
 struct MixerSource {
     u8 status;
-    u8 padding1[63];
+    u8 type;
+    u8 padding2[26];
+    u8 panMask;
+    u8 padding29[35];
 };
 
 struct SoundMixerState {
@@ -96,7 +99,8 @@ struct SoundMixerState {
     u8 freqOption;
     u8 padding9[2];
     u8 framesPerDmaCycle;
-    u8 padding12[4];
+    u8 maxScanlines;
+    u8 padding13[3];
     s32 samplesPerFrame;
     s32 sampleRate;
     s32 sampleRateReciprocal;
@@ -124,6 +128,7 @@ extern struct SoundMixerState *gSoundInfo;
 extern void MP2KPlayerMain(void);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern const u16 gPcmSamplesPerVBlankTable[];
+extern u8 gMaxLines[];
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -132,11 +137,22 @@ extern void *gMPlayJumpTable[];
 extern void MP2K_event_nxx(void);
 extern void MP2K_event_null(void);
 extern void MPlayJumpTableCopy(void **table);
+extern void MP2K_event_memacc(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void MP2K_event_lfos(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void MP2K_event_mod(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void MP2K_event_xcmd(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void MP2K_event_endtie(struct MP2KPlayerState *, struct MP2KTrack *);
+extern void TrackStop(void);
+extern void TrkVolPitSet(void);
+extern void CgbSound(void);
+extern void CgbOscOff(u8 channel);
+extern void MidiKeyToCgbFreq(void);
 void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
 void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
 void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount);
+void FadeOutBody(struct MP2KPlayerState *player);
 void m4aSoundVSync(void);
 void SoundClear(void);
 void m4aSoundVSyncOff(void);
@@ -144,6 +160,7 @@ void m4aSoundVSyncOn(void);
 void SampleFreqSet(u32 frequency);
 void m4aSoundMode(u32 mode);
 void SoundInit(struct SoundMixerState *soundInfo);
+void MPlayExtender(struct MixerSource *cgbChannels);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -507,6 +524,58 @@ void SoundInit(struct SoundMixerState *soundInfo) {
     soundInfo->mplayJumpTable = gMPlayJumpTable;
     SampleFreqSet(0x40000);
     soundInfo->lockStatus = 0x68736D53;
+}
+
+void MPlayExtender(struct MixerSource *cgbChannels) {
+    struct SoundMixerState *soundInfo;
+    u32 lockStatus;
+    u32 zero;
+
+    *(volatile u16 *)0x04000084 = 0x008F;
+    *(volatile u16 *)0x04000080 = 0;
+    *(volatile u8 *)0x04000063 = 8;
+    *(volatile u8 *)0x04000069 = 8;
+    *(volatile u8 *)0x04000079 = 8;
+    *(volatile u8 *)0x04000065 = 0x80;
+    *(volatile u8 *)0x0400006D = 0x80;
+    *(volatile u8 *)0x0400007D = 0x80;
+    *(volatile u8 *)0x04000070 = 0;
+    *(volatile u8 *)0x04000080 = 0x77;
+
+    soundInfo = gSoundInfo;
+    lockStatus = soundInfo->lockStatus;
+    if (lockStatus != 0x68736D53) {
+        return;
+    }
+    soundInfo->lockStatus++;
+
+    gMPlayJumpTable[8] = MP2K_event_memacc;
+    gMPlayJumpTable[17] = MP2K_event_lfos;
+    gMPlayJumpTable[19] = MP2K_event_mod;
+    gMPlayJumpTable[28] = MP2K_event_xcmd;
+    gMPlayJumpTable[29] = MP2K_event_endtie;
+    gMPlayJumpTable[30] = SampleFreqSet;
+    gMPlayJumpTable[31] = TrackStop;
+    gMPlayJumpTable[32] = FadeOutBody;
+    gMPlayJumpTable[33] = TrkVolPitSet;
+
+    soundInfo->cgbChans = cgbChannels;
+    soundInfo->cgbSound = CgbSound;
+    soundInfo->cgbOscOff = CgbOscOff;
+    soundInfo->midiKeyToCgbFreq = MidiKeyToCgbFreq;
+    soundInfo->maxScanlines = (u32)gMaxLines;
+
+    zero = 0;
+    CpuSet(&zero, cgbChannels, 0x05000040);
+    cgbChannels[0].type = 1;
+    cgbChannels[0].panMask = 0x11;
+    cgbChannels[1].type = 2;
+    cgbChannels[1].panMask = 0x22;
+    cgbChannels[2].type = 3;
+    cgbChannels[2].panMask = 0x44;
+    cgbChannels[3].type = 4;
+    cgbChannels[3].panMask = 0x88;
+    soundInfo->lockStatus = lockStatus;
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {

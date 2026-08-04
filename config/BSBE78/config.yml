@@ -544,6 +544,8 @@ units:
       - { offset: 0x128, mode: thumb }
       - { offset: 0x16A, mode: data }
       - { offset: 0x174, mode: thumb }
+      - { offset: 0x3F0, mode: data }
+      - { offset: 0x440, mode: thumb }
       - { offset: 0x524, mode: data }
       - { offset: 0x564, mode: thumb }
       - { offset: 0x5BC, mode: data }
@@ -570,6 +572,7 @@ units:
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       MPlayStart: 0xDE
+      MPlayExtender: 0xC8
       SoundInit: 0xB8
       SampleFreqSet: 0x58
       m4aSoundMode: 0x88
@@ -632,6 +635,22 @@ units:
       - { offset: 0x25C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
+      - { offset: 0x3B6, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x3FC, type: abs32, symbol: gSoundInfo }
+      - { offset: 0x404, type: abs32, symbol: gMPlayJumpTable }
+      - { offset: 0x408, type: abs32, symbol: MP2K_event_memacc }
+      - { offset: 0x40C, type: abs32, symbol: MP2K_event_lfos }
+      - { offset: 0x410, type: abs32, symbol: MP2K_event_mod }
+      - { offset: 0x414, type: abs32, symbol: MP2K_event_xcmd }
+      - { offset: 0x418, type: abs32, symbol: MP2K_event_endtie }
+      - { offset: 0x41C, type: abs32, symbol: SampleFreqSet }
+      - { offset: 0x420, type: abs32, symbol: TrackStop }
+      - { offset: 0x424, type: abs32, symbol: FadeOutBody }
+      - { offset: 0x428, type: abs32, symbol: TrkVolPitSet }
+      - { offset: 0x42C, type: abs32, symbol: CgbSound }
+      - { offset: 0x430, type: abs32, symbol: CgbOscOff }
+      - { offset: 0x434, type: abs32, symbol: MidiKeyToCgbFreq }
+      - { offset: 0x438, type: abs32, symbol: gMaxLines }
       - { offset: 0x4EC, type: thumb_call, symbol: CpuSet }
       - { offset: 0x50A, type: thumb_call, symbol: MPlayJumpTableCopy }
       - { offset: 0x514, type: thumb_call, symbol: SampleFreqSet }
