@@ -186,7 +186,21 @@ struct UnknownAllocation25a98 {
     u8 childIds[7];
 };
 
+struct UnknownCallbackState03005330 {
+    UnknownCallback callback;
+    s16 field4;
+    s16 field6;
+    u16 field8;
+    u8 field10;
+    u8 field11;
+};
+
+struct UnknownUnsignedHalfword {
+    u32 value : 16;
+};
+
 extern void (*gUnknown_03002030)(void);
+extern struct UnknownCallbackState03005330 gUnknown_03005330;
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03001b00[8];
@@ -296,6 +310,7 @@ extern const u8 gUnknown_0807c620[];
 extern const u8 gUnknown_0807c060[];
 extern const u8 gUnknown_08071b7c[];
 extern u16 gUnknown_03001b10[];
+extern void FUN_08034f28(void);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2137,5 +2152,26 @@ void FUN_08026634(struct UnknownListNode *node) {
         gUnknown_03004dbc->field18 = 0;
         allocation->child40 = FUN_0801f7d0(FUN_0802482c, 16, gUnknown_03003e20, 0);
         node->data = FUN_08025fd4;
+    }
+}
+
+void FUN_08026d6c(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 0x200) != 0) {
+        u32 value;
+
+        gUnknown_03001b10[0] = 0;
+        gUnknown_03001b10[1] = 0;
+        FUN_08021f20();
+        FUN_08034f28();
+        gUnknown_03005330.callback = FUN_08021f20;
+        value = ((struct UnknownUnsignedHalfword *)&gUnknown_03004dd4)->value;
+        gUnknown_03005330.field8 = value;
+        value &= 0xffff;
+        gUnknown_03005330.field6 = value;
+        value &= 0xffff;
+        gUnknown_03005330.field4 = value;
+        gUnknown_03005330.field10 = 1;
+        gUnknown_03005330.field11 = 1;
+        gUnknown_03002030 = FUN_08034f28;
     }
 }

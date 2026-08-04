@@ -764,6 +764,7 @@ units:
       FUN_08025d50: 0x1AA
       FUN_08025f5c: 0x5E
       FUN_08026634: 0x5A
+      FUN_08026d6c: 0x4C
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -1119,6 +1120,8 @@ units:
       - { offset: 0xC724, mode: thumb }
       - { offset: 0xCDDE, mode: data }
       - { offset: 0xCDFC, mode: thumb }
+      - { offset: 0xD508, mode: data }
+      - { offset: 0xD524, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1643,6 +1646,15 @@ units:
       - { offset: 0xCDF0, type: abs32, symbol: FUN_0802482c }
       - { offset: 0xCDF4, type: abs32, symbol: gUnknown_03003e20 }
       - { offset: 0xCDF8, type: abs32, symbol: FUN_08025fd4 }
+      - { offset: 0xD4C6, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0xD4D8, type: thumb_call, symbol: FUN_08021f20 }
+      - { offset: 0xD4DC, type: thumb_call, symbol: FUN_08034f28 }
+      - { offset: 0xD508, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0xD50C, type: abs32, symbol: gUnknown_03005330 }
+      - { offset: 0xD510, type: abs32, symbol: FUN_08021f20, addend: 1 }
+      - { offset: 0xD514, type: abs32, symbol: gUnknown_03004dd4 }
+      - { offset: 0xD51C, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0xD520, type: abs32, symbol: FUN_08034f28, addend: 1 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
