@@ -21,6 +21,7 @@ extern volatile u16 gUnknown_03003178[];
 #define REG_BG1CNT (*(volatile u16 *)0x0400000a)
 #define REG_BG2CNT (*(volatile u16 *)0x0400000c)
 #define REG_BG3CNT (*(volatile u16 *)0x0400000e)
+#define REG_SIOCNT (*(volatile u32 *)0x04000128)
 extern u8 gUnknown_030016d0;
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
@@ -164,6 +165,20 @@ extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
+
+/* The link send slot and the four receive slots. Each receive slot is a
+   16-byte record whose first halfword carries the handshake marker. */
+struct UnknownState03001b10 {
+    s16 first;
+    s16 second;
+};
+extern struct UnknownState03001b10 gUnknown_03001b10;
+extern s16 gUnknown_030016f0[][8];
+extern u32 gUnknown_030013a4;
+extern u32 gUnknown_03001730;
+extern u8 gUnknown_030017c4;
+extern u32 FUN_08018730(s16 *slots);
+extern void FUN_08018c20(void);
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
@@ -540,6 +555,36 @@ void FUN_08015f6c(void) {
     }
 }
 
+/* Runs one link handshake round: stamps the local send slot with the 0x1234
+   marker, clears every receive slot, exchanges them, and counts how many
+   participants echoed the marker back. */
+u8 FUN_080179d0(void) {
+    u8 count;
+    u8 i;
+
+    gUnknown_03001b10.first = 0x1234;
+    for (i = 0; i < 4; i++) {
+        gUnknown_030016f0[i][0] = 0;
+    }
+    gUnknown_030013a4 = gUnknown_03001730;
+    gUnknown_03001730 = FUN_08018730(gUnknown_030016f0[0]);
+    FUN_08018c20();
+    if (gUnknown_03001730 & 0x100) {
+        gUnknown_03001380 = (REG_SIOCNT << 26) >> 30;
+        gUnknown_030017c4 = 1;
+    }
+    count = 0;
+    for (i = 0; i < 4; i++) {
+        if (gUnknown_030016f0[i][0] == gUnknown_03001b10.first) {
+            count++;
+        }
+    }
+    if (gUnknown_03001380 == 255) {
+        return 255;
+    }
+    return count;
+}
+
 void FUN_08017c5c(void) {
     gUnknown_03003140 ^= 1;
     gUnknown_030013a0 = 1;
@@ -575,6 +620,33 @@ void FUN_08017cb0(void) {
 }
 
 void FUN_08017cd8(void) { CpuSet((void *)0x05000000, (void *)0x05000002, 0x1ff); }
+
+/* Hides all 128 objects and resets all 32 OAM affine matrices to identity.
+   The four entries of each matrix share one pass of the loop body. */
+void FUN_08017cf4(void) {
+    volatile u16 *entry;
+    s32 i;
+
+    entry = (volatile u16 *)0x07000000;
+    for (i = 0; i < 32; i++) {
+        *entry++ = 0x200;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0x100;
+        *entry++ = 0x200;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0x200;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0x200;
+        *entry++ = 0;
+        *entry++ = 0;
+        *entry++ = 0x100;
+    }
+}
 
 void FUN_08017d58(void) {
     FUN_08017eec();

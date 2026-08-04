@@ -232,6 +232,9 @@ units:
       - { offset: 0x2E90, mode: thumb }
       - { offset: 0x2EB0, mode: data }
       - { offset: 0x2EB8, mode: thumb }
+      # FUN_080179D0 branches around an aligned eight-word literal island.
+      - { offset: 0x1725A, mode: data }
+      - { offset: 0x1727C, mode: thumb }
       # FUN_08017690 branches around a two-word in-function literal island.
       - { offset: 0x16EB4, mode: data }
       - { offset: 0x16EBC, mode: thumb }
@@ -352,6 +355,14 @@ units:
       - { offset: 0x02EB4, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x02ED8, type: abs32, symbol: gUnknown_0806b2d4 }
       - { offset: 0x02EDC, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x171FE, type: thumb_call, symbol: FUN_08018730 }
+      - { offset: 0x17204, type: thumb_call, symbol: FUN_08018c20 }
+      - { offset: 0x1725C, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0x17264, type: abs32, symbol: gUnknown_030013a4 }
+      - { offset: 0x17268, type: abs32, symbol: gUnknown_03001730 }
+      - { offset: 0x1726C, type: abs32, symbol: gUnknown_030016f0 }
+      - { offset: 0x17270, type: abs32, symbol: gUnknown_03001380 }
+      - { offset: 0x17278, type: abs32, symbol: gUnknown_030017c4 }
       - { offset: 0x076C8, type: abs32, symbol: gUnknown_030013b0 }
       - { offset: 0x0B380, type: abs32, symbol: gUnknown_030017d0 }
       - { offset: 0x0B384, type: abs32, symbol: gUnknown_030028c0 }
