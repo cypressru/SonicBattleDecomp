@@ -87,6 +87,13 @@ struct UnknownListNode {
     void *allocation;
 };
 
+struct UnknownQueuedValue {
+    u16 first;
+    u16 second;
+    u16 third;
+    u8 filler6[2];
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -114,6 +121,9 @@ extern u16 gUnknown_03000070[20][2];
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
 extern u32 gUnknown_0300019c;
+extern s8 gUnknown_030048d4;
+extern u8 gUnknown_030048d0;
+extern struct UnknownQueuedValue gUnknown_030044d0[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -635,5 +645,19 @@ void FUN_0801fc30(u8 value, const void *data) {
 void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
 
 void FUN_0802002c(u8 value, u8 *destination) { *destination = value; }
+
+u32 FUN_08020034(u16 first, u16 second, u16 third) {
+    struct UnknownQueuedValue *entry;
+
+    if (gUnknown_030048d4 < 0) {
+        return 0;
+    }
+    entry = &gUnknown_030044d0[(u8)gUnknown_030048d4];
+    entry->first = first;
+    entry->second = second;
+    entry->third = third;
+    gUnknown_030048d4++;
+    return 1;
+}
 
 void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
