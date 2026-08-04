@@ -43,6 +43,9 @@ seven `libgcc` members plus `memcmp`, `memcpy`, and `memset`. The `_udivdi3` tra
 also owns its noncontiguous 256-byte `__clz_tab` read-only-data section. Function and data inventories
 outside reconstructed units remain evidence maps rather than reconstructed source.
 
+All 15 linked `libagbsyscall` veneer objects also match their reconstructed ABI-level assembly
+sources completely, including owned alignment and literal-pool data.
+
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.
 

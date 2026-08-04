@@ -65,21 +65,21 @@ units:
     function_map: config/BSBE78/functions.csv
   # Nintendo BIOS-call veneer archive objects. Boundaries are fixed by each
   # veneer body and archive alignment; names correlate to the public SDK ABI.
-  - { name: libagbsyscall/ArcTan2, start: 0x04A590, end: 0x04A594, category: sdk }
-  - { name: libagbsyscall/CpuFastSet, start: 0x04A594, end: 0x04A598, category: sdk }
-  - { name: libagbsyscall/CpuSet, start: 0x04A598, end: 0x04A59C, category: sdk }
-  - { name: libagbsyscall/Div, start: 0x04A59C, end: 0x04A5A0, category: sdk }
-  - { name: libagbsyscall/DivArm, start: 0x04A5A0, end: 0x04A5A4, category: sdk }
-  - { name: libagbsyscall/Mod, start: 0x04A5A4, end: 0x04A5AC, category: sdk }
-  - { name: libagbsyscall/IntrWait, start: 0x04A5AC, end: 0x04A5B4, category: sdk }
-  - { name: libagbsyscall/LZ77UnCompWram, start: 0x04A5B4, end: 0x04A5B8, category: sdk }
-  - { name: libagbsyscall/LZ77UnCompVram, start: 0x04A5B8, end: 0x04A5BC, category: sdk }
-  - { name: libagbsyscall/MultiBoot, start: 0x04A5BC, end: 0x04A5C4, category: sdk }
-  - { name: libagbsyscall/RLUnCompWram, start: 0x04A5C4, end: 0x04A5C8, category: sdk }
-  - { name: libagbsyscall/SoftReset, start: 0x04A5C8, end: 0x04A5CC, category: sdk }
-  - { name: libagbsyscall/Sqrt, start: 0x04A5CC, end: 0x04A5D0, category: sdk }
-  - { name: libagbsyscall/VBlankIntrWait, start: 0x04A5D0, end: 0x04A5D8, category: sdk }
-  - { name: libagbsyscall/SoftResetExram, start: 0x04A5D8, end: 0x04A5F8, category: sdk }
+  - { name: libagbsyscall/ArcTan2, start: 0x04A590, end: 0x04A594, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: ArcTan2, complete: true, symbols: [{ name: ArcTan2, address: 0x04A590, size: 4 }] }
+  - { name: libagbsyscall/CpuFastSet, start: 0x04A594, end: 0x04A598, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: CpuFastSet, complete: true, symbols: [{ name: CpuFastSet, address: 0x04A594, size: 4 }] }
+  - { name: libagbsyscall/CpuSet, start: 0x04A598, end: 0x04A59C, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: CpuSet, complete: true, symbols: [{ name: CpuSet, address: 0x04A598, size: 4 }] }
+  - { name: libagbsyscall/Div, start: 0x04A59C, end: 0x04A5A0, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: Div, complete: true, symbols: [{ name: Div, address: 0x04A59C, size: 4 }] }
+  - { name: libagbsyscall/DivArm, start: 0x04A5A0, end: 0x04A5A4, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: DivArm, complete: true, symbols: [{ name: DivArm, address: 0x04A5A0, size: 4 }] }
+  - { name: libagbsyscall/Mod, start: 0x04A5A4, end: 0x04A5AC, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: Mod, complete: true, symbols: [{ name: Mod, address: 0x04A5A4, size: 6 }] }
+  - { name: libagbsyscall/IntrWait, start: 0x04A5AC, end: 0x04A5B4, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: IntrWait, complete: true, symbols: [{ name: IntrWait, address: 0x04A5AC, size: 6 }] }
+  - { name: libagbsyscall/LZ77UnCompVram, start: 0x04A5B4, end: 0x04A5B8, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: LZ77UnCompVram, complete: true, symbols: [{ name: LZ77UnCompVram, address: 0x04A5B4, size: 4 }] }
+  - { name: libagbsyscall/LZ77UnCompWram, start: 0x04A5B8, end: 0x04A5BC, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: LZ77UnCompWram, complete: true, symbols: [{ name: LZ77UnCompWram, address: 0x04A5B8, size: 4 }] }
+  - { name: libagbsyscall/MultiBoot, start: 0x04A5BC, end: 0x04A5C4, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: MultiBoot, complete: true, symbols: [{ name: MultiBoot, address: 0x04A5BC, size: 6 }] }
+  - { name: libagbsyscall/RLUnCompWram, start: 0x04A5C4, end: 0x04A5C8, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: RLUnCompWram, complete: true, symbols: [{ name: RLUnCompWram, address: 0x04A5C4, size: 4 }] }
+  - { name: libagbsyscall/RegisterRamReset, start: 0x04A5C8, end: 0x04A5CC, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: RegisterRamReset, complete: true, symbols: [{ name: RegisterRamReset, address: 0x04A5C8, size: 4 }] }
+  - { name: libagbsyscall/Sqrt, start: 0x04A5CC, end: 0x04A5D0, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: Sqrt, complete: true, symbols: [{ name: Sqrt, address: 0x04A5CC, size: 4 }] }
+  - { name: libagbsyscall/VBlankIntrWait, start: 0x04A5D0, end: 0x04A5D8, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: VBlankIntrWait, complete: true, symbols: [{ name: VBlankIntrWait, address: 0x04A5D0, size: 6 }] }
+  - { name: libagbsyscall/SoftResetExram, start: 0x04A5D8, end: 0x04A5F8, category: sdk, source_asm: src/libagbsyscall/veneer.s, asm_symbol: SoftResetExram, complete: true, symbols: [{ name: SoftResetExram, address: 0x04A5D8, size: 0x18 }] }
   - name: sdk/agb_flash
     start: 0x04A5F8
     end: 0x04AAF8

@@ -9,14 +9,28 @@ from pathlib import Path
 
 
 EXPECTED_ROM_SIZE = 0x1000000
-EXPECTED_CODE = 252228
-EXPECTED_DATA = 16524988
+EXPECTED_CODE = 252212
+EXPECTED_DATA = 16525004
 EXPECTED_FUNCTIONS = 1364
 EXPECTED_UNITS = 1907
 
 
 def fail(message: str) -> None:
     raise SystemExit(f"invalid objdiff report: {message}")
+
+
+def validate_complete_units(report: dict[str, object]) -> None:
+    for unit in report["units"]:
+        if not unit.get("metadata", {}).get("complete", False):
+            continue
+        measures = unit["measures"]
+        for total_key, percent_key in (
+            ("total_code", "matched_code_percent"),
+            ("total_data", "matched_data_percent"),
+            ("total_functions", "matched_functions_percent"),
+        ):
+            if int(measures.get(total_key, 0)) and float(measures.get(percent_key, 0.0)) != 100.0:
+                fail(f"{unit['name']}: marked complete without a 100% {percent_key}")
 
 
 def main() -> None:
@@ -55,6 +69,8 @@ def main() -> None:
                         f"{owner.get('name', owner.get('id', 'project'))}: "
                         f"{percentage_key} has a zero denominator"
                     )
+
+    validate_complete_units(report)
 
     print(
         f"objdiff report verified: {len(report['units'])} units, "

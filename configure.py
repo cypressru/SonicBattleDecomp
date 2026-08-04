@@ -127,7 +127,7 @@ def main() -> None:
         symbol_maps[unit["name"]] = rows
     for unit in configured_units:
         target_path = build_dir / "target" / f"{unit['name']}.o"
-        has_base = bool(unit.get("source") or unit.get("archive_member"))
+        has_base = bool(unit.get("source") or unit.get("source_asm") or unit.get("archive_member"))
         base_path = build_dir / "base" / f"{unit['name']}.o" if has_base else None
         target_path.parent.mkdir(parents=True, exist_ok=True)
         if not unit.get("exclude_from_objdiff", False):
@@ -184,6 +184,10 @@ def main() -> None:
         "  command = python3 tools/extract_archive_member.py $in $member $out",
         "  description = AR $out",
         "",
+        "rule assemble_arm",
+        "  command = tools/binutils/root/usr/bin/arm-none-eabi-as -mcpu=arm7tdmi --defsym L_$symbol=1 -o $out $in",
+        "  description = AS $out",
+        "",
         "rule compose_archive_target",
         "  command = python3 tools/compose_archive_target.py $archive $member $in $out $sections",
         "  description = COMPOSE $out",
@@ -227,6 +231,16 @@ def main() -> None:
                 [
                     f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py",
                     f"  cflags = {' '.join(unit.get('cflags', ['-O2']))}",
+                    "",
+                ]
+            )
+            ninja_targets.append(str(base.relative_to(ROOT)))
+        elif unit.get("source_asm"):
+            base = build_dir / "base" / f"{unit['name']}.o"
+            ninja.extend(
+                [
+                    f"build {base.relative_to(ROOT)}: assemble_arm {unit['source_asm']}",
+                    f"  symbol = {unit['asm_symbol']}",
                     "",
                 ]
             )

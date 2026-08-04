@@ -128,6 +128,9 @@ functions that do not independently correlate remain generically named.
 
 The BIOS-call veneer names and boundaries are established by their documented SWI numbers,
 calling-convention shims, public SDK ABI, and object alignment. `SoftResetExram` ends at `0x4A5F8`.
+All 15 veneers now have clean ABI-level assembly base objects and match their complete target
+sections byte-for-byte. Opcode verification also corrected three early labels: SWI `0x12` is
+`LZ77UnCompVram`, SWI `0x11` is `LZ77UnCompWram`, and SWI `0x01` is `RegisterRamReset`.
 The following function order and object-relative offsets correlate with the public Nintendo flash
 library used by Sonic Advance 2. Compiled object sizes, including the previously missed function at
 `0x4AAB0`, establish four consecutive TUs: `agb_flash` (`0x4A5F8-0x4AAF8`), the 512-Kbit setup/common
