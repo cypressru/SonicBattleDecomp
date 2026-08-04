@@ -1269,7 +1269,7 @@ address,name,mode,confidence
 0x080496AC,FUN_080496ac,thumb,direct-call
 0x08049724,FUN_08049724,thumb,direct-call
 0x080497A4,FUN_080497a4,thumb,direct-call
-0x0804981C,FUN_0804981c,thumb,direct-call
+0x0804981C,MPlayStart,thumb,direct-call+sdk-correlation
 0x08049900,MPlayStop,thumb,direct-call+sdk-correlation
 0x08049940,FadeOutBody,thumb,rom-pointer+direct-call+sdk-correlation
 0x08049A08,FUN_08049a08,thumb,rom-pointer+direct-call

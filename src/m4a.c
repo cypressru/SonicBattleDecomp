@@ -4,7 +4,15 @@ struct MP2KPlayerState {
     const void *songHeader;
     u32 status;
     u8 trackCount;
-    u8 padding9[27];
+    u8 priority;
+    u8 padding10;
+    u8 checkSongPriority;
+    u32 clock;
+    u8 padding16[12];
+    u16 tempoRawBPM;
+    u16 tempoScale;
+    u16 tempoInterval;
+    u16 tempoCounter;
     u16 fadeInterval;
     u16 fadeCounter;
     u16 fadeVolume;
@@ -18,7 +26,7 @@ struct MP2KTrack {
     u8 padding0[30];
     u8 echoVolume;
     u8 echoLength;
-    u8 padding32[4];
+    void *channel;
     u8 voiceType;
     u8 padding37;
     u8 cgbLength;
@@ -47,12 +55,21 @@ struct Song {
     u16 padding6;
 };
 
+struct MP2KSongHeader {
+    u8 trackCount;
+    u8 blockCount;
+    u8 priority;
+    u8 reverb;
+    const void *voicegroup;
+    const u8 *parts[1];
+};
+
 extern void SoundMain(void);
 extern void FUN_08048c08(struct MP2KPlayerState *player, struct MP2KTrack *track);
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
 extern u8 gNumMusicPlayers[];
-extern void FUN_0804981c(struct MP2KPlayerState *player, const void *songHeader);
+extern void FUN_08049544(u32 mode);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -60,6 +77,7 @@ extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
 void Clear64byte(void *memory);
 void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
+void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -69,7 +87,7 @@ void m4aSongNumStart(u16 number) {
     const struct Song *song = &songTable[number];
     const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
 
-    FUN_0804981c(musicPlayer->player, song->header);
+    MPlayStart(musicPlayer->player, song->header);
 }
 
 void m4aSongNumStartOrContinue(u16 number) {
@@ -79,9 +97,9 @@ void m4aSongNumStartOrContinue(u16 number) {
     const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
 
     if (musicPlayer->player->songHeader != song->header) {
-        FUN_0804981c(musicPlayer->player, song->header);
+        MPlayStart(musicPlayer->player, song->header);
     } else if ((musicPlayer->player->status & 0xFFFF) == 0) {
-        FUN_0804981c(musicPlayer->player, song->header);
+        MPlayStart(musicPlayer->player, song->header);
     } else if (musicPlayer->player->status & 0x80000000) {
         MPlayContinue(musicPlayer->player);
     }
@@ -143,6 +161,56 @@ void MPlayStop(struct MP2KPlayerState *player) {
         FUN_08048c08(player, track);
         i--;
         track++;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void MPlayStart(struct MP2KPlayerState *player, const void *header) {
+    const struct MP2KSongHeader *songHeader = header;
+    s32 i;
+    u8 checkSongPriority;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+
+    player->lockStatus++;
+    checkSongPriority = player->checkSongPriority;
+    if (!checkSongPriority ||
+        ((!player->songHeader || !(player->tracks[0].padding0[0] & 0x40)) &&
+         ((player->status & 0xFFFF) == 0 || (player->status & 0x80000000))) ||
+        player->priority <= songHeader->priority) {
+        player->status = 0;
+        player->songHeader = songHeader;
+        *(const void **)((u8 *)player + 48) = songHeader->voicegroup;
+        player->priority = songHeader->priority;
+        player->clock = 0;
+        player->tempoRawBPM = 150;
+        player->tempoInterval = 150;
+        player->tempoScale = 0x100;
+        player->tempoCounter = 0;
+        player->fadeInterval = 0;
+
+        i = 0;
+        track = player->tracks;
+        while (i < songHeader->trackCount && i < player->trackCount) {
+            FUN_08048c08(player, track);
+            track->padding0[0] = 0xC0;
+            track->channel = 0;
+            track->command = (u8 *)songHeader->parts[i];
+            i++;
+            track++;
+        }
+        while (i < player->trackCount) {
+            FUN_08048c08(player, track);
+            track->padding0[0] = 0;
+            i++;
+            track++;
+        }
+        if (songHeader->reverb & 0x80) {
+            FUN_08049544(songHeader->reverb);
+        }
     }
     player->lockStatus = 0x68736D53;
 }
