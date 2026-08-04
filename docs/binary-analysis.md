@@ -32,14 +32,22 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 Static analysis currently records 1,298 non-thunk function starts before the confirmed SDK
 veneers. The inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
-provenance. It is sufficient to give objdiff symbol-bearing target code, but it is not accepted as
-proof that every start is a true function or as proof of translation-unit boundaries.
+per-symbol provenance. Of these starts, 814 have aligned ROM pointers, 450 are direct-call targets,
+and 47 currently rely on recursive-disassembly recovery alone (categories overlap). The inventory
+is sufficient to give objdiff symbol-bearing target code, but it is not accepted as proof that
+every start is a true function or as proof of translation-unit boundaries.
 
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM
 data/assets occupy `0x4B718-0xEEB690`, and the embedded payload occupies
-`0xEEB690-0x1000000`. Internal asset boundaries and the payload's own code/data split remain
-unresolved and are not presented as established facts.
+`0xEEB690-0x1000000`. Within the main data range, 440 aligned LZ77 streams are validated by their
+headers, complete back-reference semantics, and at least one aligned ROM pointer to each stream.
+Their starts and intervening unknown-data ranges are recorded in `config/BSBE78/data_symbols.csv`.
+
+The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
+consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`
+independently reparses the streams and verifies the padding. The semantic types of the decompressed
+assets and the main data range's remaining internal objects are not yet established.
 
 ## Runtime boundary evidence
 
@@ -56,6 +64,10 @@ calling-convention shims, public SDK ABI, and object alignment. `SoftResetExram`
 the following function sequence independently matches the public Nintendo flash-library source,
 establishing the start of the cartridge-backup library without yet proving all of its internal
 object boundaries.
+
+`src/libc/memcmp.c` is the first reconstructed-source candidate and is compiled into a real base
+object by `tools/compile_agbcc.py`. It does not yet match the retail function and is not documented
+as complete; its purpose is to verify the base-object build and diff path before matching work.
 
 ## Original source language
 

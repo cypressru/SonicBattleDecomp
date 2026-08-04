@@ -38,7 +38,9 @@ Sonic Battle's emitted-code evidence before a unit is marked matching.
 
 ## Progress
 
-No source translation units have been reconstructed yet.
+The first source-built base object is a non-matching reconstruction of `memcmp`; it exercises the
+complete pinned-agbcc-to-objdiff path without claiming a byte match. Function and data inventories
+remain evidence maps rather than reconstructed source.
 
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.

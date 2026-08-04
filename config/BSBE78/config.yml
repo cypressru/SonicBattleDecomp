@@ -69,6 +69,8 @@ units:
     start: 0x04B61C
     end: 0x04B664
     category: runtime
+    source: src/libc/memcmp.c
+    cflags: [-O2]
   - name: libc/memcpy
     start: 0x04B664
     end: 0x04B6C4
@@ -86,10 +88,30 @@ units:
     end: 0xEEB690
     category: assets
     kind: data
-    symbols: [{ name: main_rom_data, address: 0x04B718, mode: data }]
-  - name: payload/agb_test_program
+    symbol_map: config/BSBE78/data_symbols.csv
+  - name: payload/agb_test_header
     start: 0xEEB690
+    end: 0xEEB750
+    category: payload
+    kind: data
+    symbols: [{ name: agb_test_header, address: 0xEEB690, mode: data }]
+  - name: payload/agb_test_bootstrap
+    start: 0xEEB750
+    end: 0xEEB868
+    category: payload
+    symbols:
+      - { name: agb_test_entry, address: 0xEEB750, mode: arm }
+      - { name: agb_test_serial_wait, address: 0xEEB778, mode: arm }
+      - { name: agb_test_main, address: 0xEEB7A4, mode: arm }
+  - { name: payload/lz77_0, start: 0xEEB868, end: 0xEEF9C0, category: payload, kind: data, symbols: [{ name: agb_test_lz77_0, address: 0xEEB868, mode: data }] }
+  - { name: payload/lz77_1, start: 0xEEF9C0, end: 0xF16058, category: payload, kind: data, symbols: [{ name: agb_test_lz77_1, address: 0xEEF9C0, mode: data }] }
+  - { name: payload/lz77_2, start: 0xF16058, end: 0xF35258, category: payload, kind: data, symbols: [{ name: agb_test_lz77_2, address: 0xF16058, mode: data }] }
+  - { name: payload/lz77_3, start: 0xF35258, end: 0xF5F04C, category: payload, kind: data, symbols: [{ name: agb_test_lz77_3, address: 0xF35258, mode: data }] }
+  - { name: payload/lz77_4, start: 0xF5F04C, end: 0xF81D10, category: payload, kind: data, symbols: [{ name: agb_test_lz77_4, address: 0xF5F04C, mode: data }] }
+  - { name: payload/lz77_5, start: 0xF81D10, end: 0xF9EE18, category: payload, kind: data, symbols: [{ name: agb_test_lz77_5, address: 0xF81D10, mode: data }] }
+  - name: payload/zero_padding
+    start: 0xF9EE18
     end: 0x1000000
     category: payload
     kind: data
-    symbols: [{ name: agb_test_program, address: 0xEEB690, mode: data }]
+    symbols: [{ name: agb_test_zero_padding, address: 0xF9EE18, mode: data }]

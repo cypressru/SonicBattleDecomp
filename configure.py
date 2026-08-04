@@ -36,9 +36,9 @@ def main() -> None:
     build_dir.mkdir(parents=True, exist_ok=True)
     units = []
     ninja_targets = []
-    function_maps: dict[str, list[dict[str, object]]] = {}
+    symbol_maps: dict[str, list[dict[str, object]]] = {}
     for unit in config["units"]:
-        map_path = unit.get("function_map")
+        map_path = unit.get("symbol_map", unit.get("function_map"))
         if not map_path:
             continue
         rows: list[dict[str, object]] = []
@@ -49,15 +49,16 @@ def main() -> None:
                     rows.append({"name": row["name"], "address": address, "mode": row["mode"]})
         if not rows:
             fail(f"function map for {unit['name']} contains no symbols")
-        function_maps[unit["name"]] = rows
+        symbol_maps[unit["name"]] = rows
     for unit in config["units"]:
         target_path = build_dir / "target" / f"{unit['name']}.o"
+        base_path = build_dir / "base" / f"{unit['name']}.o" if unit.get("source") else None
         target_path.parent.mkdir(parents=True, exist_ok=True)
         units.append(
             {
                 "name": unit["name"],
                 "target_path": str(target_path.relative_to(ROOT)),
-                "base_path": None,
+                "base_path": str(base_path.relative_to(ROOT)) if base_path else None,
                 "metadata": {
                     "progress_categories": [unit["category"]],
                     "auto_generated": unit.get("auto_generated", False),
@@ -97,10 +98,14 @@ def main() -> None:
         "  command = python3 tools/copy_verified.py $in $out",
         "  description = LINK $out",
         "",
+        "rule compile_agbcc",
+        "  command = python3 tools/compile_agbcc.py $in $out $cflags",
+        "  description = CC $out",
+        "",
     ]
     for unit, target in zip(config["units"], ninja_targets):
         symbol_specs = []
-        for symbol in [*unit.get("symbols", []), *function_maps.get(unit["name"], [])]:
+        for symbol in [*unit.get("symbols", []), *symbol_maps.get(unit["name"], [])]:
             symbol_specs.append(
                 f"{symbol['name']}:{int(symbol['address'])}:{symbol.get('mode', 'thumb')}"
             )
@@ -117,6 +122,16 @@ def main() -> None:
                 "",
             ]
         )
+        if unit.get("source"):
+            base = build_dir / "base" / f"{unit['name']}.o"
+            ninja.extend(
+                [
+                    f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h",
+                    f"  cflags = {' '.join(unit.get('cflags', ['-O2']))}",
+                    "",
+                ]
+            )
+            ninja_targets.append(str(base.relative_to(ROOT)))
     output_rom = f"build/{config['version']}/sonic_battle.gba"
     ninja.extend(
         [
