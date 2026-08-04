@@ -814,6 +814,85 @@ void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth) {
     }
 }
 
+u32 FUN_08020500(u16 *destination, const u16 *source, u16 count) {
+    u32 result = 1;
+    u16 i = 0;
+
+    while (i < count) {
+        if ((*destination & 0x7FFF) != (*source & 0x7FFF)) {
+            if ((*destination & 0x1F) > (*source & 0x1F)) {
+                (*destination)--;
+            }
+            if ((*destination & 0x1F) < (*source & 0x1F)) {
+                (*destination)++;
+            }
+            if ((*destination & 0x3E0) > (*source & 0x3E0)) {
+                *destination -= 0x20;
+            }
+            if ((*destination & 0x3E0) < (*source & 0x3E0)) {
+                *destination += 0x20;
+            }
+            if ((*destination & 0x7C00) > (*source & 0x7C00)) {
+                *destination -= 0x400;
+            }
+            if ((*destination & 0x7C00) < (*source & 0x7C00)) {
+                *destination += 0x400;
+            }
+            result = 0;
+        }
+        destination++;
+        source++;
+        i++;
+    }
+    return result;
+}
+
+u32 FUN_0802067c(u16 *colors, u16 count) {
+    u32 result = 1;
+    u16 i = 0;
+
+    while (i < count) {
+        if (*colors & 0x7FFF) {
+            if (*colors & 0x1F) {
+                (*colors)--;
+            }
+            if (*colors & 0x3E0) {
+                *colors -= 0x20;
+            }
+            if (*colors & 0x7C00) {
+                *colors -= 0x400;
+            }
+            result = 0;
+        }
+        colors++;
+        i++;
+    }
+    return result;
+}
+
+u32 FUN_080206ec(u16 *colors, u16 count) {
+    u32 result = 1;
+    u16 i = 0;
+
+    while (i < count) {
+        if ((*colors & 0x7FFF) != 0x7FFF) {
+            if ((*colors & 0x1F) <= 0x1E) {
+                (*colors)++;
+            }
+            if ((*colors & 0x3E0) <= 0x3DF) {
+                *colors += 0x20;
+            }
+            if ((*colors & 0x7C00) <= 0x7BFF) {
+                *colors += 0x400;
+            }
+            result = 0;
+        }
+        colors++;
+        i++;
+    }
+    return result;
+}
+
 void FUN_080207ec(u16 value) {
     u16 *result;
 

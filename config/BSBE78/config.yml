@@ -658,6 +658,9 @@ units:
       FUN_08020440: 0x32
       FUN_0802047c: 0x32
       FUN_080204b8: 0x3E
+      FUN_08020500: 0xC6
+      FUN_0802067c: 0x68
+      FUN_080206ec: 0x7E
       FUN_080207ec: 0x44
       FUN_08020840: 0x48
       FUN_08020898: 0x44
@@ -804,6 +807,12 @@ units:
       - { offset: 0x6C08, mode: thumb }
       - { offset: 0x6C46, mode: data }
       - { offset: 0x6C50, mode: thumb }
+      - { offset: 0x6D16, mode: data }
+      - { offset: 0x6D20, mode: thumb }
+      - { offset: 0x6E34, mode: data }
+      - { offset: 0x6E3C, mode: thumb }
+      - { offset: 0x6EBA, mode: data }
+      - { offset: 0x6EC4, mode: thumb }
       - { offset: 0x6F80, mode: data }
       - { offset: 0x6F90, mode: thumb }
       - { offset: 0x6FD8, mode: data }
