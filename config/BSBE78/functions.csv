@@ -1243,7 +1243,7 @@ address,name,mode,confidence
 0x08048F0C,FUN_08048f0c,thumb,direct-call
 0x08048F74,MPlayContinue,thumb,direct-call+sdk-correlation
 0x08048F94,MPlayFadeOut,thumb,direct-call+sdk-correlation
-0x08048FB8,FUN_08048fb8,thumb,direct-call
+0x08048FB8,m4aSoundInit,thumb,direct-call+sdk-correlation
 0x08049030,m4aSoundMain,thumb,direct-call+sdk-correlation
 0x0804903C,m4aSongNumStart,thumb,direct-call+sdk-correlation
 0x08049068,m4aSongNumStartOrChange,thumb,sdk-correlation

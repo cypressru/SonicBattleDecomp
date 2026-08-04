@@ -134,6 +134,8 @@ struct SoundMixerState {
 };
 
 extern void SoundMain(void);
+extern void SoundMainRAM(void);
+extern u8 SoundMainRAM_Buffer[];
 extern void FUN_08048c08(struct MP2KPlayerState *player, struct MP2KTrack *track);
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
@@ -144,6 +146,9 @@ extern void MP2KPlayerMain(void);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern const u16 gPcmSamplesPerVBlankTable[];
 extern u8 gMaxLines[];
+extern struct SoundMixerState gSoundInfoState;
+extern struct MixerSource gCgbChans[];
+extern u8 gMPlayMemAccArea[];
 extern const u8 gNoiseTable[];
 extern const u8 gCgbScaleTable[];
 extern const s16 gCgbFreqTable[];
@@ -180,6 +185,24 @@ void SampleFreqSet(u32 frequency);
 void m4aSoundMode(u32 mode);
 void SoundInit(struct SoundMixerState *soundInfo);
 void MPlayExtender(struct MixerSource *cgbChannels);
+void m4aSoundInit(void);
+
+void m4aSoundInit(void) {
+    s32 i;
+
+    CpuSet((void *)((u32)SoundMainRAM & ~1), SoundMainRAM_Buffer, 0x04000100);
+    SoundInit(&gSoundInfoState);
+    MPlayExtender(gCgbChans);
+    m4aSoundMode(0x9300E800);
+
+    for (i = 0; i < (u16)gNumMusicPlayers; i++) {
+        struct MP2KPlayerState *player = gMPlayTable[i].player;
+
+        MPlayOpen(player, gMPlayTable[i].tracks, gMPlayTable[i].trackCount);
+        player->checkSongPriority = gMPlayTable[i].padding10;
+        player->memAccArea = gMPlayMemAccArea;
+    }
+}
 
 void m4aSoundMain(void) { SoundMain(); }
 

@@ -540,6 +540,8 @@ units:
     source: src/m4a.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      - { offset: 0x98, mode: data }
+      - { offset: 0xBC, mode: thumb }
       - { offset: 0x11E, mode: data }
       - { offset: 0x128, mode: thumb }
       - { offset: 0x16A, mode: data }
@@ -585,6 +587,7 @@ units:
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
+      m4aSoundInit: 0x54
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       TrkVolPitSet: 0xB2
@@ -628,6 +631,18 @@ units:
       MP2K_event_xwave: 0x36
       MP2K_event_null: 0x02
     relocations:
+      - { offset: 0x52, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x58, type: thumb_call, symbol: SoundInit }
+      - { offset: 0x5E, type: thumb_call, symbol: MPlayExtender }
+      - { offset: 0x64, type: thumb_call, symbol: m4aSoundMode }
+      - { offset: 0x7E, type: thumb_call, symbol: MPlayOpen }
+      - { offset: 0x98, type: abs32, symbol: SoundMainRAM }
+      - { offset: 0x9C, type: abs32, symbol: SoundMainRAM_Buffer }
+      - { offset: 0xA4, type: abs32, symbol: gSoundInfoState }
+      - { offset: 0xA8, type: abs32, symbol: gCgbChans }
+      - { offset: 0xB0, type: abs32, symbol: gNumMusicPlayers }
+      - { offset: 0xB4, type: abs32, symbol: gMPlayTable }
+      - { offset: 0xB8, type: abs32, symbol: gMPlayMemAccArea }
       - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }
       - { offset: 0x0E4, type: thumb_call, symbol: MPlayStart }
       - { offset: 0x0EC, type: abs32, symbol: gMPlayTable }
