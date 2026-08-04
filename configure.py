@@ -64,6 +64,18 @@ def main() -> None:
                     "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
                 }
             )
+    function_ends: dict[int, int] = {}
+    function_size_map = config.get("function_size_map")
+    if function_size_map:
+        with (ROOT / function_size_map).open(newline="", encoding="utf-8") as stream:
+            for row in csv.DictReader(stream):
+                if row.get("thunk") == "true":
+                    continue
+                start = int(row["start"], 0) - 0x08000000
+                end = int(row["end"], 0) - 0x08000000
+                if end <= start:
+                    fail(f"invalid function extent at 0x{start + 0x08000000:08X}")
+                function_ends[start] = end
     build_dir = ROOT / "build" / config["version"]
     build_dir.mkdir(parents=True, exist_ok=True)
     units = []
@@ -81,6 +93,15 @@ def main() -> None:
                     rows.append({"name": row["name"], "address": address, "mode": row["mode"]})
         if not rows:
             fail(f"function map for {unit['name']} contains no symbols")
+        for index, row in enumerate(rows):
+            address = int(row["address"])
+            if address not in function_ends:
+                fail(f"function size map has no extent for {row['name']}")
+            next_address = int(rows[index + 1]["address"]) if index + 1 < len(rows) else int(unit["end"])
+            size = min(function_ends[address], next_address, int(unit["end"])) - address
+            if size <= 0:
+                fail(f"invalid accepted function size for {row['name']}")
+            row["size"] = size
         symbol_maps[unit["name"]] = rows
     for unit in configured_units:
         target_path = build_dir / "target" / f"{unit['name']}.o"
@@ -150,7 +171,7 @@ def main() -> None:
             symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")
         ninja.extend(
             [
-                f"build {target}: slice_object {config['rom']} | tools/slice_object.py",
+                f"build {target}: slice_object {config['rom']} | tools/slice_object.py {function_size_map or ''}",
                 f"  start = {int(unit['start'])}",
                 f"  end = {int(unit['end'])}",
                 f"  kind = {unit.get('kind', 'code')}",

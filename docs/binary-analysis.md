@@ -34,9 +34,14 @@ Static analysis currently records 1,298 non-thunk function starts before the con
 veneers. The inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Of these starts, 814 have aligned ROM pointers, 450 are direct-call targets,
-and 47 currently rely on recursive-disassembly recovery alone (categories overlap). The inventory
-is sufficient to give objdiff symbol-bearing target code, but it is not accepted as proof that
-every start is a true function or as proof of translation-unit boundaries.
+and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Each accepted
+start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
+accepted start and its enclosing object boundary. This gives objdiff explicit target function
+sizes instead of extending each function through its following literal pool or alignment gap. The
+main game object consequently contains 0x3A66A instruction bytes and 0xDAC2 owned non-code bytes.
+These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
+symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
+as proof of translation-unit boundaries.
 
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM
