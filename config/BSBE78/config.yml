@@ -84,6 +84,28 @@ units:
     end: 0x018C8C
     category: sdk
     function_map: config/BSBE78/functions.csv
+    source: src/multi_sio_sync.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      MultiSioSyncInitialize: 0x96
+      FUN_0801886c: 0x9E
+    mappings:
+      - { offset: 0xD4, mode: data }
+      - { offset: 0xDC, mode: thumb }
+      - { offset: 0x162, mode: data }
+      - { offset: 0x17C, mode: thumb }
+      - { offset: 0x1BA, mode: data }
+      - { offset: 0x1C0, mode: thumb }
+    relocations:
+      - { offset: 0x48, type: thumb_call, symbol: CpuSet }
+      - { offset: 0xB0, type: abs32, symbol: gMultiSioSyncState }
+      - { offset: 0xD8, type: abs32, symbol: gMultiSioSyncState }
+      - { offset: 0x178, type: abs32, symbol: gMultiSioSyncState }
+      - { offset: 0x182, type: thumb_call, symbol: FUN_08018918 }
+      - { offset: 0x1BC, type: abs32, symbol: gMultiSioSyncState }
+      - { offset: 0x26C, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x294, type: abs32, symbol: gMultiSioSyncState }
+      - { offset: 0x298, type: abs32, symbol: gMultiSioSendState }
   - name: engine/multi_boot
     start: 0x018C8C
     end: 0x019568

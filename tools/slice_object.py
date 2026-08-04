@@ -22,7 +22,10 @@ def main() -> None:
     payload = bytearray(source.read_bytes()[start:end])
     symbols = []
     relocation_specs = [spec for spec in symbol_specs if spec.startswith("@rel:")]
-    for spec in (spec for spec in symbol_specs if not spec.startswith("@rel:")):
+    mapping_specs = [spec for spec in symbol_specs if spec.startswith("@map:")]
+    for spec in (
+        spec for spec in symbol_specs if not spec.startswith(("@rel:", "@map:"))
+    ):
         parts = spec.rsplit(":", 3)
         if len(parts) == 4:
             name, address, mode, size_text = parts
@@ -57,6 +60,14 @@ def main() -> None:
     local_symbol_count = 0
     if kind == "code":
         mappings: set[tuple[int, str]] = set()
+        for spec in mapping_specs:
+            _tag, offset_text, mode = spec.split(":", 2)
+            offset = int(offset_text, 0)
+            if mode not in {"arm", "thumb", "data"}:
+                raise ValueError(f"unsupported mapping mode: {mode}")
+            if not 0 <= offset < len(payload):
+                raise ValueError(f"mapping at {offset_text} is outside slice")
+            mappings.add((offset, {"arm": "$a", "thumb": "$t", "data": "$d"}[mode]))
         for index, (relative, _name, mode, explicit_size) in enumerate(symbols):
             if mode in {"arm", "thumb"}:
                 mappings.add((relative, "$a" if mode == "arm" else "$t"))

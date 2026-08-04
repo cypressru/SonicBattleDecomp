@@ -29,6 +29,8 @@ class SliceObjectRelocationTests(unittest.TestCase):
                     "Function:0:thumb:16",
                     "@rel:4:thumb_call:Callee",
                     "@rel:12:abs32:Global",
+                    "@map:8:data",
+                    "@map:10:thumb",
                 ],
                 check=True,
             )
@@ -68,6 +70,19 @@ class SliceObjectRelocationTests(unittest.TestCase):
                 )
             ]
             self.assertEqual([(offset, info & 0xFF) for offset, info in entries], [(4, 10), (12, 2)])
+
+            symbols = sections_by_name[".symtab"]
+            strings = sections[ symbols[6] ]
+            string_data = data[strings[4] : strings[4] + strings[5]]
+            mapping_symbols = []
+            for offset in range(symbols[4], symbols[4] + symbols[5], symbols[9]):
+                name_offset, value = struct.unpack_from("<II", data, offset)
+                end = string_data.index(b"\0", name_offset)
+                name = string_data[name_offset:end].decode("ascii")
+                if name in {"$a", "$t", "$d"}:
+                    mapping_symbols.append((value, name))
+            self.assertIn((8, "$d"), mapping_symbols)
+            self.assertIn((10, "$t"), mapping_symbols)
 
     def test_rejects_relocation_outside_slice(self):
         with tempfile.TemporaryDirectory() as directory:

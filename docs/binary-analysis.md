@@ -176,6 +176,14 @@ VSync and serial-interrupt handlers, and ends immediately before the independent
 `multi_boot` boundary. Only names explicitly present in the public reference or established by
 distinct behavior are retained; the remaining ordered helpers stay generic.
 
+The Battle revision expands the public reference's two-player 0xF0-byte work area to a four-player
+0x180-byte layout. Its buffer starts are `0x30`, `0x48`, `0x60`, `0xC0`, and `0x120`; the low nibble
+at work-area offset 2 is the live peer mask, while `MultiSioSyncInitialize` stores its parameter in
+the high nibble. Compiling the reconstructed initializer, sync/update helper, and packet builder
+with agbcc `-O2 -mthumb-interwork` reproduces all three functions byte-for-byte, including inline
+literal pools and the interworking return sequences. The explicit mapping-symbol transitions in
+the target object distinguish those inline pools from executable Thumb instructions.
+
 The openly licensed newlib-correlated `memcmp`, `memcpy`, and `memset` sources compile through the
 pinned `old_agbcc -O2 -fno-builtin` library path and match their full target sections byte-for-byte.
 `memcpy` and `memset` have respective 0x5E and 0x52 function sizes followed by two owned
