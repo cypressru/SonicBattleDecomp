@@ -55,6 +55,9 @@ extern u8 gUnknown_030052f8;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
 extern void FUN_08046aa4(void);
+extern void FUN_08031164(void);
+extern void FUN_080284b4(void);
+extern void FUN_08000210(void);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -5647,4 +5650,34 @@ void FUN_08048284(struct UnknownState482d0 *state) {
     state->graphics = gUnknown_081a7f60;
     state->callback = (const void *)((u32)FUN_08046aa4 + 1);
     FUN_0804af6c((struct UnknownListNode *)state, state->callback);
+}
+
+void FUN_080312a0(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_08031164;
+    }
+}
+
+void FUN_0803256c(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_08039e20;
+    }
+}
+
+void FUN_080325f0(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_080284b4;
+    }
+}
+
+void FUN_08033038(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_0803d1a0;
+    }
+}
+
+void FUN_08033bf8(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_08000210;
+    }
 }
