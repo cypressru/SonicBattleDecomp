@@ -407,7 +407,9 @@ extern void FUN_08039e20(void);
 extern void FUN_08021268(u32 value);
 extern const u8 gUnknown_08edb97c[];
 extern const u8 gUnknown_08edb984[];
+extern const u8 gUnknown_08edb94c[];
 extern const struct UnknownCoordinatePairs28f98 gUnknown_08edb98c[];
+extern const u8 gUnknown_0804df7c[];
 extern void FUN_08028d30(struct UnknownListNode *node);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
@@ -3250,4 +3252,36 @@ void FUN_08029014(struct UnknownListNode *node) {
     node->position->field11 = zero;
     node->position->field12 = zero;
     node->data = (const void *)((u32)FUN_08028f98 + 1);
+}
+
+void FUN_08029060(struct UnknownListNode *node) {
+    register const u8 *table asm("r1") = gUnknown_0804df7c;
+    struct UnknownPosition *position;
+    s32 value;
+
+    value = (s8)(*(const u16 *)(table + node->position->field14 * 64) >> 8);
+    node->position->field10 = 1;
+    position = node->position;
+    position->field11 &= 0xC1;
+    value += 256;
+    node->position->field11 |= FUN_0801fd18(value, 0) * 2;
+    FUN_0801fed8(node->field6, 0);
+    node->position->field14 += 4;
+}
+
+void FUN_080290b4(struct UnknownListNode *node) {
+    register struct UnknownPosition *position asm("r2") = node->position;
+    register u32 zero asm("r3");
+    register u32 halfwordZero asm("r1");
+
+    position->field0 = gUnknown_08edb94c;
+    zero = 0;
+    halfwordZero = 0;
+    position->tile = halfwordZero;
+    node->position->x = 214;
+    node->position->y = 145;
+    node->position->field10 = zero;
+    node->position->field11 = zero;
+    node->position->field12 = zero;
+    node->data = (const void *)((u32)FUN_08029060 + 1);
 }
