@@ -630,6 +630,10 @@ units:
       FUN_0802a3f4: 0x86
       FUN_0802afb0: 0x14
       FUN_0802afc4: 0x14
+      FUN_0802b064: 0x1E
+      FUN_0802b10c: 0x1E
+      FUN_0802b1b4: 0x1E
+      FUN_0802b1dc: 0x1E
       FUN_0801f024: 0x6
       FUN_0801f030: 0x20
       FUN_0801f058: 0x20
@@ -1413,6 +1417,17 @@ units:
       - { offset: 0x11700, mode: thumb }
       - { offset: 0x11714, mode: thumb }
       - { offset: 0x11728, mode: thumb }
+      - { offset: 0x117B4, mode: thumb }
+      - { offset: 0x117D2, mode: data }
+      - { offset: 0x117DC, mode: thumb }
+      - { offset: 0x1185C, mode: thumb }
+      - { offset: 0x1187A, mode: data }
+      - { offset: 0x11884, mode: thumb }
+      - { offset: 0x11904, mode: thumb }
+      - { offset: 0x11922, mode: data }
+      - { offset: 0x1192C, mode: thumb }
+      - { offset: 0x1194A, mode: data }
+      - { offset: 0x11954, mode: thumb }
     relocations:
       - { offset: 0xF9FA, type: thumb_call, symbol: FUN_08020144 }
       - { offset: 0xFA10, type: thumb_call, symbol: FUN_08020144 }
@@ -1614,6 +1629,18 @@ units:
       - { offset: 0x1170A, type: thumb_call, symbol: FUN_0802a804 }
       - { offset: 0x11718, type: thumb_call, symbol: FUN_0802a3f4 }
       - { offset: 0x1171E, type: thumb_call, symbol: FUN_0802a804 }
+      - { offset: 0x117BE, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x117D4, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x117D8, type: abs32, symbol: FUN_080299c0, addend: 1 }
+      - { offset: 0x11866, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1187C, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x11880, type: abs32, symbol: FUN_0802fdf8, addend: 1 }
+      - { offset: 0x1190E, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x11924, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x11928, type: abs32, symbol: FUN_080340b8, addend: 1 }
+      - { offset: 0x11936, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1194C, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x11950, type: abs32, symbol: FUN_08039e20, addend: 1 }
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x305C, type: abs32, symbol: FUN_0801bcac, addend: 1 }
