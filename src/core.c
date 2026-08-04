@@ -218,9 +218,9 @@ void FUN_080005ac(void) {
         if ((multiSioData[2] & 0xf) == 0 || (multiSioData[0] & 0xf) != 0xf) {
             return;
         }
-        do {
+        while (!FUN_0802067c((void *)0x05000000, 0x200)) {
             FUN_080006d0();
-        } while (!FUN_0802067c((void *)0x05000000, 0x200));
+        }
 
         if (RESET_REQUESTED != 0) {
             RESET_REQUESTED = 0;
@@ -246,10 +246,12 @@ void FUN_080005ac(void) {
             dma[5] &= 0xc5ff;
             dma[5] &= 0x7fff;
             dma[5];
-            dma += 6;
-            dma[5] &= 0xc5ff;
-            dma[5] &= 0x7fff;
-            dma[5];
+            {
+                volatile u16 *dma3 = (volatile u16 *)0x040000d4;
+                dma3[5] &= 0xc5ff;
+                dma3[5] &= 0x7fff;
+                dma3[5];
+            }
         }
 
         while ((REG_SIOCNT & 0xf) == 0xf) {

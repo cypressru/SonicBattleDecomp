@@ -56,9 +56,11 @@ units:
     function_map: config/BSBE78/functions.csv
     source: src/core.c
     cflags: [-O2, -mthumb-interwork]
+    complete: true
     base_symbol_size_overrides:
       FUN_08000210: 0x14C
       FUN_080003a8: 0x1F8
+      FUN_080005ac: 0xF6
       FUN_080006ec: 0x26
       FUN_08000724: 0x44
     mappings:
@@ -128,6 +130,7 @@ units:
       - { offset: 0x384, type: thumb_call, symbol: FUN_08016438 }
       - { offset: 0x394, type: abs32, symbol: gUnknown_03001b2c }
       - { offset: 0x398, type: abs32, symbol: gUnknown_030016c0 }
+      - { offset: 0x3C4, type: abs32, symbol: gUnknown_030048e0 }
       - { offset: 0x3C8, type: thumb_call, symbol: FUN_080006d0 }
       - { offset: 0x3D4, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x3EA, type: thumb_call, symbol: FUN_080184c8 }

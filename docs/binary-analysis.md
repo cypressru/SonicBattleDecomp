@@ -141,6 +141,13 @@ complete 28-, 38-, and 68-byte comparison extents. Their calls, IWRAM references
 pointers, and trailing literal ownership all match. Generic names are retained because behavior
 establishes the implementations but does not yet supply original game symbol names.
 
+The remaining three `core` functions also reconstruct as C with the same pinned compiler. In
+particular, `FUN_080005ac` uses a pre-tested `while` loop whose control-flow island owns two early
+literals, followed by explicit DMA0-DMA3 register cleanup; that source shape reproduces the retail
+pool and register-emission order without inline assembly or nonstandard optimizer flags. The full
+object is marked complete: all six functions, 1,216 instruction bytes, and 168 owned data bytes
+match byte-for-byte.
+
 The `crt0` target is also source-backed. Clean ARM startup source reproduces both `start_vector`
 and `IntrMain`, including the IRQ/system stack literals, interrupt-vector installation, prioritized
 interrupt dispatch, CPSR/SPSR transitions, handler table lookup, and the complete literal pools.
