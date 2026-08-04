@@ -94,6 +94,25 @@ struct UnknownQueuedValue {
     u16 fourth;
 };
 
+struct UnknownState080201f8 {
+    u16 first;
+    u16 second;
+    u16 third;
+    u16 fourth;
+    u16 fifth;
+    u8 sixth;
+    u8 seventh;
+    u8 eighth;
+};
+
+struct UnknownCommandRecord {
+    const void *first;
+    const void *second;
+    const void *third;
+    u16 fourth;
+    u16 type;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -127,6 +146,9 @@ extern struct UnknownQueuedValue gUnknown_030044d0[];
 extern u8 gUnknown_0300019a;
 extern u8 gUnknown_030044c0;
 extern u8 gUnknown_030000c8[4];
+extern struct UnknownState080201f8 gUnknown_030048e0;
+extern u32 gUnknown_030048f0;
+extern struct UnknownCommandRecord gUnknown_03004900[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -691,3 +713,37 @@ void FUN_080200f8(void) {
 }
 
 void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
+
+void FUN_0802021c(u8 first, u8 second);
+
+void FUN_080201f8(void) {
+    gUnknown_030048e0.fifth = 0;
+    gUnknown_030048e0.third = 0;
+    gUnknown_030048e0.first = 0;
+    gUnknown_030048e0.second = 0xFFFF;
+    FUN_0802021c(0, 0);
+}
+
+void FUN_0802021c(u8 first, u8 second) {
+    if (first == 0 || second == 0) {
+        first = 15;
+        second = 7;
+    }
+    gUnknown_030048e0.seventh = first;
+    gUnknown_030048e0.sixth = first;
+    gUnknown_030048e0.eighth = second;
+}
+
+void FUN_08020360(void) { gUnknown_030048f0 = 0; }
+
+void FUN_0802036c(const void *first, const void *second, const void *third) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].second = second;
+        gUnknown_03004900[index].third = third;
+        gUnknown_03004900[index].type = 0;
+        gUnknown_030048f0 = index + 1;
+    }
+}
