@@ -179,6 +179,15 @@ An index used both to subscript an array and to drive a `switch` must be assigne
 first. Without that, agbcc splits it across a scratch register and a callee-saved copy, which is the
 entire difference in the `BG0CNT`-`BG3CNT` helpers.
 
+A table base that is indexed once and then accessed through immediate offsets is taken into its own
+local before the subscript. Writing `record = &table[index]` directly makes agbcc materialize the
+base after the index arithmetic and reuse the index register for it, leaving one extra
+register-to-register move; assigning the base to a local first keeps it live across the scaling,
+which is what retail does. `0x0800BAAC` matches only in that form. The idiom is specific to this
+shape and does not generalize: applied to `0x0801694C` and `0x080066D8`, whose retail code holds the
+base in a register and adds a field offset per access, it lets agbcc fold the offsets into immediate
+addressing and moves those functions further from retail rather than closer.
+
 A global expression used more than once, with a call in between, is written out at each use rather
 than cached in a local. Retail re-materializes both the pool address and the load after the call and
 keeps no callee-saved register; a cached local forces the address to live across the call and adds
