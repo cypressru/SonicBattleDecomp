@@ -144,6 +144,266 @@ an honest instruction comparison and does not change the accepted extent. Both f
 confirmed byte-for-byte against the retail ROM outside objdiff, comparing the compiled `.text` bytes
 with the ROM image and excluding only the relocated words.
 
+A display-reset and frame-submit pass then reconstructed `0x08017C5C`, `0x08017C74`,
+`0x08017CB0`, `0x08017CD8` and `0x08017D58`, totaling 138 matching instruction bytes. The two
+clear routines drive DMA3 directly from a stack-local zero value, one filling `0x02000000` and
+`0x03000000` in 32-bit units and one filling VRAM in 16-bit units; the palette routine propagates
+entry 0 across the remaining 511 entries through the SDK `CpuSet` ABI. Both fills only reproduce
+when the stack temporary is `volatile` and the DMA register pointer is materialized after that
+temporary is cleared: retail recomputes `sp` a second time in the 16-bit case, which a
+non-volatile local optimizes away.
+
+The adjacent background-control cluster `0x08017D78`, `0x08017DE8` and `0x08017E5C` follows, adding
+326 matching instruction bytes. All three OR a value into the halfword shadow array at `0x03003178`
+indexed by background layer, then write that entry through to `BG0CNT`-`BG3CNT` with a four-way
+switch, differing only in whether the value is shifted left by 0, 2 or 8. Reproducing them needs the
+shadow array to be `volatile` - retail re-reads the element between the OR and the store, which is
+GCC 2.95's read-back of a volatile assignment used as a statement - and needs the ORed value to pass
+through a `volatile` 16-bit stack temporary, which is why retail truncates with a `strh`/`ldrh`
+round trip instead of the usual shift pair. Each switch branches around four in-function literal
+islands, now mapped as data.
+
+### agbcc source-shape idioms established in this unit
+
+Seven source shapes were established by matching, and generalize to the rest of the placeholder.
+
+Shared state that is read back by the hardware or by an interrupt is `volatile`, and GCC 2.95
+re-reads a volatile lvalue after an assignment used as a statement. The background shadow array at
+`0x03003178` reproduces only with that read-back; a plain array drops it.
+
+A value handed to a narrow store is passed through a `volatile` 16-bit stack temporary rather than a
+register, which is why retail truncates with a `strh`/`ldrh` round trip through the stack slot
+instead of the usual `lsl`/`lsr` pair.
+
+An index used both to subscript an array and to drive a `switch` must be assigned to its own local
+first. Without that, agbcc splits it across a scratch register and a callee-saved copy, which is the
+entire difference in the `BG0CNT`-`BG3CNT` helpers.
+
+A table base that is indexed once and then accessed through immediate offsets is taken into its own
+local before the subscript. Writing `record = &table[index]` directly makes agbcc materialize the
+base after the index arithmetic and reuse the index register for it, leaving one extra
+register-to-register move; assigning the base to a local first keeps it live across the scaling,
+which is what retail does. `0x0800BAAC` matches only in that form. The idiom is specific to this
+shape and does not generalize: applied to `0x0801694C` and `0x080066D8`, whose retail code holds the
+base in a register and adds a field offset per access, it lets agbcc fold the offsets into immediate
+addressing and moves those functions further from retail rather than closer.
+
+A global expression used more than once, with a call in between, is written out at each use rather
+than cached in a local. Retail re-materializes both the pool address and the load after the call and
+keeps no callee-saved register; a cached local forces the address to live across the call and adds
+register saves. `0x080153E0` is the clearest case: it pushes only `lr`.
+
+A record array whose stride is a plain multiple of its element size is declared as a two-dimensional
+array and subscripted twice, not as an array of structs. The two forms differ in where the constant
+field offset binds: `array[i].field` produces `(base + i * stride) + offset`, while
+`array[i][k]` produces `(base + offset) + i * stride` and lets agbcc hoist `base + offset` out of a
+loop or keep it in a separate register. This is what the move table in `0x080034F0`
+(`const u8 [][10]`), the link receive slots in `0x080179D0` (`s16 [][8]`) and the record read in
+`0x080178D0` all need. A third spelling, `(base + offset)[i * stride]`, is not equivalent: it folds
+the offset into the literal-pool word instead of emitting an `adds`.
+
+A value read out of narrow memory and then used in arithmetic is an `int`-width local, not a `u16`
+one, even though every value involved fits in sixteen bits. With a `u16` local agbcc loads into the
+address register and copies to the long-lived register afterwards; the `int`-width pseudo lets the
+load target that register directly. `0x080178D0` matches only with `value`, `previous` and the
+`changed` mask declared `u32`, while the two masks that are actually stored back stay `u16`.
+
+A cascade of tests that all yield a value assigns to one result local and returns it once; a
+cascade that yields an early exit uses `return` directly. The two differ in which arm becomes the
+fall-through, and therefore in where the shared tail lands. `0x080034F0` needs the result-local form
+(with `return` per branch, agbcc inverts the last conditional and the tail lands two bytes late),
+and `0x080179D0` needs the early-`return` form for its `255` case.
+
+### Address-association shapes
+
+Two different address associations appear in this placeholder and are not interchangeable. Most
+routines associate `(base + index * stride) + field_offset`, which is what a plain
+`array[index].field` produces and what the matched `0x08012B60` and `0x080178D0` use. A second group
+associates `(base + field_offset) + index * stride`: retail keeps the raw array base in a register,
+adds the constant field offset, and only then adds the scaled index, walking the field offset by the
+element size across consecutive statements. `0x0801694C` is the clearest instance - it copies
+sixteen halfwords from a 32-byte record into the BG affine registers at `0x04000020`-`0x0400003E`
+and walks `base + 2k` while re-reading the record index for every element, because the volatile
+register stores invalidate the cached read.
+
+Writing the second association explicitly, as
+`*(u16 *)((u8 *)&array[k] + index * stride)`, reproduces that shape and brings `0x0801694C` to every
+instruction but three: retail materializes the array base into `ip` before loading the index
+address, while agbcc emits the index address first, which also swaps two literal-pool slots. The
+operand order in the source does not change this - the multiply makes the index side the costlier
+operand, and agbcc expands it first regardless of how the addition is written.
+
+### An unresolved register-allocation difference
+
+Two routines in this placeholder reproduce every instruction except one redundant
+register-to-register copy, where retail writes a value straight into its final register and the
+pinned agbcc emits an extra `adds rD, rS, #0`. It remains at `0x08017F80` and `0x08017FB0`, the two
+queue-submit wrappers around `FUN_080200D8`.
+
+Four routines that were in this list are now matched, and the two causes turned out to be source
+shapes rather than allocator noise. `0x080178D0` needed `int`-width locals for the values read out
+of memory; `0x080179D0` needed the early-`return` form and the double-shift spelling of its bitfield
+extraction; `0x08017CF4` and `0x08015FA4` needed the OAM loop written as an ascending `for` over a
+post-incremented `volatile u16 *`. Both idioms are recorded above. `0x08017F80` and `0x08017FB0`
+have been retried against all of them and are unchanged, so their divergence is a different cause.
+
+At `0x08015E30` the whole body, the register assignment and the 272-byte size all reproduce, and the
+only difference is where the two 16-bit arguments are extended: retail copies them unextended in the
+prologue and sign-extends each once at its first use, while the pinned agbcc converts both in the
+prologue and then uses the converted value directly. Declaring those parameters `s16`, `u16`, `s32`
+or `u32`, with and without an explicit `(s16)` cast at the use, and an old-style parameter list, all
+produce the prologue conversion. This also fixes `FUN_08018004`'s first two parameters as signed:
+retail sign-extends the values passed there.
+
+A second, related shape accounts for the rest. In `0x0801694C` and `0x080066D8` the whole body
+reproduces and only the prologue differs: retail materializes the array base into a register before
+computing the scaled record index, while the pinned agbcc emits that pool load after the index
+arithmetic. `0x0800BAAC` had the same divergence and was resolved by the table-base local idiom
+above; neither of these two responds to it, nor to parameter type, pointer spelling, or the
+two-dimensional array declaration.
+
+Both shapes are therefore one-instruction divergences over otherwise fully reconstructed functions:
+the field maps, control flow, types and constants are established, and only instruction placement or
+register choice differs. That is the state to resume from rather than re-deriving the semantics.
+
+This is not a compiler-flag effect. The emission is unchanged by `-fno-regmove`,
+`-fno-cse-follow-jumps`, `-fno-expensive-optimizations` and `-fno-strength-reduce`, and the
+`old_agbcc` build produces byte-identical output to the pinned `agbcc`. No flag change is therefore
+justified and none was made; the remaining difference is a source shape that has not been found yet.
+Around twenty source spellings were tried per function, including local reordering, loop form,
+pointer versus subscript access, union views and explicit temporaries.
+
+### Decoded but not yet reconstructed: `0x0800673C`
+
+The 616-byte routine at `0x0800673C` is fully decoded and is recorded here so the analysis is not
+repeated. It has not been written as C yet.
+
+It takes one `u8` participant index, returns early when that index exceeds 3, and otherwise picks a
+camera target from the 252-byte participant records at `0x03001C40`. Two guard bytes at record
+offsets 110 and 112 select between three paths, and inside the first two a four-way `switch` on the
+byte at record offset 125 selects which *other* record to pair with: case 0 uses record 0, case 1
+record 1, case 2 record 2, case 3 record 3, addressed as `base`, `base + 252`, `base + 504` and
+`base + 756`. The first path writes the midpoints `(a + b) >> 1` of the signed halfwords at record
+offsets 0 and 2 into `0x03001374` and `0x03001B24`; the second path compares the signed halfword at
+offset 4 of the two records and takes the larger one's value, doubled, into `0x03002100`.
+
+The tail is a quadrant classification of the camera angle returned by `FUN_08018390`, written as
+four range tests against `0x03001370`:
+
+| Range | Value stored |
+|---|---:|
+| outside `0x400 .. 0x1C00` | 0 |
+| `0x401 .. 0xBFF` | 2 |
+| `0xC01 .. 0x13FF` | 1 |
+| `0x1401 .. 0x1BFF` | 3 |
+
+The first test appears in the `<< 16` domain (`(angle << 16) + 0xFC000000` against `0x18000000`)
+because agbcc reuses the register still holding the sign-extension of the `s16` return value; the
+other three are ordinary `u16` range tests. Both forms are the standard
+`(unsigned)(x - lo) > (hi - lo)` transform and should fall out of plain `&&` comparisons.
+
+The function carries roughly ten single-word literal islands, each dumped after a `b` barrier in the
+usual `thumb_reorg` position, so it will need that many code/data mapping pairs. The pool words are
+`0x03001C40`, `0x03001374`, `0x03001B24`, `0x03002100`, `0x03001370`, the record displacement 758,
+and the four range constants -1025, -3073, -5121 and 2046.
+
+A first reconstruction of that shape compiles to the right size, 624 bytes including the trailing
+pool, and differs in 145 bytes spread over 28 runs. Most of those runs are one or two halfwords and
+are a single register renumbering: retail holds the index in `r5` and `index * 64` in `r6`, one
+higher than the pinned agbcc, which suggests retail has one more pseudo competing for `r4`. Two runs
+are structural and are where the work should resume - 40 and 38 halfwords covering
+`0x0800686E-0x080068D2`, the four larger-of-two cases. Retail loads both records' halfword twice
+each, once with `ldrh` for the value and once with `ldrsh` for the comparison, and then cross-jumps
+only the final `strh`, so each arm keeps its own literal-pool word for `0x03002100`. Writing the
+comparison as a `?:` or hoisting the other record into a pointer both move further away: a `record`
+pointer local for the indexed accesses costs another 24 bytes and loses the head entirely.
+
+### Accepted starts that are long-branch targets, not functions
+
+An independent Thumb control-flow walk was built for this placeholder to establish extents without
+relying on the analyzer inventory. It follows every reachable basic block from a start, refuses to
+decode or branch into words proven to be literal-pool targets, and stops at `bx`, `pop {..., pc}`
+and at any independently confirmed entry. Calibrated against the thirty functions in this unit whose
+bytes are already verified against the ROM, it reproduces all thirty accepted extents exactly.
+
+Run across the whole placeholder, that walk shows the inventory is mostly sound but contains a
+systematic class of false starts. Nineteen of the 185 accepted starts are not preceded by a return,
+an unconditional branch, or pool/alignment bytes; each sits inside a basic block and therefore
+cannot be a function entry:
+
+`0x080029BC`, `0x0800343E`, `0x080034C2`, `0x08003798`, `0x08003A20`, `0x0800410C`, `0x080043C2`,
+`0x0800B086`, `0x0800BAA6`, `0x0800C780`, `0x0800F028`, `0x08010D5E`, `0x08010F1C`, `0x08010F1E`,
+`0x0801103C`, `0x08011C2E`, `0x08011C32`, `0x08015374`, `0x08016AFE`.
+
+Fifteen of them are recorded with `direct-call` provenance, so a decoded Thumb `BL` really does
+target them. The `BL` is not a call. GCC's Thumb-1 output reaches intra-function labels further away
+than the +/-2 KiB `B` range by emitting `BL` instead, which is safe wherever `lr` is already dead.
+Every decoded `BL` site for these targets is between 2,030 and 12,688 bytes away, and the targets
+themselves are epilogue fragments: `0x0800B086` is `pop {r4, r5, r6}` / `pop {r0}` / `bx r0` with
+four such sites, and `0x08011C2C`-`0x08011C36` is a six-instruction "store 3 and return" tail
+entered at three different offsets from five sites inside `0x080110F0`. None of the fifteen has a
+stored ROM pointer.
+
+The consequence is recorded rather than acted on here: the analyzer's `direct-call` evidence class
+cannot distinguish a call from a long intra-function jump, so every routine in this placeholder that
+contains a far branch is currently split into several entries with extents truncated at the jump
+target. Those routines cannot be matched as units until the inventory separates the two cases. The
+functions matched so far are unaffected - none of them contains a far branch, and each compiled
+symbol size equals its accepted extent.
+
+### Translation-unit boundary status inside the placeholder
+
+Splitting this placeholder was re-examined with whole-executable data rather than by inspection. For
+every IWRAM/EWRAM global, the complete set of accepted functions that reference it was indexed
+across the entire main executable, and every candidate split point was scored by how many
+tightly-clustered globals straddle it. The metric is sound in the negative direction: it is zero at
+all seven independently established object boundaries, and it rules out 113 of the 184 candidate
+splits inside the placeholder. It is not sufficient in the positive direction - 72 candidates also
+score zero, so it cannot select among them.
+
+Only one positive signal stands out. Eleven distinct IWRAM globals in `0x030029C0`-`0x03002C80`
+begin their entire whole-ROM reference run at `0x080110F0`, and several of them
+(`0x030029C0`, `0x03002A80`, `0x03002AD0`, `0x03002B7C`, `0x03002B84`, `0x03002B90`) are referenced
+by no function outside `0x080110F0`-`0x080127D0`. That is consistent with a file-private data block
+belonging to a translation unit starting at `0x080110F0`, but four neighbouring globals in the same
+address range (`0x03002B70`, `0x03002B74`, `0x03002B80`, `0x03002BD0`) are also referenced from
+`0x0801B394`, well outside the placeholder, so the block is not fully private and the run's upper
+edge is not established. Referenced-`.rodata` ordering, which would normally pin object order, does
+not help here: the addresses these functions reference lie in the raw asset area rather than in
+compiler-emitted `.rodata`, and their order does not follow `.text` order.
+
+A third line of evidence, call-graph cohesion, was also tested and calibrated the same way. For a
+candidate range, the decoded `BL` edges were split into calls that stay inside the range, calls that
+leave it, and calls that enter it from outside, with intra-function long-branch `BL`s excluded so
+they are not miscounted as calls. The calibration settles the question: the two independently
+established objects nearest this placeholder, `engine/core` and `main/unknown_08018444`, score 0.03
+and 0.02 internal-edge ratios. Real translation units in this game are not call-cohesive at all -
+they are collections of leaf helpers called from elsewhere. The best candidate range inside the
+placeholder, `0x080110F0-0x08011C7C`, scores 0.40, which is far *above* both known objects and
+therefore evidence against it being a whole TU rather than for it.
+
+Compiler-flag change, the remaining boundary indicator, was tested last and is also negative. If
+part of this placeholder had been built at a different optimization level, the unmatched routines
+would fit some other level better than the `-O2 -mthumb-interwork` that the matched functions
+use. They do not. On `0x080066D8`, whose address arithmetic diverges most from the pinned
+compiler's, `-O2` scores 35.1% against retail while `-Os` scores 21.8% and `-O1` 14.4%; `-Os` only
+appears closer in isolated prologue instructions. The residual differences in the unmatched routines
+are therefore source shape, not build settings, and no flag boundary exists to split on.
+
+That exhausts every boundary indicator this project recognizes: literal-pool ownership and alignment
+(via the calibrated control-flow walk), private-data and static-symbol reuse, contiguous data
+ownership, related-title linker order, call-graph cohesion, and compiler-flag change. All have been
+tested against known object boundaries and none supports a split inside this placeholder.
+
+No split is therefore proposed. Three independent lines of evidence have now been tested and
+calibrated against known object boundaries: private-static reference locality excludes 113 of 184
+candidate splits but confirms none, referenced-`.rodata` ordering does not apply because these
+functions reference the raw asset area rather than compiler-emitted `.rodata`, and call-graph
+cohesion is not a discriminator in this codebase at all. The evidence available today excludes many
+boundaries and confirms none, which is the same conclusion the earlier `task.o` audit reached by a
+different route. Splitting the placeholder on anything weaker would publish a guess as an original
+TU, which this project's inventory policy rejects.
+
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive

@@ -255,6 +255,89 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # FUN_080153E0 branches around two in-function literal islands.
+      - { offset: 0x14BF8, mode: data }
+      - { offset: 0x14C00, mode: thumb }
+      - { offset: 0x14C6A, mode: data }
+      - { offset: 0x14C80, mode: thumb }
+      # FUN_08015384 branches around two in-function literal islands.
+      - { offset: 0x14BBA, mode: data }
+      - { offset: 0x14BCC, mode: thumb }
+      - { offset: 0x14BD6, mode: data }
+      - { offset: 0x14BDC, mode: thumb }
+      # FUN_080163C0 branches around four in-function literal islands.
+      - { offset: 0x15BF6, mode: data }
+      - { offset: 0x15BFC, mode: thumb }
+      - { offset: 0x15C0C, mode: data }
+      - { offset: 0x15C10, mode: thumb }
+      - { offset: 0x15C16, mode: data }
+      - { offset: 0x15C1C, mode: thumb }
+      - { offset: 0x15C22, mode: data }
+      - { offset: 0x15C28, mode: thumb }
+      # FUN_080034F0 branches around eight in-function literal islands, the
+      # first four of which are preceded by two bytes of alignment padding.
+      - { offset: 0x2D36, mode: data }
+      - { offset: 0x2D44, mode: thumb }
+      - { offset: 0x2D7E, mode: data }
+      - { offset: 0x2D88, mode: thumb }
+      - { offset: 0x2DBE, mode: data }
+      - { offset: 0x2DC8, mode: thumb }
+      - { offset: 0x2DFE, mode: data }
+      - { offset: 0x2E08, mode: thumb }
+      - { offset: 0x2E38, mode: data }
+      - { offset: 0x2E40, mode: thumb }
+      - { offset: 0x2E60, mode: data }
+      - { offset: 0x2E68, mode: thumb }
+      - { offset: 0x2E88, mode: data }
+      - { offset: 0x2E90, mode: thumb }
+      - { offset: 0x2EB0, mode: data }
+      - { offset: 0x2EB8, mode: thumb }
+      # FUN_080179D0 branches around an aligned eight-word literal island.
+      - { offset: 0x1725A, mode: data }
+      - { offset: 0x1727C, mode: thumb }
+      # FUN_08000CF4 branches around an aligned six-word literal island.
+      - { offset: 0x005B2, mode: data }
+      - { offset: 0x005CC, mode: thumb }
+      # FUN_08017690 branches around a two-word in-function literal island.
+      - { offset: 0x16EB4, mode: data }
+      - { offset: 0x16EBC, mode: thumb }
+      # FUN_080176E4 branches around a two-word in-function literal island.
+      - { offset: 0x16F40, mode: data }
+      - { offset: 0x16F48, mode: thumb }
+      # FUN_08015858 branches around two in-function literal islands.
+      - { offset: 0x15076, mode: data }
+      - { offset: 0x1507C, mode: thumb }
+      - { offset: 0x150AC, mode: data }
+      - { offset: 0x150BC, mode: thumb }
+      # FUN_080158C0 branches around an aligned in-function literal island.
+      - { offset: 0x150DA, mode: data }
+      - { offset: 0x150E0, mode: thumb }
+      # The BG-control helpers at 0x08017D78, 0x08017DE8 and 0x08017E5C each
+      # branch around four in-function literal islands inside their switch.
+      - { offset: 0x175A8, mode: data }
+      - { offset: 0x175AC, mode: thumb }
+      - { offset: 0x175BC, mode: data }
+      - { offset: 0x175C0, mode: thumb }
+      - { offset: 0x175C6, mode: data }
+      - { offset: 0x175CC, mode: thumb }
+      - { offset: 0x175D2, mode: data }
+      - { offset: 0x175D8, mode: thumb }
+      - { offset: 0x1761C, mode: data }
+      - { offset: 0x17620, mode: thumb }
+      - { offset: 0x17630, mode: data }
+      - { offset: 0x17634, mode: thumb }
+      - { offset: 0x1763A, mode: data }
+      - { offset: 0x17640, mode: thumb }
+      - { offset: 0x17646, mode: data }
+      - { offset: 0x1764C, mode: thumb }
+      - { offset: 0x17690, mode: data }
+      - { offset: 0x17694, mode: thumb }
+      - { offset: 0x176A4, mode: data }
+      - { offset: 0x176A8, mode: thumb }
+      - { offset: 0x176AE, mode: data }
+      - { offset: 0x176B4, mode: thumb }
+      - { offset: 0x176BA, mode: data }
+      - { offset: 0x176C0, mode: thumb }
       # The pointer-closure candidate at 0x080182E0 is a literal, not code.
       - { offset: 0x17AE4, mode: data }
       - { offset: 0x17AE8, mode: thumb }
@@ -265,6 +348,38 @@ units:
       - { offset: 0x17B44, mode: data }
       - { offset: 0x17B4C, mode: thumb }
     base_symbol_size_overrides:
+      FUN_08000cf4: 0x100
+      FUN_080016c4: 0x19C
+      FUN_08007e24: 0x44
+      FUN_08007e9c: 0x26
+      FUN_0800baac: 0xCE
+      FUN_0800fd8c: 0x34
+      FUN_08012b60: 0x30
+      FUN_08015384: 0x5A
+      FUN_080153e0: 0xB4
+      FUN_0801584c: 0x06
+      FUN_08015858: 0x68
+      FUN_080158c0: 0x22
+      FUN_080158e4: 0x2E
+      FUN_08015f6c: 0x34
+      FUN_08015fa4: 0xBA
+      FUN_08015f40: 0x12
+      FUN_08015f58: 0x0E
+      FUN_080034f0: 0x1E2
+      FUN_080163c0: 0x72
+      FUN_080175d4: 0xB0
+      FUN_08017690: 0x4E
+      FUN_080176e4: 0xC8
+      FUN_080178d0: 0x8A
+      FUN_08017964: 0x62
+      FUN_08017c5c: 0x10
+      FUN_08017c74: 0x2E
+      FUN_08017cb0: 0x1E
+      FUN_08017cd8: 0x12
+      FUN_08017d58: 0x1C
+      FUN_08017d78: 0x6A
+      FUN_08017de8: 0x6E
+      FUN_08017e5c: 0x6E
       FUN_08017ed0: 0x10
       FUN_08017eec: 0x0C
       FUN_08017f00: 0x2C
@@ -288,6 +403,104 @@ units:
       FUN_080183d0: 0x36
       FUN_08018410: 0x1E
     relocations:
+      - { offset: 0x02D38, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x02D3C, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02D40, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02D80, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02D84, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02DC0, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02DC4, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02E00, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02E04, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02E38, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02E3C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02E60, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02E64, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02E88, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02E8C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02EB0, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02EB4, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x02ED8, type: abs32, symbol: gUnknown_0806b2d4 }
+      - { offset: 0x02EDC, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x171FE, type: thumb_call, symbol: FUN_08018730 }
+      - { offset: 0x17204, type: thumb_call, symbol: FUN_08018c20 }
+      - { offset: 0x1725C, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0x17264, type: abs32, symbol: gUnknown_030013a4 }
+      - { offset: 0x17268, type: abs32, symbol: gUnknown_03001730 }
+      - { offset: 0x1726C, type: abs32, symbol: gUnknown_030016f0 }
+      - { offset: 0x17270, type: abs32, symbol: gUnknown_03001380 }
+      - { offset: 0x17278, type: abs32, symbol: gUnknown_030017c4 }
+      - { offset: 0x157B2, type: thumb_call, symbol: MultiSioSyncVSync }
+      - { offset: 0x157B6, type: thumb_call, symbol: FUN_0801f60c }
+      - { offset: 0x15836, type: thumb_call, symbol: FUN_0801694c }
+      - { offset: 0x1583C, type: thumb_call, symbol: FUN_0801ffa4 }
+      - { offset: 0x15840, type: thumb_call, symbol: FUN_0801fbd8 }
+      - { offset: 0x15864, type: abs32, symbol: gUnknown_0300138c }
+      - { offset: 0x15868, type: abs32, symbol: gUnknown_03001378 }
+      - { offset: 0x15870, type: abs32, symbol: gUnknown_03007ff8 }
+      - { offset: 0x15874, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x15878, type: abs32, symbol: gUnknown_03002610 }
+      - { offset: 0x17160, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x17164, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x005B4, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x005B8, type: abs32, symbol: gUnknown_030016b8 }
+      - { offset: 0x005BC, type: abs32, symbol: gUnknown_03001d0c }
+      - { offset: 0x005FC, type: abs32, symbol: gUnknown_03001d0c }
+      - { offset: 0x00EEA, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x01052, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x01064, type: abs32, symbol: gUnknown_03001d0c }
+      - { offset: 0x01068, type: abs32, symbol: gUnknown_0847aa18 }
+      - { offset: 0x0106C, type: abs32, symbol: gUnknown_030013b0 }
+      - { offset: 0x076C8, type: abs32, symbol: gUnknown_030013b0 }
+      - { offset: 0x0B380, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0x0B384, type: abs32, symbol: gUnknown_030028c0 }
+      - { offset: 0x0F596, type: thumb_call, symbol: FUN_0800baac }
+      - { offset: 0x0F5C4, type: abs32, symbol: gUnknown_03002684 }
+      - { offset: 0x0F5C8, type: abs32, symbol: gUnknown_030028c0 }
+      - { offset: 0x12394, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x12398, type: abs32, symbol: gUnknown_03002cd0 }
+      - { offset: 0x14BF8, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14C3A, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x14C60, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x14C70, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x14C74, type: abs32, symbol: gUnknown_03001380 }
+      - { offset: 0x14C7C, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14C8E, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x14BBC, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14BC4, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0x15058, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x15070, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x15078, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x1508C, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x1509C, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x150B8, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x15118, type: abs32, symbol: gUnknown_03003108 }
+      - { offset: 0x1511C, type: abs32, symbol: gUnknown_03003110 }
+      - { offset: 0x15120, type: abs32, symbol: gUnknown_030030f8 }
+      - { offset: 0x15124, type: abs32, symbol: gUnknown_03003120 }
+      - { offset: 0x150DC, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x157A4, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x16F40, type: abs32, symbol: gUnknown_03001b08 }
+      - { offset: 0x15758, type: abs32, symbol: gUnknown_03003100 }
+      - { offset: 0x1576C, type: abs32, symbol: gUnknown_03003118 }
+      - { offset: 0x17470, type: abs32, symbol: gUnknown_03003140 }
+      - { offset: 0x17474, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x174E6, type: thumb_call, symbol: CpuSet }
+      - { offset: 0x1755E, type: thumb_call, symbol: FUN_08017eec }
+      - { offset: 0x17562, type: thumb_call, symbol: FUN_0801ff30 }
+      - { offset: 0x17566, type: thumb_call, symbol: FUN_08017690 }
+      - { offset: 0x1756A, type: thumb_call, symbol: FUN_08017fb0 }
+      - { offset: 0x17578, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x175A8, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x1761C, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x17690, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x15BF8, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x16EB4, type: abs32, symbol: gUnknown_030017c8 }
+      - { offset: 0x16EB8, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x16ECA, type: thumb_call, symbol: FUN_08016b30 }
+      - { offset: 0x16EE4, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x171CC, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x171D0, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x176E4, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x176E8, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x176EC, type: abs32, symbol: gUnknown_03001388 }
