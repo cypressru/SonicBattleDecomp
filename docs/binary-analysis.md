@@ -79,7 +79,11 @@ assets and the main data range's remaining internal objects are not yet establis
 
 The pinned `agbcc` build produces runtime objects whose sizes and non-relocated instruction
 sequences correlate consecutively with the retail ROM. The resulting boundaries are recorded in
-`config/BSBE78/config.yml`. `memcmp`, `memcpy`, and `memset` also match their `libc` object bodies.
+`config/BSBE78/config.yml`. Six source-built `libgcc` members match complete retail sections:
+`_call_via_rX`, `_divsi3`, `_dvmd_tls`, `_modsi3`, `_udivsi3`, and `_umodsi3`. The compiler's
+source-built `_udivdi3` member is retained as a useful base but does not byte-match this retail
+revision and therefore reports zero matched code. `memcmp`, `memcpy`, and `memset` also match their
+complete `libc` object bodies.
 
 The M4A start is independently correlated by its mixed Thumb/ARM multiply helper and `SoundMain`
 layout against the public implementation used by related GBA titles. The `m4a0` assembly-object

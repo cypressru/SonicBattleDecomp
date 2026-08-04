@@ -103,7 +103,8 @@ def main() -> None:
         symbol_maps[unit["name"]] = rows
     for unit in configured_units:
         target_path = build_dir / "target" / f"{unit['name']}.o"
-        base_path = build_dir / "base" / f"{unit['name']}.o" if unit.get("source") else None
+        has_base = bool(unit.get("source") or unit.get("archive_member"))
+        base_path = build_dir / "base" / f"{unit['name']}.o" if has_base else None
         target_path.parent.mkdir(parents=True, exist_ok=True)
         units.append(
             {
@@ -156,6 +157,10 @@ def main() -> None:
         "  command = python3 tools/compile_agbcc.py $in $out $cflags",
         "  description = CC $out",
         "",
+        "rule extract_archive_member",
+        "  command = python3 tools/extract_archive_member.py $in $member $out",
+        "  description = AR $out",
+        "",
     ]
     for unit, target in zip(configured_units, ninja_targets):
         symbol_specs = []
@@ -183,6 +188,17 @@ def main() -> None:
                 [
                     f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py",
                     f"  cflags = {' '.join(unit.get('cflags', ['-O2']))}",
+                    "",
+                ]
+            )
+            ninja_targets.append(str(base.relative_to(ROOT)))
+        elif unit.get("archive_member"):
+            base = build_dir / "base" / f"{unit['name']}.o"
+            archive = unit.get("archive", "tools/agbcc/libgcc.a")
+            ninja.extend(
+                [
+                    f"build {base.relative_to(ROOT)}: extract_archive_member {archive} | tools/extract_archive_member.py",
+                    f"  member = {unit['archive_member']}",
                     "",
                 ]
             )

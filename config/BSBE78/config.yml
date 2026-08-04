@@ -127,30 +127,65 @@ units:
     start: 0x04AF68
     end: 0x04AFA4
     category: runtime
+    archive_member: _call_via_rX.o
+    complete: true
+    symbols:
+      - { name: _call_via_r0, address: 0x04AF68, size: 4 }
+      - { name: _call_via_r1, address: 0x04AF6C, size: 4 }
+      - { name: _call_via_r2, address: 0x04AF70, size: 4 }
+      - { name: _call_via_r3, address: 0x04AF74, size: 4 }
+      - { name: _call_via_r4, address: 0x04AF78, size: 4 }
+      - { name: _call_via_r5, address: 0x04AF7C, size: 4 }
+      - { name: _call_via_r6, address: 0x04AF80, size: 4 }
+      - { name: _call_via_r7, address: 0x04AF84, size: 4 }
+      - { name: _call_via_r8, address: 0x04AF88, size: 4 }
+      - { name: _call_via_r9, address: 0x04AF8C, size: 4 }
+      - { name: _call_via_sl, address: 0x04AF90, size: 4 }
+      - { name: _call_via_fp, address: 0x04AF94, size: 4 }
+      - { name: _call_via_ip, address: 0x04AF98, size: 4 }
+      - { name: _call_via_sp, address: 0x04AF9C, size: 4 }
+      - { name: _call_via_lr, address: 0x04AFA0, size: 4 }
   - name: libgcc/_divsi3
     start: 0x04AFA4
     end: 0x04B038
     category: runtime
+    archive_member: _divsi3.o
+    complete: true
+    symbols: [{ name: __divsi3, address: 0x04AFA4, size: 0x92 }]
   - name: libgcc/_dvmd_tls
     start: 0x04B038
     end: 0x04B03C
     category: runtime
+    archive_member: _dvmd_tls.o
+    complete: true
+    symbols: [{ name: __div0, address: 0x04B038, size: 2 }]
   - name: libgcc/_modsi3
     start: 0x04B03C
     end: 0x04B10C
     category: runtime
+    archive_member: _modsi3.o
+    complete: true
+    symbols: [{ name: __modsi3, address: 0x04B03C, size: 0xCE }]
   - name: libgcc/_udivdi3
     start: 0x04B10C
     end: 0x04B4E4
     category: runtime
+    archive_member: _udivdi3.o
+    symbols: [{ name: __udivdi3, address: 0x04B10C, size: 0x3D8 }]
   - name: libgcc/_udivsi3
     start: 0x04B4E4
     end: 0x04B55C
     category: runtime
+    archive_member: _udivsi3.o
+    complete: true
+    symbols: [{ name: __udivsi3, address: 0x04B4E4, size: 0x78 }]
   - name: libgcc/_umodsi3
     start: 0x04B55C
     end: 0x04B61C
     category: runtime
+    archive_member: _umodsi3.o
+    complete: true
+    symbols: [{ name: __umodsi3, address: 0x04B55C, size: 0xC0 }]
   - name: libc/memcmp
     start: 0x04B61C
     end: 0x04B664
