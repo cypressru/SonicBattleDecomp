@@ -273,6 +273,40 @@ justified and none was made; the remaining difference is a source shape that has
 Around twenty source spellings were tried per function, including local reordering, loop form,
 pointer versus subscript access, union views and explicit temporaries.
 
+### Decoded but not yet reconstructed: `0x0800673C`
+
+The 616-byte routine at `0x0800673C` is fully decoded and is recorded here so the analysis is not
+repeated. It has not been written as C yet.
+
+It takes one `u8` participant index, returns early when that index exceeds 3, and otherwise picks a
+camera target from the 252-byte participant records at `0x03001C40`. Two guard bytes at record
+offsets 110 and 112 select between three paths, and inside the first two a four-way `switch` on the
+byte at record offset 125 selects which *other* record to pair with: case 0 uses record 0, case 1
+record 1, case 2 record 2, case 3 record 3, addressed as `base`, `base + 252`, `base + 504` and
+`base + 756`. The first path writes the midpoints `(a + b) >> 1` of the signed halfwords at record
+offsets 0 and 2 into `0x03001374` and `0x03001B24`; the second path compares the signed halfword at
+offset 4 of the two records and takes the larger one's value, doubled, into `0x03002100`.
+
+The tail is a quadrant classification of the camera angle returned by `FUN_08018390`, written as
+four range tests against `0x03001370`:
+
+| Range | Value stored |
+|---|---:|
+| outside `0x400 .. 0x1C00` | 0 |
+| `0x401 .. 0xBFF` | 2 |
+| `0xC01 .. 0x13FF` | 1 |
+| `0x1401 .. 0x1BFF` | 3 |
+
+The first test appears in the `<< 16` domain (`(angle << 16) + 0xFC000000` against `0x18000000`)
+because agbcc reuses the register still holding the sign-extension of the `s16` return value; the
+other three are ordinary `u16` range tests. Both forms are the standard
+`(unsigned)(x - lo) > (hi - lo)` transform and should fall out of plain `&&` comparisons.
+
+The function carries roughly ten single-word literal islands, each dumped after a `b` barrier in the
+usual `thumb_reorg` position, so it will need that many code/data mapping pairs. The pool words are
+`0x03001C40`, `0x03001374`, `0x03001B24`, `0x03002100`, `0x03001370`, the record displacement 758,
+and the four range constants -1025, -3073, -5121 and 2046.
+
 ### Accepted starts that are long-branch targets, not functions
 
 An independent Thumb control-flow walk was built for this placeholder to establish extents without
