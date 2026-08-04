@@ -165,7 +165,7 @@ islands, now mapped as data.
 
 ### agbcc source-shape idioms established in this unit
 
-Four source shapes were established by matching, and generalize to the rest of the placeholder.
+Seven source shapes were established by matching, and generalize to the rest of the placeholder.
 
 Shared state that is read back by the hardware or by an interrupt is `volatile`, and GCC 2.95
 re-reads a volatile lvalue after an assignment used as a statement. The background shadow array at
@@ -193,6 +193,27 @@ than cached in a local. Retail re-materializes both the pool address and the loa
 keeps no callee-saved register; a cached local forces the address to live across the call and adds
 register saves. `0x080153E0` is the clearest case: it pushes only `lr`.
 
+A record array whose stride is a plain multiple of its element size is declared as a two-dimensional
+array and subscripted twice, not as an array of structs. The two forms differ in where the constant
+field offset binds: `array[i].field` produces `(base + i * stride) + offset`, while
+`array[i][k]` produces `(base + offset) + i * stride` and lets agbcc hoist `base + offset` out of a
+loop or keep it in a separate register. This is what the move table in `0x080034F0`
+(`const u8 [][10]`), the link receive slots in `0x080179D0` (`s16 [][8]`) and the record read in
+`0x080178D0` all need. A third spelling, `(base + offset)[i * stride]`, is not equivalent: it folds
+the offset into the literal-pool word instead of emitting an `adds`.
+
+A value read out of narrow memory and then used in arithmetic is an `int`-width local, not a `u16`
+one, even though every value involved fits in sixteen bits. With a `u16` local agbcc loads into the
+address register and copies to the long-lived register afterwards; the `int`-width pseudo lets the
+load target that register directly. `0x080178D0` matches only with `value`, `previous` and the
+`changed` mask declared `u32`, while the two masks that are actually stored back stay `u16`.
+
+A cascade of tests that all yield a value assigns to one result local and returns it once; a
+cascade that yields an early exit uses `return` directly. The two differ in which arm becomes the
+fall-through, and therefore in where the shared tail lands. `0x080034F0` needs the result-local form
+(with `return` per branch, agbcc inverts the last conditional and the tail lands two bytes late),
+and `0x080179D0` needs the early-`return` form for its `255` case.
+
 ### Address-association shapes
 
 Two different address associations appear in this placeholder and are not interchangeable. Most
@@ -214,21 +235,32 @@ operand, and agbcc expands it first regardless of how the addition is written.
 
 ### An unresolved register-allocation difference
 
-Five routines in this placeholder reproduce every instruction except one redundant
+Two routines in this placeholder reproduce every instruction except one redundant
 register-to-register copy, where retail writes a value straight into its final register and the
-pinned agbcc emits an extra `adds rD, rS, #0`. It appears at `0x08017F80` and `0x08017FB0` (queue
-submit), `0x080178D0` (input capture), `0x080179D0` (link setup) and in the OAM reset loop shared by
-`0x08017CF4` and `0x08015FA4`, where the loop-counter initialization is emitted before rather than
-after the last hoisted constant.
+pinned agbcc emits an extra `adds rD, rS, #0`. It remains at `0x08017F80` and `0x08017FB0`, the two
+queue-submit wrappers around `FUN_080200D8`.
 
-A second, related shape accounts for the rest. In `0x0801694C`, `0x0800BAAC` and `0x080066D8` the
-whole body reproduces and only the prologue differs: retail materializes the array base into a
-register before computing the scaled record index, while the pinned agbcc emits that pool load after
-the index arithmetic. `0x0800BAAC` is the clearest measurement - its 68-byte record layout, the
-four slot-release tests against `0x030028C0`, and all forty-odd field initializations in their
-retail order are confirmed, and the single remaining difference is which register holds the base and
-where its `ldr` sits. Parameter type, pointer spelling, and a separate base local were all tried and
-change nothing.
+Four routines that were in this list are now matched, and the two causes turned out to be source
+shapes rather than allocator noise. `0x080178D0` needed `int`-width locals for the values read out
+of memory; `0x080179D0` needed the early-`return` form and the double-shift spelling of its bitfield
+extraction; `0x08017CF4` and `0x08015FA4` needed the OAM loop written as an ascending `for` over a
+post-incremented `volatile u16 *`. Both idioms are recorded above. `0x08017F80` and `0x08017FB0`
+have been retried against all of them and are unchanged, so their divergence is a different cause.
+
+At `0x08015E30` the whole body, the register assignment and the 272-byte size all reproduce, and the
+only difference is where the two 16-bit arguments are extended: retail copies them unextended in the
+prologue and sign-extends each once at its first use, while the pinned agbcc converts both in the
+prologue and then uses the converted value directly. Declaring those parameters `s16`, `u16`, `s32`
+or `u32`, with and without an explicit `(s16)` cast at the use, and an old-style parameter list, all
+produce the prologue conversion. This also fixes `FUN_08018004`'s first two parameters as signed:
+retail sign-extends the values passed there.
+
+A second, related shape accounts for the rest. In `0x0801694C` and `0x080066D8` the whole body
+reproduces and only the prologue differs: retail materializes the array base into a register before
+computing the scaled record index, while the pinned agbcc emits that pool load after the index
+arithmetic. `0x0800BAAC` had the same divergence and was resolved by the table-base local idiom
+above; neither of these two responds to it, nor to parameter type, pointer spelling, or the
+two-dimensional array declaration.
 
 Both shapes are therefore one-instruction divergences over otherwise fully reconstructed functions:
 the field maps, control flow, types and constants are established, and only instruction placement or
@@ -307,7 +339,7 @@ therefore evidence against it being a whole TU rather than for it.
 
 Compiler-flag change, the remaining boundary indicator, was tested last and is also negative. If
 part of this placeholder had been built at a different optimization level, the unmatched routines
-would fit some other level better than the `-O2 -mthumb-interwork` that the 46 matched functions
+would fit some other level better than the `-O2 -mthumb-interwork` that the matched functions
 use. They do not. On `0x080066D8`, whose address arithmetic diverges most from the pinned
 compiler's, `-O2` scores 35.1% against retail while `-Os` scores 21.8% and `-O1` 14.4%; `-Os` only
 appears closer in isolated prologue instructions. The residual differences in the unmatched routines
