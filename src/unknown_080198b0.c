@@ -32,6 +32,8 @@ extern void *gUnknown_03005478;
 extern u8 gUnknown_030001c8;
 extern u8 gUnknown_030001b0[4];
 extern u8 gUnknown_030001b8;
+extern u8 (*gUnknown_030001b4)[2];
+extern u8 (*gUnknown_030001c0)[2];
 extern const s16 gUnknown_081231d6[];
 extern void FUN_08048fb8(void);
 extern void FUN_08049544(const void *value);
@@ -5427,6 +5429,17 @@ void FUN_08040578(void) {
         index++;
     } while (index <= 3);
     gUnknown_030001b8 = 1;
+}
+
+void FUN_080405a8(u8 first, u8 second) {
+    gUnknown_030001b4[gUnknown_030001b8][0] = gUnknown_030001b0[second];
+    gUnknown_030001b4[gUnknown_030001b8][1] = first;
+    gUnknown_030001b0[second] = gUnknown_030001b8++;
+}
+
+void FUN_080405f4(u8 first, u8 second) {
+    gUnknown_030001c0[gUnknown_030001c8][0] = second;
+    gUnknown_030001c0[gUnknown_030001c8++][1] = first;
 }
 
 void FUN_0802cfd0(void) {
