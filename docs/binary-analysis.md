@@ -48,9 +48,10 @@ The build expands that map into distinct `.rodata` gap units and compressed-asse
 classification follows the observed linker layout used by the closely related Sonic Advance 2:
 initialized IWRAM objects are `NOLOAD`, while ROM bytes following all executable objects are the
 ordered `.rodata` and asset inputs. The terminal raw-asset area is split at `0xBF2118`, where the
-M4A event jump table begins and is followed by audio tables and sample data. The preceding
-`0x3F4418-0xBF2118` raw graphics/asset tail and the audio region still require format-specific
-internal parsing.
+M4A event jump table begins. The SDK-correlated table sequence has exact boundaries through
+`gXcmdTable` at `0xBF23C0-0xBF23F0`; the bytes at `0xBF23F0` begin M4A tone/voicegroup records.
+The preceding `0x3F4418-0xBF2118` raw graphics/asset tail and the voicegroup/song/sample region
+beginning at `0xBF23F0` still require format-specific internal parsing.
 
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`

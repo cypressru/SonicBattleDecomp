@@ -524,4 +524,14 @@ address,name,mode,confidence
 0x083F3500,lz77_asset_438,data,lz77-pointer-1
 0x083F3CC4,lz77_asset_439,data,lz77-pointer-1
 0x083F4418,raw_asset_graphics_tail,data,post-compressed-asset-region
-0x08BF2118,raw_asset_m4a_audio,data,m4a-jump-table-and-audio-region
+0x08BF2118,gMPlayJumpTableTemplate,data,sdk-table-correlation
+0x08BF21A8,gScaleTable,data,sdk-table-correlation
+0x08BF225C,gFreqTable,data,sdk-table-correlation
+0x08BF228C,gPcmSamplesPerVBlankTable,data,sdk-table-correlation
+0x08BF22A4,gCgbScaleTable,data,sdk-table-correlation
+0x08BF2328,gCgbFreqTable,data,sdk-table-correlation
+0x08BF2340,gNoiseTable,data,sdk-table-correlation
+0x08BF237C,gCgb3Vol,data,sdk-table-correlation
+0x08BF238C,gClockTable,data,sdk-table-correlation
+0x08BF23C0,gXcmdTable,data,sdk-table-correlation
+0x08BF23F0,raw_asset_m4a_voicegroups_and_audio,data,m4a-tone-data-start
