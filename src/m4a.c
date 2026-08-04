@@ -82,14 +82,24 @@ struct MP2KSongHeader {
     const u8 *parts[1];
 };
 
+struct MixerSource {
+    u8 status;
+    u8 padding1[63];
+};
+
 struct SoundMixerState {
     u32 lockStatus;
     u8 dmaCounter;
     u8 padding5[6];
     u8 framesPerDmaCycle;
-    u8 padding12[20];
+    u8 padding12[16];
+    struct MixerSource *cgbChans;
     void (*playerMain)(void);
     struct MP2KPlayerState *playerHead;
+    u8 padding40[4];
+    void (*cgbOscOff)(u8 channel);
+    u8 padding48[32];
+    struct MixerSource channels[12];
 };
 
 extern void SoundMain(void);
@@ -110,6 +120,7 @@ void MPlayStop(struct MP2KPlayerState *player);
 void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
 void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount);
 void m4aSoundVSync(void);
+void SoundClear(void);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -301,6 +312,37 @@ void m4aSoundVSync(void) {
             *(volatile u16 *)0x040000D2 = 0xB600;
         }
     }
+}
+
+void SoundClear(void) {
+    struct SoundMixerState *soundInfo = gSoundInfo;
+    s32 i;
+    struct MixerSource *channel;
+
+    if (soundInfo->lockStatus != 0x68736D53) {
+        return;
+    }
+    soundInfo->lockStatus++;
+
+    i = 12;
+    channel = soundInfo->channels;
+    while (i > 0) {
+        channel->status = 0;
+        i--;
+        channel++;
+    }
+
+    channel = soundInfo->cgbChans;
+    if (channel != 0) {
+        i = 1;
+        while (i <= 4) {
+            soundInfo->cgbOscOff(i);
+            channel->status = 0;
+            i++;
+            channel++;
+        }
+    }
+    soundInfo->lockStatus = 0x68736D53;
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {
