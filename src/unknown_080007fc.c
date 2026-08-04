@@ -60,6 +60,25 @@ struct UnknownQueueEntry08018004 {
     u8 ninth;
 };
 
+/* The 0x030033E0 queue is written field-wise by FUN_08015F6C and read back a
+   word at a time by FUN_08017690, so both views of the record are needed. */
+union UnknownQueueRecord030033e0 {
+    u32 words[4];
+    struct {
+        u16 first;
+        u16 second;
+        s16 zero;
+        u16 constant;
+        u16 fourth;
+        u8 third;
+        u8 sixth;
+        u8 fifth;
+        u8 seventh;
+        u8 eighth;
+        u8 ninth;
+    } fields;
+};
+
 struct UnknownState030030d0 {
     u8 first;
     u8 padding1[3];
@@ -88,25 +107,33 @@ struct UnknownState080180d4 {
 };
 
 struct UnknownState080180f0 {
-    u8 padding0[20];
-    u16 flags[11];
-    u8 padding42[18];
+    u16 first[10];
+    u16 flags[10];
+    u16 third[10];
     u8 position;
     u8 padding61[3];
 };
 
+struct UnknownRecord03001c40 {
+    u8 padding0[200];
+    u16 value;
+    u8 padding202[50];
+};
+
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
-extern struct UnknownQueueEntry08018004 gUnknown_030033e0[];
+extern union UnknownQueueRecord030033e0 gUnknown_030033e0[];
 extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
 extern struct UnknownState030030d0 gUnknown_030030d0;
 extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
+extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern const s16 gUnknown_0804df7c[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
 extern void FUN_0800baac(u8 index);
+extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
 extern void FUN_08017fb0(void);
@@ -173,6 +200,25 @@ void FUN_08012b60(void) {
     }
 }
 
+u8 FUN_08015384(void) {
+    u16 previous;
+
+    previous = gUnknown_030030d0.counter;
+    gUnknown_030030d0.counter = previous + 1;
+    if (previous >= 60 && previous <= 0xed6) {
+        if (gUnknown_030048e0.second & 8) {
+            gUnknown_030030d0.counter = 0xed8;
+        }
+    }
+    if (gUnknown_030030d0.counter > 0xf00) {
+        return 2;
+    }
+    if (gUnknown_030030d0.counter > 0xed8) {
+        return 1;
+    }
+    return 0;
+}
+
 u8 FUN_0801584c(void) { return gUnknown_030030d0.first; }
 
 void FUN_080158e4(void) {
@@ -194,6 +240,38 @@ void FUN_080158e4(void) {
     gUnknown_03003120[3] = 0;
 }
 
+void FUN_08017690(void) {
+    u8 i;
+    union UnknownQueueRecord030033e0 *record;
+
+    for (i = 0; i < gUnknown_030017cc; i++) {
+        if (i >= gUnknown_030017c8) {
+            if (gUnknown_030033e0[i].fields.zero > 29) {
+                gUnknown_030033e0[i].fields.third = 2;
+            } else {
+                gUnknown_030033e0[i].fields.third = 3;
+            }
+        }
+        record = &gUnknown_030033e0[i];
+        FUN_08016b30(record->words[0], record->words[1], record->words[2], record->words[3]);
+    }
+}
+
+void FUN_08017964(u8 group) {
+    u8 i;
+
+    gUnknown_03001b30[group].position = 0;
+    for (i = 0; i <= 9; i++) {
+        gUnknown_03001b30[group].first[i] = 0;
+        gUnknown_03001b30[group].flags[i] = 0;
+        gUnknown_03001b30[group].third[i] = 0;
+    }
+    gUnknown_03001c40[0].value = 0;
+    gUnknown_03001c40[1].value = 0;
+    gUnknown_03001c40[2].value = 0;
+    gUnknown_03001c40[3].value = 0;
+}
+
 u8 FUN_080158c0(void) {
     gUnknown_030030d0.counter++;
     if (gUnknown_030030d0.counter > 119) {
@@ -210,17 +288,17 @@ void FUN_08015f6c(void) {
     u8 i;
 
     for (i = 0; (s8)i >= 0; i++) {
-        gUnknown_030033e0[i].first = 0;
-        gUnknown_030033e0[i].second = 0;
-        gUnknown_030033e0[i].zero = 0;
-        gUnknown_030033e0[i].constant = 0;
-        gUnknown_030033e0[i].fourth = 0;
-        gUnknown_030033e0[i].third = 0;
-        gUnknown_030033e0[i].sixth = 0;
-        gUnknown_030033e0[i].fifth = 0;
-        gUnknown_030033e0[i].seventh = 0;
-        gUnknown_030033e0[i].eighth = 0;
-        gUnknown_030033e0[i].ninth = 0;
+        gUnknown_030033e0[i].fields.first = 0;
+        gUnknown_030033e0[i].fields.second = 0;
+        gUnknown_030033e0[i].fields.zero = 0;
+        gUnknown_030033e0[i].fields.constant = 0;
+        gUnknown_030033e0[i].fields.fourth = 0;
+        gUnknown_030033e0[i].fields.third = 0;
+        gUnknown_030033e0[i].fields.sixth = 0;
+        gUnknown_030033e0[i].fields.fifth = 0;
+        gUnknown_030033e0[i].fields.seventh = 0;
+        gUnknown_030033e0[i].fields.eighth = 0;
+        gUnknown_030033e0[i].fields.ninth = 0;
     }
 }
 

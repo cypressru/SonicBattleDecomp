@@ -195,6 +195,14 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # FUN_08015384 branches around two in-function literal islands.
+      - { offset: 0x14BBA, mode: data }
+      - { offset: 0x14BCC, mode: thumb }
+      - { offset: 0x14BD6, mode: data }
+      - { offset: 0x14BDC, mode: thumb }
+      # FUN_08017690 branches around a two-word in-function literal island.
+      - { offset: 0x16EB4, mode: data }
+      - { offset: 0x16EBC, mode: thumb }
       # FUN_080158C0 branches around an aligned in-function literal island.
       - { offset: 0x150DA, mode: data }
       - { offset: 0x150E0, mode: thumb }
@@ -238,12 +246,15 @@ units:
       FUN_08007e9c: 0x26
       FUN_0800fd8c: 0x34
       FUN_08012b60: 0x30
+      FUN_08015384: 0x5A
       FUN_0801584c: 0x06
       FUN_080158c0: 0x22
       FUN_080158e4: 0x2E
       FUN_08015f6c: 0x34
       FUN_08015f40: 0x12
       FUN_08015f58: 0x0E
+      FUN_08017690: 0x4E
+      FUN_08017964: 0x62
       FUN_08017c5c: 0x10
       FUN_08017c74: 0x2E
       FUN_08017cb0: 0x1E
@@ -281,6 +292,8 @@ units:
       - { offset: 0x0F5C8, type: abs32, symbol: gUnknown_030028c0 }
       - { offset: 0x12394, type: abs32, symbol: gUnknown_030030d0 }
       - { offset: 0x12398, type: abs32, symbol: gUnknown_03002cd0 }
+      - { offset: 0x14BBC, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14BC4, type: abs32, symbol: gUnknown_030048e0 }
       - { offset: 0x15058, type: abs32, symbol: gUnknown_030030d0 }
       - { offset: 0x15118, type: abs32, symbol: gUnknown_03003108 }
       - { offset: 0x1511C, type: abs32, symbol: gUnknown_03003110 }
@@ -301,6 +314,12 @@ units:
       - { offset: 0x175A8, type: abs32, symbol: gUnknown_03003178 }
       - { offset: 0x1761C, type: abs32, symbol: gUnknown_03003178 }
       - { offset: 0x17690, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x16EB4, type: abs32, symbol: gUnknown_030017c8 }
+      - { offset: 0x16EB8, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x16ECA, type: thumb_call, symbol: FUN_08016b30 }
+      - { offset: 0x16EE4, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x171CC, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x171D0, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x176E4, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x176E8, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x176EC, type: abs32, symbol: gUnknown_03001388 }
