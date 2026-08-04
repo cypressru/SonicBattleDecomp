@@ -47,9 +47,10 @@ Their starts and intervening unknown-data ranges are recorded in `config/BSBE78/
 The build expands that map into distinct `.rodata` gap units and compressed-asset units. This
 classification follows the observed linker layout used by the closely related Sonic Advance 2:
 initialized IWRAM objects are `NOLOAD`, while ROM bytes following all executable objects are the
-ordered `.rodata` and asset inputs. The terminal `0x3F4418-0xEEB690` range follows the last validated
-compressed object and is conservatively categorized as a raw asset tail; its internal audio,
-graphics, table, and padding boundaries still require format-specific parsing.
+ordered `.rodata` and asset inputs. The terminal raw-asset area is split at `0xBF2118`, where the
+M4A event jump table begins and is followed by audio tables and sample data. The preceding
+`0x3F4418-0xBF2118` raw graphics/asset tail and the audio region still require format-specific
+internal parsing.
 
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`

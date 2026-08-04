@@ -41,7 +41,9 @@ jobs:
           curl -L -o objdiff-cli https://github.com/encounter/objdiff/releases/download/v3.7.3/objdiff-cli-linux-x86_64
           chmod +x objdiff-cli
       - name: Generate objdiff report
-        run: ./objdiff-cli report generate -o build/report.json
+        run: |
+          ./objdiff-cli report generate -o build/report.json
+          python tools/normalize_objdiff_report.py build/report.json
       - uses: actions/upload-artifact@v4
         with:
           name: BSBE78_report
@@ -58,6 +60,7 @@ jobs:
           mkdir -p build
           printf '%s' "$REPORT_GZIP_BASE64" | base64 -d | gzip -d > build/report.json
           python -m json.tool build/report.json >/dev/null
+          python tools/normalize_objdiff_report.py build/report.json
       - uses: actions/upload-artifact@v4
         with:
           name: BSBE78_report
