@@ -231,10 +231,14 @@ def main() -> None:
             ])
         if unit.get("source"):
             base = build_dir / "base" / f"{unit['name']}.o"
+            symbol_sizes = " ".join(
+                f"@symbol-size:{name}:{int(size)}"
+                for name, size in unit.get("base_symbol_size_overrides", {}).items()
+            )
             ninja.extend(
                 [
                     f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py",
-                    f"  cflags = {' '.join(unit.get('cflags', ['-O2']))}",
+                    f"  cflags = {' '.join(unit.get('cflags', ['-O2']))} {symbol_sizes}".rstrip(),
                     "",
                 ]
             )

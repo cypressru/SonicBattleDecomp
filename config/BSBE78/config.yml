@@ -47,6 +47,31 @@ units:
     end: 0x0007FC
     category: game
     function_map: config/BSBE78/functions.csv
+    # agbcc's ELF symbol owns the trailing literal pool. Normalize its base
+    # comparison extent to the independently discovered executable boundary.
+    base_symbol_size_overrides: { AgbMain: 0x6A }
+    source: src/main.c
+    cflags: [-O2]
+    complete: true
+    relocations:
+      - { offset: 0x04, type: thumb_call, symbol: FUN_08017c74 }
+      - { offset: 0x10, type: thumb_call, symbol: FUN_080216e4 }
+      - { offset: 0x14, type: thumb_call, symbol: FUN_0801fc54 }
+      - { offset: 0x18, type: thumb_call, symbol: FUN_080201f8 }
+      - { offset: 0x1C, type: thumb_call, symbol: FUN_08020360 }
+      - { offset: 0x20, type: thumb_call, symbol: FUN_0801f780 }
+      - { offset: 0x24, type: thumb_call, symbol: FUN_080210d8 }
+      - { offset: 0x28, type: thumb_call, symbol: FUN_0802110c }
+      - { offset: 0x2E, type: thumb_call, symbol: FUN_08016078 }
+      - { offset: 0x32, type: thumb_call, symbol: VBlankIntrWait }
+      - { offset: 0x42, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x46, type: thumb_call, symbol: FUN_0801f5ec }
+      - { offset: 0x52, type: thumb_call, symbol: FUN_08020198 }
+      - { offset: 0x56, type: thumb_call, symbol: FUN_080005ac }
+      - { offset: 0x5C, type: thumb_call, symbol: _call_via_r0 }
+      - { offset: 0x60, type: thumb_call, symbol: FUN_080006d0 }
+      - { offset: 0x64, type: thumb_call, symbol: FUN_08020244 }
+      - { offset: 0x80, type: abs32, symbol: FUN_08000210 }
   # Remaining game code stays grouped until internal object boundaries are
   # corroborated; the known SDK and runtime objects are separated below.
   - name: main/unknown_080007FC
