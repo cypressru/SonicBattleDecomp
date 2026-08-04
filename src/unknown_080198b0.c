@@ -199,6 +199,7 @@ extern void (*gUnknown_0300315c)(void);
 extern void (*gUnknown_03006788)(void);
 extern u32 (*gUnknown_0300677c)(u16 sector, u8 *source);
 extern const u8 gUnknown_0807b780[];
+extern const u32 gUnknown_0807b880[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1264,4 +1265,17 @@ void FUN_08021a10(u8 *data, u32 count) {
         previous = next;
         data++;
     }
+}
+
+u32 FUN_08021a40(const u8 *data, u32 size) {
+    u32 value = -1;
+    u32 i;
+
+    for (i = 0; i < size; i++) {
+        u32 index = (data[0] ^ value) & 0xFF;
+        value = ((value >> 8) & 0xFFFFFF) ^ gUnknown_0807b880[index];
+        data++;
+    }
+    value = ~value;
+    return value;
 }
