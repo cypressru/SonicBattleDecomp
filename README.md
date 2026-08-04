@@ -64,6 +64,8 @@ ROM SHA-1, checks the embedded-payload and function maps, and uploads the report
 
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.
+The optional [mGBA/GDB workflow](docs/runtime-debugging.md) supports frame-stepped behavioral
+correlation without placing ROM data or runtime captures in the repository.
 
 ## Legal
 
