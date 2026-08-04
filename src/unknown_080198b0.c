@@ -5068,3 +5068,24 @@ void FUN_0802a34c(struct UnknownListNode *node) {
         gUnknown_0300524c[data->index]--;
     }
 }
+
+void FUN_0802a3f4(struct UnknownListNode *node) {
+    struct UnknownAllocation29d74 *data = node->allocation;
+    u8 *states = gUnknown_0300524c;
+
+    if (states[data->index] == 10) {
+        u8 valid = FUN_0802a220((u8)data->index);
+
+        if (valid != 0) {
+            gUnknown_03005268[data->index] |= 1;
+        } else {
+            gUnknown_03005268[data->index] &= 0xFE;
+            states[data->index] = valid;
+        }
+    } else if (states[data->index] > 10) {
+        gUnknown_03005268[data->index] &= 0xFE;
+        states[data->index] = 0;
+    } else {
+        gUnknown_03005268[data->index] &= 0xFE;
+    }
+}
