@@ -254,8 +254,24 @@ edge is not established. Referenced-`.rodata` ordering, which would normally pin
 not help here: the addresses these functions reference lie in the raw asset area rather than in
 compiler-emitted `.rodata`, and their order does not follow `.text` order.
 
-No split is therefore proposed. The evidence available today excludes many boundaries and confirms
-none, which is the same conclusion the earlier `task.o` audit reached by a different route.
+A third line of evidence, call-graph cohesion, was also tested and calibrated the same way. For a
+candidate range, the decoded `BL` edges were split into calls that stay inside the range, calls that
+leave it, and calls that enter it from outside, with intra-function long-branch `BL`s excluded so
+they are not miscounted as calls. The calibration settles the question: the two independently
+established objects nearest this placeholder, `engine/core` and `main/unknown_08018444`, score 0.03
+and 0.02 internal-edge ratios. Real translation units in this game are not call-cohesive at all -
+they are collections of leaf helpers called from elsewhere. The best candidate range inside the
+placeholder, `0x080110F0-0x08011C7C`, scores 0.40, which is far *above* both known objects and
+therefore evidence against it being a whole TU rather than for it.
+
+No split is therefore proposed. Three independent lines of evidence have now been tested and
+calibrated against known object boundaries: private-static reference locality excludes 113 of 184
+candidate splits but confirms none, referenced-`.rodata` ordering does not apply because these
+functions reference the raw asset area rather than compiler-emitted `.rodata`, and call-graph
+cohesion is not a discriminator in this codebase at all. The evidence available today excludes many
+boundaries and confirms none, which is the same conclusion the earlier `task.o` audit reached by a
+different route. Splitting the placeholder on anything weaker would publish a guess as an original
+TU, which this project's inventory policy rejects.
 
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
