@@ -8,7 +8,8 @@ struct MP2KPlayerState {
     u8 padding10;
     u8 checkSongPriority;
     u32 clock;
-    u8 padding16[12];
+    u8 padding16[8];
+    u8 *memAccArea;
     u16 tempoRawBPM;
     u16 tempoScale;
     u16 tempoInterval;
@@ -149,6 +150,7 @@ extern const s16 gCgbFreqTable[];
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
+extern void (*gMPlayJumpTable1)(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
 extern void *gMPlayJumpTable[];
 extern void MP2K_event_nxx(void);
@@ -817,6 +819,94 @@ u32 MidiKeyToCgbFreq(u8 channel, u8 key, u8 fineAdjust) {
         return value1 + ((fineAdjust * (value2 - value1)) >> 8) + 2048;
     }
 }
+
+#define MEMACC_CONDITIONAL_JUMP(condition)                                                         \
+    if (condition) {                                                                               \
+        goto conditionTrue;                                                                        \
+    } else {                                                                                       \
+        goto conditionFalse;                                                                       \
+    }
+
+void MP2K_event_memacc(struct MP2KPlayerState *player, struct MP2KTrack *track) {
+    u32 operation;
+    u8 *address;
+    u8 data;
+
+    operation = *track->command;
+    track->command++;
+    address = player->memAccArea + *track->command;
+    track->command++;
+    data = *track->command;
+    track->command++;
+
+    switch (operation) {
+    case 0:
+        *address = data;
+        return;
+    case 1:
+        *address += data;
+        return;
+    case 2:
+        *address -= data;
+        return;
+    case 3:
+        *address = player->memAccArea[data];
+        return;
+    case 4:
+        *address += player->memAccArea[data];
+        return;
+    case 5:
+        *address -= player->memAccArea[data];
+        return;
+    case 6:
+        MEMACC_CONDITIONAL_JUMP(*address == data)
+        return;
+    case 7:
+        MEMACC_CONDITIONAL_JUMP(*address != data)
+        return;
+    case 8:
+        MEMACC_CONDITIONAL_JUMP(*address > data)
+        return;
+    case 9:
+        MEMACC_CONDITIONAL_JUMP(*address >= data)
+        return;
+    case 10:
+        MEMACC_CONDITIONAL_JUMP(*address <= data)
+        return;
+    case 11:
+        MEMACC_CONDITIONAL_JUMP(*address < data)
+        return;
+    case 12:
+        MEMACC_CONDITIONAL_JUMP(*address == player->memAccArea[data])
+        return;
+    case 13:
+        MEMACC_CONDITIONAL_JUMP(*address != player->memAccArea[data])
+        return;
+    case 14:
+        MEMACC_CONDITIONAL_JUMP(*address > player->memAccArea[data])
+        return;
+    case 15:
+        MEMACC_CONDITIONAL_JUMP(*address >= player->memAccArea[data])
+        return;
+    case 16:
+        MEMACC_CONDITIONAL_JUMP(*address <= player->memAccArea[data])
+        return;
+    case 17:
+        MEMACC_CONDITIONAL_JUMP(*address < player->memAccArea[data])
+        return;
+    default:
+        return;
+    }
+
+conditionTrue:
+    gMPlayJumpTable1(player, track);
+    return;
+
+conditionFalse:
+    track->command += 4;
+}
+
+#undef MEMACC_CONDITIONAL_JUMP
 
 void CgbOscOff(u8 channel) {
     switch (channel) {

@@ -578,6 +578,10 @@ units:
       - { offset: 0xC30, mode: thumb }
       - { offset: 0xC40, mode: data }
       - { offset: 0xC44, mode: thumb }
+      - { offset: 0x13CE, mode: data }
+      - { offset: 0x141C, mode: thumb }
+      - { offset: 0x14E6, mode: data }
+      - { offset: 0x14EC, mode: thumb }
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
@@ -587,6 +591,7 @@ units:
       MidiKeyToCgbFreq: 0xA0
       CgbOscOff: 0x50
       CgbModVol: 0x66
+      MP2K_event_memacc: 0x158
       MPlayStart: 0xDE
       MPlayExtender: 0xC8
       SoundInit: 0xB8
@@ -703,6 +708,27 @@ units:
       - { offset: 0xBEC, type: abs32, symbol: gCgbFreqTable }
       - { offset: 0x1306, type: thumb_call, symbol: ClearModM }
       - { offset: 0x137A, type: thumb_call, symbol: ClearModM }
+      - { offset: 0x13D0, type: abs32, symbol: .text, addend: 0x13D4 }
+      - { offset: 0x13D4, type: abs32, symbol: .text, addend: 0x141C }
+      - { offset: 0x13D8, type: abs32, symbol: .text, addend: 0x1420 }
+      - { offset: 0x13DC, type: abs32, symbol: .text, addend: 0x1428 }
+      - { offset: 0x13E0, type: abs32, symbol: .text, addend: 0x1430 }
+      - { offset: 0x13E4, type: abs32, symbol: .text, addend: 0x143A }
+      - { offset: 0x13E8, type: abs32, symbol: .text, addend: 0x1448 }
+      - { offset: 0x13EC, type: abs32, symbol: .text, addend: 0x1456 }
+      - { offset: 0x13F0, type: abs32, symbol: .text, addend: 0x145E }
+      - { offset: 0x13F4, type: abs32, symbol: .text, addend: 0x1466 }
+      - { offset: 0x13F8, type: abs32, symbol: .text, addend: 0x146E }
+      - { offset: 0x13FC, type: abs32, symbol: .text, addend: 0x1476 }
+      - { offset: 0x1400, type: abs32, symbol: .text, addend: 0x147E }
+      - { offset: 0x1404, type: abs32, symbol: .text, addend: 0x1486 }
+      - { offset: 0x1408, type: abs32, symbol: .text, addend: 0x1494 }
+      - { offset: 0x140C, type: abs32, symbol: .text, addend: 0x14A2 }
+      - { offset: 0x1410, type: abs32, symbol: .text, addend: 0x14B0 }
+      - { offset: 0x1414, type: abs32, symbol: .text, addend: 0x14BE }
+      - { offset: 0x1418, type: abs32, symbol: .text, addend: 0x14CC }
+      - { offset: 0x14E0, type: thumb_call, symbol: _call_via_r2 }
+      - { offset: 0x14E8, type: abs32, symbol: gMPlayJumpTable1 }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
       - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }
