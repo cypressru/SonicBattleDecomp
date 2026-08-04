@@ -85,6 +85,7 @@ units:
     category: sdk
     function_map: config/BSBE78/functions.csv
     source: src/multi_sio_sync.c
+    complete: true
     cflags: [-O2, -mthumb-interwork]
     base_symbol_size_overrides:
       MultiSioSyncInitialize: 0x96
