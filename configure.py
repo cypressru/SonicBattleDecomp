@@ -69,9 +69,7 @@ def main() -> None:
     if function_size_map:
         with (ROOT / function_size_map).open(newline="", encoding="utf-8") as stream:
             for row in csv.DictReader(stream):
-                if row.get("thunk") == "true":
-                    continue
-                start = int(row["start"], 0) - 0x08000000
+                start = int(row["address"], 0) - 0x08000000
                 end = int(row["end"], 0) - 0x08000000
                 if end <= start:
                     fail(f"invalid function extent at 0x{start + 0x08000000:08X}")

@@ -5,7 +5,7 @@ rom: rom/baserom.gba
 sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
-function_size_map: analysis/functions-full.csv
+function_size_map: config/BSBE78/function_extents.csv
 units:
   - name: data/gba_header
     start: 0x000000
