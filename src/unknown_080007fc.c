@@ -138,6 +138,7 @@ extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
 extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
+extern void FUN_0801f618(u32 index);
 extern void FUN_0801ff30(void);
 
 void FUN_08007e24(void) {
@@ -200,6 +201,30 @@ void FUN_08012b60(void) {
     }
 }
 
+void FUN_080163c0(u8 layer) {
+    u8 index;
+    volatile u16 value;
+
+    index = layer;
+    gUnknown_03003178[index] = 0;
+    value = 0;
+    gUnknown_03003178[index] |= value;
+    switch (index) {
+    case 0:
+        REG_BG0CNT = gUnknown_03003178[0];
+        break;
+    case 1:
+        REG_BG1CNT = gUnknown_03003178[1];
+        break;
+    case 2:
+        REG_BG2CNT = gUnknown_03003178[2];
+        break;
+    case 3:
+        REG_BG3CNT = gUnknown_03003178[3];
+        break;
+    }
+}
+
 u8 FUN_08015384(void) {
     u16 previous;
 
@@ -214,6 +239,24 @@ u8 FUN_08015384(void) {
         return 2;
     }
     if (gUnknown_030030d0.counter > 0xed8) {
+        return 1;
+    }
+    return 0;
+}
+
+u8 FUN_08015858(void) {
+    const u8 *source;
+
+    gUnknown_030030d0.counter++;
+    if (gUnknown_030030d0.counter == 27) {
+        FUN_0801f618(46);
+    } else if (gUnknown_030030d0.counter == 88) {
+        source = (const u8 *)0x0831ed34;
+        CpuFastSet(source, (void *)0x06016800, 0x200);
+        source += 0x800;
+        CpuFastSet(source, (void *)0x06017000, 0x200);
+    }
+    if (gUnknown_030030d0.counter > 103) {
         return 1;
     }
     return 0;
