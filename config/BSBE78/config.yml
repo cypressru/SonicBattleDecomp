@@ -21,6 +21,9 @@ units:
     end: 0x0001D0
     category: sdk
     function_map: config/BSBE78/functions.csv
+    source_asm: src/crt0.s
+    asm_symbol: crt0
+    complete: true
   # ARM receive-buffer swap helper from Nintendo's MultiSioSync library. The
   # revision string and exact behavior correlate with the public library ABI.
   - name: engine/multi_sio_sync_asm

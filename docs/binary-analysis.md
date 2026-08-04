@@ -71,6 +71,11 @@ literal pool end at the next accepted function at `0x7FC`. Together these facts 
 `engine/core` (`0x210-0x778`) and `main/main` (`0x778-0x7FC`) target objects. This is recorded as a
 strong linker-order correlation rather than a retail-symbol claim.
 
+The `crt0` target is also source-backed. Clean ARM startup source reproduces both `start_vector`
+and `IntrMain`, including the IRQ/system stack literals, interrupt-vector installation, prioritized
+interrupt dispatch, CPSR/SPSR transitions, handler table lookup, and the complete literal pools.
+Its 252 code bytes and 20 owned data bytes match byte-for-byte.
+
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM
 data/assets occupy `0x4B718-0xEEB690`, and the embedded payload occupies
