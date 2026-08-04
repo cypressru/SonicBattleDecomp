@@ -761,6 +761,7 @@ units:
       FUN_08025c14: 0x2C
       FUN_08025c4c: 0x36
       FUN_08025c84: 0xA8
+      FUN_08025d50: 0x1AA
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -1110,6 +1111,8 @@ units:
       - { offset: 0xC3D4, mode: thumb }
       - { offset: 0xC47C, mode: data }
       - { offset: 0xC4A0, mode: thumb }
+      - { offset: 0xC64A, mode: data }
+      - { offset: 0xC6AC, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1589,6 +1592,34 @@ units:
       - { offset: 0xC494, type: abs32, symbol: gUnknown_03003e20 }
       - { offset: 0xC498, type: abs32, symbol: gUnknown_03004dd4 }
       - { offset: 0xC49C, type: abs32, symbol: gUnknown_03004df0 }
+      - { offset: 0xC4BC, type: thumb_call, symbol: FUN_08025064 }
+      - { offset: 0xC4D4, type: thumb_call, symbol: LZ77UnCompVram }
+      - { offset: 0xC4DC, type: thumb_call, symbol: LZ77UnCompVram }
+      - { offset: 0xC4F2, type: thumb_call, symbol: FUN_08020ecc }
+      - { offset: 0xC4FE, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0xC5F8, type: thumb_call, symbol: FUN_0801f7d0 }
+      - { offset: 0xC610, type: thumb_call, symbol: FUN_0801f7d0 }
+      - { offset: 0xC61E, type: thumb_call, symbol: FUN_0801f7d0 }
+      - { offset: 0xC62A, type: thumb_call, symbol: FUN_0801f7d0 }
+      - { offset: 0xC64C, type: abs32, symbol: gUnknown_03005240 }
+      - { offset: 0xC650, type: abs32, symbol: gUnknown_08ed9740 }
+      - { offset: 0xC654, type: abs32, symbol: gUnknown_03002110 }
+      - { offset: 0xC658, type: abs32, symbol: gUnknown_03004de0 }
+      - { offset: 0xC65C, type: abs32, symbol: gUnknown_03004ddc }
+      - { offset: 0xC660, type: abs32, symbol: gUnknown_03004dd0 }
+      - { offset: 0xC664, type: abs32, symbol: gUnknown_0807c620 }
+      - { offset: 0xC66C, type: abs32, symbol: gUnknown_0807c060 }
+      - { offset: 0xC674, type: abs32, symbol: gUnknown_08071b7c }
+      - { offset: 0xC678, type: abs32, symbol: gUnknown_0807173c }
+      - { offset: 0xC688, type: abs32, symbol: gUnknown_03004dbc }
+      - { offset: 0xC68C, type: abs32, symbol: FUN_08025120 }
+      - { offset: 0xC690, type: abs32, symbol: gUnknown_03003e20 }
+      - { offset: 0xC694, type: abs32, symbol: FUN_080252d0 }
+      - { offset: 0xC698, type: abs32, symbol: FUN_080243d4 }
+      - { offset: 0xC69C, type: abs32, symbol: FUN_0802436c }
+      - { offset: 0xC6A0, type: abs32, symbol: gUnknown_03004dd4 }
+      - { offset: 0xC6A4, type: abs32, symbol: gUnknown_03004df0 }
+      - { offset: 0xC6A8, type: abs32, symbol: FUN_08025f5c }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

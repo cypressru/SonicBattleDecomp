@@ -147,7 +147,9 @@ struct UnknownState08021484 {
 };
 
 struct UnknownState03002110 {
-    u8 filler0[0x120];
+    u8 filler0[119];
+    u8 field119;
+    u8 filler120[168];
     u8 validity[0x200];
     u8 selector;
     u8 filler321;
@@ -162,7 +164,7 @@ struct UnknownState03004dbc {
     u16 field12;
     u16 field14;
     u16 field16;
-    u8 filler18[2];
+    u16 field18;
     u32 bits[16];
 };
 
@@ -174,7 +176,9 @@ struct UnknownAllocation248f0 {
 };
 
 struct UnknownAllocation25a98 {
-    u8 filler0[48];
+    u8 filler0[16];
+    struct UnknownListNode *child16;
+    u8 filler20[28];
     struct UnknownListNode *child;
     u8 childIds[7];
 };
@@ -232,6 +236,8 @@ extern const void *gUnknown_03004d94;
 extern u32 gUnknown_03004d8c;
 extern void SoftResetExram(u32 flags);
 extern void LZ77UnCompWram(const void *source, void *destination);
+extern void LZ77UnCompVram(const void *source, void *destination);
+extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern u32 FUN_08018c8c(void *state);
 extern u32 FUN_0801950c(void *state);
 extern void ReadFlash(u16 sector, u32 offset, void *destination, u32 size);
@@ -280,6 +286,12 @@ extern u32 gUnknown_03004da8;
 extern u32 gUnknown_03004dc4;
 extern u8 *gUnknown_03004db8;
 extern u16 gUnknown_03004df0[];
+extern const void *gUnknown_03005240;
+extern const void *gUnknown_08ed9740[];
+extern u16 gUnknown_03004dd0;
+extern const u8 gUnknown_0807c620[];
+extern const u8 gUnknown_0807c060[];
+extern const u8 gUnknown_08071b7c[];
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -325,6 +337,10 @@ void FUN_08025b78(struct UnknownListNode *node);
 void FUN_08025c14(struct UnknownListNode *node);
 void FUN_08025d50(struct UnknownListNode *node);
 extern u32 FUN_080211f0(void);
+extern void FUN_08025064(u8 value);
+void FUN_08025120(struct UnknownListNode *node);
+void FUN_080252d0(struct UnknownListNode *node);
+void FUN_08025f5c(struct UnknownListNode *node);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -2019,4 +2035,60 @@ void FUN_08025c84(struct UnknownListNode *node) {
     gUnknown_03004de0 = savedFirst;
     gUnknown_03004ddc = savedSecond;
     gUnknown_03004dd4 = gUnknown_03004df0[gUnknown_03004de0];
+}
+
+void FUN_08025d50(struct UnknownListNode *node) {
+    struct UnknownAllocation25a98 *allocation = node->allocation;
+    u32 zero;
+    u16 *destination;
+    u16 value;
+    u32 i;
+
+    gUnknown_03005240 = gUnknown_08ed9740[gUnknown_03002110.field119];
+    FUN_08025064(0xff);
+    gUnknown_03004de0 = gUnknown_03004ddc = 0;
+    gUnknown_03004dd0 = 3;
+    LZ77UnCompVram(gUnknown_0807c620, (void *)0x0600f000);
+    LZ77UnCompVram(gUnknown_0807c060, (void *)0x0600e000);
+    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, (u8 *)0x0600b000, 16, 14, 0);
+    zero = 0;
+    CpuFastSet(&zero, (void *)0x0600b000, 0x01000700);
+
+    value = 4480;
+    destination = (u16 *)0x0600f11a;
+    i = 0;
+    do {
+        destination[0] = value++;
+        destination[32] = value++;
+        destination[64] = value++;
+        destination[96] = value++;
+        destination[128] = value++;
+        destination[160] = value++;
+        destination[192] = value++;
+        destination[224] = value++;
+        destination[256] = value++;
+        destination[288] = value++;
+        destination[320] = value++;
+        destination[352] = value++;
+        destination[384] = value++;
+        destination[416] = value++;
+        destination++;
+        i++;
+    } while (i <= 14);
+
+    gUnknown_03004dbc->field18 = 0;
+    gUnknown_03004dbc->field3 = 0;
+    i = 0;
+    do {
+        struct UnknownListNode *child = FUN_0801f7d0(FUN_08025120, 16, gUnknown_03003e20, 0);
+
+        child->position->field13 = i;
+        i++;
+    } while (i <= 11);
+
+    allocation->child16 = FUN_0801f7d0(FUN_080252d0, 60, gUnknown_03003e20, 0);
+    FUN_0801f7d0(FUN_080243d4, 16, gUnknown_03003e20, 0);
+    FUN_0801f7d0(FUN_0802436c, 16, gUnknown_03003e20, 0);
+    gUnknown_03004dd4 = gUnknown_03004df0[gUnknown_03004de0];
+    node->data = FUN_08025f5c;
 }
