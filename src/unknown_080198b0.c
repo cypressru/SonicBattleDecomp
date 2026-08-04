@@ -54,6 +54,7 @@ extern void FUN_080311b4(struct UnknownListNode *node);
 extern u8 gUnknown_0300537c;
 extern const u8 gUnknown_081734d8[];
 extern const u8 gUnknown_08173500[];
+extern const u8 gUnknown_08173520[];
 extern const void *gUnknown_0817adc8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
@@ -180,7 +181,9 @@ struct UnknownPoolNode404ec {
     u8 padding2;
     u8 field3;
     const void *data;
-    u8 padding8[36];
+    u8 padding8[19];
+    u8 field27;
+    u8 padding28[16];
 };
 
 struct UnknownPoolCommand4051c {
@@ -234,10 +237,14 @@ struct UnknownState420dc {
     u16 baseX;
     u8 padding32[2];
     u16 baseY;
+    u8 cachedPoolField;
 };
 
 struct UnknownRecord41f24 {
-    u8 padding0[10];
+    u8 padding0[4];
+    u16 field4;
+    u16 field6;
+    u16 field8;
     u16 field10;
     u8 padding12[20];
 };
@@ -449,7 +456,9 @@ extern struct UnknownGlobalRenderState gUnknown_03005440;
 extern u16 gUnknown_03005490;
 extern u16 gUnknown_03005494;
 extern struct UnknownState420dc *gUnknown_030001d0;
+extern const struct UnknownRecord41f24 *gUnknown_08eeb660[];
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
+extern const void *const *gUnknown_08edda00[];
 extern struct UnknownState420dc *FUN_0803ff98(const void *callback, void *parent, u32 flag);
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
@@ -6633,6 +6642,58 @@ void FUN_080420dc(struct UnknownState420dc *state) {
     state->field8.half.high = state->baseX - gUnknown_03005494;
     state->field14 = state->baseY - gUnknown_03005490;
     FUN_080405a8(state->field2, 2);
+}
+
+void FUN_08042180(struct UnknownState420dc *state) {
+    register u32 tableIndex asm("r6") = gUnknown_03005440.field31;
+    register u32 tableIndexCopy = tableIndex;
+    register u32 poolField asm("r4") = gUnknown_0300547c[state->poolIndex].field27;
+    register const struct UnknownRecord41f24 *const *recordTable asm("r0");
+    register u32 tableOffset asm("r2");
+    register u32 recordOffset asm("r1");
+    register const void *records asm("r0");
+    register const void *const *resourceTable asm("r1");
+    register u32 resourceOffset asm("r0");
+    const void *source;
+
+    if (state->cachedPoolField != poolField) {
+        state->cachedPoolField = poolField;
+        state->fade = 0;
+    }
+    FUN_0801fba0(0x52, state->fade | ((16 - state->fade) << 8));
+    state->graphics = gUnknown_08173520;
+    if (state->field3 != 0) {
+        recordTable = gUnknown_08eeb678;
+        tableOffset = tableIndex << 2;
+        goto foundTable;
+    } else {
+        recordTable = gUnknown_08eeb660;
+        tableOffset = tableIndexCopy << 2;
+    }
+foundTable:
+    asm volatile("" : "+r"(recordTable), "+r"(tableOffset));
+    tableOffset += (u32)recordTable;
+    asm volatile("" : "+r"(tableOffset));
+    records = *(const void *const *)tableOffset;
+    asm volatile("" : "+r"(records));
+    recordOffset = poolField << 5;
+    state->baseX = *(const u16 *)(recordOffset + (u32)records + 4);
+    state->baseY = *(const u16 *)(recordOffset + (u32) * (const void *const *)tableOffset + 6);
+    poolField = *(const u16 *)(recordOffset + (u32) * (const void *const *)tableOffset + 8);
+    state->field22 = 4;
+    state->field24 = 8;
+    resourceTable = (const void *const *)gUnknown_08edda00;
+    resourceOffset = gUnknown_03005440.field29 << 2;
+    asm volatile("" : "+r"(resourceTable), "+r"(resourceOffset));
+    resourceOffset += (u32)resourceTable;
+    resourceTable = *(const void *const **)resourceOffset;
+    resourceOffset = poolField << 2;
+    asm volatile("" : "+r"(resourceTable), "+r"(resourceOffset));
+    resourceOffset += (u32)resourceTable;
+    source = *(const void *const *)resourceOffset;
+    LZ77UnCompWram(source, (void *)0x02010600);
+    FUN_0804033c((void *)0x02010600, (void *)0x06013200, 0x400);
+    state->callback = (const void *)((u32)FUN_080420dc + 1);
 }
 
 void FUN_08041f84(struct UnknownState420dc *state) {
