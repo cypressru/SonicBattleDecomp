@@ -256,6 +256,8 @@ extern const u8 gUnknown_08edb4f8[];
 extern const u8 gUnknown_08edb5a0[];
 extern const u8 gUnknown_08edb548[];
 extern const u8 gUnknown_08edb558[];
+extern const u8 gUnknown_08edb468[];
+extern const u8 gUnknown_08edb5b8[];
 extern const u16 gUnknown_08edb86c[];
 extern u16 *gUnknown_03004db0;
 extern const u16 data_gap_003[];
@@ -304,6 +306,8 @@ void FUN_08025838(struct UnknownListNode *node);
 void FUN_080258ac(struct UnknownListNode *node);
 void FUN_08025994(struct UnknownListNode *node);
 void FUN_08025a08(struct UnknownListNode *node);
+void FUN_08025628(struct UnknownListNode *node);
+void FUN_08025c4c(struct UnknownListNode *node);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -1882,4 +1886,51 @@ void FUN_080259d0(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 8;
     node->data = FUN_08025a08;
+}
+
+void FUN_08025a08(struct UnknownListNode *node) {
+    u16 index = gUnknown_03004dd4;
+    struct UnknownState03004dbc *state = gUnknown_03004dbc;
+
+    if (state->field3 != 0) {
+        FUN_0801f8c0(node);
+    } else if (FUN_080256fc_validity(&gUnknown_03002110, index) != 0xff) {
+        node->position->x = state->field12 + 56;
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_08025a58(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb468;
+    node->position->tile = 425;
+    node->position->x = 284;
+    node->position->y = 51;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->position->field14 = 0xff;
+    node->data = FUN_08025628;
+}
+
+void FUN_08025c14(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb5b8;
+    node->position->x = node->position->field13 * 8 + 367;
+    node->position->y = 9;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 12;
+    node->data = FUN_08025c4c;
+}
+
+void FUN_08025c4c(struct UnknownListNode *node) {
+    struct UnknownPosition *position = node->position;
+    struct UnknownState03004dbc *state = gUnknown_03004dbc;
+    u32 x = position->field13 * 8 + 111;
+
+    position->x = x + state->field12;
+    if (state->field3 != 0) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
 }
