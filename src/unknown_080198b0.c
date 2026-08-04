@@ -30,6 +30,12 @@ extern void FUN_08049170(void);
 extern void *gUnknown_03005478;
 extern u8 gUnknown_030001c8;
 extern const s16 gUnknown_081231d6[];
+extern void FUN_08048fb8(void);
+extern void FUN_08049544(const void *value);
+extern void FUN_080411fc(void);
+extern u32 gUnknown_03005430;
+extern void FUN_08047bd8(void);
+extern void FUN_080311b4(struct UnknownListNode *node);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
@@ -228,6 +234,21 @@ struct UnknownAllocation28770 {
     u32 field0;
     u8 field4;
     u8 field5;
+};
+
+struct UnknownState482d0 {
+    u8 filler0[4];
+    const void *callback;
+    u8 filler8[6];
+    u16 field14;
+    u8 filler16[22];
+    u8 field38;
+};
+
+struct UnknownAllocation3128c {
+    u8 filler0[2];
+    u16 field2;
+    u16 field4;
 };
 
 struct UnknownRecordValue28c80 {
@@ -5316,3 +5337,91 @@ void FUN_0803cf9c(void) {
 void FUN_0803cb54(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
 
 s16 FUN_08040684(u8 index) { return gUnknown_081231d6[index]; }
+
+void FUN_0801f5ec(void) {
+    FUN_08048fb8();
+    FUN_08049544((const void *)0x0093e800);
+}
+
+u32 FUN_08020144(void) { return gUnknown_0300019c = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af; }
+
+void FUN_080402a0(void) {
+    FUN_08016078(1);
+    FUN_080411fc();
+}
+
+u32 FUN_080406b4(void) {
+    gUnknown_03005430 = gUnknown_03005430 * 0x41c64e6d + 0x3039;
+    return (gUnknown_03005430 << 1) >> 17;
+}
+
+void FUN_080303cc(void) {
+    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
+    register u32 value asm("r2") = 0x1c09;
+    register u32 copy asm("r0");
+
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+    registers++;
+    value = 0x1b01;
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+}
+
+void FUN_080381e4(void) {
+    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
+    register u32 value asm("r2") = 0x1e09;
+    register u32 copy asm("r0");
+
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+    registers++;
+    value = 0x1d01;
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+}
+
+void FUN_0803b588(void) {
+    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
+    register u32 value asm("r2") = 0x1e09;
+    register u32 copy asm("r0");
+
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+    registers++;
+    value = 0x1d01;
+    asm volatile("" : "+r"(value));
+    copy = value;
+    asm volatile("" : "+r"(copy));
+    *registers = copy;
+}
+
+void FUN_080482d0(struct UnknownState482d0 *state) {
+    state->field14 = 96;
+    state->field38 = 5;
+    state->callback = (const void *)((u32)FUN_08047bd8 + 1);
+}
+
+void FUN_080482e8(struct UnknownState482d0 *state) {
+    state->field14 = 96;
+    state->field38 = 7;
+    state->callback = (const void *)((u32)FUN_08047bd8 + 1);
+}
+
+void FUN_0803128c(struct UnknownListNode *node) {
+    struct UnknownAllocation3128c *allocation = node->allocation;
+
+    allocation->field4 = 30;
+    allocation->field2 = 0;
+    node->data = (const void *)((u32)FUN_080311b4 + 1);
+}
