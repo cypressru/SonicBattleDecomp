@@ -31,10 +31,23 @@ units:
     asm_symbol: MultiSioRecvBufChange
     complete: true
     symbols: [{ name: MultiSioRecvBufChange, address: 0x0001D0, mode: arm, size: 0x3C }]
-  # Game code remains grouped until internal object boundaries are corroborated;
-  # the startup, M4A, BIOS veneer, backup, and runtime objects are separated.
-  - name: main/unknown_08000210
+  # The related Sonic Team GBA linker order places core.o immediately after
+  # the early MultiSio helper and main.o immediately after core.o. crt0's
+  # AgbMain pointer independently fixes the 0x778 transition.
+  - name: engine/core
     start: 0x000210
+    end: 0x000778
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: main/main
+    start: 0x000778
+    end: 0x0007FC
+    category: game
+    function_map: config/BSBE78/functions.csv
+  # Remaining game code stays grouped until internal object boundaries are
+  # corroborated; the known SDK and runtime objects are separated below.
+  - name: main/unknown_080007FC
+    start: 0x0007FC
     end: 0x018678
     category: game
     function_map: config/BSBE78/functions.csv

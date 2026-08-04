@@ -26,7 +26,9 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x000000-0x0000C0` | `0x08000000-0x080000C0` | GBA header/reset branch | Exact |
 | `0x0000C0-0x0001D0` | `0x080000C0-0x080001D0` | ARM startup/interrupt object (`crt0`) | Exact |
 | `0x0001D0-0x000210` | `0x080001D0-0x08000210` | Nintendo `MultiSioRecvBufChange` ARM helper | Exact |
-| `0x000210-0x018678` | `0x08000210-0x08018678` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x000210-0x000778` | `0x08000210-0x08000778` | Sonic Team engine `core` object | Strong linker-order correlation |
+| `0x000778-0x0007FC` | `0x08000778-0x080007FC` | Main object containing `AgbMain` | Strong linker-order correlation |
+| `0x0007FC-0x018678` | `0x080007FC-0x08018678` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
 | `0x018678-0x018C8C` | `0x08018678-0x08018C8C` | Nintendo `MultiSioSync` object | Exact outer range; strong source correlation |
 | `0x018C8C-0x019568` | `0x08018C8C-0x08019568` | Nintendo `multi_boot` object | Exact |
 | `0x019568-0x0198B0` | `0x08019568-0x080198B0` | Nintendo `sio32_multi_load` object | Exact |
@@ -59,6 +61,15 @@ every in-range destination to be present either in the analyzed function invento
 explicit SDK/runtime symbol in the unit configuration. It also checks every halfword-aligned Thumb-tagged
 pointer found outside accepted instruction extents. This proves direct-call and function-pointer
 closure for the current inventory and prevents newly exposed call targets from remaining anonymous.
+
+The startup vector's literal calls Thumb address `0x08000779`, establishing `AgbMain` at
+`0x08000778` independently of analyzer naming. Public Sonic Advance 2 and Sonic Advance 3 linker
+layouts both place `core.o` immediately after the early MultiSio assembly object and `main.o`
+immediately after `core.o`; their `main.c` begins with the same `AgbMain` ABI entry. In Sonic Battle,
+the preceding accepted function and its literals end exactly at `0x778`, while `AgbMain` and its
+literal pool end at the next accepted function at `0x7FC`. Together these facts support separate
+`engine/core` (`0x210-0x778`) and `main/main` (`0x778-0x7FC`) target objects. This is recorded as a
+strong linker-order correlation rather than a retail-symbol claim.
 
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM

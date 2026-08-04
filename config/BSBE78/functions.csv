@@ -9,7 +9,7 @@ address,name,mode,confidence
 0x080006D0,FUN_080006d0,thumb,direct-call
 0x080006EC,FUN_080006ec,thumb,rom-pointer
 0x08000724,FUN_08000724,thumb,rom-pointer
-0x08000778,FUN_08000778,thumb,rom-pointer
+0x08000778,AgbMain,thumb,crt0-pointer+public-linker-order
 0x080007FC,FUN_080007fc,thumb,direct-call
 0x08000A2C,FUN_08000a2c,thumb,direct-call
 0x08000CEE,FUN_08000cee,thumb,rom-pointer
