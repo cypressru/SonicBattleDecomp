@@ -149,9 +149,15 @@ struct UnknownState080180f0 {
 };
 
 struct UnknownRecord03001c40 {
-    u8 padding0[159];
+    u8 padding0[20];
+    u16 first;
+    u8 padding22[128];
+    u8 second;
+    u8 padding151[8];
     u8 style;
-    u8 padding160[40];
+    u8 padding160[36];
+    u8 third;
+    u8 padding197[3];
     u16 value;
     u8 padding202[50];
 };
@@ -190,6 +196,9 @@ extern void FUN_0801f60c(void);
 extern void FUN_0801694c(void);
 extern void FUN_0801ffa4(u32 first);
 extern void FUN_0801fbd8(void);
+
+extern u16 gUnknown_030016b8;
+extern u16 gUnknown_03001d0c[][126];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
@@ -202,6 +211,57 @@ extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801f618(u32 index);
 extern void FUN_0801ff30(void);
+
+/* Uploads participant `index`'s 16-colour palette. Normally the stored palette
+   is DMAed straight to 0x05000200; when the caller asks for the highlight and
+   the effect is enabled, each entry is brightened first - blue and green
+   doubled, red tripled, every channel clamped to 31. */
+void FUN_08000cf4(u8 index, u8 first, u8 second) {
+    volatile u32 *dma;
+    volatile u32 *other;
+    u16 buffer[16];
+    u32 colour;
+    u32 red;
+    u32 green;
+    u32 blue;
+    u8 i;
+
+    gUnknown_03001c40[index].third = first;
+    if (second != 0 && (gUnknown_030016b8 & 4) && gUnknown_03001c40[index].first != 254 &&
+        gUnknown_03001c40[index].first != 255) {
+        for (i = 1; i <= 15; i++) {
+            colour = gUnknown_03001d0c[index][i];
+            blue = ((colour << 16) >> 26) & 31;
+            green = ((colour << 16) >> 21) & 31;
+            red = colour & 31;
+            blue = blue * 2;
+            green = green * 2;
+            red = red + red * 2;
+            if (blue > 31) {
+                blue = 31;
+            }
+            if (green > 31) {
+                green = 31;
+            }
+            if (red > 31) {
+                red = 31;
+            }
+            buffer[i] = (blue << 10) | (green << 5) | red;
+        }
+        gUnknown_03001c40[index].second = 1;
+        dma = (volatile u32 *)0x040000d4;
+        dma[0] = (u32)buffer;
+        dma[1] = 0x05000200 + index * 32;
+        dma[2] = 0x80000010;
+        dma[2];
+    } else {
+        other = (volatile u32 *)0x040000d4;
+        other[0] = (u32)gUnknown_03001d0c[index];
+        other[1] = 0x05000200 + index * 32;
+        other[2] = 0x80000010;
+        other[2];
+    }
+}
 
 /* The buttons currently held by participant `index`, taken from the newest
    slot of that participant's input ring. */
