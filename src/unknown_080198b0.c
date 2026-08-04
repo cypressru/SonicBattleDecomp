@@ -457,7 +457,7 @@ extern void FUN_08028d30(struct UnknownListNode *node);
 extern void FUN_08020978(s32 x, u32 y, u16 tile, u32 attributes);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
-extern void FUN_0801fab0(u16 value);
+extern u32 FUN_0801fab0(u16 value);
 extern void FUN_080214c0(u32 value);
 extern u8 gUnknown_03005260;
 extern u32 gUnknown_03005258;
@@ -4706,4 +4706,33 @@ void FUN_080299c0(void) {
     FUN_0800ec18();
     FUN_0800f38c();
     gUnknown_03002030 = FUN_0801c82c;
+}
+
+void FUN_08029ba0(void) {
+    register u32 *counter asm("r5");
+
+    if (gUnknown_03005254 != 0) {
+        counter = &gUnknown_03005258;
+        if (*counter > 59) {
+            if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0803d1a0 + 1);
+                FUN_0801fb60();
+                FUN_0801fb94();
+                FUN_0801ff30();
+                FUN_0801f780();
+                FUN_080210d8();
+                FUN_0802110c();
+            }
+            return;
+        }
+
+        if (gUnknown_0300525c == (u8)FUN_0801fab0(0x1379)) {
+            *counter = 0;
+        } else {
+            (*counter)++;
+        }
+    }
+
+    FUN_0801f89c();
+    FUN_0801fda0();
 }
