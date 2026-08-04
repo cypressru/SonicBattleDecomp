@@ -177,6 +177,16 @@ struct UnknownAllocation248f0 {
     u8 field14;
 };
 
+struct UnknownAllocation29d74 {
+    u8 filler0[2];
+    u16 index;
+    u8 filler4[8];
+    u8 lowFlags[4];
+    u8 highFlags[4];
+    u8 firstSelection;
+    u8 secondSelection;
+};
+
 struct UnknownAllocation25a98 {
     u8 filler0[16];
     struct UnknownListNode *child16;
@@ -4822,4 +4832,169 @@ void FUN_08029cfc(u32 playerIndex) {
             }
         }
     }
+}
+
+void FUN_08029d74(struct UnknownListNode *node) {
+    register struct UnknownAllocation29d74 *data asm("r12") = node->allocation;
+
+    if (gUnknown_03005254 == 0) {
+        return;
+    }
+    {
+        register u16 *displayState asm("r5") = gUnknown_03001b10;
+        register u32 mask asm("r6");
+
+        {
+            register struct UnknownAllocation29d74 *dataAddress asm("r1") = data;
+            register u32 index asm("r0") = dataAddress->index;
+            register u32 lowMask asm("r1");
+            register u32 value asm("r2");
+            register u32 tableIndex asm("r3");
+
+            mask = 15;
+            lowMask = 15;
+            value = lowMask;
+            value &= index;
+            value <<= 12;
+            {
+                register const u8 *firstTable asm("r0") = gUnknown_0300524c;
+                register struct UnknownAllocation29d74 *indexAddress asm("r4") = data;
+
+                tableIndex = indexAddress->index;
+                firstTable = (const u8 *)(tableIndex + (u32)firstTable);
+                {
+                    register u32 tableValue asm("r4") = *firstTable;
+
+                    index = lowMask;
+                    index &= tableValue;
+                }
+                index <<= 8;
+                value |= index;
+            }
+            {
+                register const u8 *secondTable asm("r0") = gUnknown_03005268;
+                register u32 tableAddress asm("r3") = tableIndex + (u32)secondTable;
+
+                tableIndex = *(const u8 *)tableAddress;
+                index = lowMask;
+                index &= tableIndex;
+                index <<= 4;
+                value |= index;
+            }
+            {
+                register u8 *scene asm("r0") = &gUnknown_03001620;
+
+                index = scene[3];
+            }
+            lowMask &= index;
+            lowMask |= value;
+            displayState[2] = lowMask;
+        }
+
+        {
+            register struct UnknownAllocation29d74 *firstAddress asm("r1") = data;
+            register u32 first asm("r0") = firstAddress->firstSelection;
+            register struct UnknownAllocation29d74 *secondAddress asm("r2");
+            register u32 flags asm("r1");
+
+            first++;
+            first &= mask;
+            flags = first << 12;
+            secondAddress = data;
+            first = secondAddress->secondSelection;
+            first++;
+            first &= mask;
+            first <<= 4;
+            flags |= first;
+            displayState[3] = flags;
+
+            if (secondAddress->firstSelection != 0xFF) {
+                register u8 selection asm("r3");
+                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+
+                selection = secondAddress->firstSelection;
+                flagAddress += selection;
+                if (*flagAddress != 0) {
+                    register u32 highBit asm("r4") = 128;
+                    register u32 bit asm("r0");
+
+                    asm volatile("" : "+r"(highBit));
+                    highBit <<= 1;
+                    asm volatile("" : "+r"(highBit));
+                    bit = highBit;
+                    asm volatile("" : "+r"(bit));
+                    displayState[3] = flags | bit;
+                }
+                {
+                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
+                    register struct UnknownAllocation29d74 *selectionAddress asm("r1") = data;
+                    register u32 selection asm("r1") = selectionAddress->firstSelection;
+
+                    flagAddress += selection;
+                    if (*flagAddress != 0) {
+                        displayState[3] |= 0xF00;
+                    }
+                }
+            }
+        }
+
+        {
+            register struct UnknownAllocation29d74 *selectionAddress asm("r3") = data;
+
+            if (selectionAddress->secondSelection != 0xFF) {
+                register u8 selection asm("r4");
+                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+
+                selection = selectionAddress->secondSelection;
+                flagAddress += selection;
+                if (*flagAddress != 0) {
+                    register u32 current asm("r1") = displayState[3];
+                    register u32 bit asm("r0") = 1;
+
+                    bit |= current;
+                    displayState[3] = bit;
+                }
+                {
+                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
+                    register struct UnknownAllocation29d74 *secondAddress asm("r1") = data;
+                    register u32 selection asm("r1") = secondAddress->secondSelection;
+
+                    flagAddress += selection;
+                    if (*flagAddress != 0) {
+                        register u32 current asm("r1") = displayState[3];
+                        register u32 bits asm("r0") = 15;
+
+                        bits |= current;
+                        displayState[3] = bits;
+                    }
+                }
+            }
+        }
+    }
+}
+
+u8 FUN_0802a220(u8 player) {
+    u8 variant = gUnknown_03005268[player] & 0xFE;
+    u8 other;
+
+    if (gUnknown_03005260 == player) {
+        return 0;
+    }
+    if (gUnknown_0300524c[1] == 10 && gUnknown_0300524c[2] == 10 && gUnknown_0300524c[3] == 10) {
+        return 0;
+    }
+    if (gUnknown_03002600[4] == 0) {
+        return 1;
+    }
+
+    for (other = 0; other <= 3; other++) {
+        if (other != player && gUnknown_03005268[other] == variant) {
+            break;
+        }
+    }
+
+    if (other != 4) {
+        return 1;
+    }
+    return 0;
 }
