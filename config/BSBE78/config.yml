@@ -22,6 +22,16 @@ units:
   # the startup, M4A, BIOS veneer, backup, and runtime objects are separated.
   - name: main/unknown_08000210
     start: 0x000210
+    end: 0x018678
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: engine/multi_sio_asm
+    start: 0x018678
+    end: 0x01886C
+    category: game
+    function_map: config/BSBE78/functions.csv
+  - name: engine/multi_sio
+    start: 0x01886C
     end: 0x018C8C
     category: game
     function_map: config/BSBE78/functions.csv

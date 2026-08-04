@@ -20,7 +20,9 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 |---|---|---|---|
 | `0x000000-0x0000C0` | `0x08000000-0x080000C0` | GBA header/reset branch | Exact |
 | `0x0000C0-0x000210` | `0x080000C0-0x08000210` | ARM startup/interrupt object (`crt0`) | Exact |
-| `0x000210-0x018C8C` | `0x08000210-0x08018C8C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x000210-0x018678` | `0x08000210-0x08018678` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x018678-0x01886C` | `0x08018678-0x0801886C` | Nintendo `multi_sio_asm` object | Strong correlation |
+| `0x01886C-0x018C8C` | `0x0801886C-0x08018C8C` | Nintendo `multi_sio` object | Strong correlation |
 | `0x018C8C-0x019568` | `0x08018C8C-0x08019568` | Nintendo `multi_boot` object | Exact |
 | `0x019568-0x0198B0` | `0x08019568-0x080198B0` | Nintendo `sio32_multi_load` object | Exact |
 | `0x0198B0-0x04833C` | `0x080198B0-0x0804833C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
@@ -105,6 +107,14 @@ exactly at `0x19568`. The following 0x348-byte serial-loader object begins with 
 `Sio32MultiLoadMain` and lands exactly at the next accepted function at `0x198B0`. Those independent
 size, order, offset, and byte correlations establish both object boundaries. Names that did not
 individually byte-match are recorded as object-order correlations rather than direct matches.
+
+The two immediately preceding objects correlate to Sonic Advance 2's `multi_sio_asm.o` and
+`multi_sio.o`. Sonic Battle has the same ordered sequence of two low-level serial functions and six
+C interface functions. Their combined `0x614`-byte size is identical; the transition between the
+two source sequences is the accepted `MultiSioInit` start at `0x1886C`, and the final
+`MultiSioStop` ends at the independently established `multi_boot` boundary. Individual bodies have
+revision-specific field offsets and sizes, so these names are explicitly recorded as ordered-object
+correlations rather than byte matches.
 
 The openly licensed newlib-correlated `memcmp`, `memcpy`, and `memset` sources compile through the
 pinned `old_agbcc -O2 -fno-builtin` library path and match their full target sections byte-for-byte.
