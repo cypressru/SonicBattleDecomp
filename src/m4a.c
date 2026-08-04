@@ -1,6 +1,15 @@
 #include "types.h"
 
-struct MP2KPlayerState;
+struct MP2KPlayerState {
+    u32 padding0;
+    u32 status;
+    u8 padding8[28];
+    u16 fadeCounter;
+    u16 fadeInterval;
+    u16 fadeVolume;
+    u8 padding42[10];
+    u32 lockStatus;
+};
 
 struct MP2KTrack {
     u8 padding0[30];
@@ -20,8 +29,6 @@ struct MP2KTrack {
     u8 *command;
 };
 
-extern void FUN_08048f94(struct MP2KPlayerState *player, u16 speed);
-extern void FUN_08048f74(struct MP2KPlayerState *player);
 extern void SoundMain(void);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
@@ -30,9 +37,48 @@ extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
 
 void m4aSoundMain(void) { SoundMain(); }
 
-void m4aMPlayContinue(struct MP2KPlayerState *player) { FUN_08048f74(player); }
+void MPlayContinue(struct MP2KPlayerState *player) {
+    if (player->lockStatus == 0x68736D53) {
+        player->lockStatus++;
+        player->status &= 0x7FFFFFFF;
+        player->lockStatus = 0x68736D53;
+    }
+}
 
-void m4aMPlayFadeOut(struct MP2KPlayerState *player, u16 speed) { FUN_08048f94(player, speed); }
+void MPlayFadeOut(struct MP2KPlayerState *player, u16 speed) {
+    if (player->lockStatus == 0x68736D53) {
+        player->lockStatus++;
+        player->fadeInterval = speed;
+        player->fadeCounter = speed;
+        player->fadeVolume = 0x100;
+        player->lockStatus = 0x68736D53;
+    }
+}
+
+void m4aMPlayContinue(struct MP2KPlayerState *player) { MPlayContinue(player); }
+
+void m4aMPlayFadeOut(struct MP2KPlayerState *player, u16 speed) { MPlayFadeOut(player, speed); }
+
+void m4aMPlayFadeOutTemporarily(struct MP2KPlayerState *player, u16 speed) {
+    if (player->lockStatus == 0x68736D53) {
+        player->lockStatus++;
+        player->fadeInterval = speed;
+        player->fadeCounter = speed;
+        player->fadeVolume = 0x101;
+        player->lockStatus = 0x68736D53;
+    }
+}
+
+void m4aMPlayFadeIn(struct MP2KPlayerState *player, u16 speed) {
+    if (player->lockStatus == 0x68736D53) {
+        player->lockStatus++;
+        player->fadeInterval = speed;
+        player->fadeCounter = speed;
+        player->fadeVolume = 2;
+        player->status &= 0x7FFFFFFF;
+        player->lockStatus = 0x68736D53;
+    }
+}
 
 void ClearChain(void *channel) {
     void (*function)(void *) = gMPlayJumpTable34;

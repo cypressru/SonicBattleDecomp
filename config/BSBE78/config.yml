@@ -540,9 +540,13 @@ units:
     source: src/m4a.c
     cflags: [-O2, -mthumb-interwork]
     base_symbol_size_overrides:
+      MPlayContinue: 0x18
+      MPlayFadeOut: 0x1E
       m4aSoundMain: 0x0A
       m4aMPlayContinue: 0x0A
       m4aMPlayFadeOut: 0x0E
+      m4aMPlayFadeOutTemporarily: 0x1C
+      m4aMPlayFadeIn: 0x24
       ClearChain: 0x0E
       Clear64byte: 0x0E
       MP2K_event_xcmd: 0x1A
@@ -550,8 +554,8 @@ units:
       MP2K_event_null: 0x02
     relocations:
       - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }
-      - { offset: 0x22A, type: thumb_call, symbol: FUN_08048f74 }
-      - { offset: 0x266, type: thumb_call, symbol: FUN_08048f94 }
+      - { offset: 0x22A, type: thumb_call, symbol: MPlayContinue }
+      - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
       - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }

@@ -1241,8 +1241,8 @@ address,name,mode,confidence
 0x08048EE4,MP2K_event_lfos,thumb,rom-pointer+sa2-relocation-masked-byte-match
 0x08048EF8,MP2K_event_mod,thumb,rom-pointer+sa2-relocation-masked-byte-match
 0x08048F0C,FUN_08048f0c,thumb,direct-call
-0x08048F74,FUN_08048f74,thumb,direct-call
-0x08048F94,FUN_08048f94,thumb,direct-call
+0x08048F74,MPlayContinue,thumb,direct-call+sdk-correlation
+0x08048F94,MPlayFadeOut,thumb,direct-call+sdk-correlation
 0x08048FB8,FUN_08048fb8,thumb,direct-call
 0x08049030,m4aSoundMain,thumb,direct-call+sdk-correlation
 0x0804903C,FUN_0804903c,thumb,direct-call
@@ -1252,8 +1252,8 @@ address,name,mode,confidence
 0x0804919C,m4aMPlayContinue,thumb,sdk-correlation
 0x080491A8,m4aMPlayAllContinue,thumb,sdk-correlation
 0x080491D4,m4aMPlayFadeOut,thumb,direct-call+sa2-relocation-masked-byte-match
-0x080491E4,FUN_080491e4,thumb,direct-call
-0x08049208,FUN_08049208,thumb,recursive-disassembly
+0x080491E4,m4aMPlayFadeOutTemporarily,thumb,direct-call+sdk-correlation
+0x08049208,m4aMPlayFadeIn,thumb,recursive-disassembly+sdk-correlation
 0x08049234,FUN_08049234,thumb,direct-call
 0x0804929C,FUN_0804929c,thumb,direct-call
 0x080493B8,ClearChain,thumb,direct-call+sdk-correlation
