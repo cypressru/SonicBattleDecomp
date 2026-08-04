@@ -55,6 +55,24 @@ These analyzer-derived extents remain provisional: the inventory is sufficient t
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
 
+### Translation-unit inventory status
+
+Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
+the executable range is represented in objdiff, but the game TU inventory is not complete. Two
+explicit placeholder objects currently contain nearly all unresolved game code:
+
+| Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
+|---|---:|---:|---:|---:|
+| `main/unknown_080007FC` | `0x0007FC-0x018678` | 196 | 70,464 | 27,452 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
+
+These objects are conservative coverage buckets, not claims that either range was one original
+source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
+though its byte totals and progress denominators are complete. A placeholder is split only after
+function order, literal-pool ownership, private-data references, alignment, related-title linker
+order, or independently correlated metadata supports the boundary. Arbitrary visual subdivision
+would misrepresent guesses as original TUs.
+
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
 every in-range destination to be present either in the analyzed function inventory or as an
