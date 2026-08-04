@@ -352,6 +352,11 @@ units:
     source: src/multi_sio_sync.c
     complete: true
     cflags: [-O2, -mthumb-interwork]
+    mappings:
+      - { offset: 0x11E, mode: data }
+      - { offset: 0x128, mode: thumb }
+      - { offset: 0x16A, mode: data }
+      - { offset: 0x174, mode: thumb }
     base_symbol_size_overrides:
       MultiSioSyncInitialize: 0x96
       FUN_0801886c: 0x9E
@@ -539,11 +544,22 @@ units:
     function_map: config/BSBE78/functions.csv
     source: src/m4a.c
     cflags: [-O2, -mthumb-interwork]
+    mappings:
+      - { offset: 0x11E, mode: data }
+      - { offset: 0x128, mode: thumb }
+      - { offset: 0x16A, mode: data }
+      - { offset: 0x174, mode: thumb }
     base_symbol_size_overrides:
       MPlayContinue: 0x18
       MPlayFadeOut: 0x1E
       m4aSoundMain: 0x0A
+      m4aSongNumStart: 0x24
+      m4aSongNumStartOrContinue: 0x54
+      m4aSongNumStop: 0x2A
+      m4aSongNumContinue: 0x2A
       m4aMPlayContinue: 0x0A
+      m4aMPlayAllStop: 0x24
+      m4aMPlayAllContinue: 0x24
       m4aMPlayFadeOut: 0x0E
       m4aMPlayFadeOutTemporarily: 0x1C
       m4aMPlayFadeIn: 0x24
@@ -556,7 +572,31 @@ units:
       MP2K_event_null: 0x02
     relocations:
       - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }
+      - { offset: 0x0E4, type: thumb_call, symbol: FUN_0804981c }
+      - { offset: 0x0EC, type: abs32, symbol: gMPlayTable }
+      - { offset: 0x0F0, type: abs32, symbol: gSongTable }
+      - { offset: 0x118, type: thumb_call, symbol: FUN_0804981c }
+      - { offset: 0x120, type: abs32, symbol: gMPlayTable }
+      - { offset: 0x124, type: abs32, symbol: gSongTable }
+      - { offset: 0x136, type: thumb_call, symbol: FUN_0804981c }
+      - { offset: 0x164, type: thumb_call, symbol: FUN_0804981c }
+      - { offset: 0x16C, type: abs32, symbol: gMPlayTable }
+      - { offset: 0x170, type: abs32, symbol: gSongTable }
+      - { offset: 0x180, type: thumb_call, symbol: FUN_0804981c }
+      - { offset: 0x18C, type: thumb_call, symbol: MPlayContinue }
+      - { offset: 0x1B6, type: thumb_call, symbol: FUN_08049900 }
+      - { offset: 0x1C0, type: abs32, symbol: gMPlayTable }
+      - { offset: 0x1C4, type: abs32, symbol: gSongTable }
+      - { offset: 0x1EA, type: thumb_call, symbol: MPlayContinue }
+      - { offset: 0x1F4, type: abs32, symbol: gMPlayTable }
+      - { offset: 0x1F8, type: abs32, symbol: gSongTable }
+      - { offset: 0x20E, type: thumb_call, symbol: FUN_08049900 }
+      - { offset: 0x220, type: abs32, symbol: gNumMusicPlayers }
+      - { offset: 0x224, type: abs32, symbol: gMPlayTable }
       - { offset: 0x22A, type: thumb_call, symbol: MPlayContinue }
+      - { offset: 0x246, type: thumb_call, symbol: MPlayContinue }
+      - { offset: 0x258, type: abs32, symbol: gNumMusicPlayers }
+      - { offset: 0x25C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }

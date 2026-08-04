@@ -1245,10 +1245,12 @@ address,name,mode,confidence
 0x08048F94,MPlayFadeOut,thumb,direct-call+sdk-correlation
 0x08048FB8,FUN_08048fb8,thumb,direct-call
 0x08049030,m4aSoundMain,thumb,direct-call+sdk-correlation
-0x0804903C,FUN_0804903c,thumb,direct-call
-0x080490B4,FUN_080490b4,thumb,direct-call
-0x08049108,FUN_08049108,thumb,direct-call
-0x08049170,FUN_08049170,thumb,direct-call
+0x0804903C,m4aSongNumStart,thumb,direct-call+sdk-correlation
+0x08049068,m4aSongNumStartOrChange,thumb,sdk-correlation
+0x080490B4,m4aSongNumStartOrContinue,thumb,direct-call+sdk-correlation
+0x08049108,m4aSongNumStop,thumb,direct-call+sdk-correlation
+0x0804913C,m4aSongNumContinue,thumb,sdk-correlation
+0x08049170,m4aMPlayAllStop,thumb,direct-call+sdk-correlation
 0x0804919C,m4aMPlayContinue,thumb,sdk-correlation
 0x080491A8,m4aMPlayAllContinue,thumb,sdk-correlation
 0x080491D4,m4aMPlayFadeOut,thumb,direct-call+sa2-relocation-masked-byte-match

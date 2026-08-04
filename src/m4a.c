@@ -1,7 +1,7 @@
 #include "types.h"
 
 struct MP2KPlayerState {
-    u32 padding0;
+    const void *songHeader;
     u32 status;
     u8 trackCount;
     u8 padding9[27];
@@ -33,14 +33,80 @@ struct MP2KTrack {
     u8 padding68[12];
 };
 
+struct MusicPlayer {
+    struct MP2KPlayerState *player;
+    struct MP2KTrack *tracks;
+    u8 trackCount;
+    u8 priority;
+    u16 padding10;
+};
+
+struct Song {
+    const void *header;
+    u16 playerIndex;
+    u16 padding6;
+};
+
 extern void SoundMain(void);
+extern void FUN_08049900(struct MP2KPlayerState *player);
+extern const struct MusicPlayer gMPlayTable[];
+extern const struct Song gSongTable[];
+extern u8 gNumMusicPlayers[];
+extern void FUN_0804981c(struct MP2KPlayerState *player, const void *songHeader);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
 extern void (*gXcmdTable[])(struct MP2KPlayerState *, struct MP2KTrack *);
 void Clear64byte(void *memory);
+void MPlayContinue(struct MP2KPlayerState *player);
 
 void m4aSoundMain(void) { SoundMain(); }
+
+void m4aSongNumStart(u16 number) {
+    const struct MusicPlayer *musicPlayerTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[number];
+    const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
+
+    FUN_0804981c(musicPlayer->player, song->header);
+}
+
+void m4aSongNumStartOrContinue(u16 number) {
+    const struct MusicPlayer *musicPlayerTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[number];
+    const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
+
+    if (musicPlayer->player->songHeader != song->header) {
+        FUN_0804981c(musicPlayer->player, song->header);
+    } else if ((musicPlayer->player->status & 0xFFFF) == 0) {
+        FUN_0804981c(musicPlayer->player, song->header);
+    } else if (musicPlayer->player->status & 0x80000000) {
+        MPlayContinue(musicPlayer->player);
+    }
+}
+
+void m4aSongNumStop(u16 number) {
+    const struct MusicPlayer *musicPlayerTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[number];
+    const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
+
+    if (musicPlayer->player->songHeader == song->header) {
+        FUN_08049900(musicPlayer->player);
+    }
+}
+
+void m4aSongNumContinue(u16 number) {
+    const struct MusicPlayer *musicPlayerTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[number];
+    const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
+
+    if (musicPlayer->player->songHeader == song->header) {
+        MPlayContinue(musicPlayer->player);
+    }
+}
 
 void MPlayContinue(struct MP2KPlayerState *player) {
     if (player->lockStatus == 0x68736D53) {
@@ -61,6 +127,22 @@ void MPlayFadeOut(struct MP2KPlayerState *player, u16 speed) {
 }
 
 void m4aMPlayContinue(struct MP2KPlayerState *player) { MPlayContinue(player); }
+
+void m4aMPlayAllStop(void) {
+    s32 i;
+
+    for (i = 0; i < (u16)(u32)gNumMusicPlayers; i++) {
+        FUN_08049900(gMPlayTable[i].player);
+    }
+}
+
+void m4aMPlayAllContinue(void) {
+    s32 i;
+
+    for (i = 0; i < (u16)(u32)gNumMusicPlayers; i++) {
+        MPlayContinue(gMPlayTable[i].player);
+    }
+}
 
 void m4aMPlayFadeOut(struct MP2KPlayerState *player, u16 speed) { MPlayFadeOut(player, speed); }
 
