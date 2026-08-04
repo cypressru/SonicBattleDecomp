@@ -3350,3 +3350,46 @@ void FUN_080291a8(void) {
     destination[8] = source[116];
     asm volatile("" : : "r"(source));
 }
+
+void FUN_08029200(void) {
+    register u8 *destination asm("r3") = (u8 *)&gUnknown_03002110;
+    register const u8 *source asm("r1") = gUnknown_03002600;
+    register u8 value2 asm("r2");
+    register u8 value0 asm("r0");
+    register u8 *address0 asm("r0");
+    register u8 *cursor asm("r2");
+
+    value2 = source[0];
+    address0 = destination + 108;
+    *address0 = value2;
+    value0 = source[1];
+    cursor = destination + 109;
+    *cursor = value0;
+    value0 = source[2];
+    cursor++;
+    *cursor = value0;
+    value0 = source[3];
+    cursor++;
+    asm volatile("" : : "r"(cursor));
+    *cursor = value0;
+    value2 = source[4];
+    address0 = destination + 112;
+    *address0 = value2;
+    value0 = source[5];
+    cursor = destination + 113;
+    *cursor = value0;
+    value0 = source[6];
+    cursor++;
+    *cursor = value0;
+    value0 = source[7];
+    cursor++;
+    asm volatile("" : : "r"(cursor));
+    *cursor = value0;
+    {
+        register u8 value1 asm("r1") = source[8];
+
+        address0 = destination + 116;
+        *address0 = value1;
+        asm volatile("" : : "r"(destination));
+    }
+}
