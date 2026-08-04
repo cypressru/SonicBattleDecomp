@@ -699,6 +699,7 @@ units:
       FUN_080218dc: 0x44
       FUN_08021a10: 0x2A
       FUN_08021a40: 0x3A
+      FUN_08021a84: 0x84
       FUN_08021e48: 0x26
       FUN_08021e70: 0x24
       FUN_08021ec8: 0x3A

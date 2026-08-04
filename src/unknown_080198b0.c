@@ -1,4 +1,5 @@
 #include "types.h"
+#include <string.h>
 
 struct UnknownListNode;
 
@@ -139,7 +140,10 @@ struct UnknownState08021484 {
 
 struct UnknownState03002110 {
     u8 filler0[0x120];
-    u8 validity[1];
+    u8 validity[0x200];
+    u8 selector;
+    u8 filler321;
+    u8 records[1];
 };
 
 struct UnknownState03004dbc {
@@ -213,11 +217,14 @@ extern const u32 gUnknown_0807b880[];
 extern struct UnknownState03004dbc *gUnknown_03004dbc;
 extern struct UnknownState03002110 gUnknown_03002110;
 extern const u32 gUnknown_0807163c[];
+extern u16 *gUnknown_03004db0;
+extern const u16 data_gap_003[];
 extern u32 gUnknown_03004dc0;
 extern u32 gUnknown_03004dc8;
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
+extern void FUN_08021e70(u16 value);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1296,6 +1303,34 @@ u32 FUN_08021a40(const u8 *data, u32 size) {
     }
     value = ~value;
     return value;
+}
+
+void FUN_08021a84(void) {
+    u32 i;
+    u32 offset;
+    u8 *validity;
+    u16 **list;
+
+    memset(gUnknown_03004dbc->bits, 0, sizeof(gUnknown_03004dbc->bits));
+    gUnknown_03004db0 = (u16 *)(gUnknown_03002110.records + gUnknown_03002110.selector * 56);
+    i = 0;
+    validity = gUnknown_03002110.validity;
+    list = &gUnknown_03004db0;
+    offset = 0;
+    do {
+        u16 value = *(u16 *)((u32)offset + (u32)gUnknown_03004db0);
+
+        if (*(u8 *)((u32)value + (u32)validity) != 0xFF &&
+            *(u8 *)((u32)value + (u32)validity) != 0) {
+            FUN_08021e70(value);
+        } else {
+            u16 *entry = (u16 *)((u32)offset + (u32)*list);
+            *entry = *(const u16 *)((const u8 *)data_gap_003 + offset);
+            FUN_08021e70(*entry);
+        }
+        offset += 2;
+        i++;
+    } while (i <= 0x1A);
 }
 
 u32 FUN_08021e48(u16 value) {
