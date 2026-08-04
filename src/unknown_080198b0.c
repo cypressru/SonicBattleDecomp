@@ -91,7 +91,7 @@ struct UnknownQueuedValue {
     u16 first;
     u16 second;
     u16 third;
-    u8 filler6[2];
+    u16 fourth;
 };
 
 extern void (*gUnknown_03002030)(void);
@@ -658,6 +658,23 @@ u32 FUN_08020034(u16 first, u16 second, u16 third) {
     entry->third = third;
     gUnknown_030048d4++;
     return 1;
+}
+
+void FUN_080200bc(u16 index, u16 first, u16 second, u16 third) {
+    struct UnknownQueuedValue *entry = &gUnknown_030044d0[index];
+
+    entry->first = first;
+    entry->second = second;
+    entry->third = third;
+}
+
+void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth) {
+    struct UnknownQueuedValue *entries = &gUnknown_030044d0[index * 4];
+
+    entries[0].fourth = first;
+    entries[1].fourth = second;
+    entries[2].fourth = third;
+    entries[3].fourth = fourth;
 }
 
 void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
