@@ -52,8 +52,11 @@ extern void FUN_08047b40(struct UnknownState482d0 *state);
 extern void FUN_080311b4(struct UnknownListNode *node);
 extern u8 gUnknown_0300537c;
 extern const u8 gUnknown_081734d8[];
+extern const u8 gUnknown_08173500[];
+extern const void *gUnknown_0817adc8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
+extern void FUN_08041f84(void);
 extern void FUN_08043e5c(void);
 extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
@@ -203,15 +206,19 @@ struct UnknownState41f24 {
 struct UnknownState420dc {
     u8 padding0[2];
     u8 field2;
-    u8 padding3;
+    u8 field3;
     const void *callback;
     u8 padding8[2];
     u16 field10;
     u8 padding12[2];
     u16 field14;
-    u8 padding16[9];
+    const void *graphics;
+    u8 padding20[2];
+    u8 field22;
+    u8 padding23;
+    u8 field24;
     u8 poolIndex;
-    u8 padding26;
+    u8 field26;
     u8 fade;
     u8 padding28[2];
     u16 baseX;
@@ -413,9 +420,11 @@ struct UnknownGlobalRenderState {
     const void *callback;
     u8 filler4[4];
     u16 field8;
-    u8 filler10[2];
+    u16 field10;
     u16 field12;
-    u8 filler14[17];
+    u8 filler14[15];
+    u8 field29;
+    u8 filler30;
     u8 field31;
     u8 field32;
     u8 field33;
@@ -430,6 +439,7 @@ extern struct UnknownGlobalRenderState gUnknown_03005440;
 extern u16 gUnknown_03005490;
 extern u16 gUnknown_03005494;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
+extern struct UnknownState420dc *FUN_0803ff98(const void *callback, void *parent, u32 flag);
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
@@ -6557,6 +6567,35 @@ void FUN_08041f24(struct UnknownState41f24 *state) {
         state->field24 = 0x2c;
     }
     state->callback = (const void *)((u32)FUN_08041e2c + 1);
+}
+
+void FUN_08042044(struct UnknownState420dc *state) {
+    register const void *const *table asm("r2") = gUnknown_0817adc8;
+    register u32 index asm("r0");
+    const void *source;
+    struct UnknownState420dc *child;
+
+    asm volatile("" : "+r"(table));
+    index = gUnknown_03005440.field31 * 3 + gUnknown_03005440.field29;
+    index <<= 2;
+    asm volatile("" : "+r"(table), "+r"(index));
+    table++;
+    index += (u32)table;
+    source = *(const void *const *)index;
+    LZ77UnCompWram(source, (void *)0x02028000);
+    FUN_0804033c((void *)0x02028000, (void *)0x06013200, 0x1000);
+    FUN_0801fba0(0x52, 16);
+    child = FUN_0803ff98((const void *)((u32)FUN_08041f84 + 1), state, 0);
+    child->field3 = 1;
+    state->field10 = child->field10 = 120;
+    state->field14 = child->field14 = 80;
+    state->graphics = child->graphics = gUnknown_08173500;
+    state->field22 = child->field22 = 4;
+    state->field24 = child->field24 = 48;
+    state->field26 = child->field26 = 90;
+    state->fade = child->fade = 16;
+    state->callback = (const void *)((u32)FUN_08041f84 + 1);
+    FUN_0801f770(gUnknown_03005440.field10);
 }
 
 void FUN_080420dc(struct UnknownState420dc *state) {
