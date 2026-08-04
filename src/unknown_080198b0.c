@@ -34,7 +34,10 @@ struct UnknownEntityData {
     u16 field20;
     u8 filler22[28];
     u8 field50;
-    u8 filler51[129];
+    u8 filler51[3];
+    s16 field54[4];
+    s16 field62[4];
+    u8 filler70[110];
     u32 field180;
     u8 filler184[68];
 };
@@ -55,6 +58,7 @@ extern const u8 gUnknown_08ed8a0c[];
 extern const u8 gUnknown_08ed8a8c[];
 extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
+extern const u8 gUnknown_08ed8ae4[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -65,6 +69,7 @@ extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u16 value);
 extern u32 FUN_08020144(void);
 extern void FUN_0801eea8(u8 value);
+extern u16 ArcTan2(s16 x, s16 y);
 extern u16 gUnknown_08071250[];
 
 void FUN_0801eb94(u8 value);
@@ -304,6 +309,28 @@ u16 FUN_0801ef4c(void) {
     u16 *base = &table[gUnknown_03003e10];
 
     return *base + ((random & 0xFFF) * *base >> 12);
+}
+
+u8 FUN_0801efd4(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+    u8 linked = entity->field15;
+    struct UnknownEntityData *data = gUnknown_03001c40;
+    u32 offset = linked * 2 + value * sizeof(*data);
+    u8 *firstBase = (u8 *)data + 54;
+    s16 *first = (s16 *)(firstBase + offset);
+
+    {
+        u8 *secondBase = (u8 *)data + 62;
+        s16 *second = (s16 *)(secondBase + offset);
+
+        {
+            const u8 *lookup = gUnknown_08ed8ae4;
+            u16 angle = ArcTan2(*first, *second);
+
+            return lookup[angle >> 12];
+        }
+    }
 }
 
 void FUN_0801f024(u8 value) { gUnknown_03003e10 = value; }
