@@ -23,8 +23,7 @@ extern void VBlankIntrWait(void);
 #define REG_WAITCNT (*(volatile u16 *)0x04000204)
 #define MAIN_CALLBACK (*(Callback *)0x03002030)
 
-void AgbMain(void)
-{
+void AgbMain(void) {
     u32 paletteFill;
 
     FUN_08017c74();
