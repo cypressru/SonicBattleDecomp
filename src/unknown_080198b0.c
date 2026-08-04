@@ -174,7 +174,8 @@ struct UnknownAllocation248f0 {
 };
 
 struct UnknownAllocation25a98 {
-    u8 filler0[52];
+    u8 filler0[48];
+    struct UnknownListNode *child;
     u8 childIds[7];
 };
 
@@ -277,6 +278,8 @@ extern u16 gUnknown_03004ddc;
 extern u16 gUnknown_03004de0;
 extern u32 gUnknown_03004da8;
 extern u32 gUnknown_03004dc4;
+extern u8 *gUnknown_03004db8;
+extern u16 gUnknown_03004df0[];
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -320,6 +323,8 @@ void FUN_08025628(struct UnknownListNode *node);
 void FUN_08025c4c(struct UnknownListNode *node);
 void FUN_08025b78(struct UnknownListNode *node);
 void FUN_08025c14(struct UnknownListNode *node);
+void FUN_08025d50(struct UnknownListNode *node);
+extern u32 FUN_080211f0(void);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -1991,4 +1996,27 @@ void FUN_08025c4c(struct UnknownListNode *node) {
     } else {
         FUN_0801fed8(node->field6, 0);
     }
+}
+
+void FUN_08025c84(struct UnknownListNode *node) {
+    struct UnknownAllocation25a98 *allocation = node->allocation;
+    u8 index = FUN_080211f0();
+    u16 savedFirst;
+    u16 savedSecond;
+    u32 offset;
+
+    gUnknown_03004dbc->field12 = 256;
+    savedFirst = gUnknown_03004de0;
+    savedSecond = gUnknown_03004ddc;
+    offset = index * 9;
+    FUN_0802036c(0x06015300 + offset * 128, (u32)gUnknown_03004db8 + 3456, 1152);
+    allocation->child = FUN_0801f7d0(FUN_0802450c, 16, gUnknown_03003e20, 0);
+    allocation->child->position->tile = offset * 4 + 664;
+    allocation->child->position->field13 = 3;
+    allocation->child->position->field14 = index;
+    gUnknown_03004dbc->filler0[0] = 3;
+    FUN_08025d50(node);
+    gUnknown_03004de0 = savedFirst;
+    gUnknown_03004ddc = savedSecond;
+    gUnknown_03004dd4 = gUnknown_03004df0[gUnknown_03004de0];
 }
