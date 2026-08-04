@@ -1,7 +1,6 @@
 #include "types.h"
 
-int memcmp(const void *left, const void *right, u32 count)
-{
+int memcmp(const void *left, const void *right, u32 count) {
     const u8 *left8 = left;
     const u8 *right8 = right;
 

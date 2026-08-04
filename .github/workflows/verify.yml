@@ -10,18 +10,12 @@ on:
         required: false
         type: string
 
-jobs:
-  policy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Reject proprietary and generated files
-        run: python tools/check_no_proprietary.py
-      - name: Validate Python syntax
-        run: python -m compileall -q configure.py tools
+permissions:
+  contents: read
 
-  build:
-    if: ${{ vars.DECOMP_BUILD_ENABLED == 'true' }}
+jobs:
+  public_checks:
+    name: Public checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,25 +23,102 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Restore base ROM
-        env:
-          BASEROM_B64: ${{ secrets.BASEROM_B64 }}
-        run: mkdir -p rom && printf '%s' "$BASEROM_B64" | base64 -d > rom/baserom.gba
-      - run: python configure.py
-      - run: ninja
-      - run: sha1sum -c config/BSBE78/build.sha1
-      - name: Install objdiff CLI
+      - name: Reject proprietary and generated files
+        run: python tools/check_no_proprietary.py
+      - name: Run unit tests
+        run: python -m unittest discover -s tools -p 'test_*.py'
+      - name: Validate Python syntax
+        run: python -m compileall -q configure.py tools
+      - name: Check C formatting
+        run: clang-format --dry-run --Werror src/libc/memcmp.c include/types.h
+
+  private_build:
+    name: Private build (BSBE78)
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PRIVATE_INPUT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install build dependencies
         run: |
-          curl -L -o objdiff-cli https://github.com/encounter/objdiff/releases/download/v3.7.3/objdiff-cli-linux-x86_64
+          sudo apt-get update
+          sudo apt-get install -y binutils-arm-none-eabi ninja-build
+          pip install -r requirements.txt
+      - name: Restore private verified base ROM
+        run: |
+          test -n "$GH_TOKEN"
+          mkdir -p rom
+          gh release download build-inputs-v1 \
+            --repo cypressru/SonicBattleDecomp-build-inputs \
+            --pattern sonicbattle-BSBE78.gba.gz \
+            --dir rom
+          gzip -dc rom/sonicbattle-BSBE78.gba.gz > rom/baserom.gba
+          printf '%s  %s\n' \
+            8cf4fbbe73f6b1907ab9997caab4c4e7d9708937 rom/baserom.gba | sha1sum -c -
+      - name: Build pinned compiler
+        run: |
+          tools/setup_agbcc.sh
+          mkdir -p tools/binutils/root/usr/bin
+          ln -s /usr/bin/arm-none-eabi-as tools/binutils/root/usr/bin/arm-none-eabi-as
+      - name: Configure and build every unit
+        run: |
+          python configure.py
+          ninja
+      - name: Verify artifact and embedded payload
+        run: |
+          sha1sum -c config/BSBE78/build.sha1
+          python tools/check_payload_map.py rom/baserom.gba
+      - name: Generate truthful objdiff report
+        run: |
+          curl -L --fail -o objdiff-cli \
+            https://github.com/encounter/objdiff/releases/download/v3.7.3/objdiff-cli-linux-x86_64
           chmod +x objdiff-cli
-      - name: Generate objdiff report
-        run: |
           ./objdiff-cli report generate -o build/report.json
           python tools/normalize_objdiff_report.py build/report.json
+          python tools/check_objdiff_report.py build/report.json
       - uses: actions/upload-artifact@v4
         with:
           name: BSBE78_report
           path: build/report.json
+
+  build_gate:
+    name: Build gate (BSBE78)
+    if: always()
+    needs: [public_checks, private_build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require public checks
+        if: needs.public_checks.result != 'success'
+        run: |
+          echo "::error::Public policy, test, or formatting checks failed."
+          exit 1
+      - name: Reject untrusted private-input build
+        if: >-
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::Fork pull requests cannot access the private base ROM."
+          echo "::error::A maintainer must test the commits from a repository-owned integration branch."
+          exit 1
+      - name: Require successful private build
+        if: >-
+          (github.event_name != 'pull_request' ||
+           github.event.pull_request.head.repo.full_name == github.repository) &&
+          needs.private_build.result != 'success'
+        run: |
+          echo "::error::The private BSBE78 build did not complete successfully."
+          exit 1
+      - name: Confirm verified build
+        if: >-
+          needs.public_checks.result == 'success' &&
+          needs.private_build.result == 'success'
+        run: echo 'The BSBE78 build, SHA-1, tests, and report all verified.'
 
   publish-local-report:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.report_gzip_base64 != '' }}
@@ -62,7 +133,8 @@ jobs:
           printf '%s' "$REPORT_GZIP_BASE64" | base64 -d | gzip -d > build/report.json
           python -m json.tool build/report.json >/dev/null
           python tools/normalize_objdiff_report.py build/report.json
+          python tools/check_objdiff_report.py build/report.json
       - uses: actions/upload-artifact@v4
         with:
-          name: BSBE78_report
+          name: BSBE78_local_report
           path: build/report.json
