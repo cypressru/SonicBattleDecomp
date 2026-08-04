@@ -1230,7 +1230,7 @@ address,name,mode,confidence
 0x0804895C,MP2K_event_modt,thumb,rom-pointer+sdk-correlation
 0x08048974,MP2K_event_tune,thumb,rom-pointer+sdk-correlation
 0x08048988,MP2K_event_port,thumb,rom-pointer+sdk-correlation
-0x080489A0,m4aSoundVSync,thumb,rom-pointer+sdk-correlation
+0x080489A0,MP2KPlayerMain,thumb,rom-pointer+sdk-correlation
 0x08048BF8,FUN_08048bf8,thumb,direct-call
 0x08048C08,FUN_08048c08,thumb,rom-pointer+direct-call
 0x08048C4C,ChnVolSetAsm,thumb,direct-call+sa2-relocation-masked-byte-match
@@ -1267,7 +1267,7 @@ address,name,mode,confidence
 0x080495D8,FUN_080495d8,thumb,recursive-disassembly
 0x0804962C,FUN_0804962c,thumb,direct-call
 0x080496AC,FUN_080496ac,thumb,direct-call
-0x08049724,FUN_08049724,thumb,direct-call
+0x08049724,m4aSoundVSync,thumb,direct-call+sdk-correlation
 0x080497A4,MPlayOpen,thumb,direct-call+sdk-correlation
 0x0804981C,MPlayStart,thumb,direct-call+sdk-correlation
 0x08049900,MPlayStop,thumb,direct-call+sdk-correlation

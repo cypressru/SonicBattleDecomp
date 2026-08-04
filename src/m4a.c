@@ -84,7 +84,10 @@ struct MP2KSongHeader {
 
 struct SoundMixerState {
     u32 lockStatus;
-    u8 padding4[28];
+    u8 dmaCounter;
+    u8 padding5[6];
+    u8 framesPerDmaCycle;
+    u8 padding12[20];
     void (*playerMain)(void);
     struct MP2KPlayerState *playerHead;
 };
@@ -96,7 +99,7 @@ extern const struct Song gSongTable[];
 extern u8 gNumMusicPlayers[];
 extern void FUN_08049544(u32 mode);
 extern struct SoundMixerState *gSoundInfo;
-extern void m4aSoundVSync(void);
+extern void MP2KPlayerMain(void);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -106,6 +109,7 @@ void MPlayContinue(struct MP2KPlayerState *player);
 void MPlayStop(struct MP2KPlayerState *player);
 void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
 void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount);
+void m4aSoundVSync(void);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -274,9 +278,29 @@ void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trac
         soundInfo->playerMain = 0;
     }
     soundInfo->playerHead = player;
-    soundInfo->playerMain = m4aSoundVSync;
+    soundInfo->playerMain = MP2KPlayerMain;
     soundInfo->lockStatus = 0x68736D53;
     player->lockStatus = 0x68736D53;
+}
+
+void m4aSoundVSync(void) {
+    volatile struct SoundMixerState *soundInfo = gSoundInfo;
+
+    if (soundInfo->lockStatus - 0x68736D53 <= 1) {
+        if ((s8)--soundInfo->dmaCounter <= 0) {
+            soundInfo->dmaCounter = soundInfo->framesPerDmaCycle;
+            if (*(volatile u32 *)0x040000C4 & 0x02000000) {
+                *(volatile u32 *)0x040000C4 = 0x84400004;
+            }
+            if (*(volatile u32 *)0x040000D0 & 0x02000000) {
+                *(volatile u32 *)0x040000D0 = 0x84400004;
+            }
+            *(volatile u16 *)0x040000C6 = 0x0400;
+            *(volatile u16 *)0x040000D2 = 0x0400;
+            *(volatile u16 *)0x040000C6 = 0xB600;
+            *(volatile u16 *)0x040000D2 = 0xB600;
+        }
+    }
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {
