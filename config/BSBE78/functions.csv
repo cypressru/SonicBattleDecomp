@@ -388,12 +388,10 @@ address,name,mode,confidence
 0x08020360,FUN_08020360,thumb,direct-call
 0x0802036C,FUN_0802036c,thumb,direct-call
 0x080203A4,FUN_080203a4,thumb,recursive-disassembly
-0x08020400,FUN_08020400,thumb,rom-pointer
 0x08020408,FUN_08020408,thumb,direct-call
 0x08020440,FUN_08020440,thumb,direct-call
 0x0802047C,FUN_0802047c,thumb,direct-call
 0x080204B8,FUN_080204b8,thumb,direct-call
-0x080204FC,FUN_080204fc,thumb,rom-pointer
 0x08020500,FUN_08020500,thumb,direct-call
 0x080205D0,FUN_080205d0,thumb,direct-call
 0x0802067C,FUN_0802067c,thumb,direct-call

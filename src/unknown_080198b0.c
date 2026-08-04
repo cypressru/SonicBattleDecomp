@@ -106,9 +106,9 @@ struct UnknownState080201f8 {
 };
 
 struct UnknownCommandRecord {
-    const void *first;
-    const void *second;
-    const void *third;
+    u32 first;
+    u32 second;
+    u32 third;
     u16 fourth;
     u16 type;
 };
@@ -736,7 +736,7 @@ void FUN_0802021c(u8 first, u8 second) {
 
 void FUN_08020360(void) { gUnknown_030048f0 = 0; }
 
-void FUN_0802036c(const void *first, const void *second, const void *third) {
+void FUN_0802036c(u32 first, u32 second, u32 third) {
     u32 index = gUnknown_030048f0;
 
     if (index <= 31) {
@@ -744,6 +744,68 @@ void FUN_0802036c(const void *first, const void *second, const void *third) {
         gUnknown_03004900[index].second = second;
         gUnknown_03004900[index].third = third;
         gUnknown_03004900[index].type = 0;
+        gUnknown_030048f0 = index + 1;
+    }
+}
+
+void FUN_080203a4(u32 first, u32 second, u16 third, u16 fourth, u16 fifth) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].second = second;
+        gUnknown_03004900[index].third = third | (fourth << 16);
+        gUnknown_03004900[index].fourth = fifth;
+        gUnknown_03004900[index].type = 1;
+        gUnknown_030048f0 = index + 1;
+    }
+}
+
+void FUN_08020408(u32 first, u32 second) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].second = second;
+        gUnknown_03004900[index].third = 0;
+        gUnknown_03004900[index].type = 2;
+        gUnknown_030048f0 = index + 1;
+    }
+}
+
+void FUN_08020440(u32 first, u16 second, u16 third) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].fourth = second;
+        gUnknown_03004900[index].third = third;
+        gUnknown_03004900[index].type = 3;
+        gUnknown_030048f0 = index + 1;
+    }
+}
+
+void FUN_0802047c(u32 first, u8 second, u16 third) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].fourth = second;
+        gUnknown_03004900[index].third = third;
+        gUnknown_03004900[index].type = 4;
+        gUnknown_030048f0 = index + 1;
+    }
+}
+
+void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth) {
+    u32 index = gUnknown_030048f0;
+
+    if (index <= 31) {
+        gUnknown_03004900[index].first = first;
+        gUnknown_03004900[index].second = second;
+        gUnknown_03004900[index].fourth = third;
+        gUnknown_03004900[index].third = fourth;
+        gUnknown_03004900[index].type = 5;
         gUnknown_030048f0 = index + 1;
     }
 }

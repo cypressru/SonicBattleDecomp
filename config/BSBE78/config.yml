@@ -7,6 +7,10 @@ rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 rejected_function_pointers:
+  # Pointer-like bytes inside opaque main ROM data land on literal pools in
+  # the graphics-command queue rather than executable instructions.
+  - { source: 0x0CA98FC, destination: 0x08020400 }
+  - { source: 0x0C87288, destination: 0x080204FC }
   # Asset word at 0x08514CD0 happens to encode this Thumb address. The target
   # lands in the middle of EngineMain's inline DMA source/destination/control
   # literal sequence and is reached only as data, not as executable code.
@@ -649,6 +653,11 @@ units:
       FUN_0802021c: 0x22
       FUN_08020360: 0x8
       FUN_0802036c: 0x30
+      FUN_080203a4: 0x54
+      FUN_08020408: 0x30
+      FUN_08020440: 0x32
+      FUN_0802047c: 0x32
+      FUN_080204b8: 0x3E
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -780,6 +789,16 @@ units:
       - { offset: 0x6ABC, mode: thumb }
       - { offset: 0x6AEC, mode: data }
       - { offset: 0x6AF4, mode: thumb }
+      - { offset: 0x6B50, mode: data }
+      - { offset: 0x6B58, mode: thumb }
+      - { offset: 0x6B88, mode: data }
+      - { offset: 0x6B90, mode: thumb }
+      - { offset: 0x6BC2, mode: data }
+      - { offset: 0x6BCC, mode: thumb }
+      - { offset: 0x6BFE, mode: data }
+      - { offset: 0x6C08, mode: thumb }
+      - { offset: 0x6C46, mode: data }
+      - { offset: 0x6C50, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -946,6 +965,16 @@ units:
       - { offset: 0x6AB8, type: abs32, symbol: gUnknown_030048f0 }
       - { offset: 0x6AEC, type: abs32, symbol: gUnknown_030048f0 }
       - { offset: 0x6AF0, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x6B50, type: abs32, symbol: gUnknown_030048f0 }
+      - { offset: 0x6B54, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x6B88, type: abs32, symbol: gUnknown_030048f0 }
+      - { offset: 0x6B8C, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x6BC4, type: abs32, symbol: gUnknown_030048f0 }
+      - { offset: 0x6BC8, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x6C00, type: abs32, symbol: gUnknown_030048f0 }
+      - { offset: 0x6C04, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x6C48, type: abs32, symbol: gUnknown_030048f0 }
+      - { offset: 0x6C4C, type: abs32, symbol: gUnknown_03004900 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
