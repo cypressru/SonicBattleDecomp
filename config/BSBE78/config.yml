@@ -544,6 +544,8 @@ units:
       - { offset: 0x128, mode: thumb }
       - { offset: 0x16A, mode: data }
       - { offset: 0x174, mode: thumb }
+      - { offset: 0x5BC, mode: data }
+      - { offset: 0x5D0, mode: thumb }
       - { offset: 0x6B0, mode: data }
       - { offset: 0x6B8, mode: thumb }
       - { offset: 0x71C, mode: data }
@@ -564,6 +566,7 @@ units:
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       MPlayStart: 0xDE
+      SampleFreqSet: 0x58
       SoundClear: 0x4C
       m4aSoundVSyncOff: 0x64
       m4aSoundVSyncOn: 0x5A
@@ -623,6 +626,13 @@ units:
       - { offset: 0x25C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x266, type: thumb_call, symbol: MPlayFadeOut }
       - { offset: 0x2F4, type: thumb_call, symbol: Clear64byte }
+      - { offset: 0x568, type: thumb_call, symbol: m4aSoundVSyncOff }
+      - { offset: 0x58C, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x59C, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x5A8, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x5B2, type: thumb_call, symbol: m4aSoundVSyncOn }
+      - { offset: 0x5BC, type: abs32, symbol: gSoundInfo }
+      - { offset: 0x5C0, type: abs32, symbol: gPcmSamplesPerVBlankTable }
       - { offset: 0x698, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x6B0, type: abs32, symbol: gSoundInfo }
       - { offset: 0x712, type: thumb_call, symbol: CpuSet }

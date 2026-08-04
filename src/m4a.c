@@ -90,11 +90,14 @@ struct MixerSource {
 struct SoundMixerState {
     u32 lockStatus;
     volatile u8 dmaCounter;
-    u8 padding5[6];
+    u8 padding5[3];
+    u8 freqOption;
+    u8 padding9[2];
     u8 framesPerDmaCycle;
     u8 padding12[4];
     s32 samplesPerFrame;
-    u8 padding20[8];
+    s32 sampleRate;
+    s32 sampleRateReciprocal;
     struct MixerSource *cgbChans;
     void (*playerMain)(void);
     struct MP2KPlayerState *playerHead;
@@ -114,6 +117,7 @@ extern void FUN_08049544(u32 mode);
 extern struct SoundMixerState *gSoundInfo;
 extern void MP2KPlayerMain(void);
 extern void CpuSet(const void *source, void *destination, u32 mode);
+extern const u16 gPcmSamplesPerVBlankTable[];
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -127,6 +131,7 @@ void m4aSoundVSync(void);
 void SoundClear(void);
 void m4aSoundVSyncOff(void);
 void m4aSoundVSyncOn(void);
+void SampleFreqSet(u32 frequency);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -391,6 +396,22 @@ void m4aSoundVSyncOn(void) {
 
     *(volatile u16 *)0x04000100 = -(0x44940 / soundInfo->samplesPerFrame);
     *(volatile u16 *)0x04000102 = 0x80;
+}
+
+void SampleFreqSet(u32 frequency) {
+    struct SoundMixerState *soundInfo;
+    s32 samplesPerFrame;
+
+    m4aSoundVSyncOff();
+    soundInfo = gSoundInfo;
+    frequency = (frequency & 0xF0000) >> 16;
+    soundInfo->freqOption = frequency;
+    samplesPerFrame = gPcmSamplesPerVBlankTable[frequency - 1];
+    soundInfo->samplesPerFrame = samplesPerFrame;
+    soundInfo->framesPerDmaCycle = 0x630 / samplesPerFrame;
+    soundInfo->sampleRate = (597275 * samplesPerFrame + 5000) / 10000;
+    soundInfo->sampleRateReciprocal = ((0x1000000 / soundInfo->sampleRate) + 1) >> 1;
+    m4aSoundVSyncOn();
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {
