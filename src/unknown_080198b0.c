@@ -2438,3 +2438,25 @@ void FUN_08027c8c(struct UnknownListNode *node) {
         }
     }
 }
+
+void FUN_08027d18(struct UnknownListNode *node) {
+    u32 value;
+    register struct UnknownFourByteMessage *message asm("r1") = &gUnknown_03001b1c;
+
+    {
+        register u32 byteZero asm("r0") = 0;
+
+        message->type = byteZero;
+        message->index = byteZero;
+    }
+    asm volatile("" : : : "r0");
+    {
+        register u16 halfwordZero asm("r0") = 0;
+
+        message->value = halfwordZero;
+    }
+    value = FUN_0801f9e8(0x3579);
+    gUnknown_03005248 = value;
+    FUN_0801f718(31, 60);
+    node->data = FUN_08026d6c;
+}
