@@ -827,6 +827,57 @@ units:
     start: 0x04AC14
     end: 0x04AEBC
     category: sdk
+    source: src/agb_flash_le_512k.c
+    cflags: [-O1, -mthumb-interwork]
+    base_symbol_size_overrides:
+      EraseFlashChip_LE: 0x74
+      EraseFlashSector_LE: 0x9C
+      ProgramByte: 0x38
+      ProgramFlashSector_LE: 0x124
+      VerifyEraseSector_Core: 0x24
+      VerifyEraseSector: 0x18
+    mappings:
+      - { offset: 0x5A, mode: data }
+      - { offset: 0x74, mode: thumb }
+      - { offset: 0xE2, mode: data }
+      - { offset: 0xFC, mode: thumb }
+      - { offset: 0x10A, mode: data }
+      - { offset: 0x110, mode: thumb }
+      - { offset: 0x13C, mode: data }
+      - { offset: 0x148, mode: thumb }
+      - { offset: 0x162, mode: data }
+      - { offset: 0x168, mode: thumb }
+      - { offset: 0x188, mode: data }
+      - { offset: 0x194, mode: thumb }
+      - { offset: 0x214, mode: data }
+      - { offset: 0x224, mode: thumb }
+      - { offset: 0x264, mode: data }
+      - { offset: 0x26C, mode: thumb }
+      - { offset: 0x278, mode: data }
+      - { offset: 0x27C, mode: thumb }
+      - { offset: 0x2A4, mode: data }
+    relocations:
+      - { offset: 0x30, type: thumb_call, symbol: SetReadFlash1 }
+      - { offset: 0x40, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x64, type: abs32, symbol: gFlash }
+      - { offset: 0x70, type: abs32, symbol: WaitForFlashWrite }
+      - { offset: 0xBE, type: thumb_call, symbol: SetReadFlash1 }
+      - { offset: 0xCC, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0xEC, type: abs32, symbol: gFlash }
+      - { offset: 0xF8, type: abs32, symbol: WaitForFlashWrite }
+      - { offset: 0x12E, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x144, type: abs32, symbol: WaitForFlashWrite }
+      - { offset: 0x188, type: abs32, symbol: gFlash }
+      - { offset: 0x18C, type: abs32, symbol: VerifyEraseSector_Core }
+      - { offset: 0x190, type: abs32, symbol: VerifyEraseSector }
+      - { offset: 0x1B6, type: thumb_call, symbol: EraseFlashSector_LE }
+      - { offset: 0x1E4, type: thumb_call, symbol: EraseFlashSector_LE }
+      - { offset: 0x1F4, type: thumb_call, symbol: SetReadFlash1 }
+      - { offset: 0x21C, type: abs32, symbol: gFlash }
+      - { offset: 0x220, type: abs32, symbol: gFlashNumRemainingBytes }
+      - { offset: 0x23A, type: thumb_call, symbol: ProgramByte }
+      - { offset: 0x278, type: abs32, symbol: gFlash }
+      - { offset: 0x292, type: thumb_call, symbol: _call_via_r1 }
     symbols:
       - { name: EraseFlashChip_LE, address: 0x04AC14 }
       - { name: EraseFlashSector_LE, address: 0x04AC88 }
