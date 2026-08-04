@@ -229,6 +229,9 @@ extern struct UnknownState03002110 gUnknown_03002110;
 extern const u32 gUnknown_0807163c[];
 extern const u8 gUnknown_08edb498[];
 extern const u8 gUnknown_08edb820[];
+extern const u8 gUnknown_08edb4f0[];
+extern const u8 gUnknown_08edb678[];
+extern const u16 gUnknown_08edb834[];
 extern u16 *gUnknown_03004db0;
 extern const u16 data_gap_003[];
 extern u32 gUnknown_03004dc0;
@@ -259,7 +262,9 @@ void FUN_0801edc0(u8 value);
 void FUN_0801ee30(u8 value);
 void FUN_080244ac(struct UnknownListNode *node);
 void FUN_0802440c(struct UnknownListNode *node);
+void FUN_080243a4(struct UnknownListNode *node);
 void FUN_080245a0(struct UnknownListNode *node);
+void FUN_08024794(struct UnknownListNode *node);
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -1379,6 +1384,17 @@ void FUN_08021f20(void) {
     gUnknown_03004dc8 = 1;
 }
 
+void FUN_0802436c(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb4f0;
+    node->position->tile = 0;
+    node->position->x = 461;
+    node->position->y = 14;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_080243a4;
+}
+
 void FUN_080243a4(struct UnknownListNode *node) {
     if (gUnknown_03004dbc->field3 != 0) {
         FUN_0801f8c0(node);
@@ -1530,4 +1546,20 @@ void FUN_08024708(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 12;
     node->data = FUN_080245ec;
+}
+
+void FUN_08024738(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb678;
+    node->position->tile = node->position->field13 << 4;
+    node->position->x = 256 + gUnknown_08edb834[node->position->field13 * 2];
+    node->position->y = gUnknown_08edb834[node->position->field13 * 2 + 1];
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 12;
+    node->data = FUN_08024794;
+}
+
+void FUN_08024794(struct UnknownListNode *node) {
+    node->position->x = gUnknown_03004dbc->field12 + gUnknown_08edb834[node->position->field13 * 2];
+    FUN_0801fed8(node->field6, 0);
 }
