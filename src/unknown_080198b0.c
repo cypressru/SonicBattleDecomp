@@ -316,7 +316,14 @@ extern void FUN_08020b74(u32 first, u32 second, const void *data, u32 fourth, u3
 extern void FUN_080264d0(struct UnknownListNode *node);
 extern void FUN_080266ac(struct UnknownListNode *node);
 extern void FUN_080279c4(struct UnknownListNode *node);
+extern void FUN_08026844(struct UnknownListNode *node);
 extern void FUN_08018c3c(void);
+extern u32 FUN_0801f9e8(u16 value);
+extern void FUN_0801f618(u16 value);
+extern u8 gUnknown_03005248;
+extern u8 gUnknown_0300525c;
+extern u8 gUnknown_030051f4;
+extern u16 gUnknown_03005244;
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2235,4 +2242,25 @@ void FUN_0802797c(struct UnknownListNode *node) {
     data = row[gUnknown_03004dd4];
     FUN_08020b74(0, 0, data, 15, 1);
     node->data = FUN_080279c4;
+}
+
+void FUN_080279c4(struct UnknownListNode *node) {
+    u32 value = FUN_0801f9e8(0x3579);
+
+    gUnknown_03005248 = value;
+    if (gUnknown_0300525c != (u8)value) {
+        gUnknown_030051f4++;
+        if (gUnknown_030051f4 > 29) {
+            gUnknown_03004dd4 = gUnknown_03005244;
+            node->data = FUN_08027920;
+            return;
+        }
+    } else {
+        gUnknown_030051f4 = 0;
+    }
+
+    if ((gUnknown_030048e0.third & 0x100) != 0) {
+        node->data = FUN_08026844;
+        FUN_0801f618(420);
+    }
 }
