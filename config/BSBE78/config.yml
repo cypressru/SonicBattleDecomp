@@ -186,7 +186,7 @@ units:
   # corroborated; the known SDK and runtime objects are separated below.
   - name: main/unknown_080007FC
     start: 0x0007FC
-    end: 0x018678
+    end: 0x018444
     category: game
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080007fc.c
@@ -195,6 +195,32 @@ units:
       FUN_08018410: 0x1E
     relocations:
       - { offset: 0x17C34, type: abs32, symbol: gUnknown_03001740 }
+  - name: main/unknown_08018444
+    start: 0x018444
+    end: 0x018678
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08018444.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      FUN_08018530: 0x34
+      FUN_080185a8: 0x20
+      FUN_080185cc: 0x0A
+      FUN_08018654: 0x0E
+      FUN_08018664: 0x02
+      FUN_08018668: 0x0C
+    relocations:
+      - { offset: 0x120, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0x124, type: abs32, symbol: gUnknown_030016f0 }
+      - { offset: 0x166, type: thumb_call, symbol: FUN_0801694c }
+      - { offset: 0x16A, type: thumb_call, symbol: FUN_08017eec }
+      - { offset: 0x16E, type: thumb_call, symbol: FUN_0801ff30 }
+      - { offset: 0x172, type: thumb_call, symbol: FUN_08017690 }
+      - { offset: 0x176, type: thumb_call, symbol: FUN_08017fb0 }
+      - { offset: 0x184, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x18A, type: thumb_call, symbol: FUN_08018654 }
+      - { offset: 0x212, type: thumb_call, symbol: FUN_0801fc60 }
+      - { offset: 0x216, type: thumb_call, symbol: FUN_0801f600 }
   - name: engine/multi_sio_sync
     start: 0x018678
     end: 0x018C8C

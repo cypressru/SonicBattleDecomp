@@ -197,6 +197,7 @@ address,name,mode,confidence
 0x080184C8,FUN_080184c8,thumb,direct-call
 0x08018530,FUN_08018530,thumb,direct-call
 0x0801856C,FUN_0801856c,thumb,direct-call
+0x080185A8,FUN_080185a8,thumb,owned-literal-pool
 0x080185CC,FUN_080185cc,thumb,rom-pointer
 0x080185D8,FUN_080185d8,thumb,rom-pointer
 0x08018654,FUN_08018654,thumb,rom-pointer+direct-call

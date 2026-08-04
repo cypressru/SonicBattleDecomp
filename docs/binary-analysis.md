@@ -42,17 +42,17 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,297 non-thunk function starts before the confirmed SDK
-veneers. The inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
+Static analysis currently records 1,293 accepted function starts in the reviewed CSV. The
+inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
-per-symbol provenance. Of these starts, 814 have aligned ROM pointers, 450 are direct-call targets,
-and 47 currently rely on recursive-disassembly recovery alone (categories overlap). One additional
-pointer-shaped asset word is explicitly rejected because it lands in the middle of an inline DMA
-literal sequence rather than executable code. Each accepted
+per-symbol provenance. Of these starts, 804 have aligned ROM pointers, 450 are direct-call targets,
+and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Five
+pointer-shaped asset words are explicitly rejected: one lands in an inline DMA literal sequence,
+and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-main game object consequently contains 0x3A64E instruction bytes and 0xDADE owned non-code bytes.
+game category consequently contains 0x3952E instruction bytes and 0xD9C6 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018678` | 193 | 70,490 | 27,426 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 184 | 70,076 | 27,276 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -97,6 +97,17 @@ The same audit rejected four impossible one-byte function extents at `0x0800B210
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive
 linear disassembly. None can contain a complete Thumb instruction, so they are retained as rejected
 analyzer evidence rather than counted as functions.
+
+The range `0x08018444-0x08018678` is now represented as the address-named game unit
+`main/unknown_08018444`. Its lower boundary follows the complete return, alignment, and literal pool
+of the distinct DMA routine at `0x08018410`; its ten functions form a compact communications-wrapper
+cluster. Its upper boundary is the independently correlated start of Nintendo's `multi_sio_sync`
+object. The address-based name deliberately avoids claiming an original source filename. During
+this split, the boundary audit recovered the previously missed function at
+`0x080185A8-0x080185C8`; its five calls and global-byte clear reconstruct as ordinary C and all 32
+instruction bytes match in objdiff.
+Six of the unit's ten functions currently match byte-for-byte, totaling 122 of its 446 instruction
+bytes; the unit is not marked complete.
 
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
