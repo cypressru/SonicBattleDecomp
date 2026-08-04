@@ -6109,6 +6109,22 @@ void FUN_08040328(void) {
     gUnknown_030001a0->records[0].size = 1;
 }
 
+void FUN_0804033c(const void *source, void *destination, u32 size) {
+    register struct UnknownTransferList4033c *list asm("r5") = gUnknown_030001a0;
+    register u32 index asm("r4") = list->records[0].size;
+    register u32 recordAddress asm("r3");
+    struct UnknownTransferRecord4033c *record;
+
+    recordAddress = index * 12;
+    recordAddress += (u32)list;
+    asm volatile("" : "+r"(recordAddress));
+    record = (struct UnknownTransferRecord4033c *)recordAddress;
+    record->source = source;
+    record->destination = destination;
+    record->size = size;
+    list->records[0].size = index + 1;
+}
+
 void FUN_080403ac(void) {
     gUnknown_030001a4 = (struct UnknownTransferList403c0 *)0x02001700;
     gUnknown_030001a4->records[0].flags = 1;
