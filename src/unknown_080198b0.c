@@ -299,7 +299,23 @@ struct UnknownPair4825c {
     u16 second;
 };
 
-extern struct UnknownState482d0 gUnknown_03005440;
+struct UnknownGlobalRenderState {
+    const void *callback;
+    u8 filler4[4];
+    u16 field8;
+    u8 filler10[2];
+    u16 field12;
+    u8 filler14[18];
+    u8 field32;
+    u8 field33;
+    u8 field34;
+    u8 field35;
+    u8 field36;
+    u8 filler37[9];
+    u8 field46;
+};
+
+extern struct UnknownGlobalRenderState gUnknown_03005440;
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
@@ -310,6 +326,9 @@ extern void FUN_0803fe98(u16 first, u16 second, u16 third);
 extern void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags);
 extern const u8 gUnknown_081a81d0[];
 extern void FUN_0804542c(struct UnknownState482d0 *state);
+extern u8 gUnknown_03005380;
+extern void FUN_08036560(void);
+extern void FUN_080412dc(void);
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5910,4 +5929,17 @@ void FUN_08047f20(struct UnknownState482d0 *state) {
     gUnknown_03005440.field46 = variant;
     state->field14 = 48;
     state->callback = (const void *)((u32)FUN_0804542c + 1);
+}
+
+void FUN_08047ec4(struct UnknownState482d0 *state) {
+    FUN_0801f744(gUnknown_03005440.field12, 1);
+    gUnknown_03005380 = 1;
+    gUnknown_03005440.callback = (const void *)((u32)FUN_08036560 + 1);
+    gUnknown_03005440.field32 = 0;
+    gUnknown_03005440.field33 = 0;
+    gUnknown_03005440.field34 = 1;
+    gUnknown_03005440.field35 = 1;
+    gUnknown_03005440.field8 |= 1;
+    gUnknown_03002030 = FUN_080412dc;
+    FUN_0804051c(state);
 }
