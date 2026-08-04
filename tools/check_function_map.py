@@ -74,7 +74,9 @@ def main() -> None:
                 accepted.add(ROM_BASE + int(symbol["address"]))
 
     missing_calls: dict[int, list[int]] = {}
+    instruction_bytes = bytearray(len(data))
     for start, end in extents.items():
+        instruction_bytes[start - ROM_BASE : end - ROM_BASE] = b"\1" * (end - start)
         for address in range(start & ~1, end - 3, 2):
             destination = thumb_bl_destination(data, address)
             if (
@@ -89,9 +91,28 @@ def main() -> None:
             for destination, callers in sorted(missing_calls.items())
         )
         raise SystemExit(f"direct calls target unrecorded functions: {details}")
+
+    missing_pointers: dict[int, list[int]] = {}
+    for offset in range(0, min(len(data), executable_end - ROM_BASE) - 3, 4):
+        if any(instruction_bytes[offset : offset + 4]):
+            continue
+        value = int.from_bytes(data[offset : offset + 4], "little")
+        destination = value & ~1
+        if (
+            value & 1
+            and ROM_BASE <= destination < executable_end
+            and destination not in accepted
+        ):
+            missing_pointers.setdefault(destination, []).append(ROM_BASE + offset)
+    if missing_pointers:
+        details = ", ".join(
+            f"0x{destination:08X} ({len(sources)} pointers)"
+            for destination, sources in sorted(missing_pointers.items())
+        )
+        raise SystemExit(f"Thumb pointers target unrecorded functions: {details}")
     print(
         f"Function map verified: {len(extents)} analyzed extents; "
-        "every in-range Thumb BL destination is symbolized"
+        "every in-range Thumb BL and aligned function-pointer destination is symbolized"
     )
 
 

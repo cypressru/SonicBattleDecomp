@@ -372,7 +372,7 @@ address,name,mode,confidence
 0x080200B4,FUN_080200b4,thumb,rom-pointer
 0x080200BC,FUN_080200bc,thumb,direct-call
 0x080200D8,FUN_080200d8,thumb,direct-call
-0x080200F4,FUN_080200f4,thumb,rom-pointer
+0x080200F8,FUN_080200f8,thumb,rom-pointer-corrected-entry
 0x08020134,FUN_08020134,thumb,direct-call
 0x08020144,FUN_08020144,thumb,direct-call
 0x0802015A,FUN_0802015a,thumb,rom-pointer
@@ -743,7 +743,7 @@ address,name,mode,confidence
 0x0802FCB4,FUN_0802fcb4,thumb,direct-call
 0x0802FCF4,FUN_0802fcf4,thumb,rom-pointer
 0x0802FCFA,FUN_0802fcfa,thumb,rom-pointer
-0x0802FDF6,FUN_0802fdf6,thumb,rom-pointer
+0x0802FDF8,FUN_0802fdf8,thumb,rom-pointer-corrected-entry
 0x0803013A,FUN_0803013a,thumb,rom-pointer
 0x080301F4,FUN_080301f4,thumb,rom-pointer
 0x080302A0,FUN_080302a0,thumb,rom-pointer
@@ -902,7 +902,7 @@ address,name,mode,confidence
 0x08035F54,FUN_08035f54,thumb,rom-pointer
 0x08035FAC,FUN_08035fac,thumb,rom-pointer
 0x08036014,FUN_08036014,thumb,rom-pointer
-0x08036056,FUN_08036056,thumb,rom-pointer
+0x0803606C,FUN_0803606c,thumb,rom-pointer-corrected-entry
 0x080360C4,FUN_080360c4,thumb,rom-pointer
 0x0803611C,FUN_0803611c,thumb,rom-pointer
 0x08036174,FUN_08036174,thumb,rom-pointer

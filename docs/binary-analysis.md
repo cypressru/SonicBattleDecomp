@@ -48,7 +48,7 @@ and 47 currently rely on recursive-disassembly recovery alone (categories overla
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-main game object consequently contains 0x3A66A instruction bytes and 0xDAC2 owned non-code bytes.
+main game object consequently contains 0x3A64E instruction bytes and 0xDADE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -56,8 +56,9 @@ as proof of translation-unit boundaries.
 The private CI command `python tools/check_function_map.py config/BSBE78/config.yml
 rom/baserom.gba` additionally decodes every Thumb `BL` inside those accepted extents. It requires
 every in-range destination to be present either in the analyzed function inventory or as an
-explicit SDK/runtime symbol in the unit configuration. This proves direct-call closure for the
-current inventory and prevents newly exposed call targets from remaining anonymous.
+explicit SDK/runtime symbol in the unit configuration. It also checks every aligned Thumb-tagged
+pointer found outside accepted instruction extents. This proves direct-call and function-pointer
+closure for the current inventory and prevents newly exposed call targets from remaining anonymous.
 
 All ROM bytes are represented in the generated objdiff project. Bytes after the main executable
 are conservatively split at the independently validated embedded-program header: main ROM
