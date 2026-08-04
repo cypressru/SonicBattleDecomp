@@ -6129,3 +6129,30 @@ void FUN_080403ac(void) {
     gUnknown_030001a4 = (struct UnknownTransferList403c0 *)0x02001700;
     gUnknown_030001a4->records[0].flags = 1;
 }
+
+void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags) {
+    register u32 storedFlags asm("r9") = flags;
+    register struct UnknownTransferList403c0 **queue asm("r8") = &gUnknown_030001a4;
+    register struct UnknownTransferList403c0 *recordBase asm("r5") = *queue;
+    register u32 index asm("r6") = recordBase->records[0].flags;
+    register u32 offset asm("r4") = index * 12;
+    register struct UnknownTransferList403c0 **queueCopy asm("r1");
+    register struct UnknownTransferList403c0 *current asm("r0");
+    struct UnknownTransferRecord403c0 *record;
+
+    asm volatile("" : "+r"(storedFlags), "+r"(queue), "+r"(recordBase), "+r"(index), "+r"(offset));
+    recordBase = (struct UnknownTransferList403c0 *)(offset + (u32)recordBase);
+    record = (struct UnknownTransferRecord403c0 *)recordBase;
+    record->source = source;
+    record->destination = destination;
+    record->width = width;
+    queueCopy = queue;
+    asm volatile("" : "+r"(queueCopy));
+    current = *queueCopy;
+    current = (struct UnknownTransferList403c0 *)(offset + (u32)current);
+    current->records[0].height = height;
+    current = *queueCopy;
+    offset += (u32)current;
+    ((struct UnknownTransferRecord403c0 *)offset)->flags = storedFlags;
+    current->records[0].flags = index + 1;
+}
