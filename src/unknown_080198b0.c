@@ -180,11 +180,22 @@ struct UnknownAllocation248f0 {
 struct UnknownAllocation29d74 {
     u8 filler0[2];
     u16 index;
-    u8 filler4[8];
+    u8 childIndices[2];
+    u8 filler6[6];
     u8 lowFlags[4];
     u8 highFlags[4];
     u8 firstSelection;
     u8 secondSelection;
+};
+
+struct UnknownAllocation2a298Child {
+    const void *graphics;
+    u8 filler4[4];
+    u16 field8;
+    u8 filler10[10];
+    u16 x;
+    u16 y;
+    u8 filler24[4];
 };
 
 struct UnknownAllocation25a98 {
@@ -418,6 +429,11 @@ extern void FUN_08028ed8(struct UnknownListNode *node);
 extern void FUN_080291a8(void);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
+extern void FUN_08028158(struct UnknownListNode *node);
+extern void FUN_08028190(struct UnknownListNode *node);
+extern void FUN_0802a480(struct UnknownListNode *node);
+extern const u8 gUnknown_0811c0d0[];
+extern const u16 gUnknown_08edbb34[][4];
 extern u32 gUnknown_03005264;
 extern u8 gUnknown_03002600[];
 extern u8 gUnknown_03005268[];
@@ -4997,4 +5013,32 @@ u8 FUN_0802a220(u8 player) {
         return 1;
     }
     return 0;
+}
+
+void FUN_0802a298(struct UnknownListNode *node) {
+    struct UnknownAllocation29d74 *data = node->allocation;
+    struct UnknownListNode *child;
+    struct UnknownAllocation2a298Child *childData;
+
+    child = FUN_0801f7d0(FUN_08028158, 28, gUnknown_03003e20, 0);
+    data->childIndices[0] = child->field6;
+    childData = child->allocation;
+    childData->graphics = gUnknown_0811c0d0;
+    childData->field8 = 32;
+    childData->x = gUnknown_08edbb34[data->index][0];
+    childData->y = gUnknown_08edbb34[data->index][1];
+
+    child = FUN_0801f7d0(FUN_08028190, 28, gUnknown_03003e20, 0);
+    data->childIndices[1] = child->field6;
+    childData = child->allocation;
+    childData->graphics = gUnknown_0811c0d0;
+    childData->field8 = 48;
+    childData->x = gUnknown_08edbb34[data->index][2];
+    childData->y = gUnknown_08edbb34[data->index][3];
+
+    data->highFlags[3] = 0;
+    data->highFlags[2] = 0;
+    data->highFlags[1] = 0;
+    data->highFlags[0] = 0;
+    node->data = (const void *)((u32)FUN_0802a480 + 1);
 }
