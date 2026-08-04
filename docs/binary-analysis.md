@@ -1,0 +1,49 @@
+# BSBE78 binary analysis
+
+This document records conclusions, confidence, and provenance. It does not contain extracted
+assembly or proprietary tool output.
+
+## Debug and symbol audit
+
+The retail ROM is a flat 16 MiB GBA image, not an ELF. The main executable contains no detected
+DWARF/STABS records, compiler banner, source paths, assertion filenames, mangled symbol table, or
+other surviving developer symbol table. Random byte sequences resembling file extensions were
+rejected after inspecting their surrounding non-text data.
+
+The ROM does retain Nintendo library identification strings inside auxiliary payloads. These are
+library/version evidence, not game debug symbols. An embedded GBA test program begins at ROM
+offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
+
+## Main executable map
+
+| ROM range | GBA address | Classification | Confidence |
+|---|---|---|---|
+| `0x000000-0x0000C0` | `0x08000000-0x080000C0` | GBA header/reset branch | Exact |
+| `0x0000C0-0x000210` | `0x080000C0-0x08000210` | ARM startup and interrupt code | Exact |
+| `0x000210-0x04833C` | `0x08000210-0x0804833C` | Game/engine Thumb code; internal TUs unresolved | Exact outer range |
+| `0x04833C-...` | `0x0804833C-...` | Nintendo M4A sound engine | Exact start; end unresolved |
+| `0x04A590-0x04AF68` | `0x0804A590-0x0804AF68` | BIOS-call and cartridge-backup libraries | Exact outer range; internal TUs unresolved |
+| `0x04AF68-0x04B61C` | `0x0804AF68-0x0804B61C` | `libgcc` objects listed in project config | Exact |
+| `0x04B61C-0x04B718` | `0x0804B61C-0x0804B718` | `libc`: `memcmp`, `memcpy`, `memset` | Exact |
+| `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
+| `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
+
+Control-flow analysis currently finds 731 reachable functions in the main executable. Function
+discovery is not itself accepted as proof of translation-unit boundaries.
+
+## Runtime boundary evidence
+
+The pinned `agbcc` build produces runtime objects whose sizes and non-relocated instruction
+sequences correlate consecutively with the retail ROM. The resulting boundaries are recorded in
+`config/BSBE78/config.yml`. `memcmp`, `memcpy`, and `memset` also match their `libc` object bodies.
+
+The M4A start is independently correlated by its mixed Thumb/ARM multiply helper and `SoundMain`
+layout against the public M4A implementation used by related GBA titles. Differences later in the
+engine mean its end is not yet recorded as a TU boundary.
+
+## Original source language
+
+Undetermined pending the complete TU inventory. Current negative evidence: the main executable
+contains no detected C++ mangling, RTTI/typeinfo strings, vtable labels, exception runtime names,
+`operator new`/`operator delete` identifiers, static-constructor markers, or C++ source suffixes.
+This is consistent with C but is not, by itself, proof that every game TU was C.

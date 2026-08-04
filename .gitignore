@@ -9,6 +9,7 @@ asm/
 assets/
 build/
 expected/
+analysis/
 objdiff.json
 compile_commands.json
 

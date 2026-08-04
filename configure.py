@@ -45,7 +45,7 @@ def main() -> None:
                 "base_path": None,
                 "metadata": {
                     "progress_categories": [unit["category"]],
-                    "auto_generated": True,
+                    "auto_generated": unit.get("auto_generated", False),
                 },
             }
         )
@@ -59,7 +59,10 @@ def main() -> None:
         "build_base": True,
         "watch_patterns": ["*.c", "*.h", "*.s", "*.inc", "*.py", "*.yml"],
         "units": units,
-        "progress_categories": [{"id": "game", "name": "Game"}],
+        "progress_categories": [
+            {"id": "game", "name": "Game"},
+            {"id": "runtime", "name": "Runtime"},
+        ],
     }
     (ROOT / "objdiff.json").write_text(json.dumps(objdiff, indent=2) + "\n", encoding="utf-8")
 

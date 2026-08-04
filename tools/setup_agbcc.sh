@@ -10,4 +10,4 @@ fi
 
 git -C "$AGBCC_DIR" fetch --depth 1 origin "$AGBCC_REVISION"
 git -C "$AGBCC_DIR" checkout --detach "$AGBCC_REVISION"
-"$AGBCC_DIR/build.sh"
+(cd "$AGBCC_DIR" && ./build.sh)

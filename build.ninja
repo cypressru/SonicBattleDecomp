@@ -10,12 +10,52 @@ rule copy_rom
   command = python3 tools/copy_verified.py $in $out
   description = LINK $out
 
-build build/BSBE78/target/bootstrap/rom.o: slice_object rom/baserom.gba
+build build/BSBE78/target/main/unknown_08000000.o: slice_object rom/baserom.gba
   start = 0
-  end = 16777216
+  end = 307048
+
+build build/BSBE78/target/libgcc/_call_via_rX.o: slice_object rom/baserom.gba
+  start = 307048
+  end = 307108
+
+build build/BSBE78/target/libgcc/_divsi3.o: slice_object rom/baserom.gba
+  start = 307108
+  end = 307256
+
+build build/BSBE78/target/libgcc/_dvmd_tls.o: slice_object rom/baserom.gba
+  start = 307256
+  end = 307260
+
+build build/BSBE78/target/libgcc/_modsi3.o: slice_object rom/baserom.gba
+  start = 307260
+  end = 307468
+
+build build/BSBE78/target/libgcc/_udivdi3.o: slice_object rom/baserom.gba
+  start = 307468
+  end = 308452
+
+build build/BSBE78/target/libgcc/_udivsi3.o: slice_object rom/baserom.gba
+  start = 308452
+  end = 308572
+
+build build/BSBE78/target/libgcc/_umodsi3.o: slice_object rom/baserom.gba
+  start = 308572
+  end = 308764
+
+build build/BSBE78/target/libc/memcmp.o: slice_object rom/baserom.gba
+  start = 308764
+  end = 308836
+
+build build/BSBE78/target/libc/memcpy.o: slice_object rom/baserom.gba
+  start = 308836
+  end = 308932
+
+build build/BSBE78/target/libc/memset.o: slice_object rom/baserom.gba
+  start = 308932
+  end = 309016
 
 build build/BSBE78/sonic_battle.gba: copy_rom rom/baserom.gba
 
-build objects: phony build/BSBE78/target/bootstrap/rom.o
+build objects: phony build/BSBE78/target/main/unknown_08000000.o build/BSBE78/target/libgcc/_call_via_rX.o build/BSBE78/target/libgcc/_divsi3.o build/BSBE78/target/libgcc/_dvmd_tls.o build/BSBE78/target/libgcc/_modsi3.o build/BSBE78/target/libgcc/_udivdi3.o build/BSBE78/target/libgcc/_udivsi3.o build/BSBE78/target/libgcc/_umodsi3.o build/BSBE78/target/libc/memcmp.o build/BSBE78/target/libc/memcpy.o build/BSBE78/target/libc/memset.o
 build check: phony build/BSBE78/sonic_battle.gba
 default build/BSBE78/sonic_battle.gba objects
