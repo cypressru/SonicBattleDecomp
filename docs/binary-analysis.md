@@ -46,7 +46,7 @@ recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generi
 per-symbol provenance. Of these starts, 814 have aligned ROM pointers, 450 are direct-call targets,
 and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
-accepted start and its enclosing object boundary. This gives objdiff explicit target function
+accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
 main game object consequently contains 0x3A64E instruction bytes and 0xDADE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff

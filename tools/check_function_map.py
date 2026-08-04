@@ -58,6 +58,13 @@ def main() -> None:
             f"function/extent inventory differs: {len(missing_sizes)} missing sizes, "
             f"{len(orphan_sizes)} orphan sizes"
         )
+    ordered_extents = sorted(extents.items())
+    for (start, end), (next_start, _next_end) in zip(ordered_extents, ordered_extents[1:]):
+        if end > next_start:
+            raise SystemExit(
+                f"function extent 0x{start:08X}-0x{end:08X} overlaps "
+                f"the next entry at 0x{next_start:08X}"
+            )
 
     executable_end = ROM_BASE
     for unit in config["units"]:
