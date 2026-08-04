@@ -377,6 +377,11 @@ extern void FUN_080288b4(struct UnknownListNode *node);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
 extern u32 gUnknown_03005264;
+extern u8 gUnknown_03002600[];
+extern u8 gUnknown_03005268[];
+extern u8 gUnknown_0300524c[];
+extern void FUN_08029250(void);
+extern void FUN_0803281c(void);
 extern u16 gUnknown_05000080[];
 extern u16 gUnknown_050001c0[];
 extern u16 gUnknown_050001e0[];
@@ -3009,5 +3014,39 @@ void FUN_08028814(struct UnknownListNode *node) {
     pending |= result == 0;
     if (pending == 0) {
         node->data = (const void *)((u32)FUN_080288b4 + 1);
+    }
+}
+
+void FUN_08028bec(void) {
+    register u8 value asm("r1");
+    register u8 *values asm("r0");
+
+    if (gUnknown_03005264 == 4) {
+        FUN_08021534();
+    }
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        if (gUnknown_03005264 == 4) {
+            gUnknown_03002030 = FUN_0803281c;
+        } else {
+            gUnknown_03002030 = FUN_08029250;
+            value = gUnknown_03002600[4];
+            if (value != 0) {
+                values = gUnknown_03005268;
+                values[0] = 0;
+                value = 2;
+                values[1] = value;
+                values[2] = 0;
+            } else {
+                values = gUnknown_03005268;
+                values[0] = value;
+                values[1] = value;
+                values[2] = value;
+            }
+            values[3] = value;
+            gUnknown_0300524c[0] = 0;
+            gUnknown_0300524c[1] = 1;
+            gUnknown_0300524c[2] = 2;
+            gUnknown_0300524c[3] = 3;
+        }
     }
 }
