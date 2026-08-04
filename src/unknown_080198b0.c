@@ -113,6 +113,7 @@ extern u8 gUnknown_030000c0;
 extern u16 gUnknown_03000070[20][2];
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
+extern u32 gUnknown_0300019c;
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -632,3 +633,7 @@ void FUN_0801fc30(u8 value, const void *data) {
 }
 
 void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
+
+void FUN_0802002c(u8 value, u8 *destination) { *destination = value; }
+
+void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
