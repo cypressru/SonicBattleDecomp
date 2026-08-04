@@ -39,6 +39,7 @@ struct UnknownState080180d4 {
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern struct UnknownQueueEntry08017f00 gUnknown_030033e0[];
 extern struct UnknownState080180d4 gUnknown_030048e0;
+extern const s16 gUnknown_0804df7c[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
@@ -92,6 +93,17 @@ void FUN_080180d4(u16 *first, u16 *second, u16 *third) {
     *first = gUnknown_030048e0.first;
     *second = gUnknown_030048e0.second;
     *third = gUnknown_030048e0.third;
+}
+
+void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY) {
+    inputX -= gUnknown_03001b2c;
+    inputY -= gUnknown_030016c0;
+    *outputX = (gUnknown_0804df7c[gUnknown_03001b08 + 0x800] * inputX -
+                gUnknown_0804df7c[gUnknown_03001b08] * inputY) >>
+               13;
+    *outputY = (gUnknown_0804df7c[gUnknown_03001b08] * inputX +
+                gUnknown_0804df7c[gUnknown_03001b08 + 0x800] * inputY) >>
+               13;
 }
 
 void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY) {

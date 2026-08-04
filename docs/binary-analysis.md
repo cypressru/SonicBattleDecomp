@@ -122,6 +122,11 @@ leaf with an owned literal that closure missed; it copies three halfwords from t
 `0x030048E0` and is now counted as code. The projection helper uses the already identified runtime
 `__divsi3` routine, while the queue wrapper preserves the five-argument call ABI naturally in C.
 
+The fixed-point rotation helper at `0x0801816C` now matches all 134 instruction bytes. It subtracts
+two shared offsets and applies the signed lookup table at `0x0804DF7C` as a paired sine/cosine
+rotation. Expressing both output formulas directly is significant: the intervening output store may
+alias the shared angle, so agbcc correctly reloads it for the second result exactly as retail does.
+
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive
