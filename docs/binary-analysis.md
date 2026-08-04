@@ -77,7 +77,9 @@ final known song start also remains coarse. That tail now excludes the exact 256
 `__clz_tab` at
 `0xED66A8-0xED67A8`: its bytes uniquely match `_udivdi3.o` from the pinned source-built `libgcc`
 archive and are independently validated as the complete 0-through-255 bit-length table. The compact
-reconstruction in `src/libgcc/clz_tab.c` compiles to a byte-identical `.rodata` base section.
+reconstruction in `src/libgcc/clz_tab.c` independently compiles to a byte-identical `.rodata`
+section. The objdiff target keeps the table in its original `_udivdi3` translation unit rather than
+counting it again as a standalone object.
 
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`
@@ -88,11 +90,12 @@ assets and the main data range's remaining internal objects are not yet establis
 
 The pinned `agbcc` build produces runtime objects whose sizes and non-relocated instruction
 sequences correlate consecutively with the retail ROM. The resulting boundaries are recorded in
-`config/BSBE78/config.yml`. Six source-built `libgcc` members match complete retail sections:
-`_call_via_rX`, `_divsi3`, `_dvmd_tls`, `_modsi3`, `_udivsi3`, and `_umodsi3`. The compiler's
-source-built `_udivdi3` member is retained as a useful base but does not byte-match this retail
-revision and therefore reports zero matched code. `memcmp`, `memcpy`, and `memset` also match their
-complete `libc` object bodies.
+`config/BSBE78/config.yml`. Seven source-built `libgcc` members match complete retail sections:
+`_call_via_rX`, `_divsi3`, `_dvmd_tls`, `_modsi3`, `_udivdi3`, `_udivsi3`, and `_umodsi3`.
+`_udivdi3` requires a multi-section target object because its linked `.text` is at `0x04B10C` while
+its `.rodata` table is at `0xED66A8`; the target preserves the source-built member's relocation and
+mapping-symbol metadata while replacing both allocatable sections with independently verified ROM
+bytes. `memcmp`, `memcpy`, and `memset` also match their complete `libc` object bodies.
 
 The M4A start is independently correlated by its mixed Thumb/ARM multiply helper and `SoundMain`
 layout against the public implementation used by related GBA titles. The `m4a0` assembly-object

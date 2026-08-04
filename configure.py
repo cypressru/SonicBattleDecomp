@@ -115,8 +115,8 @@ def main() -> None:
         has_base = bool(unit.get("source") or unit.get("archive_member"))
         base_path = build_dir / "base" / f"{unit['name']}.o" if has_base else None
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        units.append(
-            {
+        if not unit.get("exclude_from_objdiff", False):
+            units.append({
                 "name": unit["name"],
                 "target_path": str(target_path.relative_to(ROOT)),
                 "base_path": str(base_path.relative_to(ROOT)) if base_path else None,
@@ -126,8 +126,7 @@ def main() -> None:
                     "has_base": base_path is not None,
                     "complete": unit.get("complete", False),
                 },
-            }
-        )
+            })
         ninja_targets.append(str(target_path.relative_to(ROOT)))
 
     objdiff = {
@@ -170,6 +169,10 @@ def main() -> None:
         "  command = python3 tools/extract_archive_member.py $in $member $out",
         "  description = AR $out",
         "",
+        "rule compose_archive_target",
+        "  command = python3 tools/compose_archive_target.py $archive $member $in $out $sections",
+        "  description = COMPOSE $out",
+        "",
     ]
     for unit, target in zip(configured_units, ninja_targets):
         symbol_specs = []
@@ -181,16 +184,28 @@ def main() -> None:
         if not unit.get("auto_generated", False) and not symbol_specs:
             symbol_name = unit["name"].rsplit("/", 1)[-1]
             symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")
-        ninja.extend(
-            [
+        if unit.get("target_sections"):
+            sections = " ".join(
+                f"{section['name']}:{int(section['start'])}:{int(section['end'])}"
+                for section in unit["target_sections"]
+            )
+            archive = unit.get("archive", "tools/agbcc/libgcc.a")
+            ninja.extend([
+                f"build {target}: compose_archive_target {config['rom']} | {archive} tools/compose_archive_target.py",
+                f"  archive = {archive}",
+                f"  member = {unit['archive_member']}",
+                f"  sections = {sections}",
+                "",
+            ])
+        else:
+            ninja.extend([
                 f"build {target}: slice_object {config['rom']} | tools/slice_object.py {function_size_map or ''}",
                 f"  start = {int(unit['start'])}",
                 f"  end = {int(unit['end'])}",
                 f"  kind = {unit.get('kind', 'code')}",
                 "  symbols =" + (f" {' '.join(symbol_specs)}" if symbol_specs else ""),
                 "",
-            ]
-        )
+            ])
         if unit.get("source"):
             base = build_dir / "base" / f"{unit['name']}.o"
             ninja.extend(

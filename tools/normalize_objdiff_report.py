@@ -29,7 +29,7 @@ def amount(measures: dict[str, object], key: str) -> int:
 def normalize_unit(unit: dict[str, object]) -> None:
     measures = unit.setdefault("measures", {})
     assert isinstance(measures, dict)
-    section_total = sum(int(section["size"]) for section in unit.get("sections", []))
+    section_total = sum(int(section.get("size", 0)) for section in unit.get("sections", []))
     measured_total = amount(measures, "total_code") + amount(measures, "total_data")
     if section_total < measured_total:
         raise ValueError(f"{unit.get('name', 'unit')}: measures exceed owned sections")

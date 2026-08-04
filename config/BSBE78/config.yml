@@ -8,9 +8,7 @@ compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 range_overrides:
   libgcc_clz_tab:
-    source: src/libgcc/clz_tab.c
-    cflags: [-O2]
-    complete: true
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -176,6 +174,10 @@ units:
     end: 0x04B4E4
     category: runtime
     archive_member: _udivdi3.o
+    target_sections:
+      - { name: .text, start: 0x04B10C, end: 0x04B4E4 }
+      - { name: .rodata, start: 0xED66A8, end: 0xED67A8 }
+    complete: true
     symbols: [{ name: __udivdi3, address: 0x04B10C, size: 0x3D8 }]
   - name: libgcc/_udivsi3
     start: 0x04B4E4

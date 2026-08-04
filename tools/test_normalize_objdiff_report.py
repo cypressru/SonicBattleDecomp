@@ -4,6 +4,23 @@ from tools.normalize_objdiff_report import normalize
 
 
 class NormalizeObjdiffReportTest(unittest.TestCase):
+    def test_empty_sections_without_sizes_are_ignored(self):
+        report = {
+            "measures": {},
+            "units": [{
+                "name": "empty-data-section",
+                "measures": {"total_code": "4", "matched_code_percent": 100.0},
+                "sections": [
+                    {"name": ".text", "size": "4", "fuzzy_match_percent": 100.0},
+                    {"name": ".data", "fuzzy_match_percent": 100.0},
+                ],
+                "metadata": {},
+            }],
+            "categories": [],
+        }
+        normalize(report)
+        self.assertEqual(report["measures"]["total_code"], "4")
+
     def test_target_only_dimensions_are_zero_and_empty_dimensions_removed(self):
         report = {
             "measures": {},

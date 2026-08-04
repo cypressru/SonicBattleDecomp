@@ -38,9 +38,9 @@ Sonic Battle's emitted-code evidence before a unit is marked matching.
 
 ## Progress
 
-Nine source-built runtime code objects currently match complete target sections byte-for-byte:
-six `libgcc` members plus `memcmp`, `memcpy`, and `memset`. The reconstructed 256-byte
-`libgcc_clz_tab` read-only-data object also matches completely. Function and data inventories
+Ten source-built runtime code objects currently match complete target sections byte-for-byte:
+seven `libgcc` members plus `memcmp`, `memcpy`, and `memset`. The `_udivdi3` translation unit
+also owns its noncontiguous 256-byte `__clz_tab` read-only-data section. Function and data inventories
 outside reconstructed units remain evidence maps rather than reconstructed source.
 
 The main executable code ends at ROM offset `0x4B718`. See
