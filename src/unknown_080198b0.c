@@ -3,6 +3,7 @@
 
 struct UnknownListNode;
 struct UnknownState482d0;
+struct UnknownState420dc;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
@@ -56,7 +57,11 @@ extern const u8 gUnknown_08173500[];
 extern const void *gUnknown_0817adc8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
-extern void FUN_08041f84(void);
+extern void FUN_08041f84(struct UnknownState420dc *state);
+extern void FUN_08041860(u8 value);
+extern void FUN_08041920(void);
+extern void FUN_080419d4(void);
+extern void FUN_0804280c(void);
 extern void FUN_08043e5c(void);
 extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
@@ -208,8 +213,13 @@ struct UnknownState420dc {
     u8 field2;
     u8 field3;
     const void *callback;
-    u8 padding8[2];
-    u16 field10;
+    union {
+        u32 fixed;
+        struct {
+            u16 low;
+            u16 high;
+        } half;
+    } field8;
     u8 padding12[2];
     u16 field14;
     const void *graphics;
@@ -418,7 +428,7 @@ struct UnknownTransferList403c0 {
 
 struct UnknownGlobalRenderState {
     const void *callback;
-    u8 filler4[4];
+    u32 field4;
     u16 field8;
     u16 field10;
     u16 field12;
@@ -438,6 +448,7 @@ struct UnknownGlobalRenderState {
 extern struct UnknownGlobalRenderState gUnknown_03005440;
 extern u16 gUnknown_03005490;
 extern u16 gUnknown_03005494;
+extern struct UnknownState420dc *gUnknown_030001d0;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
 extern struct UnknownState420dc *FUN_0803ff98(const void *callback, void *parent, u32 flag);
 extern void FUN_080481c8(struct UnknownState482d0 *state);
@@ -6587,7 +6598,7 @@ void FUN_08042044(struct UnknownState420dc *state) {
     FUN_0801fba0(0x52, 16);
     child = FUN_0803ff98((const void *)((u32)FUN_08041f84 + 1), state, 0);
     child->field3 = 1;
-    state->field10 = child->field10 = 120;
+    state->field8.half.high = child->field8.half.high = 120;
     state->field14 = child->field14 = 80;
     state->graphics = child->graphics = gUnknown_08173500;
     state->field22 = child->field22 = 4;
@@ -6619,7 +6630,44 @@ void FUN_080420dc(struct UnknownState420dc *state) {
     }
 
     FUN_0801fba0(0x52, state->fade | ((16 - state->fade) << 8));
-    state->field10 = state->baseX - gUnknown_03005494;
+    state->field8.half.high = state->baseX - gUnknown_03005494;
     state->field14 = state->baseY - gUnknown_03005490;
     FUN_080405a8(state->field2, 2);
+}
+
+void FUN_08041f84(struct UnknownState420dc *state) {
+    if ((gUnknown_030048e0.third & 1) != 0) {
+        state->field26 = 0;
+    }
+    if (state->field26 != 0) {
+        state->field26--;
+    } else {
+        if ((gUnknown_03005440.field4 & 1) != 0) {
+            state->fade--;
+        }
+        if (state->fade > 16) {
+            if (state->field3 == 0) {
+                gUnknown_03005440.field8 &= 0xbfff;
+                gUnknown_030001d0 = FUN_0803ff98((const void *)((u32)FUN_0804280c + 1), state, 1);
+                FUN_08041860(2);
+                FUN_08041920();
+                FUN_080419d4();
+            }
+            FUN_0804051c(state);
+            return;
+        }
+        if (state->field3 != 0) {
+            register u32 position asm("r0") = state->field8.fixed;
+            register u32 delta asm("r1") = (u32)-0x1c000;
+
+            asm volatile("" : "+r"(position), "+r"(delta));
+            position += delta;
+            state->field8.fixed = position;
+            asm volatile("" : "+r"(position));
+        } else {
+            state->field8.fixed += 0x1c000;
+            FUN_0801fba0(0x52, state->fade | ((16 - state->fade) << 8));
+        }
+    }
+    FUN_080405a8(state->field2, 0);
 }
