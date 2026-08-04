@@ -552,6 +552,7 @@ units:
       Clear64byte: 0x0E
       MP2K_event_xcmd: 0x1A
       MP2K_event_xxx: 0x0E
+      MP2K_event_xwave: 0x36
       MP2K_event_null: 0x02
     relocations:
       - { offset: 0x0BE, type: thumb_call, symbol: SoundMain }

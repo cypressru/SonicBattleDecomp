@@ -111,6 +111,8 @@ void m4aMPlayImmInit(struct MP2KPlayerState *player) {
     }
 }
 
+void MusicPlayerJumpTableCopy(void) { asm("swi 0x2A"); }
+
 void ClearChain(void *channel) {
     void (*function)(void *) = gMPlayJumpTable34;
 
@@ -134,6 +136,20 @@ void MP2K_event_xcmd(struct MP2KPlayerState *player, struct MP2KTrack *track) {
 
     track->command++;
     gXcmdTable[command](player, track);
+}
+
+void MP2K_event_xwave(struct MP2KPlayerState *player, struct MP2KTrack *track) {
+    union {
+        u8 *pointer;
+        u8 bytes[sizeof(void *)];
+    } wave;
+
+    wave.bytes[0] = track->command[0];
+    wave.bytes[1] = track->command[1];
+    wave.bytes[2] = track->command[2];
+    wave.bytes[3] = track->command[3];
+    track->wave = wave.pointer;
+    track->command += sizeof(void *);
 }
 
 void MP2K_event_xtype(struct MP2KPlayerState *player, struct MP2KTrack *track) {

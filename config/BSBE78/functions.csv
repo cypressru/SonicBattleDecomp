@@ -1256,6 +1256,7 @@ address,name,mode,confidence
 0x08049208,m4aMPlayFadeIn,thumb,recursive-disassembly+sdk-correlation
 0x08049234,m4aMPlayImmInit,thumb,direct-call+sdk-correlation
 0x0804929C,FUN_0804929c,thumb,direct-call
+0x080493B4,MusicPlayerJumpTableCopy,thumb,sdk-correlation
 0x080493B8,ClearChain,thumb,direct-call+sdk-correlation
 0x080493CC,Clear64byte,thumb,direct-call+sdk-correlation
 0x080493E0,FUN_080493e0,thumb,direct-call
@@ -1284,7 +1285,7 @@ address,name,mode,confidence
 0x0804A314,FUN_0804a314,thumb,rom-pointer
 0x0804A46C,MP2K_event_xcmd,thumb,rom-pointer+sdk-correlation
 0x0804A48C,MP2K_event_xxx,thumb,rom-pointer+sdk-correlation
-0x0804A4A0,FUN_0804a4a0,thumb,rom-pointer
+0x0804A4A0,MP2K_event_xwave,thumb,rom-pointer+sdk-correlation
 0x0804A4E8,MP2K_event_xtype,thumb,rom-pointer+sa2-relocation-masked-byte-match
 0x0804A4FC,MP2K_event_xatta,thumb,rom-pointer+sa2-relocation-masked-byte-match
 0x0804A510,MP2K_event_xdeca,thumb,rom-pointer+sa2-relocation-masked-byte-match
