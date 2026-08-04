@@ -34,6 +34,8 @@ extern u8 gUnknown_030001b0[4];
 extern u8 gUnknown_030001b8;
 extern u8 (*gUnknown_030001b4)[2];
 extern u8 (*gUnknown_030001c0)[2];
+struct UnknownPoolNode404ec;
+extern struct UnknownPoolNode404ec *volatile gUnknown_0300547c;
 extern const s16 gUnknown_081231d6[];
 extern void FUN_08048fb8(void);
 extern void FUN_08049544(const void *value);
@@ -153,6 +155,14 @@ struct UnknownQueuedValue {
     u16 second;
     u16 third;
     u16 fourth;
+};
+
+struct UnknownPoolNode404ec {
+    u8 field0;
+    u8 next;
+    u8 padding2[2];
+    const void *data;
+    u8 padding8[36];
 };
 
 struct UnknownState080201f8 {
@@ -5440,6 +5450,30 @@ void FUN_080405a8(u8 first, u8 second) {
 void FUN_080405f4(u8 first, u8 second) {
     gUnknown_030001c0[gUnknown_030001c8][0] = second;
     gUnknown_030001c0[gUnknown_030001c8++][1] = first;
+}
+
+void FUN_080404ec(void) {
+    register struct UnknownPoolNode404ec **address asm("r1") =
+        (struct UnknownPoolNode404ec **)&gUnknown_0300547c;
+    register u32 index asm("r4") = (*address)[0].next;
+
+    if (index != 0) {
+        register struct UnknownPoolNode404ec **globalAddress asm("r5") = address;
+        register u32 stride asm("r6") = sizeof(struct UnknownPoolNode404ec);
+
+        asm volatile("" : "+r"(globalAddress), "+r"(stride));
+        do {
+            register struct UnknownPoolNode404ec *node asm("r0") = *globalAddress;
+
+            asm volatile("" : "+r"(node));
+            index *= stride;
+            node = (struct UnknownPoolNode404ec *)(index + (u32)node);
+            FUN_0804af6c((struct UnknownListNode *)node, node->data);
+            node = *globalAddress;
+            index += (u32)node;
+            index = ((struct UnknownPoolNode404ec *)index)->next;
+        } while (index != 0);
+    }
 }
 
 void FUN_0802cfd0(void) {
