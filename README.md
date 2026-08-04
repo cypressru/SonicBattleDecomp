@@ -1,5 +1,16 @@
 # Sonic Battle
 
+[![Build Status]][actions] [![Code Progress]][progress] [![Data Progress]][progress] [![Function Progress]][progress] [![SDK Progress]][progress] [![Game Progress]][progress]
+
+[Build Status]: https://github.com/cypressru/SonicBattleDecomp/actions/workflows/verify.yml/badge.svg
+[actions]: https://github.com/cypressru/SonicBattleDecomp/actions/workflows/verify.yml
+[Code Progress]: https://decomp.dev/cypressru/SonicBattleDecomp.svg?mode=shield&measure=code&label=Code
+[Data Progress]: https://decomp.dev/cypressru/SonicBattleDecomp.svg?mode=shield&measure=data&label=Data
+[Function Progress]: https://decomp.dev/cypressru/SonicBattleDecomp.svg?mode=shield&measure=functions&label=Functions
+[SDK Progress]: https://decomp.dev/cypressru/SonicBattleDecomp.svg?mode=shield&measure=code&category=sdk&label=SDK
+[Game Progress]: https://decomp.dev/cypressru/SonicBattleDecomp.svg?mode=shield&measure=code&category=game&label=Game
+[progress]: https://decomp.dev/cypressru/SonicBattleDecomp
+
 A work-in-progress matching decompilation of **Sonic Battle** for Game Boy Advance.
 The initial target is the USA Rev. 0 release (`BSBE78`).
 
@@ -38,13 +49,18 @@ Sonic Battle's emitted-code evidence before a unit is marked matching.
 
 ## Progress
 
-Ten source-built runtime code objects currently match complete target sections byte-for-byte:
-seven `libgcc` members plus `memcmp`, `memcpy`, and `memset`. The `_udivdi3` translation unit
-also owns its noncontiguous 256-byte `__clz_tab` read-only-data section. Function and data inventories
-outside reconstructed units remain evidence maps rather than reconstructed source.
+The progress badges and generated objdiff report are authoritative; percentages are not copied into
+prose because they become stale. Progress covers the complete 16 MiB ROM and is separated into game,
+SDK, runtime, embedded-payload, read-only-data, and asset categories. Unresolved regions count as
+unmatched rather than disappearing from the denominator.
 
-All 15 linked `libagbsyscall` veneer objects also match their reconstructed ABI-level assembly
-sources completely, including owned alignment and literal-pool data.
+The reconstructed runtime library is complete. Matching SDK work includes all 15 linked
+`libagbsyscall` veneers and the verified Nintendo communication translation units. Every unit marked
+complete must match all of its owned code, alignment, literal-pool, and data sections byte-for-byte.
+
+CI regenerates and validates the objdiff report on every trusted pull request, verifies the rebuilt
+ROM SHA-1, checks the embedded-payload and function maps, and uploads the report as
+`BSBE78_report` for decomp.dev.
 
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.
