@@ -27,6 +27,7 @@ extern void FUN_080496ac(void);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
+extern void FUN_0804a594(void *destination, const void *source, u32 size);
 extern void FUN_0804af6c(struct UnknownListNode *node, const void *data);
 extern u16 FUN_0804afa4(u32 value, u32 divisor);
 extern struct UnknownListNode *FUN_0801f7d0(void (*callback)(struct UnknownListNode *), u32 size,
@@ -332,6 +333,15 @@ extern const void *const *gUnknown_08edb450[];
 extern u16 gUnknown_03001b10[];
 extern void FUN_08034f28(void);
 extern void FUN_08020b74(u32 first, u32 second, const void *data, u32 fourth, u32 fifth);
+extern u32 FUN_08020ad0(const void *data);
+extern const void *gUnknown_08edb9ac[];
+extern const void *gUnknown_08edb9cc[];
+extern const void *gUnknown_08edb9ec[];
+extern const void *gUnknown_08edba0c[];
+extern const void *gUnknown_08edba2c[];
+extern const void *gUnknown_08edba4c[];
+extern u8 gUnknown_0600dfc0[];
+extern const u8 gUnknown_0600da80[];
 extern void FUN_080264d0(struct UnknownListNode *node);
 extern void FUN_080266ac(struct UnknownListNode *node);
 extern void FUN_080279c4(struct UnknownListNode *node);
@@ -2885,4 +2895,57 @@ void FUN_080283c0(struct UnknownListNode *node) {
     node->position->field11 = zero;
     FUN_0801fed8(node->field6, 0);
     node->position->field14 += 4;
+}
+
+void FUN_080283f8(u32 index) {
+    register u32 selectedIndex asm("r5") = index;
+    void *destination = gUnknown_0600dfc0;
+    register const u8 *source asm("r6") = gUnknown_0600da80;
+    register const void *const *table asm("r1");
+    const void *data;
+    u32 i;
+    register u32 entry asm("r0");
+
+    for (i = 0; i <= 20; i++) {
+        FUN_0804a594(destination, source, 16);
+        source += 64;
+    }
+    if (selectedIndex == 0) {
+        return;
+    }
+    switch (gUnknown_03002110.field119) {
+    case 0:
+        table = gUnknown_08edb9ac;
+        break;
+    case 2:
+        table = gUnknown_08edb9ec;
+        break;
+    case 3:
+        table = gUnknown_08edba0c;
+        break;
+    case 4:
+        table = gUnknown_08edba2c;
+        break;
+    case 5:
+        table = gUnknown_08edba4c;
+        break;
+    default:
+        table = gUnknown_08edb9cc;
+        break;
+    }
+    entry = selectedIndex - 1;
+    asm volatile("" : "+r"(entry));
+    data = table[entry];
+    {
+        register u32 width asm("r1") = FUN_08020ad0(data);
+        register u32 halfWidth asm("r0");
+        register u32 x asm("r1");
+
+        asm volatile("" : : "r"(width));
+        halfWidth = width / 2;
+        asm volatile("" : : "r"(halfWidth));
+        x = 88 - halfWidth;
+        asm volatile("" : : "r"(x));
+        FUN_08020b74(x, 0, data, 5, 6);
+    }
 }
