@@ -144,6 +144,82 @@ an honest instruction comparison and does not change the accepted extent. Both f
 confirmed byte-for-byte against the retail ROM outside objdiff, comparing the compiled `.text` bytes
 with the ROM image and excluding only the relocated words.
 
+A display-reset and frame-submit pass then reconstructed `0x08017C5C`, `0x08017C74`,
+`0x08017CB0`, `0x08017CD8` and `0x08017D58`, totaling 138 matching instruction bytes. The two
+clear routines drive DMA3 directly from a stack-local zero value, one filling `0x02000000` and
+`0x03000000` in 32-bit units and one filling VRAM in 16-bit units; the palette routine propagates
+entry 0 across the remaining 511 entries through the SDK `CpuSet` ABI. Both fills only reproduce
+when the stack temporary is `volatile` and the DMA register pointer is materialized after that
+temporary is cleared: retail recomputes `sp` a second time in the 16-bit case, which a
+non-volatile local optimizes away.
+
+The adjacent background-control cluster `0x08017D78`, `0x08017DE8` and `0x08017E5C` follows, adding
+326 matching instruction bytes. All three OR a value into the halfword shadow array at `0x03003178`
+indexed by background layer, then write that entry through to `BG0CNT`-`BG3CNT` with a four-way
+switch, differing only in whether the value is shifted left by 0, 2 or 8. Reproducing them needs the
+shadow array to be `volatile` - retail re-reads the element between the OR and the store, which is
+GCC 2.95's read-back of a volatile assignment used as a statement - and needs the ORed value to pass
+through a `volatile` 16-bit stack temporary, which is why retail truncates with a `strh`/`ldrh`
+round trip instead of the usual shift pair. Each switch branches around four in-function literal
+islands, now mapped as data.
+
+### Accepted starts that are long-branch targets, not functions
+
+An independent Thumb control-flow walk was built for this placeholder to establish extents without
+relying on the analyzer inventory. It follows every reachable basic block from a start, refuses to
+decode or branch into words proven to be literal-pool targets, and stops at `bx`, `pop {..., pc}`
+and at any independently confirmed entry. Calibrated against the thirty functions in this unit whose
+bytes are already verified against the ROM, it reproduces all thirty accepted extents exactly.
+
+Run across the whole placeholder, that walk shows the inventory is mostly sound but contains a
+systematic class of false starts. Nineteen of the 185 accepted starts are not preceded by a return,
+an unconditional branch, or pool/alignment bytes; each sits inside a basic block and therefore
+cannot be a function entry:
+
+`0x080029BC`, `0x0800343E`, `0x080034C2`, `0x08003798`, `0x08003A20`, `0x0800410C`, `0x080043C2`,
+`0x0800B086`, `0x0800BAA6`, `0x0800C780`, `0x0800F028`, `0x08010D5E`, `0x08010F1C`, `0x08010F1E`,
+`0x0801103C`, `0x08011C2E`, `0x08011C32`, `0x08015374`, `0x08016AFE`.
+
+Fifteen of them are recorded with `direct-call` provenance, so a decoded Thumb `BL` really does
+target them. The `BL` is not a call. GCC's Thumb-1 output reaches intra-function labels further away
+than the +/-2 KiB `B` range by emitting `BL` instead, which is safe wherever `lr` is already dead.
+Every decoded `BL` site for these targets is between 2,030 and 12,688 bytes away, and the targets
+themselves are epilogue fragments: `0x0800B086` is `pop {r4, r5, r6}` / `pop {r0}` / `bx r0` with
+four such sites, and `0x08011C2C`-`0x08011C36` is a six-instruction "store 3 and return" tail
+entered at three different offsets from five sites inside `0x080110F0`. None of the fifteen has a
+stored ROM pointer.
+
+The consequence is recorded rather than acted on here: the analyzer's `direct-call` evidence class
+cannot distinguish a call from a long intra-function jump, so every routine in this placeholder that
+contains a far branch is currently split into several entries with extents truncated at the jump
+target. Those routines cannot be matched as units until the inventory separates the two cases. The
+functions matched so far are unaffected - none of them contains a far branch, and each compiled
+symbol size equals its accepted extent.
+
+### Translation-unit boundary status inside the placeholder
+
+Splitting this placeholder was re-examined with whole-executable data rather than by inspection. For
+every IWRAM/EWRAM global, the complete set of accepted functions that reference it was indexed
+across the entire main executable, and every candidate split point was scored by how many
+tightly-clustered globals straddle it. The metric is sound in the negative direction: it is zero at
+all seven independently established object boundaries, and it rules out 113 of the 184 candidate
+splits inside the placeholder. It is not sufficient in the positive direction - 72 candidates also
+score zero, so it cannot select among them.
+
+Only one positive signal stands out. Eleven distinct IWRAM globals in `0x030029C0`-`0x03002C80`
+begin their entire whole-ROM reference run at `0x080110F0`, and several of them
+(`0x030029C0`, `0x03002A80`, `0x03002AD0`, `0x03002B7C`, `0x03002B84`, `0x03002B90`) are referenced
+by no function outside `0x080110F0`-`0x080127D0`. That is consistent with a file-private data block
+belonging to a translation unit starting at `0x080110F0`, but four neighbouring globals in the same
+address range (`0x03002B70`, `0x03002B74`, `0x03002B80`, `0x03002BD0`) are also referenced from
+`0x0801B394`, well outside the placeholder, so the block is not fully private and the run's upper
+edge is not established. Referenced-`.rodata` ordering, which would normally pin object order, does
+not help here: the addresses these functions reference lie in the raw asset area rather than in
+compiler-emitted `.rodata`, and their order does not follow `.text` order.
+
+No split is therefore proposed. The evidence available today excludes many boundaries and confirms
+none, which is the same conclusion the earlier `task.o` audit reached by a different route.
+
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive
