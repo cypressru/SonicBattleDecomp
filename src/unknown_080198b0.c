@@ -15,7 +15,9 @@ typedef void (*UnknownCallback)(void);
 struct UnknownEntity {
     UnknownCallback callback;
     const void *data;
-    u8 filler8[5];
+    u16 field8;
+    u8 filler10[2];
+    u8 field12;
     u8 field13;
     u8 field14;
     u8 field15;
@@ -28,7 +30,11 @@ struct UnknownEntityData {
     u8 field16;
     u8 filler17[3];
     u16 field20;
-    u8 filler22[230];
+    u8 filler22[28];
+    u8 field50;
+    u8 filler51[129];
+    u32 field180;
+    u8 filler184[68];
 };
 
 extern void (*gUnknown_03002030)(void);
@@ -52,9 +58,10 @@ extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
 extern void FUN_0801e044(void);
 extern void FUN_0801e174(void);
+extern void FUN_0801e4f4(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u16 value);
-extern void FUN_0801eea8(void);
+extern void FUN_0801eea8(u8 value);
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -249,11 +256,79 @@ u8 FUN_0801ee4c(u8 value) {
             struct UnknownEntityData *data = gUnknown_03001c40;
 
             if (data[linked].field20 == 53) {
-                entity->callback = FUN_0801eea8;
+                entity->callback = (UnknownCallback)FUN_0801eea8;
                 return 1;
             }
         }
     }
 
     return 0;
+}
+
+void FUN_0801eea8(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+    u8 linked = entity->field15;
+
+    {
+        struct UnknownEntityData *data = gUnknown_03001c40;
+
+        if (data[linked].field20 != 53) {
+            entity->callback = FUN_0801d618;
+        }
+    }
+}
+
+void FUN_0801eee0(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+
+    entity->field8 = (entity->field8 & 0xFF0F) | 0x200;
+    entity->field12 = 0;
+    entity->callback = (UnknownCallback)FUN_0801e4f4;
+}
+
+void FUN_0801f024(u8 value) { gUnknown_03003e10 = value; }
+
+u32 FUN_0801f308(u8 value, u8 other, const u32 **stream) {
+    u32 word = *(*stream)++;
+
+    return FUN_08020160(word >> 16);
+}
+
+u32 FUN_0801f31c(u8 value, u8 other, const u32 **stream) {
+    *stream += 1;
+
+    if ((gUnknown_03001c40[value].field50 & 0xF) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+u32 FUN_0801f3a4(u8 value, u8 other, const u32 **stream) {
+    *stream += 1;
+    return 1;
+}
+
+u32 FUN_0801f3b0(u8 value, u8 other, const u32 **stream) {
+    u32 operand = (*stream)[1];
+    *stream += 2;
+
+    return (gUnknown_03001c40[other].field180 & operand) == 1;
+}
+
+u32 FUN_0801f3e4(u8 value, u8 other, const u32 **stream) {
+    u32 operand = (*stream)[1];
+    *stream += 2;
+
+    return (gUnknown_03001c40[value].field180 & operand) == 1;
+}
+
+u32 FUN_0801f418(u8 value, u8 other, const u32 **stream) {
+    u32 word = *(*stream)++;
+
+    {
+        u16 operand = word >> 16;
+        return gUnknown_03001c40[value].field20 == operand;
+    }
 }
