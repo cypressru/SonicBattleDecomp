@@ -212,6 +212,19 @@ submit), `0x080178D0` (input capture), `0x080179D0` (link setup) and in the OAM 
 `0x08017CF4` and `0x08015FA4`, where the loop-counter initialization is emitted before rather than
 after the last hoisted constant.
 
+A second, related shape accounts for the rest. In `0x0801694C`, `0x0800BAAC` and `0x080066D8` the
+whole body reproduces and only the prologue differs: retail materializes the array base into a
+register before computing the scaled record index, while the pinned agbcc emits that pool load after
+the index arithmetic. `0x0800BAAC` is the clearest measurement - its 68-byte record layout, the
+four slot-release tests against `0x030028C0`, and all forty-odd field initializations in their
+retail order are confirmed, and the single remaining difference is which register holds the base and
+where its `ldr` sits. Parameter type, pointer spelling, and a separate base local were all tried and
+change nothing.
+
+Both shapes are therefore one-instruction divergences over otherwise fully reconstructed functions:
+the field maps, control flow, types and constants are established, and only instruction placement or
+register choice differs. That is the state to resume from rather than re-deriving the semantics.
+
 This is not a compiler-flag effect. The emission is unchanged by `-fno-regmove`,
 `-fno-cse-follow-jumps`, `-fno-expensive-optimizations` and `-fno-strength-reduce`, and the
 `old_agbcc` build produces byte-identical output to the pinned `agbcc`. No flag change is therefore
