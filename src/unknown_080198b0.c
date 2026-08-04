@@ -311,6 +311,30 @@ u16 FUN_0801ef4c(void) {
     return *base + ((random & 0xFFF) * *base >> 12);
 }
 
+u8 FUN_0801ef7c(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+
+    if (entity->field15 == value) {
+        return 1;
+    }
+
+    {
+        struct UnknownEntityData *data = gUnknown_03001c40;
+        u8 linked = entity->field15;
+
+        if (gUnknown_03001c40[value].field54[linked] < 0) {
+            if (data[value].field16 == 0) {
+                return 0;
+            }
+        } else if (data[value].field16 != 0) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 u8 FUN_0801efd4(u8 value) {
     struct UnknownEntity *entities = gUnknown_03003db0;
     struct UnknownEntity *entity = &entities[value];
