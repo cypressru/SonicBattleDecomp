@@ -215,6 +215,22 @@ void m4aSongNumStart(u16 number) {
     MPlayStart(musicPlayer->player, song->header);
 }
 
+void m4aSongNumStartOrChange(u16 number) {
+    const struct MusicPlayer *musicPlayerTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[number];
+    const struct MusicPlayer *musicPlayer = &musicPlayerTable[song->playerIndex];
+
+    if (musicPlayer->player->songHeader != song->header) {
+        MPlayStart(musicPlayer->player, song->header);
+    } else {
+        if ((musicPlayer->player->status & 0xFFFF) == 0 ||
+            (musicPlayer->player->status & 0x80000000)) {
+            MPlayStart(musicPlayer->player, song->header);
+        }
+    }
+}
+
 void m4aSongNumStartOrContinue(u16 number) {
     const struct MusicPlayer *musicPlayerTable = gMPlayTable;
     const struct Song *songTable = gSongTable;

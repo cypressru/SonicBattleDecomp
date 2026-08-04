@@ -614,6 +614,7 @@ units:
       m4aMPlayLFOSpeedSet: 0x6E
       m4aSoundMain: 0x0A
       m4aSongNumStart: 0x24
+      m4aSongNumStartOrChange: 0x4A
       m4aSongNumStartOrContinue: 0x54
       m4aSongNumStop: 0x2A
       m4aSongNumContinue: 0x2A
@@ -650,7 +651,7 @@ units:
       - { offset: 0x118, type: thumb_call, symbol: MPlayStart }
       - { offset: 0x120, type: abs32, symbol: gMPlayTable }
       - { offset: 0x124, type: abs32, symbol: gSongTable }
-      - { offset: 0x136, type: thumb_call, symbol: MPlayStart }
+      - { offset: 0x138, type: thumb_call, symbol: MPlayStart }
       - { offset: 0x164, type: thumb_call, symbol: MPlayStart }
       - { offset: 0x16C, type: abs32, symbol: gMPlayTable }
       - { offset: 0x170, type: abs32, symbol: gSongTable }
