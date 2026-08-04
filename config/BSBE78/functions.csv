@@ -1117,7 +1117,6 @@ address,name,mode,confidence
 0x08041F84,FUN_08041f84,thumb,rom-pointer
 0x08042044,FUN_08042044,thumb,rom-pointer
 0x080420DC,FUN_080420dc,thumb,rom-pointer
-0x0804212A,FUN_0804212a,thumb,rom-pointer
 0x08042180,FUN_08042180,thumb,rom-pointer
 0x0804224C,FUN_0804224c,thumb,direct-call
 0x0804230C,FUN_0804230c,thumb,rom-pointer
