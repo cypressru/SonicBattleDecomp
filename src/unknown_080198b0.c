@@ -340,6 +340,8 @@ extern u8 gUnknown_030051f0;
 extern struct Unknown16ByteRecord gUnknown_030016fc[];
 extern void FUN_08027b84(struct UnknownListNode *node);
 extern void FUN_08027d18(struct UnknownListNode *node);
+extern void FUN_080274ac(struct UnknownListNode *node);
+extern void FUN_080217d0(u32 value);
 extern void FUN_0801f89c(void);
 extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
@@ -2459,4 +2461,20 @@ void FUN_08027d18(struct UnknownListNode *node) {
     gUnknown_03005248 = value;
     FUN_0801f718(31, 60);
     node->data = FUN_08026d6c;
+}
+
+void FUN_08027d54(struct UnknownListNode *node) {
+    u32 value;
+
+    gUnknown_03001b1c.type = 9;
+    gUnknown_03001b1c.index = gUnknown_030051f0;
+    gUnknown_03001b1c.value = gUnknown_03004df0[gUnknown_03004de0];
+    value = FUN_0801f9e8(0x3579);
+    gUnknown_03005248 = value;
+    if (node->position->field15 != 0) {
+        node->position->field15--;
+    } else {
+        FUN_080217d0(0);
+        node->data = FUN_080274ac;
+    }
 }
