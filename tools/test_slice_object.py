@@ -84,6 +84,124 @@ class SliceObjectRelocationTests(unittest.TestCase):
             self.assertIn((8, "$d"), mapping_symbols)
             self.assertIn((10, "$t"), mapping_symbols)
 
+    def test_emits_text_section_relocation_with_addend(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            source = directory / "input.bin"
+            output = directory / "output.o"
+            source.write_bytes(b"\0" * 8)
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/slice_object.py"),
+                    str(source),
+                    str(output),
+                    "0",
+                    "8",
+                    "code",
+                    "Function:0:thumb:8",
+                    "@rel:4:abs32:.text:6",
+                ],
+                check=True,
+            )
+
+            data = output.read_bytes()
+            header = struct.unpack_from("<16sHHIIIIIHHHHHH", data)
+            sections = [
+                struct.unpack_from("<IIIIIIIIII", data, header[6] + index * header[11])
+                for index in range(header[12])
+            ]
+            text = sections[1]
+            self.assertEqual(data[text[4] + 4 : text[4] + 8], struct.pack("<I", 6))
+
+            relocation = struct.unpack_from("<II", data, sections[2][4])
+            self.assertEqual(relocation, (4, (1 << 8) | 2))
+            section_symbol = struct.unpack_from("<IIIBBH", data, sections[3][4] + 16)
+            self.assertEqual(section_symbol[3:], (3, 0, 1))
+
+    def test_emits_bss_section_relocation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            source = directory / "input.bin"
+            output = directory / "output.o"
+            source.write_bytes(b"\0" * 4)
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/slice_object.py"),
+                    str(source),
+                    str(output),
+                    "0",
+                    "4",
+                    "code",
+                    "Function:0:thumb:4",
+                    "@rel:0:abs32:.bss",
+                    "@section:.bss:6",
+                ],
+                check=True,
+            )
+
+            data = output.read_bytes()
+            header = struct.unpack_from("<16sHHIIIIIHHHHHH", data)
+            self.assertEqual((header[12], header[13]), (7, 6))
+            sections = [
+                struct.unpack_from("<IIIIIIIIII", data, header[6] + index * header[11])
+                for index in range(header[12])
+            ]
+            self.assertEqual((sections[3][1], sections[3][5]), (8, 6))
+            relocation = struct.unpack_from("<II", data, sections[2][4])
+            self.assertEqual(relocation, (0, (1 << 8) | 2))
+            section_symbol = struct.unpack_from("<IIIBBH", data, sections[4][4] + 16)
+            self.assertEqual(section_symbol[3:], (3, 0, 3))
+
+    def test_relocation_resolves_to_defined_local_symbol(self):
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            source = directory / "input.bin"
+            output = directory / "output.o"
+            source.write_bytes(b"\0" * 8)
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/slice_object.py"),
+                    str(source),
+                    str(output),
+                    "0",
+                    "8",
+                    "code",
+                    "Caller:0:thumb:4",
+                    "Callee:4:thumb:4",
+                    "@rel:0:thumb_call:Callee",
+                    "@local:Callee",
+                ],
+                check=True,
+            )
+
+            data = output.read_bytes()
+            header = struct.unpack_from("<16sHHIIIIIHHHHHH", data)
+            sections = [
+                struct.unpack_from("<IIIIIIIIII", data, header[6] + index * header[11])
+                for index in range(header[12])
+            ]
+            symbols = sections[3]
+            strings = sections[symbols[6]]
+            string_data = data[strings[4] : strings[4] + strings[5]]
+            callee_index = None
+            for index, offset in enumerate(
+                range(symbols[4], symbols[4] + symbols[5], symbols[9])
+            ):
+                name_offset, _value, _size, info = struct.unpack_from("<IIIB", data, offset)
+                end = string_data.index(b"\0", name_offset)
+                if string_data[name_offset:end] == b"Callee":
+                    callee_index = index
+                    self.assertEqual(info >> 4, 0)
+            self.assertIsNotNone(callee_index)
+            _offset, relocation_info = struct.unpack_from("<II", data, sections[2][4])
+            self.assertEqual(relocation_info >> 8, callee_index)
+
     def test_rejects_relocation_outside_slice(self):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)

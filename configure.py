@@ -201,11 +201,19 @@ def main() -> None:
                 spec += f":{int(symbol['size'])}"
             symbol_specs.append(spec)
         for relocation in unit.get("relocations", []):
-            symbol_specs.append(
-                f"@rel:{int(relocation['offset'])}:{relocation['type']}:{relocation['symbol']}"
+            spec = (
+                f"@rel:{int(relocation['offset'])}:{relocation['type']}:"
+                f"{relocation['symbol']}"
             )
+            if "addend" in relocation:
+                spec += f":{int(relocation['addend'])}"
+            symbol_specs.append(spec)
         for mapping in unit.get("mappings", []):
             symbol_specs.append(f"@map:{int(mapping['offset'])}:{mapping['mode']}")
+        for section in unit.get("synthetic_sections", []):
+            symbol_specs.append(f"@section:{section['name']}:{int(section['size'])}")
+        for symbol_name in unit.get("local_symbols", []):
+            symbol_specs.append(f"@local:{symbol_name}")
         if not unit.get("auto_generated", False) and not symbol_specs:
             symbol_name = unit["name"].rsplit("/", 1)[-1]
             symbol_specs.append(f"{symbol_name}:{int(unit['start'])}:thumb")

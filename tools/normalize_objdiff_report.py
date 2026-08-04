@@ -29,7 +29,24 @@ def amount(measures: dict[str, object], key: str) -> int:
 def normalize_unit(unit: dict[str, object]) -> None:
     measures = unit.setdefault("measures", {})
     assert isinstance(measures, dict)
-    section_total = sum(int(section.get("size", 0)) for section in unit.get("sections", []))
+    # NOBITS storage has a runtime address but occupies no bytes in the ROM.
+    non_rom_names = {".bss"}
+    non_rom_sections = [
+        section for section in unit.get("sections", []) if section.get("name") in non_rom_names
+    ]
+    if any(float(section.get("fuzzy_match_percent", 0.0)) != 100.0 for section in non_rom_sections):
+        raise ValueError(f"{unit.get('name', 'unit')}: synthetic section does not match")
+    non_rom_total = sum(int(section.get("size", 0)) for section in non_rom_sections)
+    if non_rom_total:
+        total_data = amount(measures, "total_data")
+        if non_rom_total > total_data:
+            raise ValueError(f"{unit.get('name', 'unit')}: synthetic sections exceed data total")
+        measures["total_data"] = str(total_data - non_rom_total)
+    section_total = sum(
+        int(section.get("size", 0))
+        for section in unit.get("sections", [])
+        if section.get("name") not in non_rom_names
+    )
     measured_total = amount(measures, "total_code") + amount(measures, "total_data")
     if section_total < measured_total:
         raise ValueError(f"{unit.get('name', 'unit')}: measures exceed owned sections")

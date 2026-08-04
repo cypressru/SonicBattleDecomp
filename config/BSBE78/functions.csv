@@ -215,7 +215,6 @@ address,name,mode,confidence
 0x08018C20,FUN_08018c20,thumb,direct-call+public-multisiosync-order
 0x08018C3C,FUN_08018c3c,thumb,direct-call+public-multisiosync-order
 0x08018C8C,MultiBootMain,thumb,direct-call+sa2-object-correlation
-0x0801915A,FUN_0801915a,thumb,rom-pointer
 0x080191A8,MultiBootSend,thumb,direct-call+sa2-object-correlation
 0x08019220,MultiBootStartProbe,thumb,direct-call+sa2-relocation-masked-byte-match
 0x08019274,MultiBootStartMaster,thumb,direct-call+sa2-relocation-masked-byte-match

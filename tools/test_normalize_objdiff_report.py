@@ -80,6 +80,31 @@ class NormalizeObjdiffReportTest(unittest.TestCase):
         self.assertEqual(measures["matched_data_percent"], 100.0)
         self.assertEqual(measures["complete_data_percent"], 100.0)
 
+    def test_synthetic_non_rom_section_is_excluded_from_coverage(self):
+        report = {
+            "measures": {},
+            "units": [{
+                "name": "engine/multi_boot",
+                "measures": {
+                    "total_code": "4",
+                    "total_data": "8",
+                    "matched_code_percent": 100.0,
+                    "matched_data_percent": 100.0,
+                },
+                "sections": [
+                    {"name": ".text", "size": "6", "fuzzy_match_percent": 100.0},
+                    {"name": ".bss", "size": "6", "fuzzy_match_percent": 100.0},
+                ],
+                "metadata": {},
+            }],
+            "categories": [],
+        }
+        normalize(report)
+        measures = report["units"][0]["measures"]
+        self.assertEqual(measures["total_code"], "4")
+        self.assertEqual(measures["total_data"], "2")
+        self.assertEqual(report["measures"]["total_data"], "2")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -165,6 +165,13 @@ exactly at `0x19568`. The following 0x348-byte serial-loader object begins with 
 size, order, offset, and byte correlations establish both object boundaries. Names that did not
 individually byte-match are recorded as object-order correlations rather than direct matches.
 
+Compiling the reconstructed `multi_boot` source with agbcc `-O2 -mthumb-interwork` reproduces the
+complete 0x8DC-byte `.text` section and its six-byte static `.bss` object. All eight functions,
+literal pools, calls, switch-table section relocations, and BSS relocations match the retail object.
+The halfword at `0x1915A` is part of `MultiBootMain` after an inline literal pool, not a separate
+function: it resumes with live registers and shares the enclosing function's epilogue. The corrected
+`MultiBootMain` extent is therefore `0x18C8C-0x191A8`.
+
 The retained `MultiSioSync4Sio32Load020820` string identifies the serial library revision used by
 Sonic Battle. A [public reconstruction of the same MultiSioSync family](https://github.com/testyourmine/cvaos/blob/bc23d849d578c35ae12a5cec4e66549c3021a5be/src/agb_multi_sio_sync.c)
 at cvaos commit `bc23d849d578c35ae12a5cec4e66549c3021a5be` independently correlates the register operations,

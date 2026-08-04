@@ -130,8 +130,90 @@ units:
   - name: engine/multi_boot
     start: 0x018C8C
     end: 0x019568
-    category: game
+    category: sdk
     function_map: config/BSBE78/functions.csv
+    source: src/multi_boot.c
+    complete: true
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      MultiBootMain: 0x51C
+      MultiBootSend: 0x6A
+      MultiBootInit: 0x2C
+      MultiBootWaitSendDone: 0x40
+    synthetic_sections:
+      - { name: .bss, size: 0x6 }
+    local_symbols:
+      - MultiBootSend
+      - MultiBootHandShake
+      - MultiBootWaitSendDone
+    mappings:
+      - { offset: 0x6E, mode: data }
+      - { offset: 0x80, mode: thumb }
+      - { offset: 0xEA, mode: data }
+      - { offset: 0xFC, mode: thumb }
+      - { offset: 0x16A, mode: data }
+      - { offset: 0x17C, mode: thumb }
+      - { offset: 0x1D0, mode: data }
+      - { offset: 0x1D4, mode: thumb }
+      - { offset: 0x23A, mode: data }
+      - { offset: 0x244, mode: thumb }
+      - { offset: 0x286, mode: data }
+      - { offset: 0x290, mode: thumb }
+      - { offset: 0x2F8, mode: data }
+      - { offset: 0x300, mode: thumb }
+      - { offset: 0x36E, mode: data }
+      - { offset: 0x374, mode: thumb }
+      - { offset: 0x3A2, mode: data }
+      - { offset: 0x3B4, mode: thumb }
+      - { offset: 0x416, mode: data }
+      - { offset: 0x41C, mode: thumb }
+      - { offset: 0x44A, mode: data }
+      - { offset: 0x45C, mode: thumb }
+      - { offset: 0x4C0, mode: data }
+      - { offset: 0x4D0, mode: thumb }
+      - { offset: 0x4F8, mode: data }
+      - { offset: 0x508, mode: thumb }
+      - { offset: 0x51A, mode: data }
+      - { offset: 0x546, mode: data }
+      - { offset: 0x554, mode: thumb }
+      - { offset: 0x586, mode: data }
+      - { offset: 0x594, mode: thumb }
+      - { offset: 0x5C8, mode: data }
+      - { offset: 0x5D8, mode: thumb }
+      - { offset: 0x644, mode: data }
+      - { offset: 0x654, mode: thumb }
+      - { offset: 0x690, mode: data }
+      - { offset: 0x6A4, mode: thumb }
+      - { offset: 0x6C6, mode: data }
+      - { offset: 0x6F0, mode: thumb }
+      - { offset: 0x7AE, mode: data }
+      - { offset: 0x7B4, mode: thumb }
+      - { offset: 0x7FA, mode: data }
+      - { offset: 0x800, mode: thumb }
+      - { offset: 0x82C, mode: data }
+      - { offset: 0x83C, mode: thumb }
+      - { offset: 0x870, mode: data }
+      - { offset: 0x880, mode: thumb }
+      - { offset: 0x8D4, mode: data }
+    relocations:
+      - { offset: 0x0E, type: thumb_call, symbol: MultiBootCheckComplete }
+      - { offset: 0xA6, type: thumb_call, symbol: MultiBootCheckComplete }
+      - { offset: 0xB2, type: thumb_call, symbol: MultiBootCheckComplete }
+      - { offset: 0x1CA, type: thumb_call, symbol: MultiBootStartProbe }
+      - { offset: 0x23C, type: abs32, symbol: .bss }
+      - { offset: 0x288, type: abs32, symbol: .bss }
+      - { offset: 0x2F8, type: abs32, symbol: .bss }
+      - { offset: 0x35A, type: thumb_call, symbol: MultiBoot }
+      - { offset: 0x6C8, type: abs32, symbol: .text, addend: 0x6CC }
+      - { offset: 0x6CC, type: abs32, symbol: .text, addend: 0x6F0 }
+      - { offset: 0x6D0, type: abs32, symbol: .text, addend: 0x6F0 }
+      - { offset: 0x6D4, type: abs32, symbol: .text, addend: 0x6F0 }
+      - { offset: 0x6D8, type: abs32, symbol: .text, addend: 0x6F0 }
+      - { offset: 0x6DC, type: abs32, symbol: .text, addend: 0x6FA }
+      - { offset: 0x6E0, type: abs32, symbol: .text, addend: 0x700 }
+      - { offset: 0x6E4, type: abs32, symbol: .text, addend: 0x700 }
+      - { offset: 0x6E8, type: abs32, symbol: .text, addend: 0x700 }
+      - { offset: 0x6EC, type: abs32, symbol: .text, addend: 0x700 }
   - name: engine/sio32_multi_load
     start: 0x019568
     end: 0x0198B0
