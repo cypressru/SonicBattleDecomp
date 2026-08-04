@@ -307,6 +307,17 @@ usual `thumb_reorg` position, so it will need that many code/data mapping pairs.
 `0x03001C40`, `0x03001374`, `0x03001B24`, `0x03002100`, `0x03001370`, the record displacement 758,
 and the four range constants -1025, -3073, -5121 and 2046.
 
+A first reconstruction of that shape compiles to the right size, 624 bytes including the trailing
+pool, and differs in 145 bytes spread over 28 runs. Most of those runs are one or two halfwords and
+are a single register renumbering: retail holds the index in `r5` and `index * 64` in `r6`, one
+higher than the pinned agbcc, which suggests retail has one more pseudo competing for `r4`. Two runs
+are structural and are where the work should resume - 40 and 38 halfwords covering
+`0x0800686E-0x080068D2`, the four larger-of-two cases. Retail loads both records' halfword twice
+each, once with `ldrh` for the value and once with `ldrsh` for the comparison, and then cross-jumps
+only the final `strh`, so each arm keeps its own literal-pool word for `0x03002100`. Writing the
+comparison as a `?:` or hoisting the other record into a pointer both move further away: a `record`
+pointer local for the indexed accesses costs another 24 bytes and loses the head entirely.
+
 ### Accepted starts that are long-branch targets, not functions
 
 An independent Thumb control-flow walk was built for this placeholder to establish extents without
