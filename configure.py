@@ -12,6 +12,7 @@ from pathlib import Path
 import yaml
 
 from tools.m4a_map import derive_m4a_ranges
+from tools.raw_asset_map import derive_raw_asset_ranges
 
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config/BSBE78/config.yml"
@@ -38,6 +39,17 @@ def main() -> None:
     if data[clz_table_start : clz_table_start + 0x100] != expected_clz_table:
         fail("unexpected libgcc __clz_tab contents")
 
+    function_ends: dict[int, int] = {}
+    function_size_map = config.get("function_size_map")
+    if function_size_map:
+        with (ROOT / function_size_map).open(newline="", encoding="utf-8") as stream:
+            for row in csv.DictReader(stream):
+                start = int(row["address"], 0) - 0x08000000
+                end = int(row["end"], 0) - 0x08000000
+                if end <= start:
+                    fail(f"invalid function extent at 0x{start + 0x08000000:08X}")
+                function_ends[start] = end
+
     configured_units = []
     for unit in config["units"]:
         range_map = unit.get("range_map")
@@ -48,6 +60,9 @@ def main() -> None:
             rows = list(csv.DictReader(stream))
         if unit.get("derive_m4a_ranges"):
             rows.extend(derive_m4a_ranges(data))
+        if unit.get("derive_raw_asset_ranges"):
+            rows.extend(derive_raw_asset_ranges(data, function_ends))
+        if unit.get("derive_m4a_ranges") or unit.get("derive_raw_asset_ranges"):
             rows.sort(key=lambda row: int(row["address"], 0))
             addresses = [int(row["address"], 0) for row in rows]
             if len(addresses) != len(set(addresses)):
@@ -59,25 +74,15 @@ def main() -> None:
             end = starts[index + 1] if index + 1 < len(starts) else int(unit["end"])
             is_asset = row["name"].startswith(("lz77_asset_", "raw_asset_"))
             derived_unit = {
-                    "name": f"{'assets' if is_asset else 'rodata'}/{row['name']}",
-                    "start": start,
-                    "end": end,
-                    "category": "assets" if is_asset else "rodata",
-                    "kind": "rodata",
-                    "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
-                }
+                "name": f"{'assets' if is_asset else 'rodata'}/{row['name']}",
+                "start": start,
+                "end": end,
+                "category": "assets" if is_asset else "rodata",
+                "kind": "rodata",
+                "symbols": [{"name": row["name"], "address": start, "mode": "data"}],
+            }
             derived_unit.update(config.get("range_overrides", {}).get(row["name"], {}))
             configured_units.append(derived_unit)
-    function_ends: dict[int, int] = {}
-    function_size_map = config.get("function_size_map")
-    if function_size_map:
-        with (ROOT / function_size_map).open(newline="", encoding="utf-8") as stream:
-            for row in csv.DictReader(stream):
-                start = int(row["address"], 0) - 0x08000000
-                end = int(row["end"], 0) - 0x08000000
-                if end <= start:
-                    fail(f"invalid function extent at 0x{start + 0x08000000:08X}")
-                function_ends[start] = end
     build_dir = ROOT / "build" / config["version"]
     build_dir.mkdir(parents=True, exist_ok=True)
     units = []

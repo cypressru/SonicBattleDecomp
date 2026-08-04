@@ -68,8 +68,13 @@ its 16-byte header, with its following alignment or inter-record gap represented
 song table also establishes 249 distinct validated song-header starts. `configure.py` derives these
 target units from the verified ROM and rejects unexpected counts, pointer ranges, record strides,
 sample sizes, overlaps, or song headers. The preceding `0x3F4418-0xBF2118` raw graphics/asset tail
-and most of the tail following the final known song start still require finer format-specific
-parsing. The latter tail now excludes the exact 256-byte compiler `__clz_tab` at
+is now split at 152 aligned ROM targets read from literal pools and other owned non-instruction
+bytes in the executable. Source sites inside accepted instruction extents are excluded, preventing
+pixel words that happen to resemble `0x08xxxxxx` pointers from becoming evidence. These are proven
+symbol starts inside the raw asset area, not yet claims that every resulting interval is one
+semantic asset; format-specific parsing must refine them further. Most of the tail following the
+final known song start also remains coarse. That tail now excludes the exact 256-byte compiler
+`__clz_tab` at
 `0xED66A8-0xED67A8`: its bytes uniquely match `_udivdi3.o` from the pinned source-built `libgcc`
 archive and are independently validated as the complete 0-through-255 bit-length table. The compact
 reconstruction in `src/libgcc/clz_tab.c` compiles to a byte-identical `.rodata` base section.
