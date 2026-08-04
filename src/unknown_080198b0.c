@@ -54,6 +54,8 @@ extern u8 gUnknown_0300537c;
 extern const u8 gUnknown_081734d8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
+extern void FUN_08043e5c(void);
+extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
 extern void FUN_0802ea64(u8 value);
 extern void FUN_080375d8(u8 value);
@@ -167,7 +169,8 @@ struct UnknownQueuedValue {
 struct UnknownPoolNode404ec {
     u8 field0;
     u8 next;
-    u8 padding2[2];
+    u8 padding2;
+    u8 field3;
     const void *data;
     u8 padding8[36];
 };
@@ -195,6 +198,25 @@ struct UnknownState41f24 {
     u8 field24;
     u8 padding25[2];
     u8 selector;
+};
+
+struct UnknownState420dc {
+    u8 padding0[2];
+    u8 field2;
+    u8 padding3;
+    const void *callback;
+    u8 padding8[2];
+    u16 field10;
+    u8 padding12[2];
+    u16 field14;
+    u8 padding16[9];
+    u8 poolIndex;
+    u8 padding26;
+    u8 fade;
+    u8 padding28[2];
+    u16 baseX;
+    u8 padding32[2];
+    u16 baseY;
 };
 
 struct UnknownRecord41f24 {
@@ -405,6 +427,8 @@ struct UnknownGlobalRenderState {
 };
 
 extern struct UnknownGlobalRenderState gUnknown_03005440;
+extern u16 gUnknown_03005490;
+extern u16 gUnknown_03005494;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
 extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
@@ -6533,4 +6557,30 @@ void FUN_08041f24(struct UnknownState41f24 *state) {
         state->field24 = 0x2c;
     }
     state->callback = (const void *)((u32)FUN_08041e2c + 1);
+}
+
+void FUN_080420dc(struct UnknownState420dc *state) {
+    if ((gUnknown_03005440.field8 & 0x200) != 0) {
+        state->callback = (const void *)((u32)FUN_08043f2c + 1);
+        FUN_0804af6c((struct UnknownListNode *)state, state->callback);
+        return;
+    }
+
+    if (gUnknown_0300547c[state->poolIndex].field3 != 0) {
+        state->fade++;
+        if (state->fade > 16) {
+            state->fade = 16;
+        }
+    } else {
+        if (state->fade == 0) {
+            state->callback = (const void *)((u32)FUN_08043e5c + 1);
+            return;
+        }
+        state->fade--;
+    }
+
+    FUN_0801fba0(0x52, state->fade | ((16 - state->fade) << 8));
+    state->field10 = state->baseX - gUnknown_03005494;
+    state->field14 = state->baseY - gUnknown_03005490;
+    FUN_080405a8(state->field2, 2);
 }
