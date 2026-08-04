@@ -64,6 +64,14 @@ def derive_m4a_ranges(data: bytes) -> list[dict[str, str]]:
         if not 0 <= track_count <= 16 or not VOICEGROUP_START <= voicegroup < VOICEGROUP_END:
             raise ValueError(f"invalid M4A song header at 0x{pointer:X}")
 
+    voicegroups = sorted({word(data, pointer + 4) - ROM_BASE for pointer in unique_songs})
+    if len(voicegroups) != 16 or voicegroups[0] != VOICEGROUP_START:
+        raise ValueError("unexpected M4A voicegroup inventory")
+    for index, pointer in enumerate(voicegroups):
+        end = voicegroups[index + 1] if index + 1 < len(voicegroups) else VOICEGROUP_END
+        if (end - pointer) % 12:
+            raise ValueError(f"voicegroup at 0x{pointer:X} is not an array of ToneData records")
+
     rows = [
         {"address": hex(ROM_BASE + MPLAY_TABLE_START), "name": "gMPlayTable", "mode": "data", "confidence": "m4a-structure"},
         {"address": hex(ROM_BASE + SONG_TABLE_START), "name": "gSongTable", "mode": "data", "confidence": "m4a-structure"},
@@ -72,22 +80,34 @@ def derive_m4a_ranges(data: bytes) -> list[dict[str, str]]:
     rows.extend(
         {
             "address": hex(ROM_BASE + pointer),
-            "name": f"raw_asset_m4a_sample_{index:03d}",
+            "name": f"m4a_voicegroup_{index:03d}",
             "mode": "data",
-            "confidence": "voicegroup-wave-pointer",
+            "confidence": "song-header-pointer+tone-record-size",
         }
-        for index, pointer in enumerate(sample_pointers)
+        for index, pointer in enumerate(voicegroups[1:], start=1)
     )
-    last_sample = sample_pointers[-1]
-    last_sample_end = last_sample + 16 + word(data, last_sample + 12)
-    rows.append(
-        {
-            "address": hex(ROM_BASE + last_sample_end),
-            "name": "raw_asset_m4a_sample_tail_gap",
-            "mode": "data",
-            "confidence": "wave-size",
-        }
-    )
+    for index, pointer in enumerate(sample_pointers):
+        rows.append(
+            {
+                "address": hex(ROM_BASE + pointer),
+                "name": f"raw_asset_m4a_sample_{index:03d}",
+                "mode": "data",
+                "confidence": "voicegroup-wave-pointer+wave-size",
+            }
+        )
+        record_end = pointer + 16 + word(data, pointer + 12)
+        next_pointer = sample_pointers[index + 1] if index + 1 < len(sample_pointers) else FIRST_SONG
+        if record_end > next_pointer:
+            raise ValueError(f"overlapping WaveData record at 0x{pointer:X}")
+        if record_end < next_pointer:
+            rows.append(
+                {
+                    "address": hex(ROM_BASE + record_end),
+                    "name": f"data_gap_m4a_sample_{index:03d}",
+                    "mode": "data",
+                    "confidence": "wave-size",
+                }
+            )
     rows.extend(
         {
             "address": hex(ROM_BASE + pointer),

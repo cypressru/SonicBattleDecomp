@@ -534,4 +534,4 @@ address,name,mode,confidence
 0x08BF237C,gCgb3Vol,data,sdk-table-correlation
 0x08BF238C,gClockTable,data,sdk-table-correlation
 0x08BF23C0,gXcmdTable,data,sdk-table-correlation
-0x08BF23F0,raw_asset_m4a_voicegroups_and_audio,data,m4a-tone-data-start
+0x08BF23F0,m4a_voicegroup_000,data,song-header-pointer+tone-record-size

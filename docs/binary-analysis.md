@@ -56,12 +56,14 @@ ordered `.rodata` and asset inputs. The terminal raw-asset area is split at `0xB
 M4A event jump table begins. The SDK-correlated table sequence has exact boundaries through
 `gXcmdTable` at `0xBF23C0-0xBF23F0`; the bytes at `0xBF23F0` begin M4A tone/voicegroup records.
 The six-entry `gMPlayTable` occupies `0xBF71FC-0xBF7244`, followed by the 833-entry
-`gSongTable` through `0xBF8C4C`. Voicegroup references establish 437 distinct `WaveData` starts,
-and the song table establishes 249 distinct validated song-header starts. `configure.py` derives
-those target units from the verified ROM and rejects unexpected counts, pointer ranges, sample
-sizes, or song headers. The preceding `0x3F4418-0xBF2118` raw graphics/asset tail, internal
-voicegroup boundaries, and the tail following the final known song start still require finer
-format-specific parsing.
+`gSongTable` through `0xBF8C4C`. Song headers establish 16 distinct voicegroup starts; every
+resulting range through `0xBF71FC` is an exact multiple of the 12-byte `ToneData` record. Voicegroup
+references establish 437 distinct `WaveData` starts. Each sample object ends at the size encoded in
+its 16-byte header, with its following alignment or inter-record gap represented separately. The
+song table also establishes 249 distinct validated song-header starts. `configure.py` derives these
+target units from the verified ROM and rejects unexpected counts, pointer ranges, record strides,
+sample sizes, overlaps, or song headers. The preceding `0x3F4418-0xBF2118` raw graphics/asset tail
+and the tail following the final known song start still require finer format-specific parsing.
 
 The embedded payload is split further into its GBA header, three-symbol ARM bootstrap, six
 consecutive validated LZ77 streams, and trailing zero padding. `tools/check_payload_map.py`
