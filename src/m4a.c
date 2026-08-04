@@ -100,6 +100,7 @@ struct SoundMixerState {
     void (*cgbOscOff)(u8 channel);
     u8 padding48[32];
     struct MixerSource channels[12];
+    u8 pcmBuffer[0x630];
 };
 
 extern void SoundMain(void);
@@ -110,6 +111,7 @@ extern u8 gNumMusicPlayers[];
 extern void FUN_08049544(u32 mode);
 extern struct SoundMixerState *gSoundInfo;
 extern void MP2KPlayerMain(void);
+extern void CpuSet(const void *source, void *destination, u32 mode);
 extern void (*gMPlayJumpTable34)(void *);
 extern void (*gMPlayJumpTable35)(void *);
 extern void (*gMPlayJumpTable0)(void *, void *);
@@ -121,6 +123,7 @@ void MPlayStart(struct MP2KPlayerState *player, const void *songHeader);
 void MPlayOpen(struct MP2KPlayerState *player, struct MP2KTrack *tracks, u8 trackCount);
 void m4aSoundVSync(void);
 void SoundClear(void);
+void m4aSoundVSyncOff(void);
 
 void m4aSoundMain(void) { SoundMain(); }
 
@@ -343,6 +346,26 @@ void SoundClear(void) {
         }
     }
     soundInfo->lockStatus = 0x68736D53;
+}
+
+void m4aSoundVSyncOff(void) {
+    struct SoundMixerState *soundInfo = gSoundInfo;
+    u32 zero;
+
+    if (soundInfo->lockStatus - 0x68736D53 <= 1) {
+        soundInfo->lockStatus += 10;
+        *(volatile u16 *)0x04000102 = 0;
+        if (*(volatile u32 *)0x040000C4 & 0x02000000) {
+            *(volatile u32 *)0x040000C4 = 0x84400004;
+        }
+        if (*(volatile u32 *)0x040000D0 & 0x02000000) {
+            *(volatile u32 *)0x040000D0 = 0x84400004;
+        }
+        *(volatile u16 *)0x040000C6 = 0x0400;
+        *(volatile u16 *)0x040000D2 = 0x0400;
+        zero = 0;
+        CpuSet(&zero, soundInfo->pcmBuffer, 0x05000318);
+    }
 }
 
 void FadeOutBody(struct MP2KPlayerState *player) {

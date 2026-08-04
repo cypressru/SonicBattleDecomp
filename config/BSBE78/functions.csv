@@ -1265,7 +1265,7 @@ address,name,mode,confidence
 0x080494D8,FUN_080494d8,thumb,rom-pointer+direct-call
 0x08049544,FUN_08049544,thumb,direct-call
 0x080495D8,SoundClear,thumb,recursive-disassembly+sdk-correlation
-0x0804962C,FUN_0804962c,thumb,direct-call
+0x0804962C,m4aSoundVSyncOff,thumb,direct-call+sdk-correlation
 0x080496AC,FUN_080496ac,thumb,direct-call
 0x08049724,m4aSoundVSync,thumb,direct-call+sdk-correlation
 0x080497A4,MPlayOpen,thumb,direct-call+sdk-correlation
