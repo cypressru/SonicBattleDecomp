@@ -1,0 +1,25 @@
+# Original game material (never commit)
+rom/*
+!rom/.gitkeep
+baserom*.gba
+*.gba
+
+# Generated reverse-engineering artifacts
+asm/
+assets/
+build/
+expected/
+objdiff.json
+compile_commands.json
+
+# Downloaded/build toolchains
+tools/agbcc/
+tools/binutils/
+tools/objdiff/
+
+# Python/editor state
+__pycache__/
+*.py[cod]
+.venv/
+.vscode/
+.idea/

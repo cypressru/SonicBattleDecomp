@@ -1,0 +1,42 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject proprietary and generated files
+        run: python tools/check_no_proprietary.py
+      - name: Validate Python syntax
+        run: python -m compileall -q configure.py tools
+
+  build:
+    if: ${{ vars.DECOMP_BUILD_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Restore base ROM
+        env:
+          BASEROM_B64: ${{ secrets.BASEROM_B64 }}
+        run: mkdir -p rom && printf '%s' "$BASEROM_B64" | base64 -d > rom/baserom.gba
+      - run: python configure.py
+      - run: ninja
+      - run: sha1sum -c config/BSBE78/build.sha1
+      - name: Install objdiff CLI
+        run: |
+          curl -L -o objdiff-cli https://github.com/encounter/objdiff/releases/download/v3.7.3/objdiff-cli-linux-x86_64
+          chmod +x objdiff-cli
+      - name: Generate objdiff report
+        run: ./objdiff-cli report generate -o build/report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BSBE78_report
+          path: build/report.json

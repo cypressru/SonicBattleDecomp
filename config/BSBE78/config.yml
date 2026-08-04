@@ -1,0 +1,14 @@
+version: BSBE78
+name: Sonic Battle (USA, Rev. 0)
+platform: gba
+rom: rom/baserom.gba
+sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
+rom_size: 0x1000000
+compiler: agbcc
+units:
+  # Temporary whole-ROM target. Replace this with true translation-unit
+  # boundaries as they are established from independent evidence.
+  - name: bootstrap/rom
+    start: 0x000000
+    end: 0x1000000
+    category: game
