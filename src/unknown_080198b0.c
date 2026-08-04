@@ -417,6 +417,7 @@ extern u8 gUnknown_030013b0[];
 extern u8 gUnknown_03005250;
 extern u8 gUnknown_03002170[];
 extern const u16 gUnknown_0810db14[];
+extern const u8 gUnknown_0810db54[];
 extern const u8 gUnknown_0810b32c[];
 extern const u8 gUnknown_0810dbcc[];
 extern const u8 gUnknown_08132544[];
@@ -436,6 +437,10 @@ extern void FUN_0802b2d4(struct UnknownListNode *node);
 extern void FUN_0802b3c8(struct UnknownListNode *node);
 extern void FUN_0802b638(struct UnknownListNode *node);
 extern void FUN_08029ba0(void);
+extern void FUN_0801c82c(void);
+extern void FUN_0800ec18(void);
+extern void FUN_0800f38c(void);
+extern void FUN_08031db4(void *destination, const void *source, u32 size);
 extern void FUN_0803281c(void);
 extern void FUN_0803d1a0(void);
 extern void FUN_080315bc(void);
@@ -4506,4 +4511,199 @@ void FUN_08029250(void) {
     }
     FUN_0801f618(2);
     gUnknown_03005258 = 0;
+}
+
+void FUN_080299c0(void) {
+    u8 *scene;
+    u8 *state;
+
+    FUN_0801fbfc(gUnknown_0810db14, 16);
+    FUN_0801fb60();
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+
+    {
+        register u8 *selectionDestination asm("r2") = &gUnknown_03001620;
+        register u8 *selectionCount asm("r1") = selectionDestination;
+
+        selectionCount += 36;
+        {
+            register u32 countZero asm("r0") = 0;
+
+            *selectionCount = countZero;
+        }
+        {
+            register u32 loopIndex asm("r4") = 0;
+
+            selectionDestination += 20;
+            {
+                register u32 zero asm("r5") = 0;
+
+                do {
+                    register u32 selection asm("r0") = gUnknown_0300524c[loopIndex];
+                    register u32 selectionTest asm("r3") = selection;
+
+                    if (selectionTest > 9) {
+                        selection = 0xFF;
+                        *selectionDestination = 0xFF;
+                    } else {
+                        if (selectionTest > 8) {
+                            selection = 9;
+                        }
+                        *selectionDestination = selection;
+                        *selectionCount += 1;
+                    }
+
+                    if (loopIndex >= gUnknown_0300525c && *selectionDestination != 0xFF) {
+                        selectionDestination[8] = 1;
+                    } else {
+                        selectionDestination[8] = zero;
+                    }
+                    selectionDestination++;
+                    loopIndex++;
+                } while (loopIndex <= 3);
+            }
+        }
+    }
+
+    scene = &gUnknown_03001620;
+    scene[125] = 0;
+    if (gUnknown_03005254 != 0) {
+        scene[0] = 1;
+        if (gUnknown_0300525c == 2) {
+            u8 *copyBase = gUnknown_030013b0 + 312;
+
+            FUN_08031db4(copyBase, copyBase - 312, 156);
+            FUN_08031db4(copyBase + 156, copyBase - 156, 156);
+        } else if (gUnknown_0300525c == 3) {
+            u8 *copyBase = gUnknown_030013b0 + 468;
+
+            FUN_08031db4(copyBase, copyBase - 468, 156);
+        }
+    } else {
+        scene[0] = 0;
+    }
+
+    asm volatile("" : : : "r4");
+    {
+        register u8 *output asm("r3") = &gUnknown_03001620;
+        register const u8 *table asm("r2") = gUnknown_0810db54;
+        register const u8 *indices asm("r1") = gUnknown_03002600;
+
+        {
+            register u32 index asm("r0") = indices[0];
+
+            index += (u32)table;
+            output[4] = *(u8 *)index;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[1];
+
+            entry += 8;
+            entry += index;
+            output[5] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[2];
+
+            entry += 16;
+            entry += index;
+            output[6] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[3];
+
+            entry += 24;
+            entry += index;
+            output[7] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[4];
+
+            entry += 32;
+            entry += index;
+            output[8] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[5];
+
+            entry += 40;
+            entry += index;
+            output[9] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r4") = indices[6];
+
+            entry += 48;
+            entry += index;
+            output[10] = *entry;
+        }
+        {
+            register const u8 *entry asm("r0") = table;
+            register u32 index asm("r1") = indices[8];
+
+            entry += 64;
+            entry += index;
+            output[11] = *entry;
+        }
+
+        {
+            register u32 active asm("r2") = 0;
+            register const u8 *variants asm("r1") = gUnknown_03005268;
+
+            if (variants[0] == 0) {
+                active = 1;
+            }
+            output[32] = active;
+
+            active = 0;
+            if (variants[1] == 0) {
+                active = 1;
+            }
+            output[33] = active;
+
+            active = 0;
+            if (variants[2] == 0) {
+                active = 1;
+            }
+            output[34] = active;
+
+            active = 0;
+            if (variants[3] == 0) {
+                active = 1;
+            }
+            output[35] = active;
+            asm volatile("" : "+r"(output));
+        }
+    }
+
+    state = (u8 *)&gUnknown_03002110;
+    {
+        register u32 counterOffset asm("r0") = 1138;
+        register u8 *counter asm("r2") = state + counterOffset;
+        register u32 value asm("r0") = *counter + 1;
+        *counter = value;
+        {
+            register u32 limitOffset asm("r3") = 1139;
+            register u8 *limit asm("r1") = state;
+
+            limit += limitOffset;
+            if ((u8)value >= *limit) {
+                *counter = 0;
+            }
+        }
+    }
+
+    FUN_0800ec18();
+    FUN_0800f38c();
+    gUnknown_03002030 = FUN_0801c82c;
 }
