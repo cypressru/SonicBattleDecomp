@@ -5537,3 +5537,63 @@ void FUN_08036244(struct UnknownListNode *node) {
     node->position->x = gUnknown_03005378 + 4;
     FUN_0801fed8(node->field6, 0);
 }
+
+void FUN_080312f8(struct UnknownListNode *node) {
+    u32 *counter = node->allocation;
+
+    FUN_0801fba0(28, *(u8 *)counter);
+    *counter -= 12;
+}
+
+void FUN_08032778(struct UnknownListNode *node) {
+    u32 *counter = node->allocation;
+
+    FUN_0801fba0(30, *(u8 *)counter);
+    *counter -= 1;
+}
+
+void FUN_08035c0c(struct UnknownListNode *node) {
+    u32 *counter = node->allocation;
+
+    FUN_0801fba0(28, *(u8 *)counter);
+    *counter -= 4;
+}
+
+void FUN_08036288(struct UnknownListNode *node) {
+    node->position->x = gUnknown_03005378 + 4;
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_080362a4(struct UnknownListNode *node) {
+    node->position->x = gUnknown_03005378 + 32;
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_080362c0(struct UnknownListNode *node) {
+    node->position->x = gUnknown_03005378 + 32;
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08039da0(struct UnknownListNode *node) {
+    if (gUnknown_030052e0 != 0) {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_08039dbc(struct UnknownListNode *node) {
+    if (gUnknown_030052e0 <= 9) {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_0803cb1c(struct UnknownListNode *node) {
+    if (gUnknown_030052e0 != 0) {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_0803cb38(struct UnknownListNode *node) {
+    if (gUnknown_030052e0 <= 10) {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
