@@ -1667,3 +1667,24 @@ void FUN_080249e4(struct UnknownListNode *node) {
     FUN_0801f9a8(node, node->position->field13 * 24 + 36);
     FUN_0801fed8(node->field6, 0);
 }
+
+void FUN_08024a34(struct UnknownListNode *node) {
+    u32 difference = gUnknown_03004dbc->field16 - gUnknown_03004dbc->field14;
+    u32 remainder = difference % 6;
+    u32 quotient = difference / 6;
+    s16 x = remainder * 32 + 24;
+
+    FUN_0801f92c(node, x, (s16)(quotient * 40 + 32));
+    node->position->field0 = gUnknown_08edb740[gUnknown_08edb84c[(gUnknown_03004dc0 & 28) >> 2]];
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08024aac(struct UnknownListNode *node) {
+    u32 difference = gUnknown_03004de0 - gUnknown_03004ddc;
+    u32 column = difference & 3;
+    u32 row = difference >> 2;
+
+    FUN_0801f92c(node, (s16)gUnknown_08edb91c[column], (s16)gUnknown_08edb91c[row + 4]);
+    node->position->field0 = gUnknown_08edb740[gUnknown_08edb84c[(gUnknown_03004dc0 & 28) >> 2]];
+    FUN_0801fed8(node->field6, 0);
+}

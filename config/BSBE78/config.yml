@@ -733,6 +733,8 @@ units:
       FUN_08024940: 0x48
       FUN_08024994: 0x44
       FUN_080249e4: 0x44
+      FUN_08024a34: 0x68
+      FUN_08024aac: 0x58
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -1020,6 +1022,10 @@ units:
       - { offset: 0xB134, mode: thumb }
       - { offset: 0xB178, mode: data }
       - { offset: 0xB184, mode: thumb }
+      - { offset: 0xB1EC, mode: data }
+      - { offset: 0xB1FC, mode: thumb }
+      - { offset: 0xB254, mode: data }
+      - { offset: 0xB26C, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1379,6 +1385,22 @@ units:
       - { offset: 0xB178, type: abs32, symbol: gUnknown_08edb740 }
       - { offset: 0xB17C, type: abs32, symbol: gUnknown_08edb84c }
       - { offset: 0xB180, type: abs32, symbol: gUnknown_03004dc0 }
+      - { offset: 0xB196, type: thumb_call, symbol: __umodsi3 }
+      - { offset: 0xB1A0, type: thumb_call, symbol: __udivsi3 }
+      - { offset: 0xB1BE, type: thumb_call, symbol: FUN_0801f92c }
+      - { offset: 0xB1E2, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xB1EC, type: abs32, symbol: gUnknown_03004dbc }
+      - { offset: 0xB1F0, type: abs32, symbol: gUnknown_08edb740 }
+      - { offset: 0xB1F4, type: abs32, symbol: gUnknown_08edb84c }
+      - { offset: 0xB1F8, type: abs32, symbol: gUnknown_03004dc0 }
+      - { offset: 0xB226, type: thumb_call, symbol: FUN_0801f92c }
+      - { offset: 0xB24A, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0xB254, type: abs32, symbol: gUnknown_03004de0 }
+      - { offset: 0xB258, type: abs32, symbol: gUnknown_03004ddc }
+      - { offset: 0xB25C, type: abs32, symbol: gUnknown_08edb91c }
+      - { offset: 0xB260, type: abs32, symbol: gUnknown_08edb740 }
+      - { offset: 0xB264, type: abs32, symbol: gUnknown_08edb84c }
+      - { offset: 0xB268, type: abs32, symbol: gUnknown_03004dc0 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
