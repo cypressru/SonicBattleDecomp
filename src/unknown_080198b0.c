@@ -8,7 +8,7 @@ extern void FUN_0801bcac(void);
 extern void FUN_0801b394(void);
 extern void FUN_0801c770(void);
 extern void FUN_08020840(u16 value);
-extern void FUN_080205d0(void);
+extern u32 FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
 extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
@@ -847,6 +847,38 @@ u32 FUN_08020500(u16 *destination, const u16 *source, u16 count) {
     return result;
 }
 
+u32 FUN_080205d0(void) {
+    switch (gUnknown_03004b04) {
+    case 0:
+        return 1;
+    case 1:
+        if (gUnknown_03004b00 & 0x8000) {
+            return 1;
+        }
+        gUnknown_03004b00 += gUnknown_03004b08;
+        if (gUnknown_03004b00 > 0x8000) {
+            gUnknown_03004b00 = 0x8000;
+            FUN_0801fba0(0x54, 0x10);
+        } else {
+            FUN_0801fba0(0x54, (gUnknown_03004b00 & 0xF800) >> 11);
+        }
+        break;
+    case 2:
+        if (gUnknown_03004b00 == 0) {
+            return 1;
+        }
+        if (gUnknown_03004b00 < gUnknown_03004b08) {
+            gUnknown_03004b00 = 0;
+            FUN_0801fba0(0x54, 0);
+        } else {
+            gUnknown_03004b00 -= gUnknown_03004b08;
+            FUN_0801fba0(0x54, (gUnknown_03004b00 & 0xF800) >> 11);
+        }
+        break;
+    }
+    return 0;
+}
+
 u32 FUN_0802067c(u16 *colors, u16 count) {
     u32 result = 1;
     u16 i = 0;
@@ -891,6 +923,22 @@ u32 FUN_080206ec(u16 *colors, u16 count) {
         i++;
     }
     return result;
+}
+
+void FUN_08020774(u16 *destination, const u16 *source, u16 count, u16 factor) {
+    u16 i = 0;
+
+    while (i < count) {
+        u16 result;
+
+        result = (((0x1FU & *source) * factor) >> 4) & 0x1F;
+        result |= (((0x3E0U & *source) * factor) >> 4) & 0x3E0;
+        result |= (((0x7C00U & *source) * factor) >> 4) & 0x7C00;
+        *destination = result;
+        destination++;
+        source++;
+        i++;
+    }
 }
 
 void FUN_080207ec(u16 value) {
