@@ -87,6 +87,10 @@ function order and offsets correlate through its final event handlers; this reta
 `0x1C` bytes larger than the Sonic Advance 2 reference. Its last return is at `0x48F70`, followed by
 alignment and the first separately compiled C function at `0x48F74`. The latter object runs
 contiguously to the first BIOS-call veneer at `0x4A590`, establishing both M4A TU boundaries.
+Relocation-masked comparisons against the byte-identical public Sonic Advance 2 build additionally
+establish 32 individual library names in Sonic Battle, including the event handlers through
+`MP2K_event_mod`, `m4aMPlayFadeOut`, and the terminal extended-command handlers. Revision-specific
+functions that do not independently correlate remain generically named.
 
 The BIOS-call veneer names and boundaries are established by their documented SWI numbers,
 calling-convention shims, public SDK ABI, and object alignment. `SoftResetExram` ends at `0x4A5F8`.
