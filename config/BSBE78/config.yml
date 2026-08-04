@@ -205,6 +205,12 @@ units:
       FUN_08017f34: 0x1C
       FUN_08017f58: 0x0A
       FUN_08017f6c: 0x0A
+      FUN_080182e4: 0x16
+      FUN_08018300: 0x12
+      FUN_08018390: 0x08
+      FUN_0801839c: 0x1E
+      FUN_080183c4: 0x06
+      FUN_080183d0: 0x36
       FUN_08018410: 0x1E
     relocations:
       - { offset: 0x176E4, type: abs32, symbol: gUnknown_030017cc }
@@ -221,6 +227,12 @@ units:
       - { offset: 0x1776C, type: abs32, symbol: gUnknown_030017c0 }
       - { offset: 0x1777C, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x17780, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x17B00, type: abs32, symbol: gUnknown_03001b04 }
+      - { offset: 0x17B18, type: abs32, symbol: gUnknown_030016c8 }
+      - { offset: 0x17B9C, type: abs32, symbol: gUnknown_03001b08 }
+      - { offset: 0x17BC0, type: abs32, symbol: gUnknown_030016c4 }
+      - { offset: 0x17BC4, type: abs32, symbol: gUnknown_03001390 }
+      - { offset: 0x17BD0, type: abs32, symbol: gUnknown_03001390 }
       - { offset: 0x17C34, type: abs32, symbol: gUnknown_03001740 }
   - name: main/unknown_08018444
     start: 0x018444

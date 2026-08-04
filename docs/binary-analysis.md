@@ -52,7 +52,7 @@ and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x3952A instruction bytes and 0xD9CA owned non-code bytes.
+game category consequently contains 0x39530 instruction bytes and 0xD9C4 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 183 | 70,072 | 27,280 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 184 | 70,078 | 27,274 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -102,6 +102,12 @@ match in objdiff, so the functions remain attached to the conservative placehold
 That audit also rejected the pointer-closure candidate at `0x080182E0`. The four bytes decode as
 the IWRAM address `0x030016C8` and form a literal immediately before the real function at
 `0x080182E4`; they are now mapped as data rather than counted as a zero-body function.
+
+The following display-state pass reconstructed another six ordinary-C helpers at `0x080182E4`,
+`0x08018300`, `0x08018390`, `0x0801839C`, `0x080183C4`, and `0x080183D0`. They cover signed state
+interpolation, a byte target setter, and direct GBA blend-register packing. All 138 instruction
+bytes match. The audit also recovered `0x080183C4-0x080183CA`, a coherent leaf with an owned aligned
+literal that call and pointer closure had missed; the reviewed inventory now counts it as code.
 
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
