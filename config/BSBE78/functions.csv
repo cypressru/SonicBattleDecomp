@@ -598,6 +598,7 @@ address,name,mode,confidence
 0x08028038,FUN_08028038,thumb,rom-pointer
 0x080280B8,FUN_080280b8,thumb,direct-call
 0x08028100,FUN_08028100,thumb,recursive-disassembly
+0x0802812C,FUN_0802812c,thumb,structured-entry+return
 0x08028158,FUN_08028158,thumb,rom-pointer
 0x08028190,FUN_08028190,thumb,rom-pointer
 0x080281C8,FUN_080281c8,thumb,rom-pointer

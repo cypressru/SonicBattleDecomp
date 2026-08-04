@@ -2666,3 +2666,29 @@ u32 FUN_080280b8(struct UnknownListNode *node, s32 x, s32 y) {
     }
     return 0;
 }
+
+u32 FUN_08028100(struct UnknownListNode *node, s32 x) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    register s32 newX asm("r0") = (s16)allocation->field20;
+    register s32 targetX asm("r1") = (s16)x;
+
+    newX = targetX + (newX - targetX) / 2;
+    allocation->field20 = newX;
+    if ((s16)newX == targetX) {
+        return 1;
+    }
+    return 0;
+}
+
+u32 FUN_0802812c(struct UnknownListNode *node, s32 y) {
+    struct UnknownAllocation27db8 *allocation = node->allocation;
+    register s32 newY asm("r0") = (s16)allocation->field22;
+    register s32 targetY asm("r1") = (s16)y;
+
+    newY = targetY + (newY - targetY) / 2;
+    allocation->field22 = newY;
+    if ((s16)newY == targetY) {
+        return 1;
+    }
+    return 0;
+}
