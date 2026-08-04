@@ -184,6 +184,25 @@ than cached in a local. Retail re-materializes both the pool address and the loa
 keeps no callee-saved register; a cached local forces the address to live across the call and adds
 register saves. `0x080153E0` is the clearest case: it pushes only `lr`.
 
+### Address-association shapes
+
+Two different address associations appear in this placeholder and are not interchangeable. Most
+routines associate `(base + index * stride) + field_offset`, which is what a plain
+`array[index].field` produces and what the matched `0x08012B60` and `0x080178D0` use. A second group
+associates `(base + field_offset) + index * stride`: retail keeps the raw array base in a register,
+adds the constant field offset, and only then adds the scaled index, walking the field offset by the
+element size across consecutive statements. `0x0801694C` is the clearest instance - it copies
+sixteen halfwords from a 32-byte record into the BG affine registers at `0x04000020`-`0x0400003E`
+and walks `base + 2k` while re-reading the record index for every element, because the volatile
+register stores invalidate the cached read.
+
+Writing the second association explicitly, as
+`*(u16 *)((u8 *)&array[k] + index * stride)`, reproduces that shape and brings `0x0801694C` to every
+instruction but three: retail materializes the array base into `ip` before loading the index
+address, while agbcc emits the index address first, which also swaps two literal-pool slots. The
+operand order in the source does not change this - the multiply makes the index side the costlier
+operand, and agbcc expands it first regardless of how the addition is written.
+
 ### An unresolved register-allocation difference
 
 Five routines in this placeholder reproduce every instruction except one redundant
