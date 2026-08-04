@@ -6,6 +6,7 @@ extern u8 gUnknown_03001388;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03003140;
 extern u8 gUnknown_030013b0[];
+extern u32 gUnknown_03001380;
 extern u8 gUnknown_03002684;
 extern u8 gUnknown_030028c0[];
 extern u16 gUnknown_030030f8[];
@@ -81,7 +82,8 @@ union UnknownQueueRecord030033e0 {
 
 struct UnknownState030030d0 {
     u8 first;
-    u8 padding1[3];
+    u8 second;
+    u8 padding2[2];
     u16 counter;
     u8 padding6[30];
     u8 flag;
@@ -199,6 +201,30 @@ void FUN_08012b60(void) {
         gUnknown_03002cd0[i].fifth = 0;
         gUnknown_03002cd0[i].sixth = 0;
     }
+}
+
+#define BUTTON_STATE                                                                               \
+    gUnknown_03001b30[gUnknown_03001380].flags[gUnknown_03001b30[gUnknown_03001380].position]
+
+u8 FUN_080153e0(void) {
+    if (gUnknown_030030d0.counter <= 0x1fff) {
+        gUnknown_030030d0.counter += 0x200;
+    } else {
+        gUnknown_030030d0.counter -= 0x2000;
+    }
+    if ((BUTTON_STATE & 0x40) || (BUTTON_STATE & 0x80)) {
+        gUnknown_030030d0.second ^= 1;
+        FUN_0801f618(600);
+    }
+    if (BUTTON_STATE & 1) {
+        FUN_0801f618(601);
+        return gUnknown_030030d0.second;
+    }
+    if (BUTTON_STATE & 8) {
+        FUN_0801f618(601);
+        return 0;
+    }
+    return 255;
 }
 
 void FUN_080163c0(u8 layer) {

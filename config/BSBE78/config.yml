@@ -195,6 +195,11 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # FUN_080153E0 branches around two in-function literal islands.
+      - { offset: 0x14BF8, mode: data }
+      - { offset: 0x14C00, mode: thumb }
+      - { offset: 0x14C6A, mode: data }
+      - { offset: 0x14C80, mode: thumb }
       # FUN_08015384 branches around two in-function literal islands.
       - { offset: 0x14BBA, mode: data }
       - { offset: 0x14BCC, mode: thumb }
@@ -261,6 +266,7 @@ units:
       FUN_0800fd8c: 0x34
       FUN_08012b60: 0x30
       FUN_08015384: 0x5A
+      FUN_080153e0: 0xB4
       FUN_0801584c: 0x06
       FUN_08015858: 0x68
       FUN_080158c0: 0x22
@@ -308,6 +314,13 @@ units:
       - { offset: 0x0F5C8, type: abs32, symbol: gUnknown_030028c0 }
       - { offset: 0x12394, type: abs32, symbol: gUnknown_030030d0 }
       - { offset: 0x12398, type: abs32, symbol: gUnknown_03002cd0 }
+      - { offset: 0x14BF8, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14C3A, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x14C60, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x14C70, type: abs32, symbol: gUnknown_03001b30 }
+      - { offset: 0x14C74, type: abs32, symbol: gUnknown_03001380 }
+      - { offset: 0x14C7C, type: abs32, symbol: gUnknown_030030d0 }
+      - { offset: 0x14C8E, type: thumb_call, symbol: FUN_0801f618 }
       - { offset: 0x14BBC, type: abs32, symbol: gUnknown_030030d0 }
       - { offset: 0x14BC4, type: abs32, symbol: gUnknown_030048e0 }
       - { offset: 0x15058, type: abs32, symbol: gUnknown_030030d0 }
