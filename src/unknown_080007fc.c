@@ -5,6 +5,12 @@ extern u8 gUnknown_03001740[];
 extern u8 gUnknown_03001388;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03003140;
+extern volatile u16 gUnknown_03003178[];
+
+#define REG_BG0CNT (*(volatile u16 *)0x04000008)
+#define REG_BG1CNT (*(volatile u16 *)0x0400000a)
+#define REG_BG2CNT (*(volatile u16 *)0x0400000c)
+#define REG_BG3CNT (*(volatile u16 *)0x0400000e)
 extern u8 gUnknown_030016d0;
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
@@ -117,6 +123,75 @@ void FUN_08017d58(void) {
     FUN_08017690();
     FUN_08017fb0();
     gUnknown_030013a0 = 1;
+}
+
+void FUN_08017d78(u8 layer, u32 bits) {
+    u8 index;
+    volatile u16 value;
+
+    index = layer;
+    value = bits;
+    gUnknown_03003178[index] |= value;
+    switch (index) {
+    case 0:
+        REG_BG0CNT = gUnknown_03003178[0];
+        break;
+    case 1:
+        REG_BG1CNT = gUnknown_03003178[1];
+        break;
+    case 2:
+        REG_BG2CNT = gUnknown_03003178[2];
+        break;
+    case 3:
+        REG_BG3CNT = gUnknown_03003178[3];
+        break;
+    }
+}
+
+void FUN_08017de8(u8 layer, u16 bits) {
+    u8 index;
+    volatile u16 value;
+
+    index = layer;
+    value = bits << 2;
+    gUnknown_03003178[index] |= value;
+    switch (index) {
+    case 0:
+        REG_BG0CNT = gUnknown_03003178[0];
+        break;
+    case 1:
+        REG_BG1CNT = gUnknown_03003178[1];
+        break;
+    case 2:
+        REG_BG2CNT = gUnknown_03003178[2];
+        break;
+    case 3:
+        REG_BG3CNT = gUnknown_03003178[3];
+        break;
+    }
+}
+
+void FUN_08017e5c(u8 layer, u16 bits) {
+    u8 index;
+    volatile u16 value;
+
+    index = layer;
+    value = bits << 8;
+    gUnknown_03003178[index] |= value;
+    switch (index) {
+    case 0:
+        REG_BG0CNT = gUnknown_03003178[0];
+        break;
+    case 1:
+        REG_BG1CNT = gUnknown_03003178[1];
+        break;
+    case 2:
+        REG_BG2CNT = gUnknown_03003178[2];
+        break;
+    case 3:
+        REG_BG3CNT = gUnknown_03003178[3];
+        break;
+    }
 }
 
 void FUN_08017ed0(void) {

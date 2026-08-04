@@ -195,6 +195,32 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # The BG-control helpers at 0x08017D78, 0x08017DE8 and 0x08017E5C each
+      # branch around four in-function literal islands inside their switch.
+      - { offset: 0x175A8, mode: data }
+      - { offset: 0x175AC, mode: thumb }
+      - { offset: 0x175BC, mode: data }
+      - { offset: 0x175C0, mode: thumb }
+      - { offset: 0x175C6, mode: data }
+      - { offset: 0x175CC, mode: thumb }
+      - { offset: 0x175D2, mode: data }
+      - { offset: 0x175D8, mode: thumb }
+      - { offset: 0x1761C, mode: data }
+      - { offset: 0x17620, mode: thumb }
+      - { offset: 0x17630, mode: data }
+      - { offset: 0x17634, mode: thumb }
+      - { offset: 0x1763A, mode: data }
+      - { offset: 0x17640, mode: thumb }
+      - { offset: 0x17646, mode: data }
+      - { offset: 0x1764C, mode: thumb }
+      - { offset: 0x17690, mode: data }
+      - { offset: 0x17694, mode: thumb }
+      - { offset: 0x176A4, mode: data }
+      - { offset: 0x176A8, mode: thumb }
+      - { offset: 0x176AE, mode: data }
+      - { offset: 0x176B4, mode: thumb }
+      - { offset: 0x176BA, mode: data }
+      - { offset: 0x176C0, mode: thumb }
       # The pointer-closure candidate at 0x080182E0 is a literal, not code.
       - { offset: 0x17AE4, mode: data }
       - { offset: 0x17AE8, mode: thumb }
@@ -210,6 +236,9 @@ units:
       FUN_08017cb0: 0x1E
       FUN_08017cd8: 0x12
       FUN_08017d58: 0x1C
+      FUN_08017d78: 0x6A
+      FUN_08017de8: 0x6E
+      FUN_08017e5c: 0x6E
       FUN_08017ed0: 0x10
       FUN_08017eec: 0x0C
       FUN_08017f00: 0x2C
@@ -241,6 +270,9 @@ units:
       - { offset: 0x17566, type: thumb_call, symbol: FUN_08017690 }
       - { offset: 0x1756A, type: thumb_call, symbol: FUN_08017fb0 }
       - { offset: 0x17578, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x175A8, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x1761C, type: abs32, symbol: gUnknown_03003178 }
+      - { offset: 0x17690, type: abs32, symbol: gUnknown_03003178 }
       - { offset: 0x176E4, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x176E8, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x176EC, type: abs32, symbol: gUnknown_03001388 }
