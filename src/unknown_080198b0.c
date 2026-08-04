@@ -201,6 +201,18 @@ struct UnknownAllocation28770 {
     u8 field5;
 };
 
+struct UnknownRecordValue28c80 {
+    s16 value;
+    u8 filler2[14];
+};
+
+struct UnknownRecords28c80 {
+    u8 filler0[2];
+    s16 field2;
+    u8 filler4[14];
+    struct UnknownRecordValue28c80 records[1];
+};
+
 struct UnknownCallbackState03005330 {
     UnknownCallback callback;
     s16 field4;
@@ -382,6 +394,13 @@ extern u8 gUnknown_03005268[];
 extern u8 gUnknown_0300524c[];
 extern void FUN_08029250(void);
 extern void FUN_0803281c(void);
+extern void FUN_08028d30(struct UnknownListNode *node);
+extern void FUN_08028f1c(struct UnknownListNode *node);
+extern void FUN_0802f328(void *state);
+extern void FUN_0801fab0(u16 value);
+extern u8 gUnknown_03005260;
+extern u32 gUnknown_03005258;
+extern struct UnknownRecords28c80 gUnknown_030016f0;
 extern u16 gUnknown_05000080[];
 extern u16 gUnknown_050001c0[];
 extern u16 gUnknown_050001e0[];
@@ -3048,5 +3067,57 @@ void FUN_08028bec(void) {
             gUnknown_0300524c[2] = 2;
             gUnknown_0300524c[3] = 3;
         }
+    }
+}
+
+void FUN_08028c80(struct UnknownListNode *node) {
+    register struct UnknownListNode *owner asm("r5") = node;
+    register s32 command asm("r6");
+    register u16 *commandState asm("r0");
+    u32 complete;
+    register u32 count asm("r1");
+    register u32 i asm("r2");
+    register u32 loopCount asm("r3");
+    register u8 *records asm("r0");
+    register s32 expected asm("r12");
+    s16 *recordValue;
+
+    commandState = gUnknown_03001b10;
+    asm volatile("" : "+r"(commandState));
+    command = 0x2345;
+    asm volatile("" : : "r"(command));
+    commandState[1] = command;
+    FUN_0802f328(&commandState[2]);
+    FUN_0801fab0(0x1357);
+    if (gUnknown_03005260 == 0) {
+        complete = 1;
+        i = 1;
+        count = gUnknown_0300525c;
+        if (complete < count) {
+            records = (u8 *)&gUnknown_030016f0;
+            asm volatile("" : "+r"(records));
+            expected = command;
+            asm volatile("" : : "r"(expected));
+            loopCount = count;
+            recordValue = (s16 *)(records + 18);
+            do {
+                if (*recordValue != expected) {
+                    complete = 0;
+                }
+                recordValue = (s16 *)((u8 *)recordValue + 16);
+                i++;
+            } while (i < loopCount);
+        }
+        if (complete != 0) {
+            gUnknown_03005258 = 0;
+            owner->data = (const void *)((u32)FUN_08028d30 + 1);
+        }
+    } else if (gUnknown_030016f0.field2 == 0x2346) {
+        gUnknown_03005258 = 0;
+        owner->data = (const void *)((u32)FUN_08028d30 + 1);
+    }
+    gUnknown_03005258++;
+    if (gUnknown_03005258 > 299) {
+        owner->data = (const void *)((u32)FUN_08028f1c + 1);
     }
 }
