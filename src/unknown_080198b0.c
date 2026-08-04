@@ -273,7 +273,7 @@ struct UnknownState482d0 {
     u8 field2;
     u8 field3;
     const void *callback;
-    u8 filler8[2];
+    u16 field8;
     u16 field10;
     u16 field12;
     u16 field14;
@@ -302,6 +302,8 @@ extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
 extern void FUN_08047c30(struct UnknownState482d0 *state);
 extern void FUN_0804033c(void *destination, const void *source, u32 size);
+extern void FUN_0804051c(struct UnknownState482d0 *state);
+extern void FUN_0803fe98(u16 first, u16 second, u16 third);
 extern const u8 gUnknown_081a7f18[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
@@ -5854,4 +5856,31 @@ void FUN_08048300(struct UnknownState482d0 *state) {
     state->field20 = 0;
     state->field39 = 16;
     state->callback = (const void *)((u32)FUN_08047c30 + 1);
+}
+
+void FUN_080481c8(struct UnknownState482d0 *state) {
+    if (--state->field26 == 0) {
+        gUnknown_03005440.field12 = state->field20;
+        FUN_0801f618(gUnknown_03005440.field12);
+        gUnknown_03005440.field8 &= ~4;
+        FUN_0804051c(state);
+    }
+}
+
+void FUN_08048148(struct UnknownState482d0 *state) {
+    state->field27++;
+    FUN_0803fe98(16, 176, (u8)state->field27 >> 1);
+    if (state->field27 > 31) {
+        gUnknown_03005440.field8 &= ~4;
+        FUN_0804051c(state);
+    }
+}
+
+void FUN_08048184(struct UnknownState482d0 *state) {
+    state->field27++;
+    FUN_0803fe98(16, 176, (u16)(16 - ((u8)state->field27 >> 1)));
+    if (state->field27 > 31) {
+        gUnknown_03005440.field8 &= ~4;
+        FUN_0804051c(state);
+    }
 }
