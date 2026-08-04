@@ -7,6 +7,9 @@ rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 rejected_function_pointers:
+  # An odd pointer-like word inside opaque ROM data lands on the padding and
+  # literal word following FUN_08020ecc, not on executable instructions.
+  - { source: 0x0D872DC, destination: 0x08020F12 }
   # Pointer-like bytes inside opaque main ROM data land on literal pools in
   # the graphics-command queue rather than executable instructions.
   - { source: 0x0CA98FC, destination: 0x08020400 }
@@ -668,6 +671,9 @@ units:
       FUN_08020898: 0x44
       FUN_080208ec: 0x48
       FUN_08020944: 0x26
+      FUN_08020ecc: 0x46
+      FUN_08020f64: 0xE
+      FUN_08020fac: 0xC
     mappings:
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
@@ -833,6 +839,12 @@ units:
       - { offset: 0x7094, mode: thumb }
       - { offset: 0x70BA, mode: data }
       - { offset: 0x70C8, mode: thumb }
+      - { offset: 0x7662, mode: data }
+      - { offset: 0x7668, mode: thumb }
+      - { offset: 0x76C2, mode: data }
+      - { offset: 0x76C8, mode: thumb }
+      - { offset: 0x7708, mode: data }
+      - { offset: 0x770C, mode: thumb }
     relocations:
       - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
       - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
@@ -1047,6 +1059,9 @@ units:
       - { offset: 0x70BC, type: abs32, symbol: gUnknown_03004b04 }
       - { offset: 0x70C0, type: abs32, symbol: gUnknown_03004b00 }
       - { offset: 0x70C4, type: abs32, symbol: gUnknown_03004b08 }
+      - { offset: 0x7664, type: abs32, symbol: gUnknown_03004b10 }
+      - { offset: 0x76C4, type: abs32, symbol: gUnknown_03004b10 }
+      - { offset: 0x7708, type: abs32, symbol: gUnknown_0807173c }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74

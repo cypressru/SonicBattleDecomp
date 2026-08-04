@@ -114,6 +114,18 @@ struct UnknownCommandRecord {
     u16 type;
 };
 
+struct UnknownBufferState {
+    u32 field0;
+    const u8 *source;
+    u8 *destination;
+    u32 end;
+    u16 width;
+    u16 rowSize;
+    u16 stride;
+    u16 blockSize;
+    u32 fill;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern u8 gUnknown_03001620;
 extern u8 gUnknown_030013a0;
@@ -153,6 +165,8 @@ extern struct UnknownCommandRecord gUnknown_03004900[];
 extern u16 gUnknown_03004b00;
 extern u8 gUnknown_03004b04;
 extern u16 gUnknown_03004b08;
+extern struct UnknownBufferState gUnknown_03004b10;
+extern const u8 gUnknown_0807173c[];
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -1015,4 +1029,36 @@ void FUN_08020944(void) {
     gUnknown_03004b04 = 0;
     gUnknown_03004b00 = 0;
     gUnknown_03004b08 = 0;
+}
+
+void FUN_08020ecc(u32 first, const u8 *source, u8 *destination, u32 width, u32 height, u8 fill) {
+    u32 pattern;
+    u32 value;
+
+    gUnknown_03004b10.field0 = first;
+    gUnknown_03004b10.source = source;
+    gUnknown_03004b10.destination = destination;
+    gUnknown_03004b10.end = (u32)destination + width * height * 32;
+    gUnknown_03004b10.width = width;
+    gUnknown_03004b10.rowSize = height * 8;
+    gUnknown_03004b10.stride = height * 8;
+    gUnknown_03004b10.blockSize = height * 16;
+    value = fill & 0xF;
+    pattern = value | (value << 4) | (value << 8) | (value << 12);
+    pattern |= pattern << 16;
+    gUnknown_03004b10.fill = pattern;
+}
+
+u8 FUN_08020f64(u16 value) {
+    struct UnknownBufferState *state = &gUnknown_03004b10;
+
+    value &= 0x7FFF;
+    return state->source[value];
+}
+
+u8 FUN_08020fac(u16 value) {
+    const u8 *source = gUnknown_0807173c;
+
+    value &= 0x7FFF;
+    return source[value];
 }

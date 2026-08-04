@@ -408,7 +408,6 @@ address,name,mode,confidence
 0x08020C22,FUN_08020c22,thumb,rom-pointer
 0x08020E0C,FUN_08020e0c,thumb,rom-pointer
 0x08020ECC,FUN_08020ecc,thumb,direct-call
-0x08020F12,FUN_08020f12,thumb,rom-pointer
 0x08020F18,FUN_08020f18,thumb,direct-call
 0x08020F64,FUN_08020f64,thumb,direct-call
 0x08020F78,FUN_08020f78,thumb,recursive-disassembly
