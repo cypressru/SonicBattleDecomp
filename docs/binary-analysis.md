@@ -127,6 +127,23 @@ two shared offsets and applies the signed lookup table at `0x0804DF7C` as a pair
 rotation. Expressing both output formulas directly is significant: the intervening output store may
 alias the shared angle, so agbcc correctly reloads it for the second result exactly as retail does.
 
+A following queue-record and ring-scan pass reconstructed `0x08018004` and `0x080180F0`, totaling
+252 matching instruction bytes. `0x08018004` fills an eleven-field, four-word record from nine
+arguments and submits it to the same `0x030033E0` queue and `0x030017CC` count that `0x08017F00`
+uses, through the SDK `CpuFastSet` ABI. The retail emission builds the record in one stack slot and
+copies it to a second slot immediately before the call, so the source assigns the aggregate to a
+second local rather than passing the first one; the interleaved store order also fixes the field
+layout independently of argument order. `0x080180F0` scans up to `count` entries of an eleven-slot
+halfword ring at offset `0x14` of the 64-byte records at `0x03001B30`, masking each entry and
+returning on the first hit. Its ring index is a `u16` that is separately read through a signed
+16-bit variable: retail keeps both the zero-extended and the sign-extended forms live across the
+wrap test, which reproduces only when the signed reader is a distinct variable rather than a cast of
+the unsigned one. The function branches around an aligned in-function literal island at
+`0x08018146-0x0801814C`; mapping the alignment halfword and its literal word as data is required for
+an honest instruction comparison and does not change the accepted extent. Both functions were also
+confirmed byte-for-byte against the retail ROM outside objdiff, comparing the compiled `.text` bytes
+with the ROM image and excluding only the relocated words.
+
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive

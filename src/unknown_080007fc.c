@@ -29,6 +29,20 @@ struct UnknownQueueEntry08017f34 {
     void *second;
 };
 
+struct UnknownQueueEntry08018004 {
+    u16 first;
+    u16 second;
+    u16 zero;
+    u16 constant;
+    u16 fourth;
+    u8 third;
+    u8 sixth;
+    u8 fifth;
+    u8 seventh;
+    u8 eighth;
+    u8 ninth;
+};
+
 struct UnknownState080180d4 {
     u16 first;
     u16 unused;
@@ -36,9 +50,18 @@ struct UnknownState080180d4 {
     u16 third;
 };
 
+struct UnknownState080180f0 {
+    u8 padding0[20];
+    u16 flags[11];
+    u8 padding42[18];
+    u8 position;
+    u8 padding61[3];
+};
+
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern struct UnknownQueueEntry08017f00 gUnknown_030033e0[];
 extern struct UnknownState080180d4 gUnknown_030048e0;
+extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern const s16 gUnknown_0804df7c[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
@@ -84,6 +107,27 @@ void FUN_08017f58(u8 first, u8 second) {
 
 void FUN_08017f6c(void) { gUnknown_030017c8 = gUnknown_030017cc; }
 
+void FUN_08018004(u16 first, u16 second, u8 third, u16 fourth, u8 fifth, u8 sixth, u8 seventh,
+                  u8 eighth, u8 ninth) {
+    struct UnknownQueueEntry08018004 entry;
+    struct UnknownQueueEntry08018004 copy;
+
+    entry.first = first;
+    entry.second = second;
+    entry.zero = 0;
+    entry.third = third;
+    entry.constant = 200;
+    entry.sixth = sixth;
+    entry.fourth = fourth;
+    entry.fifth = fifth;
+    entry.seventh = seventh;
+    entry.eighth = eighth;
+    entry.ninth = ninth;
+    copy = entry;
+    CpuFastSet(&copy, &gUnknown_030033e0[gUnknown_030017cc], 4);
+    gUnknown_030017cc++;
+}
+
 void FUN_0801808c(u16 first, u16 second, u16 third, u16 fourth) {
     FUN_080200d8(gUnknown_03003170, first, second, third, fourth);
     gUnknown_03003170++;
@@ -93,6 +137,37 @@ void FUN_080180d4(u16 *first, u16 *second, u16 *third) {
     *first = gUnknown_030048e0.first;
     *second = gUnknown_030048e0.second;
     *third = gUnknown_030048e0.third;
+}
+
+u8 FUN_080180f0(u8 group, u8 start, u8 count, u16 mask) {
+    u16 position;
+    s16 index;
+    u8 i;
+
+    if (start > 9) {
+        start = 9;
+    }
+
+    position = gUnknown_03001b30[group].position - start;
+    index = position;
+    if (index < 0) {
+        position = index + 10;
+    }
+
+    for (i = 0; i < count; i++) {
+        index = position;
+
+        if (gUnknown_03001b30[group].flags[index] & mask) {
+            return 1;
+        }
+        if (index <= 9) {
+            position = index + 1;
+        } else {
+            position = 0;
+        }
+    }
+
+    return 0;
 }
 
 void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY) {

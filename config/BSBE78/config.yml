@@ -198,6 +198,9 @@ units:
       # The pointer-closure candidate at 0x080182E0 is a literal, not code.
       - { offset: 0x17AE4, mode: data }
       - { offset: 0x17AE8, mode: thumb }
+      # FUN_080180f0 branches around an aligned in-function literal island.
+      - { offset: 0x1794A, mode: data }
+      - { offset: 0x17950, mode: thumb }
       # FUN_08018318 branches around an in-function two-word literal island.
       - { offset: 0x17B44, mode: data }
       - { offset: 0x17B4C, mode: thumb }
@@ -208,8 +211,10 @@ units:
       FUN_08017f34: 0x1C
       FUN_08017f58: 0x0A
       FUN_08017f6c: 0x0A
+      FUN_08018004: 0x80
       FUN_0801808c: 0x44
       FUN_080180d4: 0x16
+      FUN_080180f0: 0x7C
       FUN_0801816c: 0x86
       FUN_08018204: 0x3E
       FUN_0801824c: 0x4E
@@ -237,9 +242,13 @@ units:
       - { offset: 0x1776C, type: abs32, symbol: gUnknown_030017c0 }
       - { offset: 0x1777C, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x17780, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x1786E, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x17888, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x1788C, type: abs32, symbol: gUnknown_030033e0 }
       - { offset: 0x178BE, type: thumb_call, symbol: FUN_080200d8 }
       - { offset: 0x178D4, type: abs32, symbol: gUnknown_03003170 }
       - { offset: 0x178F0, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0x1794C, type: abs32, symbol: gUnknown_03001b30 }
       - { offset: 0x179F8, type: abs32, symbol: gUnknown_03001b2c }
       - { offset: 0x179FC, type: abs32, symbol: gUnknown_030016c0 }
       - { offset: 0x17A00, type: abs32, symbol: gUnknown_0804df7c }
