@@ -85,6 +85,7 @@ struct UnknownPosition {
     u8 field12;
     u8 field13;
     u8 field14;
+    u8 field15;
 };
 
 struct UnknownListNode {
@@ -2112,5 +2113,29 @@ void FUN_08025f5c(struct UnknownListNode *node) {
         gUnknown_03001b10[7] = 0;
         gUnknown_03001b10[6] = 0;
         FUN_08018444();
+    }
+}
+
+void FUN_08026634(struct UnknownListNode *node) {
+    struct UnknownAllocation25a98 *allocation = node->allocation;
+    u32 zero;
+
+    if (node->position->field15 != 0) {
+        node->position->field15--;
+    } else {
+        gUnknown_03001b10[7] = 0;
+        gUnknown_03001b10[6] = 0;
+        gUnknown_03001b10[5] = 0;
+        gUnknown_03001b10[4] = 0;
+        gUnknown_03001b10[3] = 0;
+        gUnknown_03001b10[2] = 0;
+        gUnknown_03001b10[1] = 0;
+        gUnknown_03001b10[0] = 0;
+        FUN_08018444();
+        zero = 0;
+        CpuFastSet(&zero, (void *)0x0600b000, 0x01000700);
+        gUnknown_03004dbc->field18 = 0;
+        allocation->child40 = FUN_0801f7d0(FUN_0802482c, 16, gUnknown_03003e20, 0);
+        node->data = FUN_08025fd4;
     }
 }
