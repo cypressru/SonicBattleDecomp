@@ -269,19 +269,38 @@ struct UnknownAllocation28770 {
 };
 
 struct UnknownState482d0 {
-    u8 filler0[4];
+    u8 filler0[2];
+    u8 field2;
+    u8 field3;
     const void *callback;
     u8 filler8[2];
     u16 field10;
-    u8 filler12[2];
+    u16 field12;
     u16 field14;
     const void *graphics;
-    u8 filler20[10];
+    u8 filler20[6];
+    u8 field26;
+    u8 field27;
+    u8 filler28[2];
     u16 field30;
-    u8 filler32[6];
+    u8 filler32[2];
+    u16 field34;
+    u8 filler36[2];
     u8 field38;
     u8 field39;
 };
+
+struct UnknownPair4825c {
+    u16 first;
+    u16 second;
+};
+
+extern struct UnknownState482d0 gUnknown_03005440;
+extern void FUN_080481c8(struct UnknownState482d0 *state);
+extern void FUN_0804825c(struct UnknownState482d0 *state);
+extern const u8 gUnknown_081a7f18[];
+extern struct UnknownPair4825c gUnknown_03000288;
+extern void FUN_080405f4(u8 first, u8 second);
 
 struct UnknownAllocation3128c {
     u8 filler0[2];
@@ -5788,4 +5807,35 @@ void FUN_08032f10(struct UnknownListNode *node) {
     FUN_080214c0(gUnknown_03005300);
     node->data = (const void *)((u32)FUN_08032f34 + 1);
     FUN_0804af6c(node, node->data);
+}
+
+void FUN_08047fc0(struct UnknownState482d0 *state) {
+    FUN_0801f744(gUnknown_03005440.field12, 2);
+    state->field26 = 36;
+    state->callback = (const void *)((u32)FUN_080481c8 + 1);
+}
+
+void FUN_08047fe4(struct UnknownState482d0 *state) {
+    state->field30 = state->field10;
+    state->field34 = state->field14;
+    state->graphics = gUnknown_081a7f18 + ((state->field3 & 4) << 3);
+    state->callback = (const void *)((u32)FUN_0804825c + 1);
+    FUN_0804af6c((struct UnknownListNode *)state, state->callback);
+}
+
+void FUN_0804825c(struct UnknownState482d0 *state) {
+    register u16 first asm("r1") = gUnknown_03000288.first;
+    register u16 firstOffset asm("r3") = state->field30;
+    register u16 second asm("r1");
+    register u16 secondOffset asm("r2");
+
+    asm volatile("" : "+r"(first), "+r"(firstOffset));
+    first += firstOffset;
+    state->field10 = first;
+    second = gUnknown_03000288.second;
+    secondOffset = state->field34;
+    asm volatile("" : "+r"(second), "+r"(secondOffset));
+    second += secondOffset;
+    state->field14 = second;
+    FUN_080405f4(state->field2, state->field39);
 }
