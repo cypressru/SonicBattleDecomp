@@ -14,6 +14,7 @@ extern u8 FUN_0801d068(u8 value);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
+extern void FUN_08018664(void);
 extern void *FUN_08021180(void *value);
 extern void FUN_08049108(u16 value);
 extern void FUN_080490b4(u16 value);
@@ -108,6 +109,10 @@ extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 extern u8 gUnknown_03000008[100];
 extern u8 gUnknown_0300006c;
 extern struct UnknownListNode gUnknown_03003e20[100];
+extern u8 gUnknown_030000c0;
+extern u16 gUnknown_03000070[20][2];
+extern const void *gUnknown_03003150[];
+extern u8 gUnknown_03004470;
 
 extern void FUN_0801d618(void);
 extern void FUN_0801dfdc(void);
@@ -590,3 +595,30 @@ u32 FUN_0801f9a8(struct UnknownListNode *node, s16 y) {
 }
 
 void FUN_0801f9d8(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
+void FUN_0801fb94(void) { gUnknown_030000c0 = 0; }
+
+void FUN_0801fba0(u16 offset, u16 value) {
+    if (gUnknown_030000c0 <= 19) {
+        gUnknown_03000070[gUnknown_030000c0][0] = offset;
+        gUnknown_03000070[gUnknown_030000c0++][1] = value;
+    }
+}
+
+void FUN_0801fbfc(const u16 *entries, u8 count);
+
+void FUN_0801fbd8(void) {
+    if (gUnknown_030000c0 != 0) {
+        FUN_0801fbfc(&gUnknown_03000070[0][0], gUnknown_030000c0);
+        gUnknown_030000c0 = 0;
+    }
+}
+
+void FUN_0801fc30(u8 value, const void *data) {
+    if (data == 0) {
+        data = (const void *)FUN_08018664;
+    }
+    gUnknown_03003150[value] = data;
+}
+
+void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
