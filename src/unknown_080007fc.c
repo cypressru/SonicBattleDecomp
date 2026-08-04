@@ -5,7 +5,16 @@ extern u8 gUnknown_03001740[];
 extern u8 gUnknown_03001388;
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03003140;
-extern u8 gUnknown_030013b0[];
+/* 156-byte participant records. Offsets 93..146 hold two 27-byte palette
+   selections; the byte at 150 chooses between them. */
+struct UnknownRecord030013b0 {
+    u8 first[93];
+    u8 palettes[2][27];
+    u8 padding147[3];
+    u8 slot;
+    u8 padding151[5];
+};
+extern struct UnknownRecord030013b0 gUnknown_030013b0[];
 extern u32 gUnknown_03001380;
 extern u8 gUnknown_03002684;
 extern u8 gUnknown_030028c0[];
@@ -172,6 +181,7 @@ extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
+extern const u16 gUnknown_0847aa18[];
 
 /* The link send slot and the four receive slots. Each receive slot is a
    16-byte record whose first halfword carries the handshake marker. */
@@ -211,6 +221,31 @@ extern void FUN_08017fb0(void);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801f618(u32 index);
 extern void FUN_0801ff30(void);
+
+/* One byte of participant `index`'s selected palette record. */
+#define PALETTE(part) (gUnknown_030013b0[index].palettes[gUnknown_030013b0[index].slot][part])
+
+/* Rebuilds participant `index`'s palette entries 3..13 from the colour table
+   at 0x0847AA18, leaving the rest of the stored palette alone. Entries 3-6,
+   7-10 and 11-13 each take their colour set from a different byte of the
+   participant's selected 27-byte palette record. */
+void FUN_080016c4(u8 index) {
+    u16 buffer[16];
+
+    CpuSet(gUnknown_03001d0c[index], buffer, 16);
+    buffer[3] = gUnknown_0847aa18[PALETTE(0) * 16 + 3];
+    buffer[4] = gUnknown_0847aa18[PALETTE(0) * 16 + 4];
+    buffer[5] = gUnknown_0847aa18[PALETTE(0) * 16 + 5];
+    buffer[6] = gUnknown_0847aa18[PALETTE(0) * 16 + 6];
+    buffer[7] = gUnknown_0847aa18[PALETTE(1) * 16 + 7];
+    buffer[8] = gUnknown_0847aa18[PALETTE(1) * 16 + 8];
+    buffer[9] = gUnknown_0847aa18[PALETTE(1) * 16 + 9];
+    buffer[10] = gUnknown_0847aa18[PALETTE(1) * 16 + 10];
+    buffer[11] = gUnknown_0847aa18[PALETTE(2) * 16 + 11];
+    buffer[12] = gUnknown_0847aa18[PALETTE(2) * 16 + 12];
+    buffer[13] = gUnknown_0847aa18[PALETTE(2) * 16 + 13];
+    CpuSet(buffer, gUnknown_03001d0c[index], 16);
+}
 
 /* Uploads participant `index`'s 16-colour palette. Normally the stored palette
    is DMAed straight to 0x05000200; when the caller asks for the highlight and
@@ -324,7 +359,7 @@ void FUN_08007e9c(u8 index) {
     u8 i;
 
     for (i = 0; i <= 68; i++) {
-        gUnknown_030013b0[i + index * 156] = 9;
+        gUnknown_030013b0[index].first[i] = 9;
     }
 }
 
