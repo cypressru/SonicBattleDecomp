@@ -3334,3 +3334,19 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
         }
     }
 }
+
+void FUN_080291a8(void) {
+    register u8 *destination asm("r1") = gUnknown_03002600;
+    register const u8 *source asm("r2") = (const u8 *)&gUnknown_03002110;
+
+    destination[0] = source[108];
+    destination[1] = source[109];
+    destination[2] = source[110];
+    destination[3] = source[111];
+    destination[4] = source[112];
+    destination[5] = source[113];
+    destination[6] = source[114];
+    destination[7] = source[115];
+    destination[8] = source[116];
+    asm volatile("" : : "r"(source));
+}
