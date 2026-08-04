@@ -23,7 +23,23 @@ struct MP2KPlayerState {
 };
 
 struct MP2KTrack {
-    u8 padding0[30];
+    u8 status;
+    u8 padding1[10];
+    s8 keyShiftPublic;
+    u8 padding12;
+    u8 pitchPublic;
+    u8 padding14;
+    u8 bendRange;
+    u8 padding16[3];
+    u8 volPublic;
+    u8 padding20;
+    s8 panPublic;
+    u8 lfoSpeedCounter;
+    u8 modDepth;
+    u8 modType;
+    u8 lfoSpeed;
+    u8 modCalculated;
+    u8 padding27[3];
     u8 echoVolume;
     u8 echoLength;
     void *channel;
@@ -178,7 +194,7 @@ void MPlayStart(struct MP2KPlayerState *player, const void *header) {
     player->lockStatus++;
     checkSongPriority = player->checkSongPriority;
     if (!checkSongPriority ||
-        ((!player->songHeader || !(player->tracks[0].padding0[0] & 0x40)) &&
+        ((!player->songHeader || !(player->tracks[0].status & 0x40)) &&
          ((player->status & 0xFFFF) == 0 || (player->status & 0x80000000))) ||
         player->priority <= songHeader->priority) {
         player->status = 0;
@@ -196,7 +212,7 @@ void MPlayStart(struct MP2KPlayerState *player, const void *header) {
         track = player->tracks;
         while (i < songHeader->trackCount && i < player->trackCount) {
             FUN_08048c08(player, track);
-            track->padding0[0] = 0xC0;
+            track->status = 0xC0;
             track->channel = 0;
             track->command = (u8 *)songHeader->parts[i];
             i++;
@@ -204,7 +220,7 @@ void MPlayStart(struct MP2KPlayerState *player, const void *header) {
         }
         while (i < player->trackCount) {
             FUN_08048c08(player, track);
-            track->padding0[0] = 0;
+            track->status = 0;
             i++;
             track++;
         }
@@ -244,7 +260,7 @@ void FadeOutBody(struct MP2KPlayerState *player) {
             temporary = 1;
             temporary &= fadeVolume;
             if (!temporary) {
-                track->padding0[0] = 0;
+                track->status = 0;
             }
             i--;
             track++;
@@ -262,13 +278,167 @@ void FadeOutBody(struct MP2KPlayerState *player) {
     i = player->trackCount;
     track = player->tracks;
     while (i > 0) {
-        if (track->padding0[0] & 0x80) {
-            track->padding0[19] = player->fadeVolume >> 2;
-            track->padding0[0] |= 3;
+        if (track->status & 0x80) {
+            track->volPublic = player->fadeVolume >> 2;
+            track->status |= 3;
         }
         i--;
         track++;
     }
+}
+
+void m4aMPlayTempoControl(struct MP2KPlayerState *player, u16 tempo) {
+    if (player->lockStatus == 0x68736D53) {
+        player->lockStatus++;
+        player->tempoScale = tempo;
+        player->tempoInterval = (player->tempoRawBPM * player->tempoScale) >> 8;
+        player->lockStatus = 0x68736D53;
+    }
+}
+
+void m4aMPlayVolumeControl(struct MP2KPlayerState *player, u16 trackBits, u16 volume) {
+    s32 i;
+    u32 bit;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+    player->lockStatus++;
+    i = player->trackCount;
+    track = player->tracks;
+    bit = 1;
+    while (i > 0) {
+        if (trackBits & bit) {
+            if (track->status & 0x80) {
+                track->volPublic = volume / 4;
+                track->status |= 3;
+            }
+        }
+        i--;
+        track++;
+        bit <<= 1;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void m4aMPlayPitchControl(struct MP2KPlayerState *player, u16 trackBits, s16 pitch) {
+    s32 i;
+    u32 bit;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+    player->lockStatus++;
+    i = player->trackCount;
+    track = player->tracks;
+    bit = 1;
+    while (i > 0) {
+        if (trackBits & bit) {
+            if (track->status & 0x80) {
+                track->keyShiftPublic = pitch >> 8;
+                track->pitchPublic = pitch;
+                track->status |= 12;
+            }
+        }
+        i--;
+        track++;
+        bit <<= 1;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void m4aMPlayPanpotControl(struct MP2KPlayerState *player, u16 trackBits, u8 pan) {
+    s32 i;
+    u32 bit;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+    player->lockStatus++;
+    i = player->trackCount;
+    track = player->tracks;
+    bit = 1;
+    while (i > 0) {
+        if (trackBits & bit) {
+            if (track->status & 0x80) {
+                track->panPublic = pan;
+                track->status |= 3;
+            }
+        }
+        i--;
+        track++;
+        bit <<= 1;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void ClearModM(struct MP2KTrack *track) {
+    track->modCalculated = 0;
+    track->lfoSpeedCounter = 0;
+    if (track->modType == 0) {
+        track->status |= 12;
+    } else {
+        track->status |= 3;
+    }
+}
+
+void m4aMPlayModDepthSet(struct MP2KPlayerState *player, u16 trackBits, u8 modDepth) {
+    s32 i;
+    u32 bit;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+    player->lockStatus++;
+    i = player->trackCount;
+    track = player->tracks;
+    bit = 1;
+    while (i > 0) {
+        if (trackBits & bit) {
+            if (track->status & 0x80) {
+                track->modDepth = modDepth;
+                if (!track->modDepth) {
+                    ClearModM(track);
+                }
+            }
+        }
+        i--;
+        track++;
+        bit <<= 1;
+    }
+    player->lockStatus = 0x68736D53;
+}
+
+void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *player, u16 trackBits, u8 lfoSpeed) {
+    s32 i;
+    u32 bit;
+    struct MP2KTrack *track;
+
+    if (player->lockStatus != 0x68736D53) {
+        return;
+    }
+    player->lockStatus++;
+    i = player->trackCount;
+    track = player->tracks;
+    bit = 1;
+    while (i > 0) {
+        if (trackBits & bit) {
+            if (track->status & 0x80) {
+                track->lfoSpeed = lfoSpeed;
+                if (!track->lfoSpeed) {
+                    ClearModM(track);
+                }
+            }
+        }
+        i--;
+        track++;
+        bit <<= 1;
+    }
+    player->lockStatus = 0x68736D53;
 }
 
 void m4aMPlayContinue(struct MP2KPlayerState *player) { MPlayContinue(player); }
@@ -321,13 +491,13 @@ void m4aMPlayImmInit(struct MP2KPlayerState *player) {
         trackCount = player->trackCount;
         track = player->tracks;
         while (trackCount > 0) {
-            if (track->padding0[0] & 0x80) {
-                if (track->padding0[0] & 0x40) {
+            if (track->status & 0x80) {
+                if (track->status & 0x40) {
                     Clear64byte(track);
-                    track->padding0[0] = 0x80;
-                    track->padding0[15] = 2;
-                    track->padding0[19] = 64;
-                    track->padding0[25] = 22;
+                    track->status = 0x80;
+                    track->bendRange = 2;
+                    track->volPublic = 64;
+                    track->lfoSpeed = 22;
                     track->voiceType = 1;
                 }
             }

@@ -554,6 +554,13 @@ units:
       MPlayStop: 0x3C
       FadeOutBody: 0xC8
       MPlayStart: 0xDE
+      m4aMPlayTempoControl: 0x20
+      m4aMPlayVolumeControl: 0x64
+      m4aMPlayPitchControl: 0x70
+      m4aMPlayPanpotControl: 0x64
+      ClearModM: 0x24
+      m4aMPlayModDepthSet: 0x6E
+      m4aMPlayLFOSpeedSet: 0x6E
       m4aSoundMain: 0x0A
       m4aSongNumStart: 0x24
       m4aSongNumStartOrContinue: 0x54
@@ -606,6 +613,8 @@ units:
       - { offset: 0x974, type: thumb_call, symbol: FUN_08049544 }
       - { offset: 0x9B2, type: thumb_call, symbol: FUN_08048c08 }
       - { offset: 0xA2A, type: thumb_call, symbol: FUN_08048c08 }
+      - { offset: 0x1306, type: thumb_call, symbol: ClearModM }
+      - { offset: 0x137A, type: thumb_call, symbol: ClearModM }
       - { offset: 0x44A, type: thumb_call, symbol: _call_via_r1 }
       - { offset: 0x454, type: abs32, symbol: gMPlayJumpTable34 }
       - { offset: 0x45E, type: thumb_call, symbol: _call_via_r1 }
