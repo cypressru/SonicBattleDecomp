@@ -109,6 +109,13 @@ interpolation, a byte target setter, and direct GBA blend-register packing. All 
 bytes match. The audit also recovered `0x080183C4-0x080183CA`, a coherent leaf with an owned aligned
 literal that call and pointer closure had missed; the reviewed inventory now counts it as code.
 
+A subsequent fixed-point helper pass reconstructed `0x08018204`, `0x080182AC`, and `0x08018318`.
+The first projects two signed values through the SDK `DivArm` ABI, the second updates a derived
+ratio, and the third performs two mode-dependent smoothing updates. All 214 instruction bytes match
+with ordinary C. `0x08018318` contains a branch-skipped two-word literal island; marking that island
+as data is required for an honest instruction comparison and does not change its accepted function
+extent.
+
 The same audit rejected four impossible one-byte function extents at `0x0800B210`, `0x0800B770`,
 `0x0800B904`, and `0x08011C54`. The first three addresses lie inside pointer-table data; unrelated
 asset words happen to encode their Thumb-tagged addresses. The fourth was reached only by recursive

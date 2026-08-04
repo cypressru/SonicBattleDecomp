@@ -12,6 +12,11 @@ extern u8 gUnknown_030016c4;
 extern s16 gUnknown_03001b04;
 extern s16 gUnknown_03001b08;
 extern u8 gUnknown_03001390;
+extern u8 gUnknown_03001370;
+extern s16 gUnknown_030016bc;
+extern s16 gUnknown_030016c0;
+extern s16 gUnknown_03001b2c;
+extern s16 gUnknown_03001384;
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
 
@@ -27,6 +32,7 @@ struct UnknownQueueEntry08017f34 {
 extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern struct UnknownQueueEntry08017f00 gUnknown_030033e0[];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
+extern s32 DivArm(s32 denominator, s32 numerator);
 
 void FUN_08017ed0(void) {
     gUnknown_030017cc = 0;
@@ -67,9 +73,32 @@ void FUN_08017f58(u8 first, u8 second) {
 
 void FUN_08017f6c(void) { gUnknown_030017c8 = gUnknown_030017cc; }
 
+void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY) {
+    s32 signedFactorX = (s16)factorX;
+
+    *outputX = ((gUnknown_03001b04 * signedFactorX) >> 13) + 120;
+    *outputY = ((DivArm(gUnknown_030016c8, gUnknown_03001b04 << 8) * factorY) >> 13) + 80;
+}
+
+void FUN_080182ac(void) {
+    gUnknown_03001384 = (42 * gUnknown_03001b04) >> 9;
+    gUnknown_03001384 -= DivArm(gUnknown_030016c8, gUnknown_03001384);
+}
+
 void FUN_080182e4(s16 target) { gUnknown_03001b04 -= (gUnknown_03001b04 - target) >> 3; }
 
 void FUN_08018300(s16 target) { gUnknown_030016c8 = (gUnknown_030016c8 + target) >> 1; }
+
+void FUN_08018318(s16 first, s16 second) {
+    if ((u8)(gUnknown_03001370 - 2) <= 1) {
+        first += gUnknown_030016bc;
+    } else {
+        second += gUnknown_030016bc;
+    }
+
+    gUnknown_03001b2c -= (gUnknown_03001b2c - first) >> 3;
+    gUnknown_030016c0 -= (gUnknown_030016c0 - second) >> 3;
+}
 
 s16 FUN_08018390(void) { return gUnknown_03001b08; }
 
