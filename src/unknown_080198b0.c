@@ -5551,6 +5551,90 @@ void FUN_08040624(void) {
     dma[2];
 }
 
+s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
+    register s32 current asm("r3") = value;
+    register s32 adjustedWidth asm("r2");
+    register s8 *cursor asm("r4") = destination;
+    register u8 remaining asm("r5");
+
+    asm volatile("" : "+r"(cursor));
+    adjustedWidth = (s8)width;
+    asm volatile("" : "+r"(adjustedWidth));
+    cursor += adjustedWidth;
+    adjustedWidth--;
+    adjustedWidth <<= 24;
+    asm volatile("" : "+r"(adjustedWidth));
+    remaining = (u32)adjustedWidth >> 24;
+    adjustedWidth >>= 24;
+    if (adjustedWidth == -1) {
+        goto digits_done;
+    }
+    goto check_current;
+
+digit_loop: {
+    register s32 quotient asm("r0") = FUN_0804a59c(current, 10);
+    register s32 remainder asm("r1");
+    register u32 shifted asm("r0");
+    register u32 decrement asm("r1");
+
+    asm volatile("" : "=r"(remainder));
+    current = quotient;
+    *--cursor = remainder;
+    shifted = remaining << 24;
+    decrement = 0xFFu << 24;
+    asm volatile("" : "+r"(shifted), "+r"(decrement));
+    shifted += decrement;
+    remaining = shifted >> 24;
+    if ((s8)remaining == -1) {
+        goto digits_done;
+    }
+}
+
+check_current:
+    if (current > 9) {
+        goto digit_loop;
+    }
+    *--cursor = current;
+
+digits_done: {
+    register u32 originalShift asm("r2") = remaining << 24;
+    register s32 signedRemaining asm("r0");
+
+    asm volatile("" : "+r"(originalShift));
+    signedRemaining = (s32)originalShift >> 24;
+    if (signedRemaining > 0) {
+        register s32 minusOne asm("r1");
+
+        originalShift >>= 24;
+        signedRemaining--;
+        signedRemaining <<= 24;
+        remaining = (u32)signedRemaining >> 24;
+        signedRemaining >>= 24;
+        minusOne = -1;
+        asm volatile("" : "+r"(minusOne), "+r"(signedRemaining));
+        if (signedRemaining != minusOne) {
+            register s32 padding asm("r3") = minusOne;
+
+            asm volatile("" : "+r"(padding));
+            do {
+                register u32 shifted asm("r0");
+                register u32 decrement asm("r5");
+
+                *--cursor = padding;
+                shifted = remaining << 24;
+                decrement = 0xFFu << 24;
+                asm volatile("" : "+r"(shifted), "+r"(decrement));
+                shifted += decrement;
+                remaining = shifted >> 24;
+                signedRemaining = (s32)shifted >> 24;
+            } while (signedRemaining != minusOne);
+        }
+        signedRemaining = (s8)originalShift;
+    }
+    return signedRemaining;
+}
+}
+
 void FUN_0802cfd0(void) {
     FUN_0801f89c();
     FUN_0801fda0();
