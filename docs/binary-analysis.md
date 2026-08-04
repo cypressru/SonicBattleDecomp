@@ -163,6 +163,43 @@ through a `volatile` 16-bit stack temporary, which is why retail truncates with 
 round trip instead of the usual shift pair. Each switch branches around four in-function literal
 islands, now mapped as data.
 
+### agbcc source-shape idioms established in this unit
+
+Four source shapes were established by matching, and generalize to the rest of the placeholder.
+
+Shared state that is read back by the hardware or by an interrupt is `volatile`, and GCC 2.95
+re-reads a volatile lvalue after an assignment used as a statement. The background shadow array at
+`0x03003178` reproduces only with that read-back; a plain array drops it.
+
+A value handed to a narrow store is passed through a `volatile` 16-bit stack temporary rather than a
+register, which is why retail truncates with a `strh`/`ldrh` round trip through the stack slot
+instead of the usual `lsl`/`lsr` pair.
+
+An index used both to subscript an array and to drive a `switch` must be assigned to its own local
+first. Without that, agbcc splits it across a scratch register and a callee-saved copy, which is the
+entire difference in the `BG0CNT`-`BG3CNT` helpers.
+
+A global expression used more than once, with a call in between, is written out at each use rather
+than cached in a local. Retail re-materializes both the pool address and the load after the call and
+keeps no callee-saved register; a cached local forces the address to live across the call and adds
+register saves. `0x080153E0` is the clearest case: it pushes only `lr`.
+
+### An unresolved register-allocation difference
+
+Five routines in this placeholder reproduce every instruction except one redundant
+register-to-register copy, where retail writes a value straight into its final register and the
+pinned agbcc emits an extra `adds rD, rS, #0`. It appears at `0x08017F80` and `0x08017FB0` (queue
+submit), `0x080178D0` (input capture), `0x080179D0` (link setup) and in the OAM reset loop shared by
+`0x08017CF4` and `0x08015FA4`, where the loop-counter initialization is emitted before rather than
+after the last hoisted constant.
+
+This is not a compiler-flag effect. The emission is unchanged by `-fno-regmove`,
+`-fno-cse-follow-jumps`, `-fno-expensive-optimizations` and `-fno-strength-reduce`, and the
+`old_agbcc` build produces byte-identical output to the pinned `agbcc`. No flag change is therefore
+justified and none was made; the remaining difference is a source shape that has not been found yet.
+Around twenty source spellings were tried per function, including local reordering, loop form,
+pointer versus subscript access, union views and explicit temporaries.
+
 ### Accepted starts that are long-branch targets, not functions
 
 An independent Thumb control-flow walk was built for this placeholder to establish extents without
