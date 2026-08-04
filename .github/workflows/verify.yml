@@ -53,6 +53,7 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.report_gzip_base64 != '' }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Restore locally verified report
         env:
           REPORT_GZIP_BASE64: ${{ inputs.report_gzip_base64 }}
