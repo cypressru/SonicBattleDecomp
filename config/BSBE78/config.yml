@@ -18,6 +18,9 @@ rejected_function_pointers:
   - { source: 0x13BE12, destination: 0x0800B770 }
   - { source: 0x13FA20, destination: 0x0800B770 }
   - { source: 0x152C4C, destination: 0x0800B904 }
+  # Compressed asset bytes at 0x08CB08C4 happen to encode 0x0801E825. The
+  # destination is the middle of FUN_0801e6a0's literal pool, not code.
+  - { source: 0x0CB08C4, destination: 0x0801E824 }
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true
@@ -527,6 +530,52 @@ units:
     end: 0x04833C
     category: game
     function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      FUN_0801c8f0: 0x16
+      FUN_0801c910: 0x16
+      FUN_0801c930: 0x28
+      FUN_0801ce70: 0x16
+      FUN_0801eb94: 0x1C
+      FUN_0801ebf4: 0x1C
+      FUN_0801ed50: 0x1C
+      FUN_0801edc0: 0x1C
+      FUN_0801ee30: 0x1C
+    mappings:
+      - { offset: 0x3058, mode: data }
+      - { offset: 0x3060, mode: thumb }
+      - { offset: 0x3078, mode: data }
+      - { offset: 0x3080, mode: thumb }
+      - { offset: 0x30A8, mode: data }
+      - { offset: 0x30B8, mode: thumb }
+      - { offset: 0x35D6, mode: data }
+      - { offset: 0x35DC, mode: thumb }
+    relocations:
+      - { offset: 0x3044, type: thumb_call, symbol: FUN_08012b98 }
+      - { offset: 0x3058, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x305C, type: abs32, symbol: FUN_0801bcac, addend: 1 }
+      - { offset: 0x3064, type: thumb_call, symbol: FUN_08012b98 }
+      - { offset: 0x3078, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x307C, type: abs32, symbol: FUN_0801b394, addend: 1 }
+      - { offset: 0x3084, type: thumb_call, symbol: FUN_08016078 }
+      - { offset: 0x3096, type: thumb_call, symbol: FUN_08020840 }
+      - { offset: 0x309A, type: thumb_call, symbol: FUN_080205d0 }
+      - { offset: 0x30A8, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x30AC, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x30B0, type: abs32, symbol: FUN_0801c770, addend: 1 }
+      - { offset: 0x30B4, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x35D8, type: abs32, symbol: gUnknown_03001b00 }
+      - { offset: 0x52EC, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x52F6, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x534C, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x5356, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x54A8, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x54B2, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x5518, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x5522, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x5588, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x5592, type: thumb_call, symbol: FUN_0801d870 }
   - name: sdk/m4a0
     start: 0x04833C
     end: 0x048F74
