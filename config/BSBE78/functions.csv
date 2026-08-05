@@ -379,7 +379,6 @@ address,name,mode,confidence
 0x080201F8,FUN_080201f8,thumb,direct-call
 0x0802021C,FUN_0802021c,thumb,direct-call
 0x08020244,FUN_08020244,thumb,direct-call
-0x08020322,FUN_08020322,thumb,rom-pointer
 0x08020360,FUN_08020360,thumb,direct-call
 0x0802036C,FUN_0802036c,thumb,direct-call
 0x080203A4,FUN_080203a4,thumb,recursive-disassembly
@@ -401,7 +400,8 @@ address,name,mode,confidence
 0x08020AD0,FUN_08020ad0,thumb,direct-call
 0x08020B74,FUN_08020b74,thumb,direct-call
 0x08020C22,FUN_08020c22,thumb,rom-pointer
-0x08020E0C,FUN_08020e0c,thumb,internal-epilogue-fragment
+0x08020D20,FUN_08020d20,thumb,sequential-prologue+complete-control-flow
+0x08020E28,FUN_08020e28,thumb,sequential-prologue+complete-control-flow
 0x08020ECC,FUN_08020ecc,thumb,direct-call
 0x08020F18,FUN_08020f18,thumb,direct-call
 0x08020F64,FUN_08020f64,thumb,direct-call
@@ -480,7 +480,6 @@ address,name,mode,confidence
 0x080242BC,FUN_080242bc,thumb,rom-pointer
 0x08024304,FUN_08024304,thumb,rom-pointer
 0x0802436C,FUN_0802436c,thumb,rom-pointer
-0x08024398,FUN_08024398,thumb,recursive-disassembly
 0x080243A4,FUN_080243a4,thumb,rom-pointer
 0x080243D4,FUN_080243d4,thumb,rom-pointer
 0x0802440C,FUN_0802440c,thumb,rom-pointer
@@ -547,7 +546,6 @@ address,name,mode,confidence
 0x08025A98,FUN_08025a98,thumb,rom-pointer
 0x08025B78,FUN_08025b78,thumb,rom-pointer
 0x08025C14,FUN_08025c14,thumb,rom-pointer
-0x08025C40,FUN_08025c40,thumb,recursive-disassembly
 0x08025C4C,FUN_08025c4c,thumb,rom-pointer
 0x08025C84,FUN_08025c84,thumb,rom-pointer
 0x08025D50,FUN_08025d50,thumb,rom-pointer+direct-call
@@ -833,6 +831,7 @@ address,name,mode,confidence
 0x080335DC,FUN_080335dc,thumb,rom-pointer
 0x0803362C,FUN_0803362c,thumb,rom-pointer
 0x0803367C,FUN_0803367c,thumb,rom-pointer
+0x080336AC,FUN_080336ac,thumb,sequential-prologue+complete-control-flow+sibling-identity
 0x080336DC,FUN_080336dc,thumb,rom-pointer
 0x08033A1C,FUN_08033a1c,thumb,rom-pointer
 0x08033A2C,FUN_08033a2c,thumb,rom-pointer
