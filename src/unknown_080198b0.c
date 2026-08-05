@@ -90,6 +90,7 @@ extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
+extern void FUN_08033228(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
@@ -6291,6 +6292,58 @@ void FUN_0803315c(struct UnknownListNode *node) {
     if (position->field14 > 29) {
         node->position->field14 = 0;
         node->data = (const void *)((u32)FUN_08033090 + 1);
+    }
+}
+
+void FUN_080333dc(struct UnknownListNode *node) {
+    FUN_0801fed8(node->field6, 0);
+    gUnknown_03003e20[node->position->field13].position->x = node->position->x;
+}
+
+void FUN_08033404(struct UnknownListNode *node) {
+    struct UnknownPosition *position = node->position;
+
+    position->field14++;
+    if (position->field14 > 59) {
+        node->position->field14 = 0;
+        node->data = (const void *)((u32)FUN_08033228 + 1);
+    }
+}
+
+void FUN_080335dc(struct UnknownListNode *node) {
+    if (((u8)++node->position->field14 & 4) != 0) {
+        node->position->tile = 128;
+    } else {
+        node->position->tile = 148;
+    }
+    node->position->x -= 8;
+    if (node->position->x < -16) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_0803362c(struct UnknownListNode *node) {
+    if (((u8)++node->position->field14 & 4) != 0) {
+        node->position->tile = 168;
+    } else {
+        node->position->tile = 174;
+    }
+    node->position->x -= 6;
+    if (node->position->x < -16) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_0803367c(struct UnknownListNode *node) {
+    node->position->x -= 6;
+    if (node->position->x < -16) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
     }
 }
 
