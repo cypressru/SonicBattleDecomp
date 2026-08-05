@@ -830,6 +830,9 @@ extern const u8 gUnknown_08ed89e4[];
 extern const u8 gUnknown_08ed89ec[];
 extern const u8 gUnknown_08ed89f8[];
 extern const u8 gUnknown_08ed8a0c[];
+extern const u8 gUnknown_08ed8a28[];
+extern const u8 gUnknown_08ed8a3c[];
+extern const u8 gUnknown_08ed8a78[];
 extern const u8 gUnknown_08ed8a8c[];
 extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
@@ -1082,6 +1085,7 @@ extern void FUN_0801dbd0(u8 value);
 extern void FUN_0801dfdc(u8 value);
 extern void FUN_0801e044(u8 value);
 extern void FUN_0801e174(void);
+void FUN_0801e258(u8 value);
 extern void FUN_0801e4f4(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u32 value);
@@ -1447,6 +1451,91 @@ void FUN_0801e044(u8 value) {
             entity->field16 = metadata->field16;
             entity->callback = (UnknownCallback)FUN_0801eb24;
         }
+    }
+}
+
+void FUN_0801e0c4(u8 value) {
+    register u32 index asm("r3") = value;
+    register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+    register u32 scaled asm("r0") = index * 3;
+    register u32 entityOffset asm("r6");
+    register struct UnknownEntity *entity asm("r4");
+    register u32 zero asm("r12");
+
+    asm("" : "+r"(scaled));
+    entityOffset = scaled * 8;
+    entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+    {
+        register u32 zeroValue asm("r0") = 0;
+
+        zero = zeroValue;
+        asm("" : "+r"(zero));
+        entity->field13 = zero;
+        entity->callback = (UnknownCallback)((u32)FUN_0801e174 + 1);
+    }
+    {
+        register struct UnknownEntityData *metadataBase asm("r1") = gUnknown_03001c40;
+        register u32 metadataOffset asm("r0") = index * 252;
+        register struct UnknownEntityData *metadata asm("r5") =
+            (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+        register u32 type asm("r0") = metadata->field196;
+        struct UnknownEntity *savedEntities = entities;
+        register struct UnknownEntityData *savedMetadataBase asm("r8") = metadataBase;
+
+        if (type == 1) {
+            goto caseOne;
+        }
+        if ((s32)type <= 1) {
+            goto defaultCase;
+        }
+        if (type == 2) {
+            goto caseTwo;
+        }
+        goto defaultCase;
+
+    caseOne: {
+        register const void *data asm("r0") = gUnknown_08ed8a3c;
+        register struct UnknownEntity *dataBase asm("r1") =
+            (struct UnknownEntity *)((u32)savedEntities + 4);
+
+        *(const void **)(entityOffset + (u32)dataBase) = data;
+        goto common;
+    }
+
+    caseTwo: {
+        register UnknownCallback callback asm("r0") = (UnknownCallback)((u32)FUN_0801e258 + 1);
+
+        entity->callback = callback;
+        {
+            register const void *data asm("r1") = gUnknown_08ed8a78;
+            register struct UnknownEntity *dataBase asm("r0") =
+                (struct UnknownEntity *)((u32)savedEntities + 4);
+
+            *(const void **)(entityOffset + (u32)dataBase) = data;
+        }
+    }
+
+    common:
+        entity->field14 = zero;
+        entity->field16 = metadata->field16;
+        return;
+
+    defaultCase: {
+        register const void *data asm("r2") = gUnknown_08ed8a28;
+        register u32 defaultOffset asm("r1") = index * 24;
+        register struct UnknownEntity *dataBase asm("r0") =
+            (struct UnknownEntity *)((u32)savedEntities + 4);
+        register struct UnknownEntity *defaultEntity asm("r1");
+        register struct UnknownEntityData *defaultMetadata asm("r0");
+
+        *(const void **)(defaultOffset + (u32)dataBase) = data;
+        defaultEntity = (struct UnknownEntity *)(defaultOffset + (u32)savedEntities);
+        defaultEntity->field14 = 0;
+        metadataOffset = index * 252;
+        defaultMetadata = (struct UnknownEntityData *)(metadataOffset + (u32)savedMetadataBase);
+        defaultEntity->field16 = defaultMetadata->field16;
+        return;
+    }
     }
 }
 
