@@ -66,8 +66,10 @@ rejected_function_pointers:
   - { source: 0x01A85CC, destination: 0x0802002C }
   # Tiny pointer-derived entries rejected from surrounding control flow:
   # 0x08013100 is a live-state tail of FUN_08012b98, 0x0801FBF4 and
-  # 0x080200B4 are literal-pool data, 0x08020E0C is FUN_08020c22's epilogue,
-  # and 0x08030600 starts in a literal before an internal switch block.
+  # 0x080200B4 are literal-pool data, 0x08020E0C is FUN_08020d20's epilogue,
+  # and 0x08030600 starts in a literal before an internal switch block. The
+  # genuine FUN_08020d20 entry has a full callee-save prologue at 0x08020D20
+  # and reaches that epilogue with the corresponding live saved-register state.
   - { source: 0x0F04E90, destination: 0x08013100 }
   - { source: 0x0CEF0B8, destination: 0x0801FBF4 }
   - { source: 0x0E9A664, destination: 0x0801FBF4 }
