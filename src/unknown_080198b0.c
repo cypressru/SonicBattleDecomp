@@ -883,7 +883,7 @@ extern void FUN_0801e044(void);
 extern void FUN_0801e174(void);
 extern void FUN_0801e4f4(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
-extern u32 FUN_08020160(u16 value);
+extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
 extern void FUN_0801eea8(u8 value);
 extern u16 ArcTan2(s16 x, s16 y);
@@ -5922,6 +5922,20 @@ void FUN_0801f5ec(void) {
 }
 
 u32 FUN_08020144(void) { return gUnknown_0300019c = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af; }
+
+u32 FUN_08020160(u32 threshold) {
+    u32 random = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af;
+    u32 percent;
+    register u32 result asm("r2");
+
+    gUnknown_0300019c = random;
+    percent = ((random & 0xFFFF) * 100) >> 16;
+    result = 0;
+    if (percent <= threshold) {
+        result = 1;
+    }
+    return result;
+}
 
 void FUN_080402a0(void) {
     FUN_08016078(1);
