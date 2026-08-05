@@ -1077,6 +1077,7 @@ extern void FUN_08021e70(u16 value);
 
 extern void FUN_0801d618(void);
 extern void FUN_0801d8f4(u8 value);
+extern void FUN_0801daec(u8 value);
 extern void FUN_0801dfdc(u8 value);
 extern void FUN_0801e044(u8 value);
 extern void FUN_0801e174(void);
@@ -1913,6 +1914,141 @@ void FUN_0801d8f4(u8 value) {
                 finalEntity->field15 = FUN_0801d068(index);
             }
         }
+    }
+}
+
+void FUN_0801d9e0(u8 value) {
+    register u32 index asm("r5") = value;
+    register u8 *state asm("r0");
+    register u32 doubled asm("r3");
+
+    {
+        register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
+        register u32 offset asm("r0") = index * 24;
+        register struct UnknownEntity *entity asm("r0") =
+            (struct UnknownEntity *)(offset + (u32)entities);
+        register UnknownCallback callback asm("r1");
+        register u32 zero asm("r1");
+
+        callback = (UnknownCallback)((u32)FUN_0801daec + 1);
+        entity->callback = callback;
+        zero = 0;
+        entity->field8 = zero;
+    }
+    state = &gUnknown_03001620;
+    switch (state[11]) {
+    case 0: {
+        register u32 random asm("r0") = FUN_08020144();
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 offset asm("r1");
+        register struct UnknownEntity *entity asm("r1");
+        register u32 mask asm("r2");
+
+        doubled = index * 2;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        mask = 3;
+        random &= mask;
+        random += 1;
+        entity->field12 = random;
+        break;
+    }
+    case 1: {
+        register u32 random asm("r0") = FUN_08020144();
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 offset asm("r1");
+        register struct UnknownEntity *entity asm("r1");
+        register u32 mask asm("r2");
+
+        doubled = index * 2;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        mask = 7;
+        random &= mask;
+        random += 5;
+        entity->field12 = random;
+        break;
+    }
+    case 2: {
+        register u32 random asm("r0") = FUN_08020144();
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 offset asm("r1");
+        register struct UnknownEntity *entity asm("r1");
+        register u32 mask asm("r2");
+
+        doubled = index * 2;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        mask = 7;
+        random &= mask;
+        random += 10;
+        entity->field12 = random;
+        break;
+    }
+    case 3: {
+        register u32 random asm("r0") = FUN_08020144();
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 offset asm("r1");
+        register struct UnknownEntity *entity asm("r1");
+        register u32 mask asm("r2");
+
+        doubled = index * 2;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        mask = 15;
+        random &= mask;
+        random += 10;
+        entity->field12 = random;
+        break;
+    }
+    case 4:
+    default: {
+        register u32 random asm("r0") = FUN_08020144();
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 offset asm("r1");
+        register struct UnknownEntity *entity asm("r1");
+        register u32 mask asm("r2");
+
+        doubled = index * 2;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        mask = 31;
+        random &= mask;
+        random += 30;
+        entity->field12 = random;
+        break;
+    }
+    }
+    {
+        register struct UnknownEntity *entities asm("r1");
+        register u32 offset asm("r0");
+        register struct UnknownEntity *entity asm("r3");
+        register u32 zero asm("r4");
+        register const void *data asm("r2");
+        register struct UnknownEntity *dataBase asm("r1");
+        register struct UnknownEntityData *metadataBase asm("r1");
+        register u32 metadataOffset asm("r0");
+        register struct UnknownEntityData *metadata asm("r0");
+
+        entities = gUnknown_03003db0;
+        offset = doubled + index;
+        offset *= 8;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+        zero = 0;
+        entity->field13 = zero;
+        data = gUnknown_08ed898c;
+        dataBase = (struct UnknownEntity *)((u32)entities + 4);
+        *(const void **)(offset + (u32)dataBase) = data;
+        entity->field14 = zero;
+        metadataBase = gUnknown_03001c40;
+        metadataOffset = index * 252;
+        metadata = (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+        entity->field16 = metadata->field16;
     }
 }
 
