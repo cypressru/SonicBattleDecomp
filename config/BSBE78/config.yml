@@ -7,6 +7,10 @@ rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 rejected_function_pointers:
+  # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
+  # destination is midway through a switch case in FUN_08020244 and depends
+  # on its live r2/r3/r5/r6 state and shared epilogue.
+  - { source: 0x0E45E34, destination: 0x08020322 }
   # These asset/payload words happen to encode Thumb addresses into the
   # switch body of FUN_08000e04. The destinations remain technical fragment
   # symbols because objdiff cannot model non-contiguous function code, but
@@ -1382,6 +1386,12 @@ units:
       - { offset: 0x696C, mode: thumb }
       - { offset: 0x698E, mode: data }
       - { offset: 0x6994, mode: thumb }
+      - { offset: 0x69B6, mode: data }
+      - { offset: 0x69D8, mode: thumb }
+      - { offset: 0x6A64, mode: data }
+      - { offset: 0x6A68, mode: thumb }
+      - { offset: 0x6AA8, mode: data }
+      - { offset: 0x6AB0, mode: thumb }
       - { offset: 0x6AB8, mode: data }
       - { offset: 0x6ABC, mode: thumb }
       - { offset: 0x6AEC, mode: data }
@@ -2977,6 +2987,20 @@ units:
       - { offset: 0x695C, type: thumb_call, symbol: FUN_0802021c }
       - { offset: 0x6964, type: abs32, symbol: gUnknown_030048e0 }
       - { offset: 0x6990, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0x69B8, type: abs32, symbol: gUnknown_03004900 }
+      - { offset: 0x69BC, type: abs32, symbol: .text, addend: 0x69C0 }
+      - { offset: 0x69C0, type: abs32, symbol: .text, addend: 0x69D8 }
+      - { offset: 0x69C4, type: abs32, symbol: .text, addend: 0x69F4 }
+      - { offset: 0x69C8, type: abs32, symbol: .text, addend: 0x6A10 }
+      - { offset: 0x69CC, type: abs32, symbol: .text, addend: 0x6A20 }
+      - { offset: 0x69D0, type: abs32, symbol: .text, addend: 0x6A3A }
+      - { offset: 0x69D4, type: abs32, symbol: .text, addend: 0x6A68 }
+      - { offset: 0x69EE, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x6A0A, type: thumb_call, symbol: FUN_08021000 }
+      - { offset: 0x6A1A, type: thumb_call, symbol: FUN_0804a5b4 }
+      - { offset: 0x6A5E, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x6A8A, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x6AAC, type: abs32, symbol: gUnknown_030048f0 }
       - { offset: 0x6AB8, type: abs32, symbol: gUnknown_030048f0 }
       - { offset: 0x6AEC, type: abs32, symbol: gUnknown_030048f0 }
       - { offset: 0x6AF0, type: abs32, symbol: gUnknown_03004900 }

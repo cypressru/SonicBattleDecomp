@@ -379,7 +379,6 @@ address,name,mode,confidence
 0x080201F8,FUN_080201f8,thumb,direct-call
 0x0802021C,FUN_0802021c,thumb,direct-call
 0x08020244,FUN_08020244,thumb,direct-call
-0x08020322,FUN_08020322,thumb,rom-pointer
 0x08020360,FUN_08020360,thumb,direct-call
 0x0802036C,FUN_0802036c,thumb,direct-call
 0x080203A4,FUN_080203a4,thumb,recursive-disassembly
