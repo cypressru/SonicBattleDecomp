@@ -267,8 +267,20 @@ the field maps, control flow, types and constants are established, and only inst
 register choice differs. That is the state to resume from rather than re-deriving the semantics.
 
 This is not a compiler-flag effect. The emission is unchanged by `-fno-regmove`,
-`-fno-cse-follow-jumps`, `-fno-expensive-optimizations` and `-fno-strength-reduce`, and the
-`old_agbcc` build produces byte-identical output to the pinned `agbcc`. No flag change is therefore
+`-fno-cse-follow-jumps`, `-fno-expensive-optimizations`, `-fno-strength-reduce`,
+`-fno-rerun-cse-after-loop`, `-fno-cse-skip-blocks`, `-fno-gcse`, `-fno-caller-saves`,
+`-fno-thread-jumps`, `-fno-defer-pop`, `-fno-function-cse`, `-fno-peephole` and
+`-freduce-all-givs`, and the `old_agbcc` build produces byte-identical output to the pinned
+`agbcc`. `-fmove-all-movables` and `-fno-omit-frame-pointer` both make the divergence larger,
+not smaller, and `-O1`, `-Os` and `-O3` are all worse than `-O2`.
+
+`-fmove-all-movables` deserves its own note because it is the flag whose description matches the
+symptom most closely. Six of the parked routines share one signature: retail hoists or materialises
+a value earlier than the pinned agbcc does. Forcing every loop-invariant computation out of the loop
+is the obvious candidate for that, and it is wrong - on `0x08016A44` it moves the difference from 33
+bytes to 45. So the shared symptom is not loop-invariant motion, and the remaining question is
+narrower than "agbcc hoists differently": it is why retail materialises a constant or a load one
+instruction earlier within a single basic block. No flag change is therefore
 justified and none was made; the remaining difference is a source shape that has not been found yet.
 Around twenty source spellings were tried per function, including local reordering, loop form,
 pointer versus subscript access, union views and explicit temporaries.
