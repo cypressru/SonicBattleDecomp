@@ -83,6 +83,10 @@ extern void FUN_080304e4(struct UnknownListNode *node);
 extern void FUN_08038448(struct UnknownListNode *node);
 extern void FUN_0803b82c(struct UnknownListNode *node);
 extern void FUN_08032f34(struct UnknownListNode *node);
+extern void FUN_08035408(struct UnknownListNode *node);
+extern void FUN_08035798(struct UnknownListNode *node);
+extern void FUN_08035b08(struct UnknownListNode *node);
+extern void FUN_08035b58(struct UnknownListNode *node);
 extern u8 gUnknown_03005300;
 extern u16 gUnknown_03005378;
 extern void FUN_08041808(void *state);
@@ -6369,6 +6373,59 @@ void FUN_08034ebc(void) {
         gUnknown_03001210[0x472] = 0;
         gUnknown_03002030 = FUN_0802fdf8;
     }
+}
+
+void FUN_08035760(struct UnknownListNode *node) {
+    s16 *state = node->allocation;
+    register s32 value asm("r1") = 256;
+
+    asm volatile("" : "+r"(value));
+    state[0] = value;
+    state[1] = 30;
+    gUnknown_03005378 = value + 84;
+    FUN_0801fba0(20, (u16)-value);
+    node->data = (const void *)((u32)FUN_08035798 + 1);
+}
+
+void FUN_080358b4(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 256) != 0) {
+        gUnknown_03002030 = gUnknown_03005330.callback;
+    }
+}
+
+void FUN_080358dc(struct UnknownListNode *node) {
+    s16 *counter = (s16 *)node->allocation + 1;
+
+    if (*counter > 0) {
+        (*counter)--;
+    } else {
+        *counter = 0;
+        node->data = (const void *)((u32)FUN_08035408 + 1);
+    }
+}
+
+void FUN_08035ad8(struct UnknownListNode *node) {
+    node->position->y -= 8;
+    if (node->position->y <= 40) {
+        node->position->y = 40;
+        node->data = (const void *)((u32)FUN_08035b08 + 1);
+    }
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08035b08(struct UnknownListNode *node) {
+    node->position->x = gUnknown_03005378 + 68;
+    node->position->x = gUnknown_03005378 + 68;
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08035b28(struct UnknownListNode *node) {
+    node->position->y += 8;
+    if (node->position->y > 39) {
+        node->position->y = 40;
+        node->data = (const void *)((u32)FUN_08035b58 + 1);
+    }
+    FUN_0801fed8(node->field6, 0);
 }
 
 void FUN_08035c0c(struct UnknownListNode *node) {
