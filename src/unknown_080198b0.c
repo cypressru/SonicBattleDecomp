@@ -673,6 +673,8 @@ struct UnknownState43e28 {
 struct UnknownState43f00 {
     u8 filler0[4];
     const void *callback;
+    u8 filler8[19];
+    u8 counter;
 };
 
 struct UnknownRecordValue28c80 {
@@ -8465,4 +8467,20 @@ void FUN_08043f00(struct UnknownState43f00 *state) {
     gUnknown_03005440.field8 |= 0x200;
     FUN_0801fba0(0x52, 0x10);
     state->callback = (const void *)((u32)FUN_08043f7c + 1);
+}
+
+void FUN_08043f7c(struct UnknownState43f00 *state) {
+    state->counter++;
+    {
+        register u32 counter asm("r2") = state->counter;
+        register u32 packed asm("r1") = counter << 8;
+        register u32 remaining asm("r0") = 16 - counter;
+
+        packed |= remaining;
+        FUN_0801fba0(0x52, (u16)packed);
+    }
+    if (state->counter > 15) {
+        gUnknown_03005440.field8 &= ~0x200;
+        FUN_0804051c(state);
+    }
 }
