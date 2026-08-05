@@ -148,6 +148,8 @@ extern const u16 gUnknown_08edd540[];
 extern const u8 gUnknown_08159fd4[];
 extern const u8 gUnknown_0816fa0c[];
 extern const u8 gUnknown_08edd54c[];
+extern const u32 gUnknown_0816faf4[4];
+extern u8 gUnknown_030052e8[];
 extern u16 gUnknown_030052f4;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
@@ -1208,6 +1210,68 @@ void FUN_0803bea8(void) {
 unchanged:
     FUN_0801fba0(22, *savedState);
     FUN_0801fba0(26, *savedState);
+}
+
+void FUN_0803bf68(struct UnknownListNode *node);
+
+void FUN_0803bef0(struct UnknownListNode *node) {
+    register u8 *allocation asm("r3") = node->allocation;
+    register struct UnknownPosition *graphics asm("r2") =
+        (struct UnknownPosition *)(allocation + 16);
+    register u16 tile asm("r2");
+    register u8 graphicsOffset asm("r1");
+    register struct UnknownPosition *position asm("r1");
+    register u32 zero asm("r5");
+
+    *graphics = *(const struct UnknownPosition *)gUnknown_0816faf4;
+    graphicsOffset = -(gUnknown_030052e8[gUnknown_030052e0] + 12);
+    tile = 0;
+    asm volatile("" : "+r"(tile));
+    allocation[21] = graphicsOffset;
+    position = node->position;
+    allocation += 16;
+    position->field0 = allocation;
+    zero = 0;
+    position->tile = tile;
+    node->position->x = 207;
+    node->position->y = gUnknown_08edd540[gUnknown_030052e0] - gUnknown_030052e4;
+    node->position->field10 = zero;
+    node->position->field11 = zero;
+    node->position->field12 = 4;
+    node->data = (const void *)((u32)FUN_0803bf68 + 1);
+}
+
+void FUN_0803bf68(struct UnknownListNode *node) {
+    register struct UnknownListNode *owner asm("r5") = node;
+    register u8 *allocation asm("r3") = owner->allocation;
+    register const u8 *graphicsOffsets asm("r1") = gUnknown_030052e8;
+    register u8 *indexPointer asm("r2") = &gUnknown_030052e0;
+    register const u8 *graphicsOffsetPointer asm("r0") = (const u8 *)(u32)*indexPointer;
+    register u32 value asm("r0");
+    register struct UnknownPosition *position asm("r1");
+    register u8 *fadePointer asm("r3");
+    register struct UnknownPosition *savedPosition asm("r4");
+
+    asm volatile("" : "+r"(graphicsOffsetPointer));
+    graphicsOffsetPointer += (u32)graphicsOffsets;
+    value = *graphicsOffsetPointer;
+    value += 12;
+    value = -value;
+    allocation[21] = value;
+    position = owner->position;
+    fadePointer = &gUnknown_030052f8;
+    value = *fadePointer;
+    value += 199;
+    position->x = value;
+    savedPosition = owner->position;
+    value = gUnknown_08edd540[*indexPointer];
+    value += 8;
+    value -= *fadePointer;
+    value -= gUnknown_030052e4;
+    savedPosition->y = value;
+    if (*indexPointer <= 3) {
+        FUN_0801fed8(owner->field6, 0);
+    }
 }
 
 void FUN_0801c910(void) {
