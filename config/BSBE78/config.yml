@@ -6,6 +6,26 @@ sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
+long_branch_targets:
+  # GCC reaches an intra-function label beyond the +/-2 KiB `B` range by emitting
+  # `BL` wherever `lr` is already dead. Each address below was an accepted start
+  # whose predecessor's extent ended at exactly its first byte, so it is a
+  # fall-through continuation of that function rather than an entry.
+  - 0x080029BC
+  - 0x0800343E
+  - 0x080034C2
+  - 0x08003798
+  - 0x0800410C
+  - 0x080043C2
+  - 0x0800B086
+  - 0x0800C780
+  - 0x0800F028
+  - 0x08010F1C
+  - 0x08010F1E
+  - 0x0801103C
+  - 0x08011C2E
+  - 0x08011C32
+  - 0x08015374
 rejected_function_pointers:
   # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
   # destination is midway through a switch case in FUN_08020244 and depends
@@ -971,6 +991,7 @@ units:
       FUN_08040624: 0x32
       FUN_080406d4: 0x82
       FUN_0802cfd0: 0xE
+      FUN_0802df40: 0x22
       FUN_0803186c: 0xE
       FUN_08032adc: 0xE
       FUN_08033a1c: 0xE
@@ -979,6 +1000,8 @@ units:
       FUN_0803035c: 0x20
       FUN_080380b0: 0x20
       FUN_0803b5a8: 0x20
+      FUN_080381a8: 0x26
+      FUN_08038404: 0x38
       FUN_080380e4: 0xE
       FUN_08039c5c: 0xE
       FUN_08037100: 0xE
@@ -1000,8 +1023,11 @@ units:
       FUN_080482e8: 0x12
       FUN_0803128c: 0x10
       FUN_080368c0: 0x14
+      FUN_08043d74: 0x28
       FUN_08043e28: 0x12
       FUN_08043e44: 0x14
+      FUN_08043f00: 0x24
+      FUN_08043f7c: 0x3A
       FUN_080309c0: 0x16
       FUN_0803876c: 0x16
       FUN_0803bb34: 0x16
@@ -1225,6 +1251,7 @@ units:
       FUN_080218ac: 0x30
       FUN_0802188c: 0x18
       FUN_080218dc: 0x44
+      FUN_080219e4: 0x28
       FUN_08021a10: 0x2A
       FUN_08021a40: 0x3A
       FUN_08021a84: 0x84
@@ -1327,6 +1354,7 @@ units:
       FUN_08029014: 0x40
       FUN_08029060: 0x4E
       FUN_080290b4: 0x2A
+      FUN_0802cb30: 0x2A
       FUN_080290e8: 0xA8
       FUN_080291a8: 0x4E
       FUN_08029200: 0x46
@@ -2352,7 +2380,23 @@ units:
       - { offset: 0x22314, mode: thumb }
       - { offset: 0x22332, mode: data }
       - { offset: 0x22340, mode: thumb }
+      - { offset: 0x2A4EC, mode: data }
+      - { offset: 0x2A4FC, mode: thumb }
+      - { offset: 0x2A674, mode: data }
+      - { offset: 0x2A67C, mode: thumb }
+      - { offset: 0x2A708, mode: data }
+      - { offset: 0x2A710, mode: thumb }
     relocations:
+      - { offset: 0x2A4D0, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x2A4DC, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x2A4F0, type: abs32, symbol: gUnknown_030044d0 }
+      - { offset: 0x2A4F8, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x2A666, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x2A674, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x2A678, type: abs32, symbol: FUN_08043f7c, addend: 1 }
+      - { offset: 0x2A6E6, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x2A6FC, type: thumb_call, symbol: FUN_0804051c }
+      - { offset: 0x2A708, type: abs32, symbol: gUnknown_03005440 }
       - { offset: 0x5D52, type: thumb_call, symbol: FUN_08049030 }
       - { offset: 0x5D5E, type: thumb_call, symbol: FUN_08049724 }
       - { offset: 0x5D8A, type: thumb_call, symbol: FUN_08049170 }
@@ -2381,6 +2425,23 @@ units:
       - { offset: 0x21D18, type: abs32, symbol: gUnknown_03003150 }
       - { offset: 0x21D1C, type: abs32, symbol: FUN_080185d8, addend: 1 }
       - { offset: 0x21D20, type: abs32, symbol: FUN_08018654, addend: 1 }
+      - { offset: 0x1E912, type: thumb_call, symbol: FUN_0801fc60 }
+      - { offset: 0x1E916, type: thumb_call, symbol: FUN_0801f600 }
+      - { offset: 0x1E920, type: abs32, symbol: gUnknown_03003150 }
+      - { offset: 0x1E924, type: abs32, symbol: FUN_080381e4, addend: 1 }
+      - { offset: 0x1E930, type: abs32, symbol: gUnknown_030052f4 }
+      - { offset: 0x1EB5A, type: thumb_call, symbol: FUN_0801fbfc }
+      - { offset: 0x1EB5E, type: thumb_call, symbol: FUN_0801fb60 }
+      - { offset: 0x1EB62, type: thumb_call, symbol: FUN_0801fb94 }
+      - { offset: 0x1EB66, type: thumb_call, symbol: FUN_0801ff30 }
+      - { offset: 0x1EB6A, type: thumb_call, symbol: FUN_0801f780 }
+      - { offset: 0x1EB6E, type: thumb_call, symbol: FUN_080210d8 }
+      - { offset: 0x1EB72, type: thumb_call, symbol: FUN_0802110c }
+      - { offset: 0x1EB76, type: thumb_call, symbol: FUN_080380b0 }
+      - { offset: 0x1EB7A, type: thumb_call, symbol: FUN_080184c8 }
+      - { offset: 0x1EB7E, type: thumb_call, symbol: FUN_08018c3c }
+      - { offset: 0x1EB90, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x1EB94, type: abs32, symbol: FUN_0803d748, addend: 1 }
       - { offset: 0x1E836, type: thumb_call, symbol: FUN_0801f89c }
       - { offset: 0x1E83A, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0x203AE, type: thumb_call, symbol: FUN_0801f89c }
@@ -3971,6 +4032,7 @@ units:
       - { offset: 0xF800, type: abs32, symbol: gUnknown_0804df7c }
       - { offset: 0xF830, type: abs32, symbol: gUnknown_08edb94c }
       - { offset: 0xF834, type: abs32, symbol: FUN_08029060, addend: 1 }
+      - { offset: 0x132B0, type: abs32, symbol: FUN_0802cadc, addend: 1 }
       - { offset: 0xF854, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0xF866, type: thumb_call, symbol: FUN_08020ecc }
       - { offset: 0xF8A0, type: thumb_call, symbol: FUN_08020fac }

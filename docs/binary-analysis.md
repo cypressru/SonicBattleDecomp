@@ -318,6 +318,17 @@ only the final `strh`, so each arm keeps its own literal-pool word for `0x030021
 comparison as a `?:` or hoisting the other record into a pointer both move further away: a `record`
 pointer local for the indexed accesses costs another 24 bytes and loses the head entirely.
 
+The two loads per location are already reproduced - the pinned agbcc emits the same `ldrh` and
+`ldrsh` pair from a `u16` field read once plainly and once through an `(s16)` cast. What differs is
+only placement: retail hoists both `ldrh`s above the branch, so each arm just shifts an
+already-loaded register, while agbcc leaves each `ldrh` inside the arm that needs it. Declaring the
+field as a `union { u16 u; s16 s; }` is worse, not better - it drops to 612 bytes and 411 differing
+bytes because the two members stop sharing an address for CSE. Declaring the field `s16` and casting
+to `(u16)` for the stored value is byte-identical to the `u16`-plus-`(s16)`-cast form, since agbcc
+folds the cast back into the same load. Neither is the lever; the remaining question is what makes
+agbcc hoist a load out of one arm of a branch when the same address is already dereferenced by the
+condition.
+
 ### Accepted starts that are long-branch targets, not functions
 
 An independent Thumb control-flow walk was built for this placeholder to establish extents without
