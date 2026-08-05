@@ -5,6 +5,7 @@ struct UnknownListNode;
 struct UnknownState482d0;
 struct UnknownState420dc;
 struct UnknownCameraState4230c;
+struct UnknownState43f00;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
@@ -71,6 +72,7 @@ extern void FUN_08041920(void);
 extern void FUN_080419d4(void);
 extern void FUN_0804280c(struct UnknownState420dc *state);
 extern void FUN_08043e5c(void);
+extern void FUN_08043f7c(struct UnknownState43f00 *state);
 extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
 extern void FUN_0802ea64(u8 value);
@@ -666,6 +668,11 @@ struct UnknownState43e28 {
     u8 field22;
     u8 filler23;
     u8 field24;
+};
+
+struct UnknownState43f00 {
+    u8 filler0[4];
+    const void *callback;
 };
 
 struct UnknownRecordValue28c80 {
@@ -8452,4 +8459,10 @@ void FUN_08043d74(void) {
     FUN_0804a594((const void *)0x06000000, (void *)0x02028000, 0x6000);
     FUN_0804a594(gUnknown_030044d0, (void *)0x02027c00, 0x100);
     gUnknown_03005440.field35 = 0;
+}
+
+void FUN_08043f00(struct UnknownState43f00 *state) {
+    gUnknown_03005440.field8 |= 0x200;
+    FUN_0801fba0(0x52, 0x10);
+    state->callback = (const void *)((u32)FUN_08043f7c + 1);
 }
