@@ -1456,6 +1456,31 @@ u32 FUN_08020034(u16 first, u16 second, u16 third) {
     return 1;
 }
 
+void FUN_08020074(void) {
+    if (gUnknown_030048d4 >= 0) {
+        u8 index = gUnknown_030048d4;
+        register u32 offset asm("r1") = index << 3;
+        register struct UnknownQueuedValue *base asm("r0") = gUnknown_030044d0;
+        struct UnknownQueuedValue *entry;
+
+        asm volatile("" : "+r"(offset), "+r"(base));
+        entry = (struct UnknownQueuedValue *)(offset + (u32)base);
+
+        if ((s8)index >= 0) {
+            register u32 rawValue asm("r0") = 0x200;
+            register u16 value asm("r3") = rawValue;
+
+            asm volatile("" : "+r"(value));
+            do {
+                entry->first = value;
+                entry++;
+                index++;
+            } while ((s8)index >= 0);
+        }
+    }
+    gUnknown_030048d0 = 1;
+}
+
 void FUN_080200bc(u16 index, u16 first, u16 second, u16 third) {
     struct UnknownQueuedValue *entry = &gUnknown_030044d0[index];
 

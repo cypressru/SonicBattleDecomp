@@ -1105,6 +1105,7 @@ units:
       FUN_0801ffa4: 0x2A
       FUN_08020028: 0x8
       FUN_08020034: 0x40
+      FUN_08020074: 0x3A
       FUN_080200bc: 0x16
       FUN_080200d8: 0x1A
       FUN_080200f8: 0x2E
