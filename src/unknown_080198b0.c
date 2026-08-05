@@ -7017,6 +7017,7 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
             register u16 relativeYPosition asm("r4") = yPosition;
             register u16 relativeY asm("r2") = relativeYPosition - relativeCameraYValue;
 
+            asm volatile("" : "+r"(relativeYPosition));
             state->relativeY = relativeY;
         }
         {
