@@ -177,6 +177,8 @@ extern const u8 gUnknown_08159fd4[];
 extern const u8 gUnknown_0816fa0c[];
 extern const u8 gUnknown_08edd54c[];
 extern const u32 gUnknown_0816faf4[4];
+extern const u16 gUnknown_08132774[];
+extern const u16 gUnknown_081329b4[];
 extern u8 gUnknown_030052e8[];
 extern const void **gUnknown_030052fc;
 extern u16 gUnknown_030052f4;
@@ -212,6 +214,7 @@ extern const u16 gUnknown_08155588[];
 extern const u16 gUnknown_081555e8[];
 extern void FUN_08046aa4(void);
 extern void FUN_08031164(void);
+extern void FUN_0803187c(struct UnknownListNode *node);
 extern void FUN_080284b4(void);
 extern void FUN_08000210(void);
 extern void FUN_080183d0(u8 first, u8 second, u8 third, u8 fourth, u8 fifth, u8 sixth);
@@ -8558,6 +8561,17 @@ void FUN_08032618(u32 first, u32 second) {
         x = 64 - halfWidth;
         asm volatile("" : : "r"(x));
         FUN_08020b74(x, 2, data, 8, 9);
+    }
+}
+
+void FUN_08032724(struct UnknownListNode *node) {
+    u8 pending = FUN_08020500((u16 *)0x05000000, gUnknown_08132774, 16) == 0;
+    u8 result;
+
+    result = FUN_08020500((u16 *)0x050003A0, gUnknown_081329b4, 48);
+    pending |= result == 0;
+    if (pending == 0) {
+        node->data = (const void *)((u32)FUN_0803187c + 1);
     }
 }
 

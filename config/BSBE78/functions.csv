@@ -790,7 +790,7 @@ address,name,mode,confidence
 0x08032594,FUN_08032594,thumb,rom-pointer
 0x080325F0,FUN_080325f0,thumb,rom-pointer
 0x08032618,FUN_08032618,thumb,recursive-disassembly+exact-body
-0x08032724,FUN_08032724,thumb,rom-pointer
+0x08032724,FUN_08032724,thumb,rom-pointer+exact-body
 0x08032778,FUN_08032778,thumb,rom-pointer
 0x08032790,FUN_08032790,thumb,rom-pointer
 0x080327BC,FUN_080327bc,thumb,rom-pointer
