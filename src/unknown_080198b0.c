@@ -2216,6 +2216,29 @@ u32 FUN_080218dc(u8 sector, u8 *data) {
     return 0;
 }
 
+void FUN_080219e4(u8 *data, u32 count) {
+    register u32 end asm("r4") = count - 1;
+    register u32 i asm("r3") = 0;
+
+    if (i < end) {
+        register const u8 *table asm("r5") = gUnknown_0807b780;
+
+        asm volatile("" : "+r"(table));
+        do {
+            register u32 index asm("r1") = data[0];
+            register u32 value asm("r0");
+
+            index += (u32)table;
+            value = data[1];
+            index = *(const u8 *)index;
+            value += index;
+            data[1] = value;
+            data++;
+            i++;
+        } while (i < end);
+    }
+}
+
 void FUN_08021a10(u8 *data, u32 count) {
     u32 end = count - 1;
     u8 previous = data[0];
