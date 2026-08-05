@@ -885,6 +885,7 @@ extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
 extern void FUN_0802cadc(struct UnknownListNode *node);
 extern void FUN_080381e4(void);
+extern void FUN_0803d748(void);
 extern void FUN_08028158(struct UnknownListNode *node);
 extern void FUN_08028190(struct UnknownListNode *node);
 extern void FUN_0802a480(struct UnknownListNode *node);
@@ -6224,6 +6225,20 @@ void FUN_080381a8(void) {
     *(volatile u16 *)0x04000208 = 1;
     FUN_0801fc60();
     FUN_0801f600();
+}
+
+void FUN_08038404(void) {
+    FUN_0801fbfc((const u16 *)0x08158674, 16);
+    FUN_0801fb60();
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+    FUN_080380b0();
+    FUN_080184c8();
+    FUN_08018c3c();
+    gUnknown_03002030 = FUN_0803d748;
 }
 
 void FUN_080380e4(void) {
