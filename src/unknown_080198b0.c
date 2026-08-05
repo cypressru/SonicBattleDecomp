@@ -4836,15 +4836,20 @@ void FUN_08028770(struct UnknownListNode *node) {
     struct UnknownListNode *created;
 
     allocation->field0 = 1;
-    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created = FUN_0801f7d0((void (*)(struct UnknownListNode *))((u32)FUN_08029014 + 1), 16,
+                           gUnknown_03003e20, 0);
     created->position->field13 = 0;
-    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created = FUN_0801f7d0((void (*)(struct UnknownListNode *))((u32)FUN_08029014 + 1), 16,
+                           gUnknown_03003e20, 0);
     created->position->field13 = 1;
-    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created = FUN_0801f7d0((void (*)(struct UnknownListNode *))((u32)FUN_08029014 + 1), 16,
+                           gUnknown_03003e20, 0);
     created->position->field13 = 2;
-    created = FUN_0801f7d0(FUN_08029014, 16, gUnknown_03003e20, 0);
+    created = FUN_0801f7d0((void (*)(struct UnknownListNode *))((u32)FUN_08029014 + 1), 16,
+                           gUnknown_03003e20, 0);
     created->position->field13 = 3;
-    created = FUN_0801f7d0(FUN_080290b4, 16, gUnknown_03003e20, 0);
+    created = FUN_0801f7d0((void (*)(struct UnknownListNode *))((u32)FUN_080290b4 + 1), 16,
+                           gUnknown_03003e20, 0);
     allocation->field5 = created->field6;
     if (gUnknown_03005264 == 4) {
         FUN_080283f8(0);
@@ -5097,9 +5102,9 @@ void FUN_08028bec(void) {
     }
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         if (gUnknown_03005264 == 4) {
-            gUnknown_03002030 = FUN_0803281c;
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_0803281c + 1);
         } else {
-            gUnknown_03002030 = FUN_08029250;
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_08029250 + 1);
             value = gUnknown_03002600[4];
             if (value != 0) {
                 values = gUnknown_03005268;
@@ -5351,7 +5356,7 @@ void FUN_08028f5c(void) {
 void FUN_08028ed8(struct UnknownListNode *node) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         if (gUnknown_03005264 == 4) {
-            gUnknown_03002030 = FUN_080315bc;
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_080315bc + 1);
         } else {
             gUnknown_03002030 = FUN_08039e20;
         }
