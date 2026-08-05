@@ -831,6 +831,7 @@ address,name,mode,confidence
 0x080335DC,FUN_080335dc,thumb,rom-pointer
 0x0803362C,FUN_0803362c,thumb,rom-pointer
 0x0803367C,FUN_0803367c,thumb,rom-pointer
+0x080336AC,FUN_080336ac,thumb,sequential-prologue+complete-control-flow+sibling-identity
 0x080336DC,FUN_080336dc,thumb,rom-pointer
 0x08033A1C,FUN_08033a1c,thumb,rom-pointer
 0x08033A2C,FUN_08033a2c,thumb,rom-pointer

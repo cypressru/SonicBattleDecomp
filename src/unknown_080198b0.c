@@ -6347,6 +6347,15 @@ void FUN_0803367c(struct UnknownListNode *node) {
     }
 }
 
+void FUN_080336ac(struct UnknownListNode *node) {
+    node->position->x -= 6;
+    if (node->position->x < -16) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
 void FUN_08035c0c(struct UnknownListNode *node) {
     u32 *counter = node->allocation;
 
