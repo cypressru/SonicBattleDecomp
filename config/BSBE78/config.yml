@@ -2937,6 +2937,7 @@ units:
       - { offset: 0x2A708, type: abs32, symbol: gUnknown_03005440 }
       - { offset: 0x5D52, type: thumb_call, symbol: FUN_08049030 }
       - { offset: 0x5D5E, type: thumb_call, symbol: FUN_08049724 }
+      - { offset: 0x5D6E, type: thumb_call, symbol: m4aSongNumStart }
       - { offset: 0x5D8A, type: thumb_call, symbol: FUN_08049170 }
       - { offset: 0x26BB8, type: abs32, symbol: gUnknown_03005478 }
       - { offset: 0x26D40, type: abs32, symbol: gUnknown_030001c8 }

@@ -2290,7 +2290,7 @@ u8 FUN_0801ee4c(u8 value) {
             struct UnknownEntityData *data = gUnknown_03001c40;
 
             if (data[linked].field20 == 53) {
-                entity->callback = (UnknownCallback)FUN_0801eea8;
+                entity->callback = (UnknownCallback)((u32)FUN_0801eea8 + 1);
                 return 1;
             }
         }
