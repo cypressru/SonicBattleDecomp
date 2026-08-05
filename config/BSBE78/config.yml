@@ -1102,6 +1102,7 @@ units:
       FUN_0801fbfc: 0x32
       FUN_0801fc30: 0x1A
       FUN_0801fc54: 0x8
+      FUN_0801ffa4: 0x2A
       FUN_08020028: 0x8
       FUN_08020034: 0x40
       FUN_080200bc: 0x16

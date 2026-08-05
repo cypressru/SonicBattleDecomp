@@ -1433,6 +1433,13 @@ void FUN_0801fc30(u8 value, const void *data) {
 
 void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
 
+void FUN_0801ffa4(u8 force) {
+    if (gUnknown_030048d0 != 0 || force != 0) {
+        FUN_0804a594(gUnknown_030044d0, (const void *)0x07000000, 0x100);
+    }
+    gUnknown_030048d0 = 0;
+}
+
 void FUN_08020028(void) { gUnknown_030048d4 = 0; }
 
 u32 FUN_08020034(u16 first, u16 second, u16 third) {
