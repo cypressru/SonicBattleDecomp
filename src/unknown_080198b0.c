@@ -636,6 +636,7 @@ extern s16 gUnknown_03005490;
 extern s16 gUnknown_03005494;
 extern u32 gUnknown_03005488;
 extern u32 gUnknown_03002610;
+extern u8 gUnknown_030025f0;
 extern void *gUnknown_03007c54;
 extern struct UnknownState420dc *gUnknown_030001d4;
 extern s32 gUnknown_0300023c;
@@ -1213,6 +1214,7 @@ unchanged:
 }
 
 void FUN_0803bf68(struct UnknownListNode *node);
+void FUN_0803bb08(struct UnknownListNode *node);
 
 void FUN_0803bef0(struct UnknownListNode *node) {
     register u8 *allocation asm("r3") = node->allocation;
@@ -1271,6 +1273,54 @@ void FUN_0803bf68(struct UnknownListNode *node) {
     savedPosition->y = value;
     if (*indexPointer <= 3) {
         FUN_0801fed8(owner->field6, 0);
+    }
+}
+
+void FUN_0803bac0(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 > 1) {
+        gUnknown_030052f8--;
+    } else {
+        gUnknown_030052f8 = 0;
+        FUN_0803b764(gUnknown_030052e0);
+        if (gUnknown_030052e0 == 0) {
+            gUnknown_030052e0 = 4;
+        } else {
+            gUnknown_030052e0--;
+        }
+        node->data = (const void *)((u32)FUN_0803bb08 + 1);
+    }
+}
+
+void FUN_0803bb7c(struct UnknownListNode *node) {
+    if (gUnknown_030052f8 > 1) {
+        gUnknown_030052f8--;
+    } else {
+        gUnknown_030052f8 = 0;
+        FUN_0803b764(gUnknown_030052e0);
+        gUnknown_030052e0++;
+        if (gUnknown_030052e0 > 4) {
+            gUnknown_030052e0 = 0;
+        }
+        node->data = (const void *)((u32)FUN_0803bbc4 + 1);
+    }
+}
+
+void FUN_0803bd0c(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803b5a8();
+        gUnknown_03002030 = FUN_08000210;
+        FUN_0802188c();
+        FUN_080215a8();
+        {
+            register u32 *state asm("r2") = &gUnknown_03002610;
+            register u32 one asm("r0") = 1;
+            register u32 zero asm("r1") = 0;
+
+            state[0] = one;
+            state[1] = zero;
+        }
+        gUnknown_030025f0 = 15;
+        FUN_080217d0(0);
     }
 }
 
