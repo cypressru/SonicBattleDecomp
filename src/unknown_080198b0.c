@@ -6853,6 +6853,31 @@ u8 FUN_08036428(u16 tile) {
     return result;
 }
 
+void FUN_080364d8(void) {
+    u32 zero = 0;
+    u8 *destination = (u8 *)0x06002600;
+    u16 *entry;
+    u16 x;
+
+    FUN_0804a594(&zero, destination, 0x010000C0);
+    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, destination, 12, 2, 0);
+    gUnknown_03005200[0][5] = 0xFFFE;
+    entry = gUnknown_03005200[0];
+    x = 0;
+    if (*entry != 0xFFFE) {
+        u16 sentinel = 0xFFFE;
+
+        do {
+            u32 glyphWidth = FUN_08020f64(*entry);
+            u16 offset = 8 - (glyphWidth >> 1);
+
+            FUN_08020978(x + offset, 0, *entry, 2);
+            entry++;
+            x += 16;
+        } while (*entry != sentinel);
+    }
+}
+
 void FUN_08035c0c(struct UnknownListNode *node) {
     u32 *counter = node->allocation;
 
