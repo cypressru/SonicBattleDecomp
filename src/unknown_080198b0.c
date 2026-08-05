@@ -114,6 +114,7 @@ extern u16 gUnknown_03005368;
 extern u16 gUnknown_03005370;
 extern u8 gUnknown_03005374;
 extern u16 gUnknown_03005378;
+extern u16 gUnknown_03005384;
 extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
@@ -137,6 +138,7 @@ extern const u8 gUnknown_08edcbd4[];
 extern const u16 gUnknown_08edcbe4[];
 extern const u16 gUnknown_0810bcd4[];
 extern const u32 gUnknown_08edbbbc[];
+extern const u16 *const gUnknown_08edcc3c[];
 extern const u16 gUnknown_08155588[];
 extern const u16 gUnknown_081555e8[];
 extern void FUN_08046aa4(void);
@@ -2060,7 +2062,7 @@ void FUN_08020f78(u32 *data) {
     }
 }
 
-u8 FUN_08020f64(u16 value) {
+u32 FUN_08020f64(u16 value) {
     struct UnknownBufferState *state = &gUnknown_03004b10;
 
     value &= 0x7FFF;
@@ -6781,6 +6783,36 @@ void FUN_0803631c(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 0;
     node->data = (const void *)((u32)FUN_080362dc + 1);
+}
+
+void FUN_08036350(void) {
+    u16 y = 0;
+    u16 rowIndex = gUnknown_03005384 / 10;
+    u32 zero = 0;
+    u16 row;
+
+    FUN_0804a594(&zero, (void *)0x06000800, 0x01000780);
+    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, (u8 *)0x06000800, 20, 12, 0);
+
+    for (row = 0; row <= 5; row++) {
+        const u16 *entry = gUnknown_08edcc3c[rowIndex];
+        u16 x = 0;
+
+        while (*entry != 0xFFFE) {
+            u32 glyphWidth = FUN_08020f64(*entry);
+            u16 offset = 8 - (glyphWidth >> 1);
+
+            FUN_08020978(x + offset, y, *entry, 2);
+            entry++;
+            x += 16;
+        }
+
+        y += 16;
+        rowIndex++;
+        if (rowIndex > 34) {
+            rowIndex = 0;
+        }
+    }
 }
 
 void FUN_08035c0c(struct UnknownListNode *node) {
