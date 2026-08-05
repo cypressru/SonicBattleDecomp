@@ -107,6 +107,11 @@ extern void FUN_080362dc(struct UnknownListNode *node);
 extern void FUN_08036288(struct UnknownListNode *node);
 extern void FUN_080362a4(struct UnknownListNode *node);
 extern void FUN_0803631c(struct UnknownListNode *node);
+extern void FUN_08036d90(struct UnknownListNode *node);
+extern void FUN_08036e08(struct UnknownListNode *node);
+extern void FUN_08037110(struct UnknownListNode *node);
+extern void FUN_08036888(void);
+extern void FUN_08036898(struct UnknownListNode *node);
 extern u8 gUnknown_03005300;
 extern u8 gUnknown_0300533c;
 extern u16 gUnknown_0300536c;
@@ -115,7 +120,10 @@ extern u16 gUnknown_03005370;
 extern u8 gUnknown_03005374;
 extern u16 gUnknown_03005378;
 extern u16 gUnknown_03005384;
+extern u16 gUnknown_03005388;
+extern u16 gUnknown_0300538c;
 extern u8 gUnknown_0300537c;
+extern u8 gUnknown_030020f8;
 extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
@@ -6875,6 +6883,191 @@ void FUN_080364d8(void) {
             entry++;
             x += 16;
         } while (*entry != sentinel);
+    }
+}
+
+void FUN_08036560(void) {
+    u32 zeroPalette;
+    u32 zeroF800;
+    u32 zeroF000;
+    u32 zero0800;
+    u32 zeroE800;
+    u32 row;
+    u32 column;
+    struct UnknownListNode *node;
+    u32 *zeroE800Address;
+
+    if (gUnknown_03005380 == 0) {
+        u8 *state = (u8 *)&gUnknown_03002110;
+
+        if (*(u16 *)(state + 96) != 0) {
+            gUnknown_03002030 = FUN_08039e20;
+            gUnknown_030020f8 = 1;
+            FUN_08020134(gUnknown_03002610);
+            return;
+        }
+    }
+
+    gUnknown_03005200[0][4] = 0;
+    gUnknown_03005200[0][3] = 0;
+    gUnknown_03005200[0][2] = 0;
+    gUnknown_03005200[0][1] = 0;
+    gUnknown_03005200[0][0] = 0;
+    gUnknown_03005200[0][5] = 0xFFFE;
+    gUnknown_03005388 = 0;
+    gUnknown_03005384 = 0;
+    gUnknown_0300538c = 0;
+    gUnknown_0300537c = 0;
+
+    FUN_0801fbfc((const u16 *)0x08156C70, 16);
+    FUN_0801fb60();
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+
+    zeroPalette = 0;
+    FUN_0804a594(&zeroPalette, (void *)0x05000000, 0x01000100);
+    LZ77UnCompVram((const void *)0x08156D10, (void *)0x06000000);
+    LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
+    LZ77UnCompVram((const void *)0x08156F08, (void *)0x06010000);
+    {
+        register s32 variant asm("r0") = gUnknown_03002110.field119;
+
+        asm volatile("" : "+r"(variant));
+        if (variant == 0) {
+            LZ77UnCompVram((const void *)0x0815711C, (void *)0x06010C00);
+        } else {
+            asm volatile("cmp r0, #0\n\tblt .L08036560_variant_done");
+            if (variant <= 5) {
+                LZ77UnCompVram((const void *)0x08157934, (void *)0x06010C00);
+                gUnknown_03005384 = 200;
+            }
+            asm volatile(".L08036560_variant_done:");
+        }
+    }
+
+    zeroF800 = 0;
+    FUN_0804a594(&zeroF800, (void *)0x0600F800, 0x01000200);
+    LZ77UnCompVram((const void *)0x08156EA8, (void *)0x0600F800);
+    zeroF000 = 0;
+    FUN_0804a594(&zeroF000, (void *)0x0600F000, 0x01000200);
+    zero0800 = 0;
+    FUN_0804a594(&zero0800, (void *)0x06000800, 0x01000780);
+    {
+        register u16 *base asm("r3") = (u16 *)0x0600F1CA;
+        u16 tile = 0x1040;
+        register u32 outer asm("r6") = 0;
+
+        zeroE800Address = &zeroE800;
+
+        do {
+            register u32 inner asm("r4") = 0;
+            register u16 *destination asm("r2") = base;
+
+            do {
+                u16 current = tile;
+
+                tile = tile + 1;
+                *destination = current;
+                destination += 32;
+                inner++;
+            } while (inner <= 11);
+            base++;
+            outer++;
+        } while (outer <= 19);
+    }
+    {
+        register u16 *base asm("r3") = (u16 *)0x0600F114;
+        register u16 tile = 0x1130;
+        register u32 counter asm("r6") = 0;
+
+        do {
+            u16 first = tile;
+            u16 second;
+
+            tile++;
+            asm volatile("" : "+r"(tile));
+            second = tile;
+            base[0] = first;
+            {
+                register u16 *secondDestination asm("r1") = base + 32;
+
+                tile++;
+                asm volatile("" : "+r"(tile));
+                *secondDestination = second;
+            }
+            base++;
+            counter++;
+        } while (counter <= 9);
+    }
+    FUN_08036350();
+    zeroE800 = 0;
+    FUN_0804a594(zeroE800Address, (void *)0x0600E800, 0x01000200);
+    LZ77UnCompVram((const void *)0x08156DF0, (void *)0x0600E8C0);
+
+    {
+        u16 *destination = (u16 *)0x0600E000;
+        register u32 rowCounter asm("r6") = 0;
+
+        do {
+            register u32 columnCounter asm("r4") = 0;
+
+            do {
+                FUN_08021000(destination, (const u16 *)0x081327D4, 8, 8, 0xF200);
+                destination += 8;
+                columnCounter++;
+            } while (columnCounter <= 3);
+            destination += 224;
+            rowCounter++;
+        } while (rowCounter <= 3);
+    }
+
+    FUN_0801f7d0(FUN_08030d20, 4, gUnknown_03003e20, 0);
+    FUN_0801f7d0(FUN_08036d90, 8, gUnknown_03003e20, 0);
+    {
+        register u32 rowCounter asm("r6") = 0;
+        register u32 base asm("r7") = 9;
+
+        do {
+            register u32 columnCounter asm("r4") = 0;
+            register u32 currentBase asm("r5") = base;
+
+            do {
+                node = FUN_0801f7d0(FUN_08036e08, 24, gUnknown_03003e20, 0);
+                node->position->field13 = currentBase - columnCounter;
+                columnCounter++;
+            } while (columnCounter <= 9);
+            base += 10;
+            rowCounter++;
+        } while (rowCounter <= 5);
+    }
+    {
+        register u32 counter asm("r6") = 0;
+        register u32 base asm("r4") = 4;
+
+        do {
+            node = FUN_0801f7d0(FUN_08037110, 24, gUnknown_03003e20, 0);
+            node->position->field13 = base - counter;
+            counter++;
+        } while (counter <= 4);
+    }
+
+    FUN_080364d8();
+    node = FUN_0801f7d0(FUN_0801f9d8, 16, gUnknown_03003e20, 0);
+    if (gUnknown_03005380 != 0) {
+        *node->position = *(const struct UnknownPosition *)0x08EDCC2C;
+    } else {
+        *node->position = *(const struct UnknownPosition *)0x08EDCC0C;
+    }
+    node = FUN_0801f7d0(FUN_08036898, 16, gUnknown_03003e20, 0);
+    *node->position = *(const struct UnknownPosition *)0x08EDCC1C;
+
+    FUN_0801fba0(0, 8000);
+    gUnknown_03002030 = FUN_08036888;
+    if (gUnknown_03005380 == 0) {
+        FUN_0801f618(4);
     }
 }
 
