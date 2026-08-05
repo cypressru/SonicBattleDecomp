@@ -1716,6 +1716,12 @@ void FUN_08023038(void) {
     }
 }
 
+void FUN_08023010(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_0803d748;
+    }
+}
+
 void FUN_08023898(struct UnknownListNode *node) {
     node->position->field0 = gUnknown_08edb820;
     node->position->tile = 0;

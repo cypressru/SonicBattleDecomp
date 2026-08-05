@@ -451,6 +451,7 @@ address,name,mode,confidence
 0x08022E38,FUN_08022e38,thumb,rom-pointer
 0x08022F40,FUN_08022f40,thumb,rom-pointer
 0x08022FA8,FUN_08022fa8,thumb,rom-pointer
+0x08023010,FUN_08023010,thumb,recovered-unreferenced+exact-body
 0x08023038,FUN_08023038,thumb,rom-pointer
 0x08023064,FUN_08023064,thumb,rom-pointer
 0x08023218,FUN_08023218,thumb,rom-pointer
