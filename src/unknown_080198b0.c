@@ -678,6 +678,9 @@ extern u8 gUnknown_03004b04;
 extern u16 gUnknown_03004b08;
 extern struct UnknownBufferState gUnknown_03004b10;
 extern const u8 gUnknown_0807173c[];
+extern const u8 gUnknown_08071b7c[];
+extern const u32 gUnknown_0807a37c[];
+extern const u32 gUnknown_0807a77c[];
 extern u16 gUnknown_03004b30[];
 extern struct UnknownHeapBlock *gUnknown_03004d30;
 extern struct UnknownHeapBlock gUnknown_030033e0;
@@ -745,7 +748,6 @@ extern const void *gUnknown_08ed9740[];
 extern u16 gUnknown_03004dd0;
 extern const u8 gUnknown_0807c620[];
 extern const u8 gUnknown_0807c060[];
-extern const u8 gUnknown_08071b7c[];
 extern const void *const *gUnknown_08edb450[];
 extern u16 gUnknown_03001b10[];
 extern void FUN_08034f28(void);
@@ -1841,6 +1843,96 @@ void FUN_08020944(void) {
     gUnknown_03004b04 = 0;
     gUnknown_03004b00 = 0;
     gUnknown_03004b08 = 0;
+}
+
+u8 FUN_08020d20(u32 *destination, u32 x, u32 y, u16 tile, u32 value) {
+    u16 normalizedTile = tile;
+    u32 offset = x >> 3;
+    u32 shift = 7;
+    u32 *output;
+    const u8 *source;
+    u8 i;
+    u32 reverseShift;
+
+    shift &= x;
+    offset <<= 5;
+    offset += y;
+    offset <<= 2;
+    output = (u32 *)((u8 *)destination + offset);
+    source = &gUnknown_08071b7c[(normalizedTile & 0x7FFF) << 5];
+    i = 0;
+    reverseShift = 8 - shift;
+
+    do {
+        u8 first;
+        u8 second;
+        u8 upper;
+        u8 middle;
+        u8 lower;
+
+        first = source[0];
+        upper = first << shift;
+        middle = first >> reverseShift;
+        second = source[1];
+        middle |= second << shift;
+        lower = second >> reverseShift;
+
+        if (upper != 0) {
+            output[0] = (output[0] & gUnknown_0807a37c[upper]) | (gUnknown_0807a77c[upper] * value);
+        }
+        if (middle != 0) {
+            output[32] =
+                (output[32] & gUnknown_0807a37c[middle]) | (gUnknown_0807a77c[middle] * value);
+        }
+        if (lower != 0) {
+            output[64] =
+                (output[64] & gUnknown_0807a37c[lower]) | (gUnknown_0807a77c[lower] * value);
+        }
+        source += 2;
+        output++;
+        i++;
+    } while (i <= 15);
+
+    return gUnknown_0807173c[normalizedTile & 0x7FFF];
+}
+
+u32 FUN_08020e28(const u16 *stream) {
+    register u32 maximum asm("r5") = 0;
+    register u32 width asm("r4") = 0;
+    register const u16 *streamPosition asm("r2") = stream;
+    register u32 token asm("r3") = *streamPosition;
+
+    if (token != 0xFFFE) {
+        u32 newline = 0xFFFD;
+        u32 skip = newline - 1;
+        const u8 *widths = gUnknown_0807173c;
+        u32 extraFirst = 0xFFFB;
+        u32 extraSecond = 0xFFFA;
+        u32 end = 0xFFFE;
+
+        do {
+            if (token == newline) {
+                if (maximum < width) {
+                    maximum = width;
+                }
+                width = 0;
+            } else if (token != skip) {
+                if (token == extraFirst || token == extraSecond || token == 0xFFF9) {
+                    streamPosition++;
+                } else {
+                    register u32 noWidth asm("r0") = 0xFFF8;
+
+                    asm("" : "+r"(noWidth));
+                    if (token != noWidth && token != noWidth - 1) {
+                        width += widths[token & 0x7FFF];
+                    }
+                }
+            }
+            streamPosition++;
+            token = *streamPosition;
+        } while (token != end);
+    }
+    return width;
 }
 
 void FUN_08020ecc(u32 first, const u8 *source, u8 *destination, u32 width, u32 height, u8 fill) {
