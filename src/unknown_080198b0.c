@@ -45,6 +45,7 @@ extern u8 FUN_0801d068(u8 value);
 extern void FUN_0801d408(u8 value);
 extern u16 FUN_0801d288(u8 value);
 extern void FUN_0801db4c(void);
+extern void FUN_0801e41c(void);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
@@ -801,6 +802,7 @@ extern struct UnknownEntityData gUnknown_03001c40[];
 extern u8 gUnknown_03003e10;
 extern u16 gUnknown_08071264[];
 extern const u8 gUnknown_08ed89d0[];
+extern const u8 gUnknown_08ed898c[];
 extern const u8 gUnknown_08ed89e4[];
 extern const u8 gUnknown_08ed89ec[];
 extern const u8 gUnknown_08ed89f8[];
@@ -1178,6 +1180,27 @@ void FUN_0801ea6c(u8 value) {
     if ((u16)FUN_0801d288(value) == 0) {
         FUN_0801d870(value);
     }
+}
+
+void FUN_0801e3cc(u8 value) {
+    register struct UnknownEntity *entities asm("r5") = gUnknown_03003db0;
+    register u32 offset asm("r2") = value * 24;
+    register struct UnknownEntity *entity asm("r4") =
+        (struct UnknownEntity *)(offset + (u32)entities);
+
+    entity->callback = FUN_0801e41c;
+    entity->field8 = 0;
+    entity->field12 = 0;
+    entity->field13 = 0;
+    {
+        register const void *data asm("r1") = gUnknown_08ed898c;
+
+        entities = (struct UnknownEntity *)((u32)entities + 4);
+        *(const void **)(offset + (u32)entities) = data;
+    }
+    entity->field14 = 0;
+    entity->field16 = gUnknown_03001c40[value].field16;
+    FUN_0801cfc8(value);
 }
 
 void FUN_08023038(void) {
