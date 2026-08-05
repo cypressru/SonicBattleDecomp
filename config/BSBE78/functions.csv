@@ -258,7 +258,7 @@ address,name,mode,confidence
 0x0801DFDC,FUN_0801dfdc,thumb,rom-pointer+exact-body
 0x0801E044,FUN_0801e044,thumb,rom-pointer+exact-body
 0x0801E0C4,FUN_0801e0c4,thumb,direct-call+exact-body
-0x0801E174,FUN_0801e174,thumb,rom-pointer
+0x0801E174,FUN_0801e174,thumb,rom-pointer+exact-body
 0x0801E258,FUN_0801e258,thumb,rom-pointer+exact-body
 0x0801E2C8,FUN_0801e2c8,thumb,direct-call+exact-body
 0x0801E34C,FUN_0801e34c,thumb,recovered-unreferenced+exact-body
