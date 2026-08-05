@@ -49,6 +49,14 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(stream))
 
 
+def owning_extent(extents: dict[int, int], target: int) -> int | None:
+    """The accepted function whose body strictly contains `target`, if any."""
+    for start, end in extents.items():
+        if start < target < end:
+            return start
+    return None
+
+
 def main() -> None:
     if len(sys.argv) != 3:
         raise SystemExit("usage: check_function_map.py CONFIG ROM")
@@ -87,6 +95,23 @@ def main() -> None:
             f"function/extent inventory differs: {len(missing_sizes)} missing sizes, "
             f"{len(orphan_sizes)} orphan sizes"
         )
+    # GCC reaches an intra-function label beyond the +/-2 KiB `B` range by emitting
+    # `BL` wherever `lr` is already dead, so a decoded `BL` does not by itself prove
+    # a function entry. Each such destination is declared here rather than being
+    # accepted as a function, and every declaration is validated: it must lie strictly
+    # inside an accepted extent, must not also be an accepted start, and must actually
+    # be reached by a `BL`. A stale or unreachable declaration is an error.
+    long_branch_targets = {int(value) for value in config.get("long_branch_targets", [])}
+    for target in sorted(long_branch_targets):
+        if target in accepted:
+            raise SystemExit(
+                f"declared long-branch target 0x{target:08X} is also an accepted function start"
+            )
+        if owning_extent(extents, target) is None:
+            raise SystemExit(
+                f"declared long-branch target 0x{target:08X} is not interior to any accepted extent"
+            )
+
     ordered_extents = sorted(extents.items())
     for (start, end), (next_start, _next_end) in zip(ordered_extents, ordered_extents[1:]):
         if end > next_start:
@@ -110,13 +135,24 @@ def main() -> None:
                 accepted.add(ROM_BASE + int(symbol["address"]))
 
     missing_calls: dict[int, list[int]] = {}
+    reached_long_branch_targets: set[int] = set()
     instruction_bytes = bytearray(len(data))
     for start, end in extents.items():
         instruction_bytes[start - ROM_BASE : end - ROM_BASE] = b"\1" * (end - start)
         for address in range(start & ~1, end - 3, 2):
             destination = thumb_bl_destination(data, address)
-            if is_unrecorded_external_call(destination, accepted, start, end, executable_end):
+            if destination is None or not ROM_BASE <= destination < executable_end:
+                continue
+            if destination in long_branch_targets:
+                reached_long_branch_targets.add(destination)
+            elif is_unrecorded_external_call(
+                destination, accepted, start, end, executable_end
+            ):
                 missing_calls.setdefault(destination, []).append(address)
+    unreached = long_branch_targets - reached_long_branch_targets
+    if unreached:
+        details = ", ".join(f"0x{target:08X}" for target in sorted(unreached))
+        raise SystemExit(f"declared long-branch targets are never reached by a call: {details}")
     if missing_calls:
         details = ", ".join(
             f"0x{destination:08X} ({len(callers)} callers)"
@@ -145,7 +181,9 @@ def main() -> None:
         raise SystemExit(f"Thumb pointers target unrecorded functions: {details}")
     print(
         f"Function map verified: {len(extents)} analyzed extents; "
-        "every in-range Thumb BL and halfword-aligned function-pointer destination is symbolized"
+        f"{len(long_branch_targets)} validated long-branch targets; "
+        "every in-range Thumb BL and halfword-aligned function-pointer destination is symbolized "
+        "or declared interior to an accepted extent"
     )
 
 
