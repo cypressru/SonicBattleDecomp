@@ -285,6 +285,37 @@ justified and none was made; the remaining difference is a source shape that has
 Around twenty source spellings were tried per function, including local reordering, loop form,
 pointer versus subscript access, union views and explicit temporaries.
 
+### Why the remaining extents are still truncated
+
+After the fall-through class was exhausted, 69 accepted starts in `main/unknown_080007FC` still have
+an extent the control-flow walk disagrees with. Splitting them by cause gives three groups, and they
+need different work:
+
+| Cause | Count | What it means |
+|---|---:|---|
+| Walk unclean | 40 | The walk hit an in-function literal island it cannot decode. A walker that consulted the config `mappings` would resolve most of these. |
+| Walk never returns | 11 | The walk leaves the function without finding an epilogue, usually through a jump table. |
+| Walk runs past the extent | 18 | The extent is capped by a following start that the enclosing function's control flow reaches. |
+
+Only the third group is a false-start problem, and the fall-through test cannot see it: those starts
+are preceded by a terminator, so they look like legitimate entries. Non-circular evidence for them is
+a **conditional** branch, which GCC never emits across a function boundary. Scanning every accepted
+extent for conditional branches into another accepted start finds exactly three candidates:
+
+- `0x08002376` (180 bytes, recursive-disassembly) from inside `0x08001B0C`. The branch site is about
+  132 bytes before the target, well inside the +/-256 byte conditional range, and the gap between
+  `0x08001B0C`'s extent and the target is an in-function literal island.
+- `0x0800EAEC` (1336 bytes, direct-call) from inside `0x0800D20A`, whose extent ends at exactly this
+  address. A `BL` also reaches it, so absorbing it would additionally need a long-branch declaration.
+- `0x08010B00` (6 bytes, rom-pointer) from `0x08010B0C`, which lies *after* it. This is a backward
+  branch, so the direction is inverted from the other two: the enclosing function would start at or
+  before `0x08010B00` and `0x08010B0C` would be interior to it, not the other way round.
+
+None of the three is absorbed yet. All three would extend an extent across bytes that are currently
+outside every extent, which is the exact hazard that broke `raw_asset_map.py` on the first repair
+attempt, so each needs the byte-coverage guard in `repair2.py` plus a rebuild and a full re-check of
+the matched set before it can be accepted.
+
 ### Decoded but not yet reconstructed: `0x08016A44`
 
 This function only became self-contained after the eighteen long-branch fragments were absorbed; it
