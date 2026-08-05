@@ -2052,6 +2052,49 @@ void FUN_0801d9e0(u8 value) {
     }
 }
 
+void FUN_0801daec(u8 value) {
+    register u32 index asm("r5") = value;
+    register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
+    register u32 entityOffset asm("r0");
+    register struct UnknownEntity *entity asm("r4");
+    register u32 counter asm("r0");
+
+    asm("" : "+r"(entities));
+    entityOffset = index * 24;
+    entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+    counter = entity->field12;
+    if (counter != 0) {
+        counter--;
+        entity->field12 = counter;
+    } else {
+        register u32 random asm("r0") = FUN_08020144();
+        register u16 *table asm("r3") = gUnknown_08071250;
+        register u8 *tableIndex asm("r1") = &gUnknown_03003e10;
+        register u32 tableOffset asm("r2") = *tableIndex;
+        register u16 *base asm("r2");
+        register u32 mask asm("r1");
+        register u32 masked asm("r1");
+        register u32 baseValue asm("r2");
+        register u32 product asm("r0");
+
+        tableOffset *= 2;
+        base = (u16 *)(tableOffset + (u32)table);
+        mask = 0xFFF;
+        masked = mask;
+        masked &= random;
+        asm("" : "+r"(masked));
+        baseValue = *base;
+        product = masked;
+        product *= baseValue;
+        product >>= 12;
+        baseValue += product;
+        entity->field10 = baseValue;
+        entity->callback = FUN_0801d618;
+        entity->field15 = FUN_0801d068(index);
+    }
+}
+
 u16 FUN_0801d370(u8 value) {
     register u32 index asm("r0") = value;
     register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
