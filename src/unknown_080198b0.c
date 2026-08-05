@@ -2492,6 +2492,13 @@ void FUN_080246c8(struct UnknownListNode *node) {
     FUN_0801f8c0(node);
 }
 
+void FUN_080246e0(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f92c(node, 4, 4) != 0) {
+        node->data = FUN_080245dc;
+    }
+    FUN_0801fed8(node->field6, 0);
+}
+
 void FUN_08024708(struct UnknownListNode *node) {
     node->position->tile = 0;
     node->position->x = 360;
