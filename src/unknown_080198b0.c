@@ -1982,33 +1982,35 @@ u8 FUN_08020d20(u32 *destination, u32 x, u32 y, u16 tile, u32 value) {
 }
 
 u32 FUN_08020e28(const u16 *stream) {
+    register const u16 *streamPosition asm("r2") = stream;
     register u32 maximum asm("r5") = 0;
     register u32 width asm("r4") = 0;
-    register const u16 *streamPosition asm("r2") = stream;
     register u32 token asm("r3") = *streamPosition;
 
     if (token != 0xFFFE) {
-        u32 newline = 0xFFFD;
-        u32 skip = newline - 1;
+        register u32 newline asm("r10") = 0xFFFD;
+        u32 skip = 0xFFFC;
         const u8 *widths = gUnknown_0807173c;
         u32 extraFirst = 0xFFFB;
         u32 extraSecond = 0xFFFA;
         u32 end = 0xFFFE;
 
         do {
-            if (token == newline) {
+            u32 current = token;
+
+            if (current == newline) {
                 if (maximum < width) {
                     maximum = width;
                 }
                 width = 0;
-            } else if (token != skip) {
-                if (token == extraFirst || token == extraSecond || token == 0xFFF9) {
+            } else if (current != skip) {
+                if (current == extraFirst || current == extraSecond || current == 0xFFF9) {
                     streamPosition++;
                 } else {
                     register u32 noWidth asm("r0") = 0xFFF8;
 
                     asm("" : "+r"(noWidth));
-                    if (token != noWidth && token != noWidth - 1) {
+                    if (current != noWidth && current != noWidth - 1) {
                         width += widths[token & 0x7FFF];
                     }
                 }
