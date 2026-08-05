@@ -9,6 +9,7 @@ struct UnknownState43f00;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
+extern void FUN_0801c8a4(void);
 extern void FUN_0801bcac(void);
 extern void FUN_0801b394(void);
 extern void FUN_0801c770(void);
@@ -1051,6 +1052,14 @@ void FUN_0801c8f0(void) {
     FUN_08012b98(60);
     gUnknown_03002030 = FUN_0801bcac;
     gUnknown_03002030();
+}
+
+void FUN_0801c82c(void) {
+    FUN_08016078(6);
+    gUnknown_03002030 = FUN_0801c8a4;
+    FUN_08020840(24);
+    FUN_080205d0();
+    gUnknown_030013a0 = 1;
 }
 
 void FUN_0801c910(void) {
