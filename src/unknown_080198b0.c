@@ -758,6 +758,7 @@ extern void FUN_08026844(struct UnknownListNode *node);
 extern void FUN_08018c3c(void);
 extern u32 FUN_0801f9e8(u16 value);
 extern void FUN_0801f618(u16 value);
+extern void m4aSongNumStart(u16 number);
 extern u8 gUnknown_03005248;
 extern u8 gUnknown_0300525c;
 extern u8 gUnknown_030017c4;
@@ -5593,6 +5594,8 @@ void FUN_08043e5c(void) {}
 void FUN_0801f600(void) { FUN_08049030(); }
 
 void FUN_0801f60c(void) { FUN_08049724(); }
+
+void FUN_0801f618(u16 value) { m4aSongNumStart(value); }
 
 void FUN_0801f638(void) { FUN_08049170(); }
 
