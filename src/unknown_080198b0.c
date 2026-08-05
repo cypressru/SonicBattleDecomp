@@ -146,6 +146,8 @@ extern u8 gUnknown_030052f8;
 extern const u16 gUnknown_08edcee8[];
 extern const u16 gUnknown_08edd540[];
 extern const u8 gUnknown_08159fd4[];
+extern const u8 gUnknown_0816fa0c[];
+extern const u8 gUnknown_08edd54c[];
 extern u16 gUnknown_030052f4;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
@@ -1163,6 +1165,49 @@ void FUN_0803895c(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 8;
     node->data = FUN_08038918;
+}
+
+void FUN_0803be50(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_0816fa0c;
+    node->position->tile = 0;
+    node->position->x = 120;
+    node->position->y = gUnknown_08edd540[gUnknown_030052e0] - gUnknown_030052e4;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_0803be04;
+}
+
+void FUN_0803bea8(void) {
+    register u8 *state asm("r2") = &gUnknown_030052e4;
+    register const u8 *targets asm("r1") = gUnknown_08edd54c;
+    register const u8 *indexPointer asm("r0") = &gUnknown_030052e0;
+    register const u8 *targetPointer asm("r0") = (const u8 *)(u32)*indexPointer;
+    register u8 current asm("r1");
+    u8 comparison;
+    u8 target;
+    register u8 *savedState asm("r4");
+    register u8 result asm("r0");
+
+    asm volatile("" : "+r"(targetPointer));
+    targetPointer += (u32)targets;
+    current = *state;
+    comparison = current;
+    asm volatile("" : "+r"(comparison));
+    target = *targetPointer;
+    savedState = state;
+
+    if (comparison < target) {
+        result = current + 1;
+    } else if (comparison > target) {
+        result = current - 1;
+    } else {
+        goto unchanged;
+    }
+    *savedState = result;
+unchanged:
+    FUN_0801fba0(22, *savedState);
+    FUN_0801fba0(26, *savedState);
 }
 
 void FUN_0801c910(void) {
