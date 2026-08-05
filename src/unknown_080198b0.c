@@ -4171,7 +4171,7 @@ void FUN_080279c4(struct UnknownListNode *node) {
         gUnknown_030051f4++;
         if (gUnknown_030051f4 > 29) {
             gUnknown_03004dd4 = gUnknown_03005244;
-            node->data = FUN_08027920;
+            node->data = (const void *)((u32)FUN_08027920 + 1);
             return;
         }
     } else {
