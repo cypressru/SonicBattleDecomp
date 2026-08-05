@@ -129,6 +129,7 @@ extern u8 gUnknown_030020f8;
 extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
+extern u16 gUnknown_030052f4;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
 extern void FUN_08033228(struct UnknownListNode *node);
@@ -883,6 +884,7 @@ extern void FUN_080291a8(void);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
 extern void FUN_0802cadc(struct UnknownListNode *node);
+extern void FUN_080381e4(void);
 extern void FUN_08028158(struct UnknownListNode *node);
 extern void FUN_08028190(struct UnknownListNode *node);
 extern void FUN_0802a480(struct UnknownListNode *node);
@@ -6213,6 +6215,15 @@ void FUN_0803b5a8(void) {
     *(volatile u16 *)0x04000208 = 0;
     *(volatile u16 *)0x04000004 = 0x128;
     *(volatile u16 *)0x04000208 = 1;
+}
+
+void FUN_080381a8(void) {
+    gUnknown_03003150[2] = (const void *)((u32)FUN_080381e4 + 1);
+    *(volatile u16 *)0x04000208 = 0;
+    *(volatile u16 *)0x04000004 = gUnknown_030052f4;
+    *(volatile u16 *)0x04000208 = 1;
+    FUN_0801fc60();
+    FUN_0801f600();
 }
 
 void FUN_080380e4(void) {
