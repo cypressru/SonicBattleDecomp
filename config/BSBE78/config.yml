@@ -3100,6 +3100,8 @@ units:
       - { offset: 0x1CC4A, type: thumb_call, symbol: FUN_08020ecc }
       - { offset: 0x1CC62, type: thumb_call, symbol: FUN_08020f64 }
       - { offset: 0x1CC7A, type: thumb_call, symbol: FUN_08020978 }
+      - { offset: 0x21CB6, type: thumb_call, symbol: FUN_0801fc60 }
+      - { offset: 0x21CBA, type: thumb_call, symbol: FUN_0801f600 }
       - { offset: 0x1C2B8, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x1C2C0, type: abs32, symbol: gUnknown_03005378 }
       - { offset: 0x1C2E6, type: thumb_call, symbol: FUN_0801fed8 }
