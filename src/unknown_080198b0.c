@@ -1430,6 +1430,46 @@ void FUN_0801e044(u8 value) {
     }
 }
 
+void FUN_0801e258(u8 value) {
+    register u32 index asm("r4") = value;
+    register u32 savedIndex asm("r5") = index;
+
+    if (FUN_0801cfc8(index) == 0) {
+        FUN_0801d870(index);
+    }
+    {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        struct UnknownEntity *entity = &entities[savedIndex];
+        u8 linked = entity->field15;
+        struct UnknownEntityData *data = gUnknown_03001c40;
+        u32 offset = linked * 2 + savedIndex * sizeof(*data);
+        u8 *firstBase = (u8 *)data + 54;
+        s16 *first = (s16 *)(firstBase + offset);
+
+        {
+            u8 *secondBase = (u8 *)data + 62;
+            s16 *second = (s16 *)(secondBase + offset);
+
+            {
+                const u8 *lookup = gUnknown_08ed8ad4;
+                u16 angle = ArcTan2(*first, *second);
+                register const u8 *resultPointer asm("r0") = &lookup[angle >> 12];
+                register u32 current asm("r2");
+                register u32 bits asm("r1");
+                register u32 result asm("r0");
+
+                asm("" : "+r"(resultPointer));
+                current = entity->field8;
+                bits = 0xFF0F;
+                bits &= current;
+                result = *resultPointer;
+                result |= bits;
+                entity->field8 = result;
+            }
+        }
+    }
+}
+
 void FUN_08023038(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_080402a0;
