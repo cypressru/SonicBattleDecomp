@@ -112,6 +112,8 @@ rejected_function_pointers:
   - { source: 0x0D872DC, destination: 0x08020F12 }
   # 0x08024398 is the literal pool between FUN_0802436c and FUN_080243a4.
   # It contains two relocated addresses and one scalar word, not Thumb code.
+  # 0x08025C40 has the same three-word layout between FUN_08025c14 and
+  # FUN_08025c4c: two relocated addresses and one scalar literal.
   # Pointer-like bytes inside opaque main ROM data land on literal pools in
   # the graphics-command queue rather than executable instructions.
   - { source: 0x0CA98FC, destination: 0x08020400 }
@@ -614,6 +616,8 @@ units:
       - { offset: 0x1786E, type: thumb_call, symbol: CpuFastSet }
       - { offset: 0x17888, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x1788C, type: abs32, symbol: gUnknown_030033e0 }
+      - { offset: 0x178A6, type: thumb_call, symbol: FUN_0801f89c }
+      - { offset: 0x178AA, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0x178BE, type: thumb_call, symbol: FUN_080200d8 }
       - { offset: 0x178D4, type: abs32, symbol: gUnknown_03003170 }
       - { offset: 0x178F0, type: abs32, symbol: gUnknown_030048e0 }
@@ -1125,6 +1129,7 @@ units:
       FUN_08020360: 0x8
       FUN_08020d20: 0xF4
       FUN_08020e28: 0x9A
+      FUN_08031154: 0xE
       FUN_0802036c: 0x30
       FUN_080203a4: 0x54
       FUN_08020408: 0x30

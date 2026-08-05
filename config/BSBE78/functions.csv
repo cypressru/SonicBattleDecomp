@@ -546,7 +546,6 @@ address,name,mode,confidence
 0x08025A98,FUN_08025a98,thumb,rom-pointer
 0x08025B78,FUN_08025b78,thumb,rom-pointer
 0x08025C14,FUN_08025c14,thumb,rom-pointer
-0x08025C40,FUN_08025c40,thumb,recursive-disassembly
 0x08025C4C,FUN_08025c4c,thumb,rom-pointer
 0x08025C84,FUN_08025c84,thumb,rom-pointer
 0x08025D50,FUN_08025d50,thumb,rom-pointer+direct-call

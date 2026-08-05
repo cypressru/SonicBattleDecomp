@@ -5968,6 +5968,11 @@ void FUN_0802cfd0(void) {
     FUN_0801fda0();
 }
 
+void FUN_08031154(void) {
+    FUN_0801f89c();
+    FUN_0801fda0();
+}
+
 void FUN_0803186c(void) {
     FUN_0801f89c();
     FUN_0801fda0();
