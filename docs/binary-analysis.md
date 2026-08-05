@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,271 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,275 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
@@ -52,7 +52,7 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x395BA instruction bytes and 0xD93A owned non-code bytes.
+game category consequently contains 0x39692 instruction bytes and 0xD862 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -99,6 +99,15 @@ independently accepted `FUN_0801e3cc` entry. Clean C reproduces every owned inst
 relocation. No decoded direct call or stored function pointer was found, so the generic address name
 and `recovered-unreferenced+exact-body` provenance deliberately record the evidence without claiming
 an original name or source-file boundary.
+
+A systematic scan of gaps between accepted extents recovered four consecutive unreferenced
+functions at `0x0801CEEC`, `0x0801CF34`, `0x0801CF80`, and `0x0801CFA4`. Their complete bodies and
+owned literal islands fill `0x0801CEEC-0x0801CFC6`, beginning exactly at the preceding accepted
+extent and ending immediately before `FUN_0801cfc8`. The first two share metadata-state and counter
+logic with distinct evidenced fields at offsets 26 and 116; the latter two are compact halfword and
+byte state probes. Clean C reproduces all 0xD8 instruction bytes and relocations. No decoded calls
+or stored pointers were found, so each retains a generic address name and
+`recovered-unreferenced+exact-body` provenance.
 
 Six additional graphics-queue leaf routines in the unresolved tail now reconstruct as ordinary C:
 `0x08017ED0`, `0x08017EEC`, `0x08017F00`, `0x08017F34`, `0x08017F58`, and

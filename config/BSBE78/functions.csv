@@ -228,6 +228,10 @@ address,name,mode,confidence
 0x0801C968,FUN_0801c968,thumb,direct-call
 0x0801CE70,FUN_0801ce70,thumb,direct-call
 0x0801CE8C,FUN_0801ce8c,thumb,recursive-disassembly
+0x0801CEEC,FUN_0801ceec,thumb,recovered-unreferenced+exact-body
+0x0801CF34,FUN_0801cf34,thumb,recovered-unreferenced+exact-body
+0x0801CF80,FUN_0801cf80,thumb,recovered-unreferenced+exact-body
+0x0801CFA4,FUN_0801cfa4,thumb,recovered-unreferenced+exact-body
 0x0801CFC8,FUN_0801cfc8,thumb,direct-call
 0x0801D068,FUN_0801d068,thumb,direct-call
 0x0801D188,FUN_0801d188,thumb,direct-call

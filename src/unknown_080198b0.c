@@ -251,13 +251,17 @@ struct UnknownEntityData {
     u8 field16;
     u8 filler17[3];
     u16 field20;
-    u8 filler22[28];
+    u8 filler22[4];
+    s16 field26;
+    u8 filler28[22];
     u8 field50;
     u8 filler51[3];
     s16 field54[4];
     s16 field62[4];
     u8 filler70[2];
-    s32 field72[27];
+    s32 field72[11];
+    u32 field116;
+    s32 field120[15];
     u32 field180;
     u8 filler184[7];
     u8 field191;
@@ -806,6 +810,7 @@ extern u8 gUnknown_03001b00[8];
 extern struct UnknownEntity gUnknown_03003db0[];
 extern struct UnknownEntityData gUnknown_03001c40[];
 extern u8 gUnknown_03003e10;
+extern u8 gUnknown_03003d88;
 extern u16 gUnknown_08071264[];
 extern const u8 gUnknown_08ed89d0[];
 extern const u8 gUnknown_08ed898c[];
@@ -1565,6 +1570,69 @@ void FUN_0801e34c(u8 value) {
             entity->field16 = metadata->field16;
         }
     }
+}
+
+u8 FUN_0801ceec(u16 state, u8 required, u8 index) {
+    register struct UnknownEntityData *metadataBase asm("r3") = gUnknown_03001c40;
+    register u32 metadataOffset asm("r1") = index * 252;
+    register struct UnknownEntityData *metadata asm("r2") =
+        (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+
+    if (metadata->field20 == state && metadata->field26 == 1) {
+        gUnknown_03003d88++;
+    }
+    if (gUnknown_03003d88 >= required) {
+        return 1;
+    }
+    return 0;
+}
+
+u8 FUN_0801cf34(u16 state, u8 required, u8 index) {
+    register struct UnknownEntityData *metadataBase asm("r4") = gUnknown_03001c40;
+    register u32 metadataOffset asm("r2") = index * 252;
+    register struct UnknownEntityData *metadata asm("r1") =
+        (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+    register u32 fieldAddress asm("r0");
+
+    if (metadata->field20 == state) {
+        fieldAddress = (u32)metadataBase;
+        fieldAddress += 116;
+        fieldAddress = metadataOffset + fieldAddress;
+        if (*(u32 *)fieldAddress != 0) {
+            gUnknown_03003d88++;
+        }
+    }
+    if (gUnknown_03003d88 >= required) {
+        return 1;
+    }
+    return 0;
+}
+
+u8 FUN_0801cf80(u8 index) {
+    register u8 *state asm("r1") = &gUnknown_03001620;
+    register u32 offset asm("r0") = index * 2;
+    register u16 *field asm("r0");
+
+    state += 98;
+    field = (u16 *)(offset + (u32)state);
+    if (*field != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+u8 FUN_0801cfa4(u8 index) {
+    register u8 *state asm("r1");
+    register u32 offset asm("r0") = index;
+    register u8 *field asm("r0");
+
+    state = &gUnknown_03001620;
+    state += 51;
+    field = (u8 *)(offset + (u32)state);
+    if (*field != 0) {
+        return 1;
+    }
+    return 0;
 }
 
 void FUN_08023038(void) {
