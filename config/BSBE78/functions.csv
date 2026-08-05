@@ -981,6 +981,9 @@ address,name,mode,confidence
 0x0803B588,FUN_0803b588,thumb,rom-pointer
 0x0803B5A8,FUN_0803b5a8,thumb,direct-call
 0x0803B5DC,FUN_0803b5dc,thumb,recursive-disassembly
+0x0803B63C,FUN_0803b63c,thumb,recovered-unreferenced+exact-body
+0x0803B694,FUN_0803b694,thumb,recovered-unreferenced+exact-body
+0x0803B698,FUN_0803b698,thumb,recovered-unreferenced+exact-body
 0x0803B69C,FUN_0803b69c,thumb,direct-call
 0x0803B764,FUN_0803b764,thumb,direct-call
 0x0803B82C,FUN_0803b82c,thumb,rom-pointer

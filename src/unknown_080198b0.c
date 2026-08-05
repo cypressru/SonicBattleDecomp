@@ -8491,6 +8491,31 @@ u16 *FUN_08039c1c(u16 *destination, const u16 *source) {
     return destination;
 }
 
+void FUN_0803b63c(u8 index) {
+    if (index != 0xFF) {
+        register u32 zero asm("r4") = 0;
+        u32 *row = (u32 *)(0x06008038 + index * 64);
+        u32 y;
+
+        for (y = 0; y <= 23; y++) {
+            u32 x;
+
+            for (x = 0; x <= 15; x++) {
+                row[x] = zero;
+            }
+            row = (u32 *)((u8 *)row + 640);
+        }
+    } else {
+        u32 zero = 0;
+
+        FUN_0804a594(&zero, (void *)0x06007A00, 0x01000180);
+    }
+}
+
+void FUN_0803b694(void) {}
+
+void FUN_0803b698(void) {}
+
 void FUN_08043ee4(struct UnknownState482d0 *state) {
     FUN_0801fba0(82, 4096);
     state->callback = (const void *)((u32)FUN_08041808 + 1);
