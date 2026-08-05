@@ -6466,6 +6466,14 @@ void FUN_0803128c(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_080311b4 + 1);
 }
 
+void FUN_080312c8(struct UnknownListNode *node) {
+    u32 pending = FUN_08020500((u16 *)0x05000000, (const u16 *)0x08130364, 64) == 0;
+
+    if (pending == 0) {
+        node->data = (const void *)((u32)FUN_0803128c + 1);
+    }
+}
+
 void FUN_080368c0(u8 index) { gUnknown_0300537c &= ~gUnknown_0807163c[index]; }
 
 void FUN_08043e28(struct UnknownState43e28 *state) {
