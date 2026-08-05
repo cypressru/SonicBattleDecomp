@@ -154,6 +154,7 @@ extern const u8 gUnknown_08edcb6c[];
 extern const u8 gUnknown_08edcbd4[];
 extern const u16 gUnknown_08edcbe4[];
 extern const u16 gUnknown_0810bcd4[];
+extern const s16 gUnknown_08edc2b6[];
 extern const u32 gUnknown_08edbbbc[];
 extern const u16 *const gUnknown_08edcc3c[];
 extern const u32 gUnknown_0807163c[];
@@ -6504,6 +6505,11 @@ void FUN_0802dc78(struct UnknownListNode *node) {
 
 void FUN_0802dcc8(struct UnknownListNode *node) {
     FUN_0801f978(node, 28);
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08031540(struct UnknownListNode *node) {
+    FUN_0801f978(node, gUnknown_08edc2b6[node->position->field13]);
     FUN_0801fed8(node->field6, 0);
 }
 
