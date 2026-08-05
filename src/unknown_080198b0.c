@@ -6173,6 +6173,14 @@ void FUN_08037110(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_080370b8 + 1);
 }
 
+void FUN_080380b0(void) {
+    gUnknown_03003150[1] = (const void *)((u32)FUN_080185d8 + 1);
+    gUnknown_03003150[2] = (const void *)((u32)FUN_08018654 + 1);
+    *(volatile u16 *)0x04000208 = 0;
+    *(volatile u16 *)0x04000004 = 0x128;
+    *(volatile u16 *)0x04000208 = 1;
+}
+
 void FUN_080380e4(void) {
     FUN_0801f89c();
     FUN_0801fda0();

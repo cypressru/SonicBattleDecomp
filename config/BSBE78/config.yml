@@ -976,6 +976,7 @@ units:
       FUN_08033a1c: 0xE
       FUN_08035258: 0xE
       FUN_08036888: 0xE
+      FUN_080380b0: 0x20
       FUN_080380e4: 0xE
       FUN_08039c5c: 0xE
       FUN_08037100: 0xE
@@ -2369,6 +2370,9 @@ units:
       - { offset: 0x1B9AE, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0x1CFDA, type: thumb_call, symbol: FUN_0801f89c }
       - { offset: 0x1CFDE, type: thumb_call, symbol: FUN_0801fda0 }
+      - { offset: 0x1E820, type: abs32, symbol: gUnknown_03003150 }
+      - { offset: 0x1E824, type: abs32, symbol: FUN_080185d8, addend: 1 }
+      - { offset: 0x1E828, type: abs32, symbol: FUN_08018654, addend: 1 }
       - { offset: 0x1E836, type: thumb_call, symbol: FUN_0801f89c }
       - { offset: 0x1E83A, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0x203AE, type: thumb_call, symbol: FUN_0801f89c }
