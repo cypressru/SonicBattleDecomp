@@ -1035,6 +1035,10 @@ units:
       FUN_080325f0: 0x1E
       FUN_08033038: 0x1E
       FUN_08033bf8: 0x1E
+      FUN_08033bb4: 0xC
+      FUN_08033bc4: 0x2C
+      FUN_08033cc8: 0xE
+      FUN_08033cdc: 0x2C
       FUN_0802c7d8: 0x1E
       FUN_0802d734: 0x1E
       FUN_08039d00: 0x1E

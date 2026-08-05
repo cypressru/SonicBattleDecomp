@@ -89,6 +89,8 @@ extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
 extern void FUN_08030a08(struct UnknownListNode *node);
+extern void FUN_08033bc4(struct UnknownListNode *node);
+extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
 extern void FUN_08046aa4(void);
 extern void FUN_08031164(void);
@@ -6363,6 +6365,34 @@ void FUN_08033038(void) {
 void FUN_08033bf8(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08000210;
+    }
+}
+
+void FUN_08033bb4(struct UnknownListNode *node) {
+    *(u32 *)node->allocation = 180;
+    node->data = (const void *)((u32)FUN_08033bc4 + 1);
+}
+
+void FUN_08033cc8(struct UnknownListNode *node) {
+    *(u32 *)node->allocation = 300;
+    node->data = (const void *)((u32)FUN_08033cdc + 1);
+}
+
+void FUN_08033bc4(struct UnknownListNode *node) {
+    s32 *counter = node->allocation;
+
+    if (--*counter <= 0 || (gUnknown_030048e0.third & 1) != 0) {
+        node->data = (const void *)((u32)FUN_08033bf8 + 1);
+        FUN_0801f718(5, 120);
+    }
+}
+
+void FUN_08033cdc(struct UnknownListNode *node) {
+    s32 *counter = node->allocation;
+
+    if (--*counter <= 0 || (gUnknown_030048e0.third & 1) != 0) {
+        node->data = (const void *)((u32)FUN_08033bf8 + 1);
+        FUN_0801f718(5, 120);
     }
 }
 
