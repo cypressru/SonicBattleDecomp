@@ -273,6 +273,27 @@ justified and none was made; the remaining difference is a source shape that has
 Around twenty source spellings were tried per function, including local reordering, loop form,
 pointer versus subscript access, union views and explicit temporaries.
 
+### Decoded but not yet reconstructed: `0x08016A44`
+
+This function only became self-contained after the eighteen long-branch fragments were absorbed; it
+previously had `0x08016AFE` sitting inside it. It tints a whole 256-entry palette: for each colour it
+adds three signed per-channel offsets read from `0x030016B8`, `0x030020FC` and `0x03001B20`, clamps
+every channel first against 31 and then against 0, repacks as BGR555 into a 512-byte stack buffer,
+and uploads it with `CpuFastSet` to `0x05000000` as 128 words. The loop counter is `s16` and runs
+0..255; the channel extraction is the same `((colour << 16) >> 21) & 31` shape already recorded for
+`0x08000CF4`, with `colour` an `int`-width local.
+
+A reconstruction of that shape compiles to the exact 236-byte size and differs in 33 bytes over two
+tight clusters. The first is one instruction: retail materialises both `31` constants back to back
+before loading any of the three globals, while agbcc emits the second one after the first global
+load. The second is scheduling: retail groups both `lsrs` shifts of the CSE'd `colour << 16`
+immediately after it and ahead of the red channel, while agbcc defers the `>> 26` until the blue
+channel needs it. Everything else, including the clamp order and the pack, is identical.
+
+Three shapes that look like they should force the grouping all lose the common subexpression instead
+and land 130 bytes further away: an explicit `shifted` local, raw per-channel locals extracted before
+the tints are added, and computing green and blue before red. The lever is not statement order.
+
 ### Decoded but not yet reconstructed: `0x0800673C`
 
 The 616-byte routine at `0x0800673C` is fully decoded and is recorded here so the analysis is not
