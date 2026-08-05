@@ -91,7 +91,6 @@ address,name,mode,confidence
 0x08010944,FUN_08010944,thumb,rom-pointer
 0x08010B00,FUN_08010b00,thumb,rom-pointer
 0x08010B0C,FUN_08010b0c,thumb,rom-pointer
-0x08010D5E,FUN_08010d5e,thumb,recursive-disassembly
 0x08010E0C,FUN_08010e0c,thumb,rom-pointer
 0x08010F10,FUN_08010f10,thumb,rom-pointer
 0x08011000,FUN_08011000,thumb,rom-pointer
