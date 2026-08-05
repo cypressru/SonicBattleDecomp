@@ -882,6 +882,7 @@ extern void FUN_08028ed8(struct UnknownListNode *node);
 extern void FUN_080291a8(void);
 extern void FUN_08029014(struct UnknownListNode *node);
 extern void FUN_080290b4(struct UnknownListNode *node);
+extern void FUN_0802cadc(struct UnknownListNode *node);
 extern void FUN_08028158(struct UnknownListNode *node);
 extern void FUN_08028190(struct UnknownListNode *node);
 extern void FUN_0802a480(struct UnknownListNode *node);
@@ -4355,6 +4356,23 @@ void FUN_080290b4(struct UnknownListNode *node) {
     node->position->field11 = zero;
     node->position->field12 = zero;
     node->data = (const void *)((u32)FUN_08029060 + 1);
+}
+
+void FUN_0802cb30(struct UnknownListNode *node) {
+    register struct UnknownPosition *position asm("r2") = node->position;
+    register u32 zero asm("r3");
+    register u32 halfwordZero asm("r1");
+
+    position->field0 = (const void *)0x0811DBA8;
+    zero = 0;
+    halfwordZero = 0;
+    position->tile = halfwordZero;
+    node->position->x = 214;
+    node->position->y = 145;
+    node->position->field10 = zero;
+    node->position->field11 = zero;
+    node->position->field12 = zero;
+    node->data = (const void *)((u32)FUN_0802cadc + 1);
 }
 
 void FUN_080290e8(u32 index, u32 variant, u32 unused) {
