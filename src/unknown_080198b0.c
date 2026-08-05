@@ -1075,6 +1075,7 @@ extern void FUN_0801eea8(u8 value);
 extern u16 ArcTan2(s16 x, s16 y);
 extern u16 gUnknown_08071250[];
 extern u16 gUnknown_0807125a[];
+extern u8 gUnknown_08071245[];
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -1516,6 +1517,54 @@ void FUN_0801e2c8(u32 value) {
     }
     entity->field14 = zero;
     entity->field16 = gUnknown_03001c40[index].field16;
+}
+
+void FUN_0801e34c(u8 value) {
+    register u32 index asm("r4") = value;
+    register struct UnknownEntityData *metadataBase asm("r1") = gUnknown_03001c40;
+    register u32 metadataOffset asm("r0") = index * 252;
+    register struct UnknownEntityData *metadata asm("r5") =
+        (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+    register u32 type asm("r1") = metadata->field20;
+
+    if (type == 66) {
+        register u8 *table asm("r1") = gUnknown_08071245;
+        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
+        register u32 tableOffset asm("r0") = *tableIndex;
+        register u32 raw asm("r0");
+        register s32 argument asm("r0");
+
+        tableOffset += (u32)table;
+        raw = *(u8 *)tableOffset;
+        argument = (s8)raw;
+        if (FUN_08020160(argument) != 0) {
+            FUN_0801e3cc(index);
+        } else {
+            FUN_0801d870(index);
+        }
+    } else {
+        register struct UnknownEntity *entities asm("r6") = gUnknown_03003db0;
+        register u32 scaled asm("r0") = index * 3;
+        register u32 entityOffset asm("r3");
+        register struct UnknownEntity *entity asm("r2");
+
+        asm("" : "+r"(scaled));
+        entityOffset = scaled * 8;
+        entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        entity->field8 = 0;
+        if (type == 0) {
+            entity->callback = (UnknownCallback)FUN_0801ed50;
+            {
+                register const void *data asm("r1") = gUnknown_08ed8a8c;
+                register struct UnknownEntity *dataBase asm("r0") =
+                    (struct UnknownEntity *)((u32)entities + 4);
+
+                *(const void **)(entityOffset + (u32)dataBase) = data;
+            }
+            entity->field14 = 0;
+            entity->field16 = metadata->field16;
+        }
+    }
 }
 
 void FUN_08023038(void) {
