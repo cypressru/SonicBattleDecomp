@@ -1107,6 +1107,32 @@ void FUN_0803bc38(struct UnknownListNode *node) {
     }
 }
 
+void FUN_0802dc90(struct UnknownListNode *node) {
+    u32 value = (u16)node->position->x + 1;
+    s32 signedValue = node->position->x;
+
+    node->position->x = value + (signedValue - 32) * 2;
+    asm volatile("" ::: "memory");
+    if (node->position->x > 255) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_0802dce0(struct UnknownListNode *node) {
+    u32 value = (u16)node->position->x + 1;
+    s32 signedValue = node->position->x;
+
+    node->position->x = value + (signedValue - 28) * 2;
+    asm volatile("" ::: "memory");
+    if (node->position->x > 255) {
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
 void FUN_0801c910(void) {
     FUN_08012b98(30);
     gUnknown_03002030 = FUN_0801b394;
