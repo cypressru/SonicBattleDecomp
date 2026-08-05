@@ -245,7 +245,9 @@ struct UnknownEntity {
     u8 field16;
     u8 filler17;
     u8 field18;
-    u8 filler19[5];
+    u8 filler19;
+    u8 field20;
+    u8 filler21[3];
 };
 
 struct UnknownEntityData {
@@ -1087,6 +1089,7 @@ extern void FUN_0801e044(u8 value);
 extern void FUN_0801e174(void);
 void FUN_0801e258(u8 value);
 extern void FUN_0801e4f4(u8 value);
+extern void FUN_0801e6a0(void);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
@@ -1536,6 +1539,45 @@ void FUN_0801e0c4(u8 value) {
         defaultEntity->field16 = defaultMetadata->field16;
         return;
     }
+    }
+}
+
+void FUN_0801e62c(u8 value) {
+    register u32 index asm("r0") = value;
+    register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
+    register u32 entityOffset asm("r5") = index * 24;
+    register struct UnknownEntity *entity asm("r5") =
+        (struct UnknownEntity *)(entityOffset + (u32)entities);
+    register u32 linked asm("r1") = entity->field15;
+
+    asm("" : "+r"(linked));
+    {
+        register struct UnknownEntityData *metadata asm("r6") = gUnknown_03001c40;
+        register u32 doubledLinked asm("r1") = linked * 2;
+        register u32 metadataOffset asm("r4") = index * 252;
+        register u32 coordinateOffset asm("r1") = doubledLinked + metadataOffset;
+        register u8 *firstBase asm("r2") = (u8 *)metadata;
+        register s16 *first asm("r2");
+        register u8 *secondBase asm("r0") = (u8 *)metadata;
+        register s16 *second asm("r1");
+
+        firstBase += 54;
+        first = (s16 *)(coordinateOffset + (u32)firstBase);
+        secondBase += 62;
+        second = (s16 *)(coordinateOffset + (u32)secondBase);
+        {
+            register const u8 *lookup asm("r0") = gUnknown_08ed8ae4;
+            register const u8 *savedLookup asm("r8") = lookup;
+            register u16 angle asm("r0") = ArcTan2(*first, *second);
+            register u32 result asm("r0") = savedLookup[angle >> 12];
+            register u32 zero asm("r1") = 0;
+
+            entity->field8 = result;
+            entity->field12 = zero;
+            entity->callback = (UnknownCallback)((u32)FUN_0801e6a0 + 1);
+            metadataOffset += (u32)metadata;
+            entity->field20 = *((u8 *)metadataOffset + 50);
+        }
     }
 }
 
