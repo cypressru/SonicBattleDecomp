@@ -362,6 +362,15 @@ The lever is therefore neither statement order nor operand spelling. Both remain
 about *where* agbcc places an already-correct instruction, which is the same open question as the
 other parked routines.
 
+agbcc's own `loop.c` was read to try to settle it and the answer it predicts is wrong. Movables are
+appended to the chain in scan order of their *setting* insns and emitted in that order, so for retail
+to materialise both `31` constants ahead of the three global loads, the source would have to mask all
+three channels before adding any tint. Written that way the function lands at 195 differing bytes and
+240 total, far worse than the 33-byte baseline. The preheader order is therefore not a straightforward
+consequence of source expression order, and the two `31` pseudos are probably not both ordinary loop
+movables. Whatever places them is downstream of `loop.c`, which is where any further attempt should
+start rather than in the C.
+
 ### Decoded but not yet reconstructed: `0x0800673C`
 
 The 616-byte routine at `0x0800673C` is fully decoded and is recorded here so the analysis is not
