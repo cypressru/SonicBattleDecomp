@@ -241,7 +241,7 @@ address,name,mode,confidence
 0x0801D3AC,FUN_0801d3ac,thumb,recovered-unreferenced+exact-body
 0x0801D408,FUN_0801d408,thumb,direct-call
 0x0801D5B6,FUN_0801d5b6,thumb,internal-control-flow-fragment
-0x0801D5D4,FUN_0801d5d4,thumb,direct-call
+0x0801D5D4,FUN_0801d5d4,thumb,direct-call+exact-body
 0x0801D618,FUN_0801d618,thumb,rom-pointer
 0x0801D70A,FUN_0801d70a,thumb,rom-pointer
 0x0801D870,FUN_0801d870,thumb,direct-call

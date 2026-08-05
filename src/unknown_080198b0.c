@@ -269,7 +269,9 @@ struct UnknownEntityData {
     u32 field180;
     u8 filler184[7];
     u8 field191;
-    u8 filler192[60];
+    u8 filler192[8];
+    u16 field200;
+    u8 filler202[50];
 };
 
 struct UnknownSoundIndex {
@@ -1696,6 +1698,22 @@ u8 FUN_0801d3ac(u8 value) {
 
     ArcTan2(first, second);
     return gUnknown_08ed8af4[ArcTan2(first, second) >> 12];
+}
+
+void FUN_0801d5d4(u8 value) {
+    register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
+    register u32 offset asm("r0");
+    struct UnknownEntity *entity;
+
+    asm("" : "+r"(entities));
+    offset = value * 3;
+    offset <<= 3;
+    entity = (struct UnknownEntity *)(offset + (u32)entities);
+    ((void (*)(u8))entity->callback)(value);
+    gUnknown_03001c40[value].field200 = entity->field8;
+    if (entity->field10 != 0) {
+        entity->field10--;
+    }
 }
 
 void FUN_0801ea38(u8 value) {
