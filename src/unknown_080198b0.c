@@ -13,6 +13,8 @@ extern void FUN_0801c8a4(void);
 extern void FUN_080402a0(void);
 extern void FUN_0802392c(struct UnknownListNode *node);
 extern void FUN_0803cfac(struct UnknownListNode *node);
+extern void FUN_0802cc78(void);
+extern void FUN_0803fb2c(void);
 extern void FUN_0803b764(u8 value);
 extern void FUN_0803bbc4(struct UnknownListNode *node);
 extern const u8 gUnknown_081a1d10[];
@@ -647,6 +649,8 @@ extern u16 gUnknown_03000200;
 extern u16 gUnknown_03000210;
 extern const u8 gUnknown_08173510[];
 extern const u8 gUnknown_08173540[];
+extern const u8 gUnknown_081a2aac[];
+extern const u8 gUnknown_081a648c[];
 extern const struct UnknownBounds4230c gUnknown_081a4c2a[];
 extern void FUN_08045d30(void);
 extern u8 FUN_08043cf8(s16 x, s16 y);
@@ -1321,6 +1325,41 @@ void FUN_0803bd0c(void) {
         }
         gUnknown_030025f0 = 15;
         FUN_080217d0(0);
+    }
+}
+
+void FUN_08043e60(struct UnknownState482d0 *state) {
+    if (state->field26 == 0) {
+        state->field26 = 8;
+        state->field27++;
+        FUN_0804033c(gUnknown_081a2aac + (state->field27 & 3) * 0x3c0, (void *)0x06007c40, 0x3c0);
+    } else {
+        state->field26--;
+    }
+}
+
+void FUN_08043ea0(struct UnknownState482d0 *state) {
+    if (state->field26 == 0) {
+        state->field26 = 12;
+        state->field27--;
+        if (state->field27 > 5) {
+            state->field27 = 5;
+        }
+        FUN_0804033c(gUnknown_081a648c + state->field27 * 0x200, (void *)0x06007e00, 0x200);
+    } else {
+        state->field26--;
+    }
+}
+
+void FUN_0803d128(struct UnknownListNode *node) {
+    register u16 *state asm("r4") = node->allocation;
+
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        if (state[8] != 0) {
+            gUnknown_03002030 = FUN_0802cc78;
+        } else {
+            gUnknown_03002030 = FUN_0803fb2c;
+        }
     }
 }
 
