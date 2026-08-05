@@ -102,7 +102,41 @@ def walk(data: bytes, start: int, limit: int, entries: set[int]) -> dict[str, ob
         if found <= pool:
             break
         pool |= found
-    return {"end": end, "returns": returns, "clean": clean, "instructions": len(seen)}
+    return {
+        "end": end,
+        "returns": returns,
+        "clean": clean,
+        "instructions": len(seen),
+        "pool": pool,
+        "code": seen,
+    }
+
+
+def literal_islands(result: dict[str, object], start: int, end: int) -> list[tuple[int, int]]:
+    """Contiguous pool runs that sit inside the function body, as (first, after) pairs.
+
+    A pool word discovered by the walk is an island only when instructions continue
+    after it; a run reaching the end of the body is the ordinary trailing pool and is
+    not reported.
+    """
+    pool = sorted(address for address in result["pool"] if start <= address < end)
+    code = result["code"]
+    islands: list[tuple[int, int]] = []
+    index = 0
+    while index < len(pool):
+        first = pool[index]
+        while index + 1 < len(pool) and pool[index + 1] == pool[index] + 2:
+            index += 1
+        after = pool[index] + 2
+        # A pool is 4-aligned, so the assembler may have inserted a padding
+        # halfword after the last instruction. That padding belongs to the island:
+        # it is neither reachable code nor a pool word.
+        while first - 2 >= start and first - 2 not in code and first - 2 not in result["pool"]:
+            first -= 2
+        if after < end:
+            islands.append((first, after))
+        index += 1
+    return islands
 
 
 def opens_frame_before_closing(data: bytes, start: int, end: int) -> bool:
