@@ -83,6 +83,8 @@ extern void FUN_0804280c(struct UnknownState420dc *state);
 extern void FUN_08043e5c(void);
 extern void FUN_08043f7c(struct UnknownState43f00 *state);
 extern void FUN_08043f2c(struct UnknownState420dc *state);
+extern void FUN_08045840(struct UnknownState420dc *state);
+extern void FUN_08045928(struct UnknownState420dc *state);
 extern u8 gUnknown_030052e0;
 extern u8 gUnknown_030052e4;
 extern void FUN_0802ea64(u8 value);
@@ -356,7 +358,7 @@ struct UnknownState420dc {
     u8 padding12[2];
     u16 field14;
     const void *graphics;
-    u8 padding20[2];
+    u16 field20;
     u8 field22;
     u8 padding23;
     u8 field24;
@@ -672,6 +674,7 @@ extern void FUN_0804033c(const void *source, void *destination, u32 size);
 extern void FUN_0804051c(void *state);
 extern void FUN_0803fe98(u16 first, u16 second, u16 third);
 extern void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags);
+void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s32 offset);
 extern const u8 gUnknown_081a81d0[];
 extern void FUN_0804542c(struct UnknownState482d0 *state);
 extern u8 gUnknown_03005380;
@@ -690,6 +693,7 @@ extern struct UnknownTransferList4033c *gUnknown_030001a0;
 extern struct UnknownTransferList403c0 *gUnknown_030001a4;
 extern volatile struct UnknownTransferRecord4033c gUnknown_030000d4;
 extern const u8 gUnknown_081a7f18[];
+extern const u8 gUnknown_081a7f68[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
 
@@ -1413,6 +1417,66 @@ void FUN_0803f7cc(void) {
         FUN_0804a594(&zero, (void *)0x05000000, 0x01000100);
         gUnknown_03002030 = FUN_08000210;
     }
+}
+
+void FUN_0803fd4c(void) {
+    register u32 index asm("r5") = 1;
+    register struct UnknownTransferList403c0 **queue asm("r1") = &gUnknown_030001a4;
+    register struct UnknownTransferList403c0 **queueCopy asm("r6");
+
+    if (index < (*queue)->records[0].flags) {
+        queueCopy = queue;
+        do {
+            register struct UnknownTransferRecord403c0 *recordBase asm("r0") =
+                (struct UnknownTransferRecord403c0 *)*queueCopy;
+            register u32 recordOffset asm("r4") = index * 12;
+            register struct UnknownTransferRecord403c0 *record asm("r4") =
+                (struct UnknownTransferRecord403c0 *)(recordOffset + (u32)recordBase);
+            register const u16 *source asm("r0") = record->source;
+            register u16 *destination asm("r1") = record->destination;
+            register u32 width asm("r2") = record->width;
+            register u32 height asm("r3") = record->height;
+            register u32 flags asm("r4") = record->flags;
+
+            FUN_08040408(source, destination, width, height, flags);
+            {
+                register u32 nextIndex asm("r0") = index + 1;
+
+                index = (u16)nextIndex;
+            }
+        } while (index < (*queueCopy)->records[0].flags);
+    }
+    gUnknown_030001a4->records[0].flags = 1;
+}
+
+void FUN_08045a00(struct UnknownState420dc *input) {
+    register struct UnknownState420dc *state asm("r5") = input;
+    register u16 index asm("r4") = 0;
+
+    for (;;) {
+        struct UnknownState420dc *child =
+            FUN_0803ff98((const void *)((u32)FUN_08045840 + 1), state, 1);
+
+        child->field3 = index;
+        child->field8.half.high = 256;
+        child->field14 = 76;
+        child->graphics = gUnknown_081a7f68;
+        {
+            register s32 signedIndex asm("r2") = (s16)index;
+
+            child->field20 = signedIndex * 24 + 40;
+            child->field24 = 16;
+            child->baseX = signedIndex * 64 + 88;
+            signedIndex++;
+            signedIndex <<= 16;
+            index = (u32)signedIndex >> 16;
+            signedIndex >>= 16;
+            if (signedIndex > 1) {
+                break;
+            }
+        }
+    }
+    state->callback = (const void *)((u32)FUN_08045928 + 1);
 }
 
 void FUN_0801c910(void) {
