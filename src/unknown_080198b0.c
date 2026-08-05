@@ -8484,6 +8484,13 @@ void FUN_08039c3c(void) {
     FUN_0804a594(&zero, (void *)0x06008000, 0x01000b68);
 }
 
+u16 *FUN_08039c1c(u16 *destination, const u16 *source) {
+    while (*source != 0xFFFE) {
+        *destination++ = *source++;
+    }
+    return destination;
+}
+
 void FUN_08043ee4(struct UnknownState482d0 *state) {
     FUN_0801fba0(82, 4096);
     state->callback = (const void *)((u32)FUN_08041808 + 1);

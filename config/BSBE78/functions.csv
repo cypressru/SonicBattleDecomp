@@ -954,6 +954,7 @@ address,name,mode,confidence
 0x080394C0,FUN_080394c0,thumb,direct-call
 0x0803984C,FUN_0803984c,thumb,rom-pointer
 0x08039BAC,FUN_08039bac,thumb,direct-call
+0x08039C1C,FUN_08039c1c,thumb,recovered-unreferenced+exact-body
 0x08039C3C,FUN_08039c3c,thumb,direct-call
 0x08039C5C,FUN_08039c5c,thumb,rom-pointer
 0x08039C6C,FUN_08039c6c,thumb,rom-pointer
