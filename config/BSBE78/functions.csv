@@ -236,7 +236,7 @@ address,name,mode,confidence
 0x0801D068,FUN_0801d068,thumb,direct-call
 0x0801D188,FUN_0801d188,thumb,direct-call+exact-body
 0x0801D200,FUN_0801d200,thumb,direct-call+exact-body
-0x0801D288,FUN_0801d288,thumb,direct-call
+0x0801D288,FUN_0801d288,thumb,direct-call+exact-body
 0x0801D370,FUN_0801d370,thumb,recovered-unreferenced+exact-body
 0x0801D3AC,FUN_0801d3ac,thumb,recovered-unreferenced+exact-body
 0x0801D408,FUN_0801d408,thumb,direct-call

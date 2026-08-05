@@ -43,7 +43,6 @@ extern u32 FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
 extern u8 FUN_0801d068(u8 value);
 extern void FUN_0801d408(u8 value);
-extern u16 FUN_0801d288(u8 value);
 extern void FUN_0801db4c(void);
 extern void FUN_0801e41c(void);
 void FUN_0801eacc(u8 value);
@@ -269,7 +268,9 @@ struct UnknownEntityData {
     u32 field180;
     u8 filler184[7];
     u8 field191;
-    u8 filler192[8];
+    u8 filler192[4];
+    u8 field196;
+    u8 filler197[3];
     u16 field200;
     u8 filler202[50];
 };
@@ -1641,6 +1642,131 @@ u8 FUN_0801cfa4(u8 index) {
         return 1;
     }
     return 0;
+}
+
+u32 FUN_0801d288(u8 value) {
+    u32 index = value;
+    register struct UnknownEntity *entities asm("r0") = gUnknown_03003db0;
+    register struct UnknownEntity *savedEntities asm("r12") = entities;
+    register u32 entityOffset asm("r0") = index * 24;
+    register struct UnknownEntity *entity asm("r0") =
+        (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+    register u32 result asm("r5");
+    register u32 flags asm("r1");
+    register u32 linkedOffset asm("r2");
+    register struct UnknownEntityData *metadataBase asm("r3");
+    register u32 metadataOffset asm("r1");
+    register u32 fieldOffset asm("r2");
+    register u8 *firstBase asm("r0");
+    register s16 *firstPointer asm("r0");
+    register u16 first asm("r6");
+    register u8 *secondBase asm("r0");
+    register s16 *secondPointer asm("r2");
+    register u16 second asm("r4");
+    register u8 *typePointer asm("r1");
+    register u32 type asm("r0");
+    register struct UnknownEntity *finalBase asm("r1");
+    register u32 finalOffset asm("r0");
+    register struct UnknownEntity *finalEntity asm("r0");
+    register u32 truncated asm("r0");
+
+    flags = entity->field8;
+    result = 0xFF0F;
+    asm("" : "+r"(result));
+    result &= flags;
+    linkedOffset = entity->field15;
+    asm("" : "+r"(linkedOffset));
+    metadataBase = gUnknown_03001c40;
+    linkedOffset *= 2;
+    metadataOffset = index * 252;
+    fieldOffset = linkedOffset + metadataOffset;
+    firstBase = (u8 *)metadataBase;
+    firstBase += 54;
+    firstPointer = (s16 *)(fieldOffset + (u32)firstBase);
+    first = *firstPointer;
+    secondBase = (u8 *)metadataBase;
+    secondBase += 62;
+    secondPointer = (s16 *)(fieldOffset + (u32)secondBase);
+    second = *secondPointer;
+    typePointer = (u8 *)(metadataOffset + (u32)metadataBase);
+    typePointer += 196;
+    type = *typePointer;
+    asm("" : "+r"(type));
+    finalBase = savedEntities;
+    asm("" : "+r"(finalBase));
+
+    if (type != 19) {
+        {
+            register u32 shifted asm("r0") = first;
+            register s32 signedValue asm("r2");
+
+            shifted <<= 16;
+            signedValue = (s32)shifted >> 16;
+            if (signedValue > 512) {
+                result |= 0x20;
+            } else if (signedValue < -512) {
+                result |= 0x10;
+                truncated = result << 16;
+                result = truncated >> 16;
+            }
+        }
+        {
+            register u32 shifted asm("r0") = second;
+            register s32 signedValue asm("r2");
+
+            shifted <<= 16;
+            signedValue = (s32)shifted >> 16;
+            if (signedValue > 128) {
+                result |= 0x40;
+                goto truncate_second;
+            } else if (signedValue < -128) {
+                result |= 0x80;
+            truncate_second:
+                truncated = result << 16;
+                result = truncated >> 16;
+            }
+        }
+    } else {
+        {
+            register u32 shifted asm("r0") = first;
+            register s32 signedValue asm("r2");
+            register u32 bit asm("r0");
+
+            shifted <<= 16;
+            signedValue = (s32)shifted >> 16;
+            if (signedValue > 1152) {
+                bit = 0x20;
+                goto set_special_first;
+            } else if (signedValue < -1152) {
+                bit = 0x10;
+            set_special_first:
+                result |= bit;
+                truncated = result << 16;
+                result = truncated >> 16;
+            }
+        }
+        {
+            register u32 shifted asm("r0") = second;
+            register s32 signedValue asm("r2");
+
+            shifted <<= 16;
+            signedValue = (s32)shifted >> 16;
+            if (signedValue > 1152) {
+                result |= 0x40;
+                goto truncate_special_second;
+            } else if (signedValue < -1152) {
+                result |= 0x80;
+            truncate_special_second:
+                truncated = result << 16;
+                result = truncated >> 16;
+            }
+        }
+    }
+
+    finalOffset = index * 24;
+    finalEntity = (struct UnknownEntity *)(finalOffset + (u32)finalBase);
+    finalEntity->field8 = (finalEntity->field8 & 0xFF0F) | result;
+    return result;
 }
 
 u16 FUN_0801d370(u8 value) {
