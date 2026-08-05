@@ -10,6 +10,8 @@ struct UnknownState43f00;
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
 extern void FUN_0801c8a4(void);
+extern void FUN_080402a0(void);
+extern void FUN_0802392c(struct UnknownListNode *node);
 extern void FUN_0801bcac(void);
 extern void FUN_0801b394(void);
 extern void FUN_0801c770(void);
@@ -1060,6 +1062,24 @@ void FUN_0801c82c(void) {
     FUN_08020840(24);
     FUN_080205d0();
     gUnknown_030013a0 = 1;
+}
+
+void FUN_08023038(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03002030 = FUN_080402a0;
+        FUN_080217d0(0);
+    }
+}
+
+void FUN_08023898(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edb820;
+    node->position->tile = 0;
+    node->position->x = 479;
+    node->position->y = 30;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = 8;
+    node->data = FUN_0802392c;
 }
 
 void FUN_0801c910(void) {
