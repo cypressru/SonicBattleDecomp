@@ -42,6 +42,9 @@ extern void FUN_08020840(u16 value);
 extern u32 FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
 extern u8 FUN_0801d068(u8 value);
+extern void FUN_0801d408(u8 value);
+extern u16 FUN_0801d288(u8 value);
+extern void FUN_0801db4c(void);
 extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
@@ -1164,6 +1167,16 @@ u8 FUN_0801e99c(u8 value) {
 
             return lookup[angle >> 12];
         }
+    }
+}
+
+void FUN_0801ea6c(u8 value) {
+    if (FUN_0801cfc8(value) == 0 && (gUnknown_03001c40[value].field180 & 1) != 0) {
+        gUnknown_03003db0[value].callback = FUN_0801db4c;
+    }
+    FUN_0801d408(value);
+    if ((u16)FUN_0801d288(value) == 0) {
+        FUN_0801d870(value);
     }
 }
 
