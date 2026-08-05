@@ -8652,6 +8652,8 @@ void FUN_0803d100(void) {
     }
 }
 
+void FUN_0802d75c(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
 void FUN_0802d95c(struct UnknownListNode *node) {
     FUN_0801fed8(node->field6, 0);
     if (node->position->field14 == 0) {
