@@ -968,6 +968,7 @@ extern void FUN_0803281c(void);
 extern void FUN_0803d1a0(void);
 extern void FUN_080315bc(void);
 extern void FUN_08039e20(void);
+extern void FUN_0803b3c4(void);
 extern void FUN_08021268(u32 value);
 extern const u8 gUnknown_08edb97c[];
 extern const u8 gUnknown_08edb984[];
@@ -7503,6 +7504,46 @@ void FUN_0802c25c(void) {
         gUnknown_03002030 = FUN_0803c378;
     } else {
         gUnknown_03002030 = FUN_08029250;
+    }
+}
+
+void FUN_08030b38(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803035c();
+        gUnknown_03002030 = FUN_08029250;
+        FUN_080217d0(0);
+    }
+}
+
+void FUN_08030bd8(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803035c();
+        gUnknown_03002030 = FUN_080340b8;
+        FUN_080217d0(0);
+    }
+}
+
+void FUN_08038820(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_080380b0();
+        gUnknown_03002030 = FUN_08039e20;
+        FUN_080217d0(0);
+    }
+}
+
+void FUN_0803bcdc(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803b5a8();
+        gUnknown_03002030 = FUN_08039e20;
+        FUN_080217d0(0);
+    }
+}
+
+void FUN_0803bd5c(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803b5a8();
+        gUnknown_03002030 = FUN_0803b3c4;
+        FUN_080217d0(0);
     }
 }
 
