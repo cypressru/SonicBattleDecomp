@@ -27,6 +27,23 @@ def thumb_bl_destination(data: bytes, address: int) -> int | None:
     return address + 4 + displacement
 
 
+def is_unrecorded_external_call(
+    destination: int | None,
+    accepted: set[int],
+    function_start: int,
+    function_end: int,
+    executable_end: int,
+) -> bool:
+    """Return whether a BL target needs its own recorded function entry."""
+
+    return (
+        destination is not None
+        and ROM_BASE <= destination < executable_end
+        and destination not in accepted
+        and not (function_start <= destination < function_end)
+    )
+
+
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as stream:
         return list(csv.DictReader(stream))
@@ -98,11 +115,7 @@ def main() -> None:
         instruction_bytes[start - ROM_BASE : end - ROM_BASE] = b"\1" * (end - start)
         for address in range(start & ~1, end - 3, 2):
             destination = thumb_bl_destination(data, address)
-            if (
-                destination is not None
-                and ROM_BASE <= destination < executable_end
-                and destination not in accepted
-            ):
+            if is_unrecorded_external_call(destination, accepted, start, end, executable_end):
                 missing_calls.setdefault(destination, []).append(address)
     if missing_calls:
         details = ", ".join(
