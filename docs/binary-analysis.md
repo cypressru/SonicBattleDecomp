@@ -42,13 +42,13 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,293 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,270 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
-per-symbol provenance. Of these starts, 804 have aligned ROM pointers, 450 are direct-call targets,
-and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Five
-pointer-shaped asset words are explicitly rejected: one lands in an inline DMA literal sequence,
-and four land inside pointer-table data. Each accepted
+per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
+fall-through continuations rather than entries; fifteen of those are declared as validated
+long-branch targets instead. Five pointer-shaped asset words are explicitly rejected: one lands in
+an inline DMA literal sequence, and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
@@ -65,8 +65,8 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 185 | 70,100 | 27,252 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 163 | 70,212 | 27,140 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 972 | 167,176 | 23,940 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
@@ -267,11 +267,141 @@ the field maps, control flow, types and constants are established, and only inst
 register choice differs. That is the state to resume from rather than re-deriving the semantics.
 
 This is not a compiler-flag effect. The emission is unchanged by `-fno-regmove`,
-`-fno-cse-follow-jumps`, `-fno-expensive-optimizations` and `-fno-strength-reduce`, and the
-`old_agbcc` build produces byte-identical output to the pinned `agbcc`. No flag change is therefore
+`-fno-cse-follow-jumps`, `-fno-expensive-optimizations`, `-fno-strength-reduce`,
+`-fno-rerun-cse-after-loop`, `-fno-cse-skip-blocks`, `-fno-gcse`, `-fno-caller-saves`,
+`-fno-thread-jumps`, `-fno-defer-pop`, `-fno-function-cse`, `-fno-peephole` and
+`-freduce-all-givs`, and the `old_agbcc` build produces byte-identical output to the pinned
+`agbcc`. `-fmove-all-movables` and `-fno-omit-frame-pointer` both make the divergence larger,
+not smaller, and `-O1`, `-Os` and `-O3` are all worse than `-O2`.
+
+`-fmove-all-movables` deserves its own note because it is the flag whose description matches the
+symptom most closely. Six of the parked routines share one signature: retail hoists or materialises
+a value earlier than the pinned agbcc does. Forcing every loop-invariant computation out of the loop
+is the obvious candidate for that, and it is wrong - on `0x08016A44` it moves the difference from 33
+bytes to 45. So the shared symptom is not loop-invariant motion, and the remaining question is
+narrower than "agbcc hoists differently": it is why retail materialises a constant or a load one
+instruction earlier within a single basic block. No flag change is therefore
 justified and none was made; the remaining difference is a source shape that has not been found yet.
 Around twenty source spellings were tried per function, including local reordering, loop form,
 pointer versus subscript access, union views and explicit temporaries.
+
+### Why the remaining extents are still truncated
+
+After the fall-through class was exhausted, 69 accepted starts in `main/unknown_080007FC` still have
+an extent the control-flow walk disagrees with. Splitting them by cause gives three groups, and they
+need different work:
+
+| Cause | Count | What it means |
+|---|---:|---|
+| Walk unclean | 40 | The walk hit an in-function literal island it cannot decode. A walker that consulted the config `mappings` would resolve most of these. |
+| Walk never returns | 11 | The walk leaves the function without finding an epilogue, usually through a jump table. |
+| Walk runs past the extent | 18 | The extent is capped by a following start that the enclosing function's control flow reaches. |
+
+Only the third group is a false-start problem, and the fall-through test cannot see it: those starts
+are preceded by a terminator, so they look like legitimate entries. Non-circular evidence for them is
+a **conditional** branch, which GCC never emits across a function boundary. Scanning every accepted
+extent for conditional branches into another accepted start finds exactly three candidates:
+
+- `0x08002376` (180 bytes, recursive-disassembly) from inside `0x08001B0C`. The branch site is about
+  132 bytes before the target, well inside the +/-256 byte conditional range, and the gap between
+  `0x08001B0C`'s extent and the target is an in-function literal island.
+- `0x0800EAEC` (1336 bytes, direct-call) from inside `0x0800D20A`, whose extent ends at exactly this
+  address. A `BL` also reaches it, so absorbing it would additionally need a long-branch declaration.
+- `0x08010B00` (6 bytes, rom-pointer) from `0x08010B0C`, which lies *after* it. This is a backward
+  branch, so the direction is inverted from the other two: the enclosing function would start at or
+  before `0x08010B00` and `0x08010B0C` would be interior to it, not the other way round.
+
+All three were tried and all three were rejected, each by a different check. They are recorded here
+so the class is not re-attempted naively.
+
+`0x0800EAEC` is a real function, not a fragment: `check_function_map.py` reported 25 direct callers
+the moment it stopped being a symbol. The conditional branch the scan found was a pool word inside
+one of `0x0800D20A`'s literal islands decoded as an instruction, which is the standing hazard when
+scanning a 6,370-byte body that contains islands. Any future use of this detector has to skip mapped
+data first.
+
+`0x08002376` survives the function map, `configure.py` and a bit-exact rebuild - the 132-byte gap is
+an in-function literal island, not asset-referencing data, so `raw_asset_map.py` still finds all 150
+starts. It fails on accounting instead: extending the extent over the island moves those 132 bytes
+from data to code, taking the objdiff report from 252,402 code bytes to 252,534. Calling a literal
+pool "code" is a modelling error, so the absorption is only correct together with `mappings` entries
+that mark the island's exact bounds as data. Deriving those bounds is the actual work, and it is the
+same work the 40 "walk unclean" cases need.
+
+`0x08010B00` was not attempted: its branch runs backward, so the enclosing function starts at or
+before it, and the repair is a start move rather than an absorption.
+
+### Decoded but not yet reconstructed: `0x08016684`
+
+This is the producer for `0x0801694C`: it builds both BG affine matrices into
+`gUnknown_03003380[gUnknown_03003140 ^ 1]`, the back half of the double buffer that
+`FUN_08017C5C` flips, and `0x0801694C` then uploads the front half to `0x04000020`-`0x0400003E`.
+That makes the pair a complete affine-scroll path.
+
+Every term comes from the shared sine table `gUnknown_0804DF7C`, indexed by the camera angle in
+`gUnknown_03001B08`, with `sin = table[angle]` and `cos = table[angle + 0x800]` - the same
+convention `FUN_0801816C` already uses. Each is divided by the distance in `gUnknown_03001B04`
+through the `DivArm` veneer at `0x0804A5A0`, whose argument order is
+`DivArm(denominator, numerator)`. The four matrix terms are:
+
+| Field | Value |
+|---|---|
+| offset 0 | `(u16)DivArm(dist, cos << 3)` |
+| offset 2 | `(u16)DivArm(dist, (sin * gUnknown_030016C8) >> 5)` |
+| offset 4 | `(u16)-DivArm(dist, sin << 3)` |
+| offset 6 | `(u16)DivArm(dist, (cos * gUnknown_030016C8) >> 5)` |
+
+The scroll origin at offsets 8-14 is a reference-point computation over `gUnknown_03001B2C` and
+`gUnknown_030016C0`, arithmetic-shifted right by 13, put through `DivArm` again and shifted by 12
+and 20, then offset by `gUnknown_03001384` plus the constants 82 and 120 and biased by `0x10000`
+(`128 << 9`). Each origin is stored as a low halfword and a high halfword, the latter masked with a
+pool constant and shifted right by 16. Offsets 16-30 repeat the whole thing for the second matrix
+with 80 in place of 82.
+
+Nothing is written yet. The risk here is not the semantics but the shape: the body is dense with
+sign extensions, `DivArm` calls and multiply-shift chains, which is exactly where the placement
+artifact recorded above tends to bite, so it should be attempted after that question is settled
+rather than before.
+
+### Decoded but not yet reconstructed: `0x08016A44`
+
+This function only became self-contained after the eighteen long-branch fragments were absorbed; it
+previously had `0x08016AFE` sitting inside it. It tints a whole 256-entry palette: for each colour it
+adds three signed per-channel offsets read from `0x030016B8`, `0x030020FC` and `0x03001B20`, clamps
+every channel first against 31 and then against 0, repacks as BGR555 into a 512-byte stack buffer,
+and uploads it with `CpuFastSet` to `0x05000000` as 128 words. The loop counter is `s16` and runs
+0..255; the channel extraction is the same `((colour << 16) >> 21) & 31` shape already recorded for
+`0x08000CF4`, with `colour` an `int`-width local.
+
+A reconstruction of that shape compiles to the exact 236-byte size and differs in 33 bytes over two
+tight clusters. The first is one instruction: retail materialises both `31` constants back to back
+before loading any of the three globals, while agbcc emits the second one after the first global
+load. The second is scheduling: retail groups both `lsrs` shifts of the CSE'd `colour << 16`
+immediately after it and ahead of the red channel, while agbcc defers the `>> 26` until the blue
+channel needs it. Everything else, including the clamp order and the pack, is identical.
+
+Nineteen source shapes and four compiler flags were tried and none beats 33 bytes, so the list is
+recorded to stop it being repeated. Three that look like they should force the shift grouping instead
+lose the common subexpression and land 130 bytes further away: an explicit `shifted` local, raw
+per-channel locals extracted before the tints are added, and computing green and blue before red.
+Neutral, all still 33: `int` versus `u32` for the colour, `const` on the source pointer, every
+declaration order of the six locals, `i < 256` versus `i <= 255`, and a `(u16)` cast on the packed
+result. Worse: `u16` channels with `(s16)` casts in the comparisons, a `mask` local instead of the
+literal, `% 32` in place of `& 31` on either side, ternary clamps, reversed pack order, `>> 5` and
+`>> 10` in place of the `<< 16` shifts, a walking source pointer, and `-fmove-all-movables`.
+
+The lever is therefore neither statement order nor operand spelling. Both remaining differences are
+about *where* agbcc places an already-correct instruction, which is the same open question as the
+other parked routines.
+
+agbcc's own `loop.c` was read to try to settle it and the answer it predicts is wrong. Movables are
+appended to the chain in scan order of their *setting* insns and emitted in that order, so for retail
+to materialise both `31` constants ahead of the three global loads, the source would have to mask all
+three channels before adding any tint. Written that way the function lands at 195 differing bytes and
+240 total, far worse than the 33-byte baseline. The preheader order is therefore not a straightforward
+consequence of source expression order, and the two `31` pseudos are probably not both ordinary loop
+movables. Whatever places them is downstream of `loop.c`, which is where any further attempt should
+start rather than in the C.
 
 ### Decoded but not yet reconstructed: `0x0800673C`
 
@@ -496,7 +626,7 @@ its 16-byte header, with its following alignment or inter-record gap represented
 song table also establishes 249 distinct validated song-header starts. `configure.py` derives these
 target units from the verified ROM and rejects unexpected counts, pointer ranges, record strides,
 sample sizes, overlaps, or song headers. The preceding `0x3F4418-0xBF2118` raw graphics/asset tail
-is now split at 152 aligned ROM targets read from literal pools and other owned non-instruction
+is now split at 150 aligned ROM targets read from literal pools and other owned non-instruction
 bytes in the executable. Source sites inside accepted instruction extents are excluded, preventing
 pixel words that happen to resemble `0x08xxxxxx` pointers from becoming evidence. These are proven
 symbol starts inside the raw asset area, not yet claims that every resulting interval is one
