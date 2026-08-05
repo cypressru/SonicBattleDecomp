@@ -94,6 +94,8 @@ extern void FUN_08033228(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
+extern const u8 gUnknown_0814d910[];
+extern const u32 gUnknown_08edc8a8[];
 extern void FUN_08046aa4(void);
 extern void FUN_08031164(void);
 extern void FUN_080284b4(void);
@@ -642,6 +644,7 @@ struct Unknown16ByteRecord {
 extern void (*gUnknown_03002030)(void);
 extern struct UnknownCallbackState03005330 gUnknown_03005330;
 extern u8 gUnknown_03001620;
+extern u8 gUnknown_03001210[];
 extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03001b00[8];
 extern struct UnknownEntity gUnknown_03003db0[];
@@ -6353,6 +6356,18 @@ void FUN_080336ac(struct UnknownListNode *node) {
         FUN_0801f8c0(node);
     } else {
         FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_080344d8(u8 index) {
+    FUN_0802036c(0x05000300, (u32)gUnknown_0814d910 + index * 128, 128);
+    FUN_08020408(0x06014000, gUnknown_08edc8a8[index]);
+}
+
+void FUN_08034ebc(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        gUnknown_03001210[0x472] = 0;
+        gUnknown_03002030 = FUN_0802fdf8;
     }
 }
 
