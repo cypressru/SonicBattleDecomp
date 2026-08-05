@@ -501,6 +501,7 @@ address,name,mode,confidence
 0x08024A34,FUN_08024a34,thumb,rom-pointer
 0x08024AAC,FUN_08024aac,thumb,rom-pointer
 0x08024B1C,FUN_08024b1c,thumb,rom-pointer
+0x08024B80,FUN_08024b80,thumb,recovered-unreferenced+exact-body
 0x08024B90,FUN_08024b90,thumb,rom-pointer
 0x08024BD8,FUN_08024bd8,thumb,rom-pointer
 0x08024C20,FUN_08024c20,thumb,rom-pointer

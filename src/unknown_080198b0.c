@@ -3695,6 +3695,8 @@ void FUN_08024b1c(struct UnknownListNode *node) {
     FUN_0801fed8(node->field6, 0);
 }
 
+void FUN_08024b80(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
 void FUN_08024b90(struct UnknownListNode *node) {
     node->position->field0 = gUnknown_08edb740[0];
     node->position->tile = 336;
