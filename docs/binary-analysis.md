@@ -42,13 +42,13 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,293 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,278 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
-per-symbol provenance. Of these starts, 804 have aligned ROM pointers, 450 are direct-call targets,
-and 47 currently rely on recursive-disassembly recovery alone (categories overlap). Five
-pointer-shaped asset words are explicitly rejected: one lands in an inline DMA literal sequence,
-and four land inside pointer-table data. Each accepted
+per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
+fall-through continuations rather than entries; fifteen of those are declared as validated
+long-branch targets instead. Five pointer-shaped asset words are explicitly rejected: one lands in
+an inline DMA literal sequence, and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 185 | 70,100 | 27,252 |
+| `main/unknown_080007FC` | `0x0007FC-0x018444` | 167 | 70,100 | 27,252 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 979 | 162,954 | 28,162 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
