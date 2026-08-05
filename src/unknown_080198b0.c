@@ -19,6 +19,8 @@ extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08018664(void);
+extern void FUN_080185d8(void);
+extern void FUN_08018654(void);
 extern void *FUN_08021180(void *value);
 extern void FUN_08049108(u16 value);
 extern void FUN_080490b4(u16 value);
@@ -1385,6 +1387,14 @@ u32 FUN_0801f9a8(struct UnknownListNode *node, s16 y) {
 }
 
 void FUN_0801f9d8(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
+
+void FUN_0801fb60(void) {
+    gUnknown_03003150[1] = (const void *)((u32)FUN_080185d8 + 1);
+    gUnknown_03003150[2] = (const void *)((u32)FUN_08018654 + 1);
+    *(volatile u16 *)0x04000208 = 0;
+    *(volatile u16 *)0x04000004 = 0x128;
+    *(volatile u16 *)0x04000208 = 1;
+}
 
 void FUN_0801fb94(void) { gUnknown_030000c0 = 0; }
 
