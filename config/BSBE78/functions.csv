@@ -926,6 +926,7 @@ address,name,mode,confidence
 0x080381A8,FUN_080381a8,thumb,rom-pointer
 0x080381E4,FUN_080381e4,thumb,rom-pointer
 0x08038204,FUN_08038204,thumb,recursive-disassembly
+0x08038264,FUN_08038264,thumb,recovered-unreferenced+exact-body
 0x080382BC,FUN_080382bc,thumb,direct-call
 0x08038360,FUN_08038360,thumb,direct-call
 0x08038404,FUN_08038404,thumb,recursive-disassembly
