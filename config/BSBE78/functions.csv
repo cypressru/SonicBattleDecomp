@@ -269,6 +269,7 @@ address,name,mode,confidence
 0x0801E6A0,FUN_0801e6a0,thumb,rom-pointer
 0x0801E99C,FUN_0801e99c,thumb,direct-call
 0x0801E9EC,FUN_0801e9ec,thumb,direct-call
+0x0801EA38,FUN_0801ea38,thumb,recovered-unreferenced+exact-body
 0x0801EA6C,FUN_0801ea6c,thumb,rom-pointer
 0x0801EACC,FUN_0801eacc,thumb,rom-pointer
 0x0801EAF8,FUN_0801eaf8,thumb,rom-pointer

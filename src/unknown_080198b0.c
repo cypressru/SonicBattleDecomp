@@ -1694,6 +1694,21 @@ u8 FUN_0801d3ac(u8 value) {
     return gUnknown_08ed8af4[ArcTan2(first, second) >> 12];
 }
 
+void FUN_0801ea38(u8 value) {
+    if (FUN_0801cfc8(value) == 0) {
+        register struct UnknownEntity *entities asm("r0") = gUnknown_03003db0;
+        register u32 offset asm("r4");
+        register struct UnknownEntity *entity asm("r4");
+
+        asm("" : "+r"(entities));
+        offset = value * 24;
+        entity = (struct UnknownEntity *)(offset + (u32)entities);
+
+        entity->callback = FUN_0801d618;
+        entity->field15 = FUN_0801d068(value);
+    }
+}
+
 void FUN_08023038(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_080402a0;
