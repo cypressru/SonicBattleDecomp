@@ -4,6 +4,7 @@
 struct UnknownListNode;
 struct UnknownState482d0;
 struct UnknownState420dc;
+struct UnknownCameraState4230c;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
@@ -59,7 +60,7 @@ extern const void *gUnknown_0817adc8[];
 extern void FUN_08041c14(void);
 extern void FUN_08041e2c(void);
 extern void FUN_08041f84(struct UnknownState420dc *state);
-extern void FUN_0804230c(struct UnknownState420dc *state);
+extern void FUN_0804230c(struct UnknownCameraState4230c *state);
 extern void FUN_08041860(u8 value);
 extern void FUN_08041920(void);
 extern void FUN_080419d4(void);
@@ -239,6 +240,36 @@ struct UnknownState420dc {
     u8 padding32[2];
     u16 baseY;
     u8 cachedPoolField;
+};
+
+struct UnknownCameraState4230c {
+    u8 padding0[2];
+    u8 field2;
+    u8 field3;
+    const void *callback;
+    u8 padding8[2];
+    s16 relativeX;
+    u8 padding12[2];
+    s16 relativeY;
+    const void *graphics;
+    u16 animation;
+    u8 padding22[4];
+    u8 animationFrame;
+    u8 animationIndex;
+    union {
+        s32 fixed;
+        struct {
+            u16 low;
+            s16 high;
+        } half;
+    } x;
+    union {
+        s32 fixed;
+        struct {
+            u16 low;
+            s16 high;
+        } half;
+    } y;
 };
 
 struct UnknownRecord41f24 {
@@ -449,7 +480,9 @@ struct UnknownGlobalRenderState {
     u16 field8;
     u16 field10;
     u16 field12;
-    u8 filler14[6];
+    u8 filler14[2];
+    u16 field16;
+    u16 field18;
     u16 field20;
     u16 field22;
     u16 field24;
@@ -470,22 +503,31 @@ struct UnknownGlobalRenderState {
     u8 field46;
 };
 
+struct UnknownBounds4230c {
+    u8 filler0[12];
+    s16 width;
+    s16 height;
+};
+
 extern struct UnknownGlobalRenderState gUnknown_03005440;
-extern u16 gUnknown_03005490;
-extern u16 gUnknown_03005494;
+extern s16 gUnknown_03005490;
+extern s16 gUnknown_03005494;
 extern u32 gUnknown_03005488;
 extern u32 gUnknown_03002610;
 extern void *gUnknown_03007c54;
 extern struct UnknownState420dc *gUnknown_030001d4;
-extern u32 gUnknown_0300023c;
-extern u32 gUnknown_03000240;
+extern s32 gUnknown_0300023c;
+extern s32 gUnknown_03000240;
 extern u16 gUnknown_030001e0;
 extern u16 gUnknown_030001f0;
 extern u16 gUnknown_03000200;
 extern u16 gUnknown_03000210;
 extern const u8 gUnknown_08173510[];
+extern const u8 gUnknown_08173540[];
+extern const struct UnknownBounds4230c gUnknown_081a4c2a[];
 extern void FUN_08045d30(void);
 extern u8 FUN_08043cf8(s16 x, s16 y);
+extern u16 Sqrt(u32 value);
 extern struct UnknownState420dc *gUnknown_030001d0;
 extern const struct UnknownRecord41f24 *gUnknown_08eeb660[];
 extern const struct UnknownRecord41f24 *gUnknown_08eeb678[];
@@ -506,6 +548,8 @@ extern void FUN_08036560(void);
 extern void FUN_080412dc(void);
 extern void FUN_080405a8(u8 first, u8 second);
 extern s16 FUN_08040698(u8 value);
+extern s16 FUN_08040684_wide(u32 value) asm("FUN_08040684");
+extern s16 FUN_08040698_wide(u32 value) asm("FUN_08040698");
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern const u8 gUnknown_081a7f88[];
 extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
@@ -1378,7 +1422,7 @@ void FUN_0801fc30(u8 value, const void *data) {
 
 void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
 
-void FUN_0802002c(u8 value, u8 *destination) { *destination = value; }
+void FUN_08020028(void) { gUnknown_030048d4 = 0; }
 
 u32 FUN_08020034(u16 first, u16 second, u16 third) {
     struct UnknownQueuedValue *entry;
@@ -6802,6 +6846,307 @@ void FUN_0804224c(u8 value) {
         } while (row <= 63);
     }
     FUN_080217d0(0);
+}
+
+void FUN_0804230c(struct UnknownCameraState4230c *state) {
+    u16 keys;
+    s32 cardinalStep;
+    s32 diagonalStep;
+
+    if ((gUnknown_03005440.field8 & 2) != 0) {
+        keys = 0;
+    } else {
+        keys = gUnknown_030048e0.first;
+    }
+    if ((gUnknown_03005440.field8 & 1) != 0) {
+        goto updateAnimation;
+    }
+
+    gUnknown_03000200 = gUnknown_030001e0;
+    gUnknown_03000210 = gUnknown_030001f0;
+    cardinalStep = 0x20000;
+    diagonalStep = 0x16a0a;
+    if ((gUnknown_030048e0.first & 2) != 0) {
+        cardinalStep = FUN_0804a59c(0x60000, 2);
+        diagonalStep = FUN_0804a59c(0x43e1e, 2);
+    }
+
+    switch (keys & 0xf0) {
+    case 0x40:
+        state->y.fixed -= cardinalStep;
+        break;
+    case 0x80:
+        state->y.fixed += cardinalStep;
+        break;
+    case 0x20:
+        state->x.fixed -= cardinalStep;
+        break;
+    case 0x10:
+        state->x.fixed += cardinalStep;
+        break;
+    case 0x60:
+        state->y.fixed -= diagonalStep;
+        state->x.fixed -= diagonalStep;
+        break;
+    case 0x50:
+        state->y.fixed -= diagonalStep;
+        state->x.fixed += diagonalStep;
+        break;
+    case 0xa0:
+        state->y.fixed += diagonalStep;
+        state->x.fixed -= diagonalStep;
+        break;
+    case 0x90:
+        state->y.fixed += diagonalStep;
+        state->x.fixed += diagonalStep;
+        break;
+    }
+
+    if (state->x.half.high < 8) {
+        state->x.half.high = 8;
+    }
+    if (state->x.half.high > gUnknown_081a4c2a[gUnknown_03005440.field31].width - 8) {
+        state->x.half.high = gUnknown_081a4c2a[gUnknown_03005440.field31].width - 8;
+    }
+    {
+        s16 yCoordinate = state->y.half.high;
+
+        if (yCoordinate < 8) {
+            state->y.half.high = 8;
+        }
+    }
+    if (state->y.half.high > gUnknown_081a4c2a[gUnknown_03005440.field31].height - 8) {
+        state->y.half.high = gUnknown_081a4c2a[gUnknown_03005440.field31].height - 8;
+    }
+    if (FUN_08043cf8(state->x.half.high, state->y.half.high) == 0) {
+        gUnknown_030001e0 = state->x.half.high;
+        gUnknown_030001f0 = state->y.half.high;
+    }
+
+    {
+        register u16 yPosition asm("r9");
+        register s16 *cameraYPointer asm("r12");
+
+        {
+            register s16 *cameraX asm("r4") = &gUnknown_03005494;
+            register u16 x asm("r3") = state->x.half.high;
+            u16 oldCameraX = *cameraX;
+            u16 deltaXValue = (x - oldCameraX) & 0xffff;
+            register u16 deltaX = deltaXValue;
+            register s16 *cameraY asm("r2") = &gUnknown_03005490;
+            register u16 y asm("r1") = state->y.half.high;
+            register s16 oldCameraY asm("r6") = *cameraY;
+            register s32 shiftedDeltaY asm("r0") = ((u32)y - (u16)oldCameraY) << 16;
+            u16 deltaYValue = (u32)shiftedDeltaY >> 16;
+            register u16 deltaY = deltaYValue;
+            register s32 signedDeltaY asm("r5") = shiftedDeltaY >> 16;
+
+            yPosition = y;
+            cameraYPointer = cameraY;
+
+            if (signedDeltaY <= 76) {
+                register s16 updatedCameraY asm("r0") = oldCameraY;
+
+                updatedCameraY -= 77;
+                updatedCameraY = signedDeltaY + updatedCameraY;
+
+                *cameraY = updatedCameraY;
+                if (updatedCameraY < 0) {
+                    *cameraY = 0;
+                }
+            }
+            {
+                register u16 rawSecondDeltaY asm("r1") = deltaY;
+                register s32 shiftedSecondDeltaY asm("r0") = rawSecondDeltaY << 16;
+                register s32 secondDeltaY asm("r5") = shiftedSecondDeltaY >> 16;
+
+                if (secondDeltaY > 131) {
+                    register s16 *secondCameraY asm("r2") = cameraYPointer;
+                    register s16 updatedCameraY asm("r0") = *secondCameraY;
+
+                    updatedCameraY -= 131;
+                    updatedCameraY = secondDeltaY + updatedCameraY;
+                    *secondCameraY = updatedCameraY;
+                    if (*secondCameraY >
+                        gUnknown_081a4c2a[gUnknown_03005440.field31].height - 160) {
+                        *cameraYPointer = gUnknown_081a4c2a[gUnknown_03005440.field31].height - 160;
+                    }
+                }
+            }
+            {
+                register u16 rawDeltaX asm("r2") = deltaX;
+                register s32 shiftedDeltaX asm("r0") = rawDeltaX << 16;
+                register s32 firstDeltaX asm("r2") = shiftedDeltaX >> 16;
+                register s32 retainedShiftedX asm("r1") = shiftedDeltaX;
+
+                if (firstDeltaX <= 79) {
+                    register s16 updatedCameraX asm("r0") = *cameraX;
+
+                    updatedCameraX -= 80;
+                    updatedCameraX = firstDeltaX + updatedCameraX;
+                    *cameraX = updatedCameraX;
+                    if (updatedCameraX < 0) {
+                        *cameraX = 0;
+                    }
+                }
+                {
+                    register s32 secondDeltaX asm("r1") = retainedShiftedX >> 16;
+
+                    if (secondDeltaX > 160) {
+                        register s16 updatedCameraX asm("r0") = *cameraX;
+
+                        updatedCameraX -= 160;
+                        updatedCameraX = secondDeltaX + updatedCameraX;
+                        *cameraX = updatedCameraX;
+                        if (*cameraX > gUnknown_081a4c2a[gUnknown_03005440.field31].width - 240) {
+                            *cameraX = gUnknown_081a4c2a[gUnknown_03005440.field31].width - 240;
+                        }
+                    }
+                }
+            }
+
+            {
+                register volatile s16 *relativeCameraX asm("r1") = &gUnknown_03005494;
+
+                state->relativeX = x - *relativeCameraX;
+            }
+        }
+        {
+            register s16 *relativeCameraY asm("r2") = cameraYPointer;
+            register u16 relativeCameraYValue asm("r0") = *relativeCameraY;
+            register u16 relativeYPosition asm("r4") = yPosition;
+            register u16 relativeY asm("r2") = relativeYPosition - relativeCameraYValue;
+
+            state->relativeY = relativeY;
+        }
+        {
+            register u32 heldDirection asm("r5") = keys & 0xf0;
+
+            asm volatile("" : "+r"(heldDirection));
+            if (heldDirection == 0) {
+                s16 targetX = 120 - state->relativeX;
+                s16 targetY = 104 - state->relativeY;
+
+                if (targetX != 0 || targetY != 0) {
+                    register u32 angle asm("r9") = ArcTan2(targetX, targetY) >> 8;
+                    u16 distance = Sqrt((targetX * targetX + targetY * targetY) << 4) >> 2;
+
+                    if (((s16)gUnknown_03005494 <= 0 && state->relativeX <= 120) ||
+                        ((s16)gUnknown_03005494 >=
+                             gUnknown_081a4c2a[gUnknown_03005440.field31].width - 240 &&
+                         state->relativeX > 119)) {
+                        if (targetY == 0) {
+                            goto updateRegisters;
+                        }
+                        if (targetY < 0) {
+                            distance = -targetY;
+                            angle = 0xc0;
+                        } else {
+                            distance = targetY;
+                            angle = 0x40;
+                        }
+                    } else if (((s16)gUnknown_03005490 <= 0 && state->relativeY <= 104) ||
+                               ((s16)gUnknown_03005490 >=
+                                    gUnknown_081a4c2a[gUnknown_03005440.field31].height - 160 &&
+                                state->relativeY > 103)) {
+                        if (targetX == 0) {
+                            goto updateRegisters;
+                        }
+                        if (targetX < 0) {
+                            distance = -targetX;
+                            angle = 0x80;
+                        } else {
+                            distance = targetX;
+                            angle = 0;
+                        }
+                    }
+                    if (distance > 15) {
+                        distance = 15;
+                    }
+                    distance = (distance >> 1) + 1;
+                    gUnknown_0300023c -= FUN_08040698_wide(angle) * distance;
+                    gUnknown_03000240 -= FUN_08040684_wide(angle) * distance;
+                    if ((s32)gUnknown_0300023c < 0) {
+                        gUnknown_0300023c = 0;
+                    } else {
+                        const struct UnknownBounds4230c *boundsTable = gUnknown_081a4c2a;
+                        const struct UnknownBounds4230c *bounds =
+                            &boundsTable[gUnknown_03005440.field31];
+                        s32 maximum = (bounds->width - 240) << 16;
+
+                        if ((s32)gUnknown_0300023c > maximum) {
+                            gUnknown_0300023c = maximum;
+                        }
+                    }
+                    if ((s32)gUnknown_03000240 < 0) {
+                        gUnknown_03000240 = 0;
+                    } else {
+                        const struct UnknownBounds4230c *boundsTable = gUnknown_081a4c2a;
+                        const struct UnknownBounds4230c *bounds =
+                            &boundsTable[gUnknown_03005440.field31];
+                        s32 maximum = (bounds->height - 160) << 16;
+
+                        if ((s32)gUnknown_03000240 > maximum) {
+                            gUnknown_03000240 = maximum;
+                        }
+                    }
+                    gUnknown_03005494 = gUnknown_0300023c >> 16;
+                    gUnknown_03005490 = gUnknown_03000240 >> 16;
+                    state->relativeX = state->x.half.high - gUnknown_03005494;
+                    state->relativeY = state->y.half.high - gUnknown_03005490;
+                }
+            } else {
+                {
+                    register s16 *fixedCameraX asm("r5");
+
+                    gUnknown_0300023c = *(fixedCameraX = &gUnknown_03005494) << 16;
+                }
+                {
+                    register s16 *fixedCameraY asm("r3");
+
+                    gUnknown_03000240 = *(fixedCameraY = cameraYPointer) << 16;
+                }
+            }
+        }
+    }
+
+updateRegisters:
+    if ((gUnknown_03005440.field8 & 0x10) == 0) {
+        s16 index = 0;
+
+        do {
+            FUN_0801fba0((index * 4 + 20) & 0xffff, gUnknown_03005494);
+            FUN_0801fba0((index * 4 + 22) & 0xffff, gUnknown_03005490);
+            index++;
+        } while (index <= 2);
+    }
+    gUnknown_03005440.field16 = gUnknown_03005494;
+    gUnknown_03005440.field18 = gUnknown_03005490;
+
+updateAnimation: {
+    u8 animationIndex;
+    u16 animationReset = gUnknown_03005440.field8 & 2;
+
+    if (animationReset != 0) {
+        return;
+    }
+    state->animationFrame++;
+    {
+        register u32 animationIndexMask asm("r2") = 0xff;
+
+        if (state->animationFrame > 4) {
+            state->animationFrame = animationReset;
+            animationIndex = state->animationIndex;
+
+            state->animationIndex = animationIndex + 1;
+            if (((u32)(animationIndex + 1) & animationIndexMask) > 5) {
+                state->animationIndex = animationReset;
+            }
+            state->animation = gUnknown_08173540[state->animationIndex];
+        }
+    }
+    FUN_080405a8(state->field2, 2);
+}
 }
 
 void FUN_0804280c(struct UnknownState420dc *state) {

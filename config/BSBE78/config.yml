@@ -7,6 +7,89 @@ rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
 rejected_function_pointers:
+  # These asset/payload words happen to encode Thumb addresses into the
+  # switch body of FUN_08000e04. The destinations remain technical fragment
+  # symbols because objdiff cannot model non-contiguous function code, but
+  # they are not independent function entries.
+  - { source: 0x0192EFE, destination: 0x08001476 }
+  - { source: 0x0EF8940, destination: 0x08001476 }
+  - { source: 0x015E550, destination: 0x080014A8 }
+  # Payload bytes point into live switch/case blocks. FUN_0801700a branches
+  # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
+  # similarly branches to the shared tail inside FUN_080308ca.
+  - { source: 0x0F8FE72, destination: 0x0801700A }
+  - { source: 0x0F91674, destination: 0x0801700A }
+  - { source: 0x0F94421, destination: 0x0801700A }
+  - { source: 0x0CEB644, destination: 0x080307FE }
+  # Compressed payload bytes happen to point at the upper halfword of a
+  # literal owned by FUN_08023ea8; 0x08024122 is data, not executable code.
+  - { source: 0x0F73634, destination: 0x08024122 }
+  # These pointer-like byte sequences occur in opaque asset data. Their
+  # destination is an unconditional branch inside FUN_08030608 that reaches
+  # FUN_080308ca's shared tail with live state from the real entry.
+  - { source: 0x0D387ED, destination: 0x08030704 }
+  - { source: 0x0D4B92D, destination: 0x08030704 }
+  - { source: 0x0DB229E, destination: 0x08030704 }
+  - { source: 0x0DB5E5C, destination: 0x08030704 }
+  - { source: 0x0DB5E69, destination: 0x08030704 }
+  # Opaque-data coincidences also created several tiny false entries. These
+  # destinations are demonstrably data or internal case blocks: 0x08000CEE
+  # and 0x08010B00 lie in data tables, 0x0802E70E is the upper halfword of a
+  # literal owned by FUN_0802e3f8, 0x0802FCF4 is a live switch case inside
+  # FUN_0802fcb4, and 0x08040402 is padding before FUN_08040408.
+  - { source: 0x0CE6528, destination: 0x08000CEE }
+  - { source: 0x0075CD1, destination: 0x08010B00 }
+  - { source: 0x0D8BF3C, destination: 0x08010B00 }
+  - { source: 0x0CDCDF0, destination: 0x0802E70E }
+  - { source: 0x0CECCE8, destination: 0x0802FCF4 }
+  - { source: 0x0D0A438, destination: 0x0802FCF4 }
+  - { source: 0x00718A2, destination: 0x08040402 }
+  - { source: 0x0403338, destination: 0x08040402 }
+  - { source: 0x04412CD, destination: 0x08040402 }
+  - { source: 0x044170D, destination: 0x08040402 }
+  # More opaque/payload coincidences land inside long routines or literal
+  # pools. FUN_08010e0c and FUN_08010f10 depend on live initializer state;
+  # FUN_0802e3f8 continues FUN_0802df68 with live r4/r6/r9 and stack data;
+  # FUN_0802fbee and FUN_08030350 begin in literal-pool words.
+  - { source: 0x0CD0060, destination: 0x08010E0C }
+  - { source: 0x04020C4, destination: 0x08010F10 }
+  - { source: 0x0DCC04C, destination: 0x0802E3F8 }
+  - { source: 0x0C25E6C, destination: 0x0802FBEE }
+  - { source: 0x0F1EA8C, destination: 0x08030350 }
+  # The asset pointer at 0x081A85CC lands four bytes into the real queue-reset
+  # routine. The corrected entry is 0x08020028; 0x0802002C is its store/return
+  # tail and is not an independent function.
+  - { source: 0x01A85CC, destination: 0x0802002C }
+  # Tiny pointer-derived entries rejected from surrounding control flow:
+  # 0x08013100 is a live-state tail of FUN_08012b98, 0x0801FBF4 and
+  # 0x080200B4 are literal-pool data, 0x08020E0C is FUN_08020c22's epilogue,
+  # and 0x08030600 starts in a literal before an internal switch block.
+  - { source: 0x0F04E90, destination: 0x08013100 }
+  - { source: 0x0CEF0B8, destination: 0x0801FBF4 }
+  - { source: 0x0E9A664, destination: 0x0801FBF4 }
+  - { source: 0x02FC0ED, destination: 0x080200B4 }
+  - { source: 0x02FC4B9, destination: 0x080200B4 }
+  - { source: 0x02FCB99, destination: 0x080200B4 }
+  - { source: 0x02FD3D8, destination: 0x080200B4 }
+  - { source: 0x02FDABE, destination: 0x080200B4 }
+  - { source: 0x02FDF25, destination: 0x080200B4 }
+  - { source: 0x0302F8C, destination: 0x080200B4 }
+  - { source: 0x0303F3E, destination: 0x080200B4 }
+  - { source: 0x0319CF2, destination: 0x080200B4 }
+  - { source: 0x0CF1C50, destination: 0x08020E0C }
+  - { source: 0x0D63EA2, destination: 0x08030600 }
+  - { source: 0x0DCA1CC, destination: 0x08030600 }
+  # This asset word points into the literal pool between FUN_0800baac and
+  # FUN_0800bb88. The entire alleged 0x0800BB7A extent is data.
+  - { source: 0x04B74BC, destination: 0x0800BB7A }
+  # These opaque-data pointers land in live-state tails of their containing
+  # routines rather than callable entries.
+  - { source: 0x0DB97C8, destination: 0x08030D02 }
+  - { source: 0x0CB58C0, destination: 0x0803EDEE }
+  - { source: 0x0C26614, destination: 0x0801D5B6 }
+  # The old 0x08031146 candidate begins in a literal pool. A real aligned
+  # callback literal at 0x08031150 points to the prologue at 0x08031154.
+  - { source: 0x053D934, destination: 0x08031146 }
   # Compressed/opaque asset bytes at 0x083FEE2C happen to encode 0x0804212B.
   # The destination is the upper halfword of FUN_080420dc's gUnknown_0300547c
   # literal and depends on r4 initialized by the real entry, so it is not a TU
@@ -980,6 +1063,7 @@ units:
       FUN_080420dc: 0x9A
       FUN_08042180: 0xB2
       FUN_0804224c: 0xA4
+      FUN_0804230c: 0x4E8
       FUN_0804280c: 0xB0
       FUN_0801f024: 0x6
       FUN_0801f030: 0x20
@@ -1016,7 +1100,7 @@ units:
       FUN_0801fbfc: 0x32
       FUN_0801fc30: 0x1A
       FUN_0801fc54: 0x8
-      FUN_0802002c: 0x4
+      FUN_08020028: 0x8
       FUN_08020034: 0x40
       FUN_080200bc: 0x16
       FUN_080200d8: 0x1A
@@ -2023,6 +2107,21 @@ units:
       - { offset: 0x2899C, mode: thumb }
       - { offset: 0x28A40, mode: data }
       - { offset: 0x28A5C, mode: thumb }
+      - { offset: 0x28A7A, mode: data }
+      - { offset: 0x28A80, mode: thumb }
+      - { offset: 0x28AE6, mode: data }
+      - { offset: 0x28B04, mode: thumb }
+      - { offset: 0x28D44, mode: data }
+      - { offset: 0x28D5C, mode: thumb }
+      - { offset: 0x28DB2, mode: data }
+      - { offset: 0x28DBC, mode: thumb }
+      - { offset: 0x28E02, mode: data }
+      - { offset: 0x28E0C, mode: thumb }
+      - { offset: 0x28E32, mode: data }
+      - { offset: 0x28E40, mode: thumb }
+      - { offset: 0x28E76, mode: data }
+      - { offset: 0x28E8C, mode: thumb }
+      - { offset: 0x28F44, mode: data }
       - { offset: 0x28F5C, mode: thumb }
       - { offset: 0x28FBE, mode: data }
       - { offset: 0x28FEC, mode: thumb }
@@ -2418,6 +2517,46 @@ units:
       - { offset: 0x28A44, type: abs32, symbol: gUnknown_03005440 }
       - { offset: 0x28A4C, type: abs32, symbol: gUnknown_03002610 }
       - { offset: 0x28A50, type: abs32, symbol: gUnknown_03005488 }
+      - { offset: 0x28A7C, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28ABA, type: thumb_call, symbol: FUN_0804a59c }
+      - { offset: 0x28AC4, type: thumb_call, symbol: FUN_0804a59c }
+      - { offset: 0x28AE8, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0x28AEC, type: abs32, symbol: gUnknown_03000200 }
+      - { offset: 0x28AF0, type: abs32, symbol: gUnknown_030001e0 }
+      - { offset: 0x28AF4, type: abs32, symbol: gUnknown_03000210 }
+      - { offset: 0x28AF8, type: abs32, symbol: gUnknown_030001f0 }
+      - { offset: 0x28BC0, type: thumb_call, symbol: FUN_08043cf8 }
+      - { offset: 0x28CD6, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x28CEC, type: thumb_call, symbol: Sqrt }
+      - { offset: 0x28D44, type: abs32, symbol: gUnknown_081a4c2a }
+      - { offset: 0x28D48, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28D4C, type: abs32, symbol: gUnknown_030001e0 }
+      - { offset: 0x28D50, type: abs32, symbol: gUnknown_030001f0 }
+      - { offset: 0x28D54, type: abs32, symbol: gUnknown_03005494 }
+      - { offset: 0x28D58, type: abs32, symbol: gUnknown_03005490 }
+      - { offset: 0x28DB4, type: abs32, symbol: gUnknown_03005490 }
+      - { offset: 0x28DB8, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28DD0, type: thumb_call, symbol: FUN_08040698 }
+      - { offset: 0x28DE6, type: thumb_call, symbol: FUN_08040684 }
+      - { offset: 0x28E04, type: abs32, symbol: gUnknown_0300023c }
+      - { offset: 0x28E08, type: abs32, symbol: gUnknown_03000240 }
+      - { offset: 0x28E34, type: abs32, symbol: gUnknown_081a4c2a }
+      - { offset: 0x28E38, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28E3C, type: abs32, symbol: gUnknown_03000240 }
+      - { offset: 0x28E78, type: abs32, symbol: gUnknown_081a4c2a }
+      - { offset: 0x28E7C, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28E80, type: abs32, symbol: gUnknown_03005494 }
+      - { offset: 0x28E84, type: abs32, symbol: gUnknown_0300023c }
+      - { offset: 0x28E88, type: abs32, symbol: gUnknown_03005490 }
+      - { offset: 0x28EC4, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x28ED4, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x28F30, type: thumb_call, symbol: FUN_080405a8 }
+      - { offset: 0x28F44, type: abs32, symbol: gUnknown_0300023c }
+      - { offset: 0x28F48, type: abs32, symbol: gUnknown_03005494 }
+      - { offset: 0x28F4C, type: abs32, symbol: gUnknown_03000240 }
+      - { offset: 0x28F50, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x28F54, type: abs32, symbol: gUnknown_03005490 }
+      - { offset: 0x28F58, type: abs32, symbol: gUnknown_08173540 }
       - { offset: 0x28F68, type: thumb_call, symbol: FUN_0803ff98 }
       - { offset: 0x28FA4, type: thumb_call, symbol: FUN_08043cf8 }
       - { offset: 0x28FC0, type: abs32, symbol: FUN_08045d30, addend: 14 }
