@@ -76,6 +76,7 @@ extern void FUN_08043f7c(struct UnknownState43f00 *state);
 extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
 extern void FUN_0802ea64(u8 value);
+extern void FUN_0802ded4(struct UnknownListNode *node);
 extern void FUN_080375d8(u8 value);
 extern void FUN_0803b69c(u8 value);
 extern void FUN_0803a9dc(u8 value);
@@ -266,6 +267,12 @@ struct UnknownCallbackState35760 {
     s16 value;
     s16 counter;
     u8 nodeIndex;
+};
+
+struct UnknownBlendState2df40 {
+    u16 value;
+    u8 field2;
+    u8 field3;
 };
 
 struct UnknownPoolNode404ec {
@@ -6480,6 +6487,16 @@ void FUN_0802dc78(struct UnknownListNode *node) {
 void FUN_0802dcc8(struct UnknownListNode *node) {
     FUN_0801f978(node, 28);
     FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_0802df40(struct UnknownListNode *node) {
+    struct UnknownBlendState2df40 *state = node->allocation;
+
+    state->value = 0xff00;
+    FUN_0801fba0(20, 0xff00);
+    state->field2 = 0;
+    state->field3 = 0;
+    node->data = (const void *)((u32)FUN_0802ded4 + 1);
 }
 
 void FUN_08034f10(struct UnknownListNode *node) {
