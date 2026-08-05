@@ -616,8 +616,6 @@ units:
       - { offset: 0x1786E, type: thumb_call, symbol: CpuFastSet }
       - { offset: 0x17888, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x1788C, type: abs32, symbol: gUnknown_030033e0 }
-      - { offset: 0x178A6, type: thumb_call, symbol: FUN_0801f89c }
-      - { offset: 0x178AA, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0x178BE, type: thumb_call, symbol: FUN_080200d8 }
       - { offset: 0x178D4, type: abs32, symbol: gUnknown_03003170 }
       - { offset: 0x178F0, type: abs32, symbol: gUnknown_030048e0 }
