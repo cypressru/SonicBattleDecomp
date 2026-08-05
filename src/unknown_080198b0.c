@@ -49,7 +49,6 @@ extern void FUN_0801e41c(void);
 void FUN_0801eacc(u8 value);
 void FUN_0801eaf8(u8 value);
 void FUN_0801eb24(u8 value);
-extern u8 FUN_0801d188(u8 value);
 extern void FUN_0801d870(u8 value);
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08015924(u8 first, u16 second, u8 third, u16 fourth, u8 fifth);
@@ -815,6 +814,7 @@ extern u8 gUnknown_030013a0;
 extern u8 gUnknown_03001b00[8];
 extern struct UnknownEntity gUnknown_03003db0[];
 extern struct UnknownEntityData gUnknown_03001c40[];
+extern struct UnknownEntityData gUnknown_03001c40_pool2[];
 extern u8 gUnknown_03003e10;
 extern u8 gUnknown_03003d88;
 extern u16 gUnknown_08071264[];
@@ -1698,6 +1698,66 @@ u8 FUN_0801d3ac(u8 value) {
 
     ArcTan2(first, second);
     return gUnknown_08ed8af4[ArcTan2(first, second) >> 12];
+}
+
+u8 FUN_0801d188(u8 value) {
+    u8 attempt = 0;
+
+    do {
+        u32 candidate = (FUN_08020144() & 6) >> 1;
+        u32 savedCandidate = candidate;
+
+        if (candidate != value) {
+            register u8 *state asm("r1") = (u8 *)gUnknown_03001c40;
+            register u8 *entryBase asm("r0");
+            register u8 *entry asm("r0");
+
+            asm("" : "+r"(state));
+            entryBase = state;
+            entryBase += 20;
+            entry = (u8 *)(candidate + (u32)entryBase);
+            if (*entry != 0xFF) {
+                register u8 *groupBase asm("r0");
+                register u8 *valueGroup asm("r1");
+                register u8 *candidateGroup asm("r0");
+
+                if (state[8] == 0) {
+                    goto check_type;
+                }
+                groupBase = state;
+                groupBase += 32;
+                valueGroup = (u8 *)(value + (u32)groupBase);
+                candidateGroup = (u8 *)(candidate + (u32)groupBase);
+                if (*valueGroup != *candidateGroup) {
+                check_type: {
+                    register struct UnknownEntityData *metadata asm("r1") = gUnknown_03001c40_pool2;
+                    u32 type;
+
+                    asm("" : "+r"(metadata));
+                    type = metadata[savedCandidate].field20;
+
+                    if (type == 0xFC) {
+                        goto retry;
+                    }
+                    if (type == 0xFD) {
+                        goto retry;
+                    }
+                    if (type == 0xFE) {
+                        goto retry;
+                    }
+                    if (type == 0xFF) {
+                        goto retry;
+                    }
+                    return savedCandidate;
+                }
+                }
+            }
+        }
+    retry:
+        attempt++;
+    } while (attempt <= 5);
+
+    return value;
 }
 
 void FUN_0801d5d4(u8 value) {
