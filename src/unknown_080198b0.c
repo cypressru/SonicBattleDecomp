@@ -828,6 +828,7 @@ extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
 extern const u8 gUnknown_08ed8ae4[];
 extern const u8 gUnknown_08ed8ad4[];
+extern const u8 gUnknown_08ed8af4[];
 extern const s16 gUnknown_08edc4a4[];
 extern const u16 gUnknown_08edc544[];
 extern const struct UnknownSoundIndex gUnknown_08bf7244[];
@@ -1633,6 +1634,64 @@ u8 FUN_0801cfa4(u8 index) {
         return 1;
     }
     return 0;
+}
+
+u16 FUN_0801d370(u8 value) {
+    register u32 index asm("r0") = value;
+    register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+    register u32 offset asm("r1") = index * 24;
+    register struct UnknownEntity *entity asm("r1") =
+        (struct UnknownEntity *)(offset + (u32)entities);
+    register u32 flags asm("r2") = entity->field8;
+
+    if ((flags & 0x30) != 0) {
+        register u32 result asm("r0") = 0x30;
+
+        result ^= flags;
+        entity->field8 = result;
+    }
+    flags = entity->field8;
+    if ((flags & 0xC0) != 0) {
+        register u32 result asm("r0") = 0xC0;
+
+        result ^= flags;
+        entity->field8 = result;
+    }
+    return entity->field8;
+}
+
+u8 FUN_0801d3ac(u8 value) {
+    register u32 index asm("r0") = value;
+    register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+    register u32 entityOffset asm("r1") = index * 24;
+    register struct UnknownEntity *entity asm("r1") =
+        (struct UnknownEntity *)(entityOffset + (u32)entities);
+    register u32 linkedOffset asm("r2") = entity->field15;
+    register struct UnknownEntityData *data asm("r3") = gUnknown_03001c40;
+    register u32 dataOffset asm("r1");
+    register u32 offset asm("r2");
+    register u8 *firstBase asm("r0");
+    register s16 *firstPointer asm("r0");
+    register u8 *secondBase asm("r3");
+    register s16 *secondPointer asm("r2");
+    register s32 first asm("r4");
+    register s32 second asm("r5");
+
+    asm("" : "+r"(linkedOffset), "+r"(data));
+    linkedOffset *= 2;
+    dataOffset = index * 252;
+    offset = linkedOffset + dataOffset;
+    firstBase = (u8 *)data;
+    firstBase += 54;
+    firstPointer = (s16 *)(offset + (u32)firstBase);
+    secondBase = (u8 *)data;
+    secondBase += 62;
+    secondPointer = (s16 *)(offset + (u32)secondBase);
+    first = *firstPointer;
+    second = *secondPointer;
+
+    ArcTan2(first, second);
+    return gUnknown_08ed8af4[ArcTan2(first, second) >> 12];
 }
 
 void FUN_08023038(void) {
