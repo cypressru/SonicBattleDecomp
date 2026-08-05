@@ -331,6 +331,38 @@ same work the 40 "walk unclean" cases need.
 `0x08010B00` was not attempted: its branch runs backward, so the enclosing function starts at or
 before it, and the repair is a start move rather than an absorption.
 
+### Decoded but not yet reconstructed: `0x08016684`
+
+This is the producer for `0x0801694C`: it builds both BG affine matrices into
+`gUnknown_03003380[gUnknown_03003140 ^ 1]`, the back half of the double buffer that
+`FUN_08017C5C` flips, and `0x0801694C` then uploads the front half to `0x04000020`-`0x0400003E`.
+That makes the pair a complete affine-scroll path.
+
+Every term comes from the shared sine table `gUnknown_0804DF7C`, indexed by the camera angle in
+`gUnknown_03001B08`, with `sin = table[angle]` and `cos = table[angle + 0x800]` - the same
+convention `FUN_0801816C` already uses. Each is divided by the distance in `gUnknown_03001B04`
+through the `DivArm` veneer at `0x0804A5A0`, whose argument order is
+`DivArm(denominator, numerator)`. The four matrix terms are:
+
+| Field | Value |
+|---|---|
+| offset 0 | `(u16)DivArm(dist, cos << 3)` |
+| offset 2 | `(u16)DivArm(dist, (sin * gUnknown_030016C8) >> 5)` |
+| offset 4 | `(u16)-DivArm(dist, sin << 3)` |
+| offset 6 | `(u16)DivArm(dist, (cos * gUnknown_030016C8) >> 5)` |
+
+The scroll origin at offsets 8-14 is a reference-point computation over `gUnknown_03001B2C` and
+`gUnknown_030016C0`, arithmetic-shifted right by 13, put through `DivArm` again and shifted by 12
+and 20, then offset by `gUnknown_03001384` plus the constants 82 and 120 and biased by `0x10000`
+(`128 << 9`). Each origin is stored as a low halfword and a high halfword, the latter masked with a
+pool constant and shifted right by 16. Offsets 16-30 repeat the whole thing for the second matrix
+with 80 in place of 82.
+
+Nothing is written yet. The risk here is not the semantics but the shape: the body is dense with
+sign extensions, `DivArm` calls and multiply-shift chains, which is exactly where the placement
+artifact recorded above tends to bite, so it should be attempted after that question is settled
+rather than before.
+
 ### Decoded but not yet reconstructed: `0x08016A44`
 
 This function only became self-contained after the eighteen long-branch fragments were absorbed; it
