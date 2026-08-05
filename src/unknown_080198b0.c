@@ -149,6 +149,11 @@ struct UnknownSoundEntry {
     u8 filler4[8];
 };
 
+struct UnknownQueuedSoundCommand {
+    u16 songId;
+    u16 parameter;
+};
+
 struct UnknownPosition {
     const void *field0;
     s16 x;
@@ -657,6 +662,7 @@ extern u8 gUnknown_030000c0;
 extern u16 gUnknown_03000070[20][2];
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
+extern struct UnknownQueuedSoundCommand gUnknown_03004480[];
 extern u32 gUnknown_0300019c;
 extern s8 gUnknown_030048d4;
 extern u8 gUnknown_030048d0;
@@ -1432,6 +1438,34 @@ void FUN_0801fc30(u8 value, const void *data) {
 }
 
 void FUN_0801fc54(void) { gUnknown_03004470 = 0; }
+
+void FUN_0801fc60(void) {
+    u8 *countAddress = &gUnknown_03004470;
+    u8 queued = *countAddress;
+    u8 *count = countAddress;
+
+    if (queued != 0) {
+        u8 index = 0;
+
+        if (index < queued) {
+            register u32 specialSong asm("r8") = 0x333;
+
+            do {
+                u16 songId = gUnknown_03004480[index].songId;
+                u16 parameter = gUnknown_03004480[index].parameter;
+
+                FUN_0801f618(songId);
+                FUN_0801f644(songId);
+                FUN_0801f66c(songId, 0xFFFF, (s8)parameter);
+                if (songId == specialSong) {
+                    FUN_0801f6a0(songId, 0xFFFF, 0x80);
+                }
+                index++;
+            } while (index < gUnknown_03004470);
+        }
+    }
+    *count = 0;
+}
 
 void FUN_0801ffa4(u8 force) {
     if (gUnknown_030048d0 != 0 || force != 0) {
