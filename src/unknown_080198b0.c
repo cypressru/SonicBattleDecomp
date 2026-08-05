@@ -3752,7 +3752,7 @@ void FUN_08028814(struct UnknownListNode *node) {
 }
 
 void FUN_080288b4(struct UnknownListNode *node) {
-    register struct UnknownListNode *current asm("r2") = node;
+    struct UnknownListNode *current = node;
     register struct UnknownAllocation28770 *allocation asm("r8") = current->allocation;
     u8 count;
     u16 keys;
