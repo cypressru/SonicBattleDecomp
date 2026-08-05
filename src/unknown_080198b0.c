@@ -241,7 +241,9 @@ struct UnknownEntity {
     u8 field14;
     u8 field15;
     u8 field16;
-    u8 filler17[7];
+    u8 filler17;
+    u8 field18;
+    u8 filler19[5];
 };
 
 struct UnknownEntityData {
@@ -1061,6 +1063,7 @@ extern void FUN_08021b0c(void);
 extern void FUN_08021e70(u16 value);
 
 extern void FUN_0801d618(void);
+extern void FUN_0801d8f4(u8 value);
 extern void FUN_0801dfdc(u8 value);
 extern void FUN_0801e044(u8 value);
 extern void FUN_0801e174(void);
@@ -1071,6 +1074,7 @@ extern u32 FUN_08020144(void);
 extern void FUN_0801eea8(u8 value);
 extern u16 ArcTan2(s16 x, s16 y);
 extern u16 gUnknown_08071250[];
+extern u16 gUnknown_0807125a[];
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -1468,6 +1472,50 @@ void FUN_0801e258(u8 value) {
             }
         }
     }
+}
+
+void FUN_0801e2c8(u32 value) {
+    register u32 index asm("r5") = value;
+    register struct UnknownEntity *entities asm("r2");
+    register u32 entityOffset asm("r4");
+    register struct UnknownEntity *entity asm("r6");
+    register u32 zero asm("r8");
+    struct UnknownEntity *volatile savedEntities;
+
+    asm("" : "+r"(index));
+    index <<= 24;
+    index >>= 24;
+    entities = gUnknown_03003db0;
+    entityOffset = index * 24;
+    entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+    entity->callback = (UnknownCallback)FUN_0801d8f4;
+    zero = 0;
+    asm("" : : : "r0");
+    entity->field8 = 0;
+    entity->field12 = zero;
+    entity->field13 = zero;
+    {
+        register u16 *table asm("r1") = gUnknown_0807125a;
+        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
+        register u32 predicateArgument asm("r0") = table[*tableIndex];
+        register u32 result asm("r0");
+
+        asm("" : "+r"(predicateArgument));
+        savedEntities = entities;
+        result = FUN_08020160(predicateArgument);
+        entity->field18 = result != 0;
+    }
+    {
+        register const void *data asm("r0") = gUnknown_08ed898c;
+        register struct UnknownEntity *dataBase asm("r2");
+
+        entities = savedEntities;
+        dataBase = (struct UnknownEntity *)((u32)entities + 4);
+        entityOffset += (u32)dataBase;
+        *(const void **)entityOffset = data;
+    }
+    entity->field14 = zero;
+    entity->field16 = gUnknown_03001c40[index].field16;
 }
 
 void FUN_08023038(void) {
