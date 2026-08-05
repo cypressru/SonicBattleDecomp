@@ -1,6 +1,7 @@
 import unittest
 
 from thumb_extents import (
+    literal_islands,
     ROM_BASE,
     is_frame_pop,
     is_frame_push,
@@ -99,3 +100,31 @@ class EntryPlausibilityTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LiteralIslandTests(unittest.TestCase):
+    """Islands are pool runs inside the body, including any alignment padding."""
+
+    def test_finds_island_with_alignment_padding(self):
+        # b +6 ; pad ; two pool words ; movs ; bx lr
+        data = assemble(0xE002, NOP, 0, 0, 0, 0, MOVS_R0_0, BX_LR)
+        result = walk(data, ROM_BASE, ROM_BASE + len(data), set())
+        result["pool"] = {ROM_BASE + 4, ROM_BASE + 6}
+        result["code"] = {ROM_BASE, ROM_BASE + 8, ROM_BASE + 10}
+        self.assertEqual(
+            literal_islands(result, ROM_BASE, ROM_BASE + len(data)),
+            [(ROM_BASE + 2, ROM_BASE + 8)],
+        )
+
+    def test_island_without_padding_starts_at_the_pool(self):
+        data = assemble(0xE001, 0, 0, MOVS_R0_0, BX_LR)
+        result = {"pool": {ROM_BASE + 2, ROM_BASE + 4}, "code": {ROM_BASE, ROM_BASE + 6}}
+        self.assertEqual(
+            literal_islands(result, ROM_BASE, ROM_BASE + len(data)),
+            [(ROM_BASE + 2, ROM_BASE + 6)],
+        )
+
+    def test_trailing_pool_is_not_an_island(self):
+        # A pool run reaching the end of the body is the ordinary trailing pool.
+        result = {"pool": {ROM_BASE + 4, ROM_BASE + 6}, "code": {ROM_BASE, ROM_BASE + 2}}
+        self.assertEqual(literal_islands(result, ROM_BASE, ROM_BASE + 8), [])

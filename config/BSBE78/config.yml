@@ -921,6 +921,15 @@ units:
     source: src/unknown_080198b0.c
     cflags: [-O2, -mthumb-interwork]
     base_symbol_size_overrides:
+      FUN_0801d188: 0x76
+      FUN_0801d200: 0x86
+      FUN_0801d288: 0xE0
+      FUN_0801d870: 0x6C
+      FUN_0801d8f4: 0xE8
+      FUN_0801d9e0: 0x100
+      FUN_0801daec: 0x50
+      FUN_0801db4c: 0x6C
+      FUN_0801d5d4: 0x3A
       FUN_0801c8f0: 0x16
       FUN_0801c910: 0x16
       FUN_0801c930: 0x28
@@ -965,6 +974,7 @@ units:
       FUN_0802b10c: 0x1E
       FUN_0802b1b4: 0x1E
       FUN_0802b1dc: 0x1E
+      FUN_0802b204: 0x42
       FUN_0802b424: 0xE
       FUN_0802b434: 0xE
       FUN_0802b444: 0x40
@@ -991,6 +1001,72 @@ units:
       FUN_08040624: 0x32
       FUN_080406d4: 0x82
       FUN_0802cfd0: 0xE
+      FUN_0802c25c: 0x26
+      FUN_0801c82c: 0x22
+      FUN_0801c85c: 0x46
+      FUN_0801c8a4: 0x3E
+      FUN_0801e9ec: 0x3C
+      FUN_0801e99c: 0x44
+      FUN_0801ea6c: 0x52
+      FUN_0801e3cc: 0x40
+      FUN_0801de5c: 0x54
+      FUN_0801debc: 0x54
+      FUN_0801df1c: 0x54
+      FUN_0801df7c: 0x54
+      FUN_0801dfdc: 0x5C
+      FUN_0801e044: 0x70
+      FUN_0801e0c4: 0xAA
+      FUN_0801e174: 0xE2
+      FUN_0801e41c: 0xD4
+      FUN_0801e4f4: 0x11A
+      FUN_0801e62c: 0x62
+      FUN_0801e258: 0x60
+      FUN_0801e2c8: 0x6C
+      FUN_0801e34c: 0x74
+      FUN_0801ceec: 0x48
+      FUN_0801cf34: 0x4C
+      FUN_0801cf80: 0x22
+      FUN_0801cfa4: 0x22
+      FUN_0801d370: 0x36
+      FUN_0801d3ac: 0x50
+      FUN_0801ea38: 0x2C
+      FUN_08023010: 0x1E
+      FUN_08023038: 0x24
+      FUN_08024b80: 0xE
+      FUN_08023898: 0x2C
+      FUN_0803d168: 0x30
+      FUN_0803bc38: 0x2E
+      FUN_0802dc90: 0x36
+      FUN_0802dce0: 0x36
+      FUN_0802d75c: 0xE
+      FUN_08038918: 0x36
+      FUN_0803be04: 0x3C
+      FUN_0803895c: 0x3C
+      FUN_0803be50: 0x42
+      FUN_0803bea8: 0x46
+      FUN_0803bef0: 0x60
+      FUN_0803bf68: 0x4E
+      FUN_0803bac0: 0x42
+      FUN_0803bb7c: 0x3E
+      FUN_0803bd0c: 0x40
+      FUN_08043e60: 0x40
+      FUN_08043ea0: 0x44
+      FUN_0803d128: 0x38
+      FUN_08043f2c: 0x48
+      FUN_080457f0: 0x40
+      FUN_0803e74c: 0x4E
+      FUN_0803f7cc: 0x44
+      FUN_0803fd4c: 0x4A
+      FUN_08045a00: 0x4E
+      FUN_08030b38: 0x28
+      FUN_08030bd8: 0x28
+      FUN_08038820: 0x28
+      FUN_0803bcdc: 0x28
+      FUN_0803bd5c: 0x28
+      FUN_0802c85c: 0x28
+      FUN_0802c914: 0x28
+      FUN_0802c9ac: 0x28
+      FUN_0802caac: 0x28
       FUN_0802df40: 0x22
       FUN_0803186c: 0xE
       FUN_08032adc: 0xE
@@ -998,12 +1074,22 @@ units:
       FUN_08035258: 0xE
       FUN_08036888: 0xE
       FUN_0803035c: 0x20
+      FUN_08030390: 0x26
+      FUN_08031540: 0x26
+      FUN_0803b54c: 0x26
       FUN_080380b0: 0x20
       FUN_0803b5a8: 0x20
+      FUN_0803b63c: 0x4E
+      FUN_08038264: 0x4E
+      FUN_08032618: 0x60
+      FUN_08032724: 0x4E
+      FUN_0803b694: 0x2
+      FUN_0803b698: 0x2
       FUN_080381a8: 0x26
       FUN_08038404: 0x38
       FUN_080380e4: 0xE
       FUN_08039c5c: 0xE
+      FUN_08039c1c: 0x1A
       FUN_08037100: 0xE
       FUN_08039fd0: 0xE
       FUN_0803b53c: 0xE
@@ -1022,6 +1108,7 @@ units:
       FUN_080482d0: 0x12
       FUN_080482e8: 0x12
       FUN_0803128c: 0x10
+      FUN_080312c8: 0x28
       FUN_080368c0: 0x14
       FUN_08043d74: 0x28
       FUN_08043e28: 0x12
@@ -1260,6 +1347,7 @@ units:
       FUN_08021ec8: 0x3A
       FUN_08021f04: 0x16
       FUN_08021f20: 0x10
+      FUN_080246e0: 0x24
       FUN_0802436c: 0x2C
       FUN_080243a4: 0x30
       FUN_080243d4: 0x2C
@@ -1359,6 +1447,210 @@ units:
       FUN_080291a8: 0x4E
       FUN_08029200: 0x46
     mappings:
+      - { offset: 0x2FA0, mode: data }
+      - { offset: 0x2FAC, mode: thumb }
+      - { offset: 0x2FF2, mode: data }
+      - { offset: 0x2FF4, mode: thumb }
+      - { offset: 0x300E, mode: data }
+      - { offset: 0x301C, mode: thumb }
+      - { offset: 0x3032, mode: data }
+      - { offset: 0x3040, mode: thumb }
+      - { offset: 0x513C, mode: thumb }
+      - { offset: 0x50EC, mode: thumb }
+      - { offset: 0x5130, mode: data }
+      - { offset: 0x51BC, mode: thumb }
+      - { offset: 0x520E, mode: data }
+      - { offset: 0x521C, mode: thumb }
+      - { offset: 0x4B1C, mode: thumb }
+      - { offset: 0x4B5C, mode: data }
+      - { offset: 0x4B6C, mode: thumb }
+      - { offset: 0x4B96, mode: data }
+      - { offset: 0x4BA4, mode: thumb }
+      - { offset: 0x4BBE, mode: data }
+      - { offset: 0x4BC4, mode: thumb }
+      - { offset: 0x4BD6, mode: data }
+      - { offset: 0x4BDC, mode: thumb }
+      - { offset: 0x4BEE, mode: data }
+      - { offset: 0x4BF4, mode: thumb }
+      - { offset: 0x4C06, mode: data }
+      - { offset: 0x4C0C, mode: thumb }
+      - { offset: 0x4C24, mode: data }
+      - { offset: 0x4C2C, mode: thumb }
+      - { offset: 0x4C40, mode: data }
+      - { offset: 0x4C44, mode: thumb }
+      - { offset: 0x4C70, mode: data }
+      - { offset: 0x4C78, mode: thumb }
+      - { offset: 0x4CB8, mode: data }
+      - { offset: 0x4CC0, mode: thumb }
+      - { offset: 0x4D60, mode: data }
+      - { offset: 0x4D7C, mode: thumb }
+      - { offset: 0x45AC, mode: thumb }
+      - { offset: 0x45CC, mode: data }
+      - { offset: 0x45D0, mode: thumb }
+      - { offset: 0x4600, mode: data }
+      - { offset: 0x460C, mode: thumb }
+      - { offset: 0x462C, mode: data }
+      - { offset: 0x4630, mode: thumb }
+      - { offset: 0x4660, mode: data }
+      - { offset: 0x466C, mode: thumb }
+      - { offset: 0x468C, mode: data }
+      - { offset: 0x4690, mode: thumb }
+      - { offset: 0x46C0, mode: data }
+      - { offset: 0x46CC, mode: thumb }
+      - { offset: 0x46EC, mode: data }
+      - { offset: 0x46F0, mode: thumb }
+      - { offset: 0x4720, mode: data }
+      - { offset: 0x472C, mode: thumb }
+      - { offset: 0x4752, mode: data }
+      - { offset: 0x4760, mode: thumb }
+      - { offset: 0x4788, mode: data }
+      - { offset: 0x4794, mode: thumb }
+      - { offset: 0x47BC, mode: data }
+      - { offset: 0x47C8, mode: thumb }
+      - { offset: 0x4804, mode: data }
+      - { offset: 0x4814, mode: thumb }
+      - { offset: 0x4856, mode: data }
+      - { offset: 0x4864, mode: thumb }
+      - { offset: 0x486E, mode: data }
+      - { offset: 0x4874, mode: thumb }
+      - { offset: 0x488A, mode: data }
+      - { offset: 0x4894, mode: thumb }
+      - { offset: 0x48BE, mode: data }
+      - { offset: 0x48C4, mode: thumb }
+      - { offset: 0x48FA, mode: data }
+      - { offset: 0x4908, mode: thumb }
+      - { offset: 0x4932, mode: data }
+      - { offset: 0x4938, mode: thumb }
+      - { offset: 0x4966, mode: data }
+      - { offset: 0x4970, mode: thumb }
+      - { offset: 0x4D7C, mode: thumb }
+      - { offset: 0x4DE0, mode: data }
+      - { offset: 0x4DF0, mode: thumb }
+      - { offset: 0x4A08, mode: data }
+      - { offset: 0x4A18, mode: thumb }
+      - { offset: 0x4A84, mode: data }
+      - { offset: 0x4A9C, mode: thumb }
+      - { offset: 0x4AD0, mode: data }
+      - { offset: 0x4ADC, mode: thumb }
+      - { offset: 0x4B10, mode: data }
+      - { offset: 0x363C, mode: thumb }
+      - { offset: 0x3674, mode: data }
+      - { offset: 0x367C, mode: thumb }
+      - { offset: 0x3684, mode: thumb }
+      - { offset: 0x36C0, mode: data }
+      - { offset: 0x36C8, mode: thumb }
+      - { offset: 0x36D0, mode: thumb }
+      - { offset: 0x36E6, mode: data }
+      - { offset: 0x36EC, mode: thumb }
+      - { offset: 0x36F2, mode: data }
+      - { offset: 0x36F4, mode: thumb }
+      - { offset: 0x370A, mode: data }
+      - { offset: 0x3710, mode: thumb }
+      - { offset: 0x3716, mode: data }
+      - { offset: 0x3718, mode: thumb }
+      - { offset: 0x3AC0, mode: thumb }
+      - { offset: 0x3AF6, mode: data }
+      - { offset: 0x3AFC, mode: thumb }
+      - { offset: 0x3B4C, mode: data }
+      - { offset: 0x3B58, mode: thumb }
+      - { offset: 0x3934, mode: data }
+      - { offset: 0x393C, mode: thumb }
+      - { offset: 0x39B8, mode: data }
+      - { offset: 0x39C0, mode: thumb }
+      - { offset: 0x3A2C, mode: data }
+      - { offset: 0x3A38, mode: thumb }
+      - { offset: 0x3A52, mode: data }
+      - { offset: 0x3A58, mode: thumb }
+      - { offset: 0x3A8C, mode: data }
+      - { offset: 0x3A90, mode: thumb }
+      - { offset: 0x3AB8, mode: data }
+      - { offset: 0x402C, mode: data }
+      - { offset: 0x40B2, mode: data }
+      - { offset: 0x40CC, mode: thumb }
+      - { offset: 0x40F8, mode: data }
+      - { offset: 0x4100, mode: thumb }
+      - { offset: 0x412C, mode: data }
+      - { offset: 0x415A, mode: data }
+      - { offset: 0x4180, mode: thumb }
+      - { offset: 0x4196, mode: data }
+      - { offset: 0x419C, mode: thumb }
+      - { offset: 0x41B2, mode: data }
+      - { offset: 0x41B8, mode: thumb }
+      - { offset: 0x41CE, mode: data }
+      - { offset: 0x41D4, mode: thumb }
+      - { offset: 0x41EA, mode: data }
+      - { offset: 0x41F0, mode: thumb }
+      - { offset: 0x4230, mode: data }
+      - { offset: 0x4258, mode: data }
+      - { offset: 0x425C, mode: thumb }
+      - { offset: 0x428C, mode: data }
+      - { offset: 0x4308, mode: data }
+      - { offset: 0x5178, mode: data }
+      - { offset: 0x5188, mode: thumb }
+      - { offset: 0x51B4, mode: data }
+      - { offset: 0x97AC, mode: data }
+      - { offset: 0x97B4, mode: thumb }
+      - { offset: 0x9760, mode: thumb }
+      - { offset: 0x977E, mode: data }
+      - { offset: 0x9788, mode: thumb }
+      - { offset: 0xA014, mode: data }
+      - { offset: 0xA020, mode: thumb }
+      - { offset: 0x238E8, mode: data }
+      - { offset: 0x238F0, mode: thumb }
+      - { offset: 0x2239A, mode: data }
+      - { offset: 0x223A0, mode: thumb }
+      - { offset: 0x223B6, mode: data }
+      - { offset: 0x223C0, mode: thumb }
+      - { offset: 0x14416, mode: data }
+      - { offset: 0x14418, mode: thumb }
+      - { offset: 0x14466, mode: data }
+      - { offset: 0x14468, mode: thumb }
+      - { offset: 0x1F09E, mode: data }
+      - { offset: 0x1F0AC, mode: thumb }
+      - { offset: 0x22590, mode: data }
+      - { offset: 0x225A0, mode: thumb }
+      - { offset: 0x1F0E8, mode: data }
+      - { offset: 0x1F0F8, mode: thumb }
+      - { offset: 0x225E2, mode: data }
+      - { offset: 0x225F8, mode: thumb }
+      - { offset: 0x22614, mode: data }
+      - { offset: 0x22620, mode: thumb }
+      - { offset: 0x2263E, mode: data }
+      - { offset: 0x22640, mode: thumb }
+      - { offset: 0x226A0, mode: data }
+      - { offset: 0x226B8, mode: thumb }
+      - { offset: 0x22706, mode: data }
+      - { offset: 0x2271C, mode: thumb }
+      - { offset: 0x22222, mode: data }
+      - { offset: 0x22228, mode: thumb }
+      - { offset: 0x2223E, mode: data }
+      - { offset: 0x22244, mode: thumb }
+      - { offset: 0x22252, mode: data }
+      - { offset: 0x22258, mode: thumb }
+      - { offset: 0x222DE, mode: data }
+      - { offset: 0x222E4, mode: thumb }
+      - { offset: 0x2230A, mode: data }
+      - { offset: 0x22314, mode: thumb }
+      - { offset: 0x2249C, mode: data }
+      - { offset: 0x224AC, mode: thumb }
+      - { offset: 0x2A5DE, mode: data }
+      - { offset: 0x2A5E8, mode: thumb }
+      - { offset: 0x2A624, mode: data }
+      - { offset: 0x2A62C, mode: thumb }
+      - { offset: 0x2389A, mode: data }
+      - { offset: 0x238A4, mode: thumb }
+      - { offset: 0x238B0, mode: data }
+      - { offset: 0x238B8, mode: thumb }
+      - { offset: 0x2A69A, mode: data }
+      - { offset: 0x2A6A4, mode: thumb }
+      - { offset: 0x2A6C4, mode: data }
+      - { offset: 0x2A6CC, mode: thumb }
+      - { offset: 0x2BF80, mode: data }
+      - { offset: 0x2BF90, mode: thumb }
+      - { offset: 0x129BC, mode: data }
+      - { offset: 0x129C8, mode: thumb }
+      - { offset: 0x129D4, mode: data }
+      - { offset: 0x129DC, mode: thumb }
       - { offset: 0x3058, mode: data }
       - { offset: 0x3060, mode: thumb }
       - { offset: 0x3078, mode: data }
@@ -1664,6 +1956,8 @@ units:
       - { offset: 0xB254, mode: data }
       - { offset: 0xB26C, mode: thumb }
       - { offset: 0xB2BC, mode: data }
+      - { offset: 0xB2D0, mode: thumb }
+      - { offset: 0xB2DE, mode: data }
       - { offset: 0xB2E0, mode: thumb }
       - { offset: 0xB31E, mode: data }
       - { offset: 0xB328, mode: thumb }
@@ -1981,6 +2275,12 @@ units:
       - { offset: 0x1192C, mode: thumb }
       - { offset: 0x1194A, mode: data }
       - { offset: 0x11954, mode: thumb }
+      - { offset: 0x11968, mode: data }
+      - { offset: 0x1196C, mode: thumb }
+      - { offset: 0x1198C, mode: data }
+      - { offset: 0x11990, mode: thumb }
+      - { offset: 0x11996, mode: data }
+      - { offset: 0x11998, mode: thumb }
       - { offset: 0x11B74, mode: thumb }
       - { offset: 0x11B82, mode: data }
       - { offset: 0x11B84, mode: thumb }
@@ -2100,6 +2400,11 @@ units:
       - { offset: 0x1E934, mode: thumb }
       - { offset: 0x1E946, mode: data }
       - { offset: 0x1E954, mode: thumb }
+      - { offset: 0x1E9B4, mode: thumb }
+      - { offset: 0x1E9E6, mode: data }
+      - { offset: 0x1E9EC, mode: thumb }
+      - { offset: 0x1EA02, mode: data }
+      - { offset: 0x1EA0C, mode: thumb }
       - { offset: 0x21CD8, mode: thumb }
       - { offset: 0x21CEA, mode: data }
       - { offset: 0x21CF8, mode: thumb }
@@ -2138,6 +2443,12 @@ units:
       - { offset: 0x1EF1C, mode: thumb }
       - { offset: 0x1EF28, mode: data }
       - { offset: 0x1EF2C, mode: thumb }
+      - { offset: 0x1EF98, mode: data }
+      - { offset: 0x1EFA0, mode: thumb }
+      - { offset: 0x22454, mode: data }
+      - { offset: 0x2245C, mode: thumb }
+      - { offset: 0x224D4, mode: data }
+      - { offset: 0x224DC, mode: thumb }
       - { offset: 0x222A4, mode: thumb }
       - { offset: 0x222B6, mode: data }
       - { offset: 0x222BC, mode: thumb }
@@ -2288,6 +2599,27 @@ units:
       - { offset: 0x17A60, mode: thumb }
       - { offset: 0x18EC8, mode: thumb }
       - { offset: 0x18EE0, mode: thumb }
+      - { offset: 0x18F08, mode: data }
+      - { offset: 0x18F0C, mode: thumb }
+      - { offset: 0x18F3C, mode: thumb }
+      - { offset: 0x18F6A, mode: data }
+      - { offset: 0x18F6C, mode: thumb }
+      - { offset: 0x197DA, mode: data }
+      - { offset: 0x197E0, mode: thumb }
+      - { offset: 0x198CE, mode: data }
+      - { offset: 0x198D4, mode: thumb }
+      - { offset: 0x19B50, mode: data }
+      - { offset: 0x19B54, mode: thumb }
+      - { offset: 0x19B76, mode: data }
+      - { offset: 0x19B7C, mode: thumb }
+      - { offset: 0x19D7A, mode: data }
+      - { offset: 0x19D7C, mode: thumb }
+      - { offset: 0x19DCA, mode: data }
+      - { offset: 0x19DCC, mode: thumb }
+      - { offset: 0x19DFA, mode: data }
+      - { offset: 0x19DFC, mode: thumb }
+      - { offset: 0x19E2A, mode: data }
+      - { offset: 0x19E2C, mode: thumb }
       - { offset: 0x1C35C, mode: thumb }
       - { offset: 0x1C374, mode: thumb }
       - { offset: 0x1C9D8, mode: thumb }
@@ -2326,6 +2658,8 @@ units:
       - { offset: 0x23284, mode: data }
       - { offset: 0x23288, mode: thumb }
       - { offset: 0x232A0, mode: data }
+      - { offset: 0x2036C, mode: thumb }
+      - { offset: 0x20386, mode: data }
       - { offset: 0x2038C, mode: thumb }
       - { offset: 0x203A4, mode: data }
       - { offset: 0x2A634, mode: thumb }
@@ -2338,12 +2672,18 @@ units:
       - { offset: 0x174A8, mode: thumb }
       - { offset: 0x1714C, mode: data }
       - { offset: 0x17158, mode: thumb }
+      - { offset: 0x172B0, mode: data }
+      - { offset: 0x172B8, mode: thumb }
+      - { offset: 0x17350, mode: data }
+      - { offset: 0x17358, mode: thumb }
       - { offset: 0x2E9D4, mode: thumb }
       - { offset: 0x2E9EE, mode: data }
       - { offset: 0x2E9F8, mode: thumb }
       - { offset: 0x179F0, mode: thumb }
       - { offset: 0x17A0E, mode: data }
       - { offset: 0x17A18, mode: thumb }
+      - { offset: 0x17A40, mode: data }
+      - { offset: 0x17A48, mode: thumb }
       - { offset: 0x18CBC, mode: thumb }
       - { offset: 0x18CDA, mode: data }
       - { offset: 0x18CE4, mode: thumb }
@@ -2359,9 +2699,19 @@ units:
       - { offset: 0x12F28, mode: thumb }
       - { offset: 0x12F46, mode: data }
       - { offset: 0x12F50, mode: thumb }
+      - { offset: 0x12FD4, mode: data }
+      - { offset: 0x12FDC, mode: thumb }
+      - { offset: 0x1308C, mode: data }
+      - { offset: 0x13094, mode: thumb }
+      - { offset: 0x13124, mode: data }
+      - { offset: 0x1312C, mode: thumb }
+      - { offset: 0x13224, mode: data }
+      - { offset: 0x1322C, mode: thumb }
       - { offset: 0x13E84, mode: thumb }
       - { offset: 0x13EA2, mode: data }
       - { offset: 0x13EAC, mode: thumb }
+      - { offset: 0x13EBA, mode: data }
+      - { offset: 0x13EBC, mode: thumb }
       - { offset: 0x20450, mode: thumb }
       - { offset: 0x2046E, mode: data }
       - { offset: 0x20478, mode: thumb }
@@ -2382,11 +2732,393 @@ units:
       - { offset: 0x22340, mode: thumb }
       - { offset: 0x2A4EC, mode: data }
       - { offset: 0x2A4FC, mode: thumb }
+      - { offset: 0x21D8C, mode: thumb }
+      - { offset: 0x21DBE, mode: data }
+      - { offset: 0x21DC4, mode: thumb }
+      - { offset: 0x21DDA, mode: data }
+      - { offset: 0x21DE4, mode: thumb }
+      - { offset: 0x21DE6, mode: data }
+      - { offset: 0x21DE8, mode: thumb }
+      - { offset: 0x21DEA, mode: data }
+      - { offset: 0x21DEC, mode: thumb }
       - { offset: 0x2A674, mode: data }
       - { offset: 0x2A67C, mode: thumb }
       - { offset: 0x2A708, mode: data }
       - { offset: 0x2A710, mode: thumb }
+      - { offset: 0x24E9C, mode: thumb }
+      - { offset: 0x24EEA, mode: data }
+      - { offset: 0x24EF8, mode: thumb }
+      - { offset: 0x25F1C, mode: thumb }
+      - { offset: 0x25F60, mode: data }
+      - { offset: 0x25F6C, mode: thumb }
+      - { offset: 0x2649C, mode: thumb }
+      - { offset: 0x264E6, mode: data }
+      - { offset: 0x264EC, mode: thumb }
+      - { offset: 0x2C150, mode: thumb }
+      - { offset: 0x2C19E, mode: data }
+      - { offset: 0x2C1AC, mode: thumb }
+      - { offset: 0x18D68, mode: thumb }
+      - { offset: 0x18DC8, mode: data }
+      - { offset: 0x18DDC, mode: thumb }
+      - { offset: 0x18E74, mode: thumb }
+      - { offset: 0x18EA4, mode: data }
+      - { offset: 0x18EB0, mode: thumb }
+      - { offset: 0x18EC2, mode: data }
+      - { offset: 0x18EC8, mode: thumb }
     relocations:
+      - { offset: 0x18DC8, type: abs32, symbol: gUnknown_030052fc }
+      - { offset: 0x18D8A, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x18D9E, type: thumb_call, symbol: FUN_08020ecc }
+      - { offset: 0x18DA4, type: thumb_call, symbol: FUN_08020ad0 }
+      - { offset: 0x18DBC, type: thumb_call, symbol: FUN_08020b74 }
+      - { offset: 0x18DD4, type: abs32, symbol: gUnknown_08071b7c }
+      - { offset: 0x18DD8, type: abs32, symbol: gUnknown_0807173c }
+      - { offset: 0x18E80, type: thumb_call, symbol: FUN_08020500 }
+      - { offset: 0x18E96, type: thumb_call, symbol: FUN_08020500 }
+      - { offset: 0x18EA4, type: abs32, symbol: gUnknown_08132774 }
+      - { offset: 0x18EAC, type: abs32, symbol: gUnknown_081329b4 }
+      - { offset: 0x18EC4, type: abs32, symbol: FUN_0803187c, addend: 1 }
+      - { offset: 0x2F80, type: thumb_call, symbol: FUN_08016078 }
+      - { offset: 0x2FB8, type: thumb_call, symbol: FUN_080182ac }
+      - { offset: 0x2FBC, type: thumb_call, symbol: FUN_08016684 }
+      - { offset: 0x2FC0, type: thumb_call, symbol: FUN_08017ed0 }
+      - { offset: 0x2FC6, type: thumb_call, symbol: FUN_08013214 }
+      - { offset: 0x2FCA, type: thumb_call, symbol: FUN_08017f6c }
+      - { offset: 0x2FD4, type: thumb_call, symbol: FUN_08006ff4 }
+      - { offset: 0x2FD8, type: thumb_call, symbol: FUN_0800f9c0 }
+      - { offset: 0x2FDC, type: thumb_call, symbol: FUN_08011c7c }
+      - { offset: 0x2FE0, type: thumb_call, symbol: FUN_080175d4 }
+      - { offset: 0x2FE4, type: thumb_call, symbol: FUN_08017d58 }
+      - { offset: 0x2FE8, type: thumb_call, symbol: FUN_08017c5c }
+      - { offset: 0x2FF6, type: thumb_call, symbol: FUN_08019ed8 }
+      - { offset: 0x2FFC, type: thumb_call, symbol: FUN_08012b98 }
+      - { offset: 0x3010, type: abs32, symbol: gUnknown_0300138c }
+      - { offset: 0x3014, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x3018, type: abs32, symbol: FUN_0801aadc, addend: 1 }
+      - { offset: 0x301C, type: thumb_call, symbol: FUN_08019b5c }
+      - { offset: 0x302A, type: thumb_call, symbol: FUN_0801f618 }
+      - { offset: 0x3034, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x3038, type: abs32, symbol: FUN_0801a898, addend: 1 }
+      - { offset: 0x303C, type: abs32, symbol: gUnknown_03003d94 }
+      - { offset: 0x38E0, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x3934, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3938, type: abs32, symbol: gUnknown_03001c40_pool2 }
+      - { offset: 0x3958, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x39B8, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x39BC, type: abs32, symbol: gUnknown_03001c40_pool2 }
+      - { offset: 0x39CC, type: thumb_call, symbol: FUN_0801d188 }
+      - { offset: 0x3A2C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x3A34, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3FF8, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x402C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4030, type: abs32, symbol: FUN_0801d8f4, addend: 1 }
+      - { offset: 0x4034, type: abs32, symbol: gUnknown_0807125a }
+      - { offset: 0x4038, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x403C, type: abs32, symbol: gUnknown_08ed898c }
+      - { offset: 0x4040, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x40AC, type: thumb_call, symbol: FUN_0801ebb0 }
+      - { offset: 0x40B4, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x40B8, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x40E8, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x40F2, type: thumb_call, symbol: FUN_0801e3cc }
+      - { offset: 0x40F8, type: abs32, symbol: gUnknown_08071245 }
+      - { offset: 0x40FC, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x4102, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x4120, type: thumb_call, symbol: FUN_0801d068 }
+      - { offset: 0x412C, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x415C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4160, type: abs32, symbol: FUN_0801daec, addend: 1 }
+      - { offset: 0x4164, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x4168, type: abs32, symbol: .text, addend: 0x416C }
+      - { offset: 0x416C, type: abs32, symbol: .text, addend: 0x4180 }
+      - { offset: 0x4170, type: abs32, symbol: .text, addend: 0x419C }
+      - { offset: 0x4174, type: abs32, symbol: .text, addend: 0x41B8 }
+      - { offset: 0x4178, type: abs32, symbol: .text, addend: 0x41D4 }
+      - { offset: 0x417C, type: abs32, symbol: .text, addend: 0x41F0 }
+      - { offset: 0x4180, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x4198, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x419C, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x41B4, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x41B8, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x41D0, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x41D4, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x41EC, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x41F0, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x4230, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4234, type: abs32, symbol: gUnknown_08ed898c }
+      - { offset: 0x4238, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4258, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x425C, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x4280, type: thumb_call, symbol: FUN_0801d068 }
+      - { offset: 0x428C, type: abs32, symbol: gUnknown_08071250 }
+      - { offset: 0x4290, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x4298, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x42D4, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x4308, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x430C, type: abs32, symbol: FUN_0801dbd0, addend: 1 }
+      - { offset: 0x4310, type: abs32, symbol: gUnknown_0807125a }
+      - { offset: 0x4314, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x4318, type: abs32, symbol: gUnknown_08ed898c }
+      - { offset: 0x431C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3D3A, type: thumb_call, symbol: _call_via_r1 }
+      - { offset: 0x3D60, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x3D64, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5144, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x516E, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x5178, type: abs32, symbol: gUnknown_08071250 }
+      - { offset: 0x517C, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x5184, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x5190, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x51A8, type: thumb_call, symbol: FUN_0801d068 }
+      - { offset: 0x51B4, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x51B8, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x511E, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x5130, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x5134, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5138, type: abs32, symbol: gUnknown_08ed8ad4 }
+      - { offset: 0x51C4, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x51F2, type: thumb_call, symbol: FUN_0801d408 }
+      - { offset: 0x51F8, type: thumb_call, symbol: FUN_0801d288 }
+      - { offset: 0x5204, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x5210, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5214, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x5218, type: abs32, symbol: FUN_0801db4c, addend: 1 }
+      - { offset: 0x4B52, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x4B5C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4B60, type: abs32, symbol: FUN_0801e41c, addend: 1 }
+      - { offset: 0x4B64, type: abs32, symbol: gUnknown_08ed898c }
+      - { offset: 0x4B68, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4B98, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4B9C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4BA0, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x4BC0, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4BD8, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4BF0, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4C08, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4C24, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4C28, type: abs32, symbol: FUN_0801e044, addend: 1 }
+      - { offset: 0x4C40, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4C70, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4C74, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4CB8, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4D64, type: abs32, symbol: gUnknown_03001b28 }
+      - { offset: 0x4D68, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x4D6C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4D78, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4D08, type: thumb_call, symbol: FUN_0801d068 }
+      - { offset: 0x45C6, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x45CC, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x45D2, type: thumb_call, symbol: FUN_0801ee4c }
+      - { offset: 0x4600, type: abs32, symbol: FUN_0801eacc, addend: 1 }
+      - { offset: 0x4604, type: abs32, symbol: gUnknown_08ed8990 }
+      - { offset: 0x4608, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4626, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x462C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4632, type: thumb_call, symbol: FUN_0801ee4c }
+      - { offset: 0x4660, type: abs32, symbol: FUN_0801eacc, addend: 1 }
+      - { offset: 0x4664, type: abs32, symbol: gUnknown_08ed89a0 }
+      - { offset: 0x4668, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4686, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x468C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4692, type: thumb_call, symbol: FUN_0801ee4c }
+      - { offset: 0x46C0, type: abs32, symbol: FUN_0801eacc, addend: 1 }
+      - { offset: 0x46C4, type: abs32, symbol: gUnknown_08ed89b0 }
+      - { offset: 0x46C8, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x46E6, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x46EC, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x46F2, type: thumb_call, symbol: FUN_0801ee4c }
+      - { offset: 0x4720, type: abs32, symbol: FUN_0801eacc, addend: 1 }
+      - { offset: 0x4724, type: abs32, symbol: gUnknown_08ed89c0 }
+      - { offset: 0x4728, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4754, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4758, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x475C, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x4788, type: abs32, symbol: gUnknown_08ed8ac4 }
+      - { offset: 0x478C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4790, type: abs32, symbol: FUN_0801eaf8, addend: 1 }
+      - { offset: 0x47BC, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x47C0, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x47C4, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x4804, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x480C, type: abs32, symbol: gUnknown_08ed89ec }
+      - { offset: 0x4810, type: abs32, symbol: FUN_0801eb24, addend: 1 }
+      - { offset: 0x4858, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x485C, type: abs32, symbol: FUN_0801e174, addend: 1 }
+      - { offset: 0x4860, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4870, type: abs32, symbol: gUnknown_08ed8a3c }
+      - { offset: 0x488C, type: abs32, symbol: FUN_0801e258, addend: 1 }
+      - { offset: 0x4890, type: abs32, symbol: gUnknown_08ed8a78 }
+      - { offset: 0x48C0, type: abs32, symbol: gUnknown_08ed8a28 }
+      - { offset: 0x48EA, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x48F4, type: thumb_call, symbol: FUN_0801e41c }
+      - { offset: 0x48FC, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4900, type: abs32, symbol: gUnknown_08071245 }
+      - { offset: 0x4904, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x490A, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x4912, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x492C, type: thumb_call, symbol: FUN_0801e2c8 }
+      - { offset: 0x4934, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4946, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x494E, type: thumb_call, symbol: FUN_08020144 }
+      - { offset: 0x4968, type: abs32, symbol: gUnknown_08071240 }
+      - { offset: 0x496C, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x497C, type: thumb_call, symbol: FUN_0801de5c }
+      - { offset: 0x4984, type: thumb_call, symbol: FUN_0801debc }
+      - { offset: 0x498C, type: thumb_call, symbol: FUN_0801df1c }
+      - { offset: 0x4994, type: thumb_call, symbol: FUN_0801df7c }
+      - { offset: 0x499C, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x4DB6, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x4DE0, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4DE4, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4DE8, type: abs32, symbol: gUnknown_08ed8ae4 }
+      - { offset: 0x4DEC, type: abs32, symbol: FUN_0801e6a0, addend: 1 }
+      - { offset: 0x49B2, type: thumb_call, symbol: FUN_0801cfc8 }
+      - { offset: 0x49BC, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x49EC, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x4A08, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4A0C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4A10, type: abs32, symbol: gUnknown_08ed8ad4 }
+      - { offset: 0x4A50, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x4A84, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4A88, type: abs32, symbol: FUN_0801d8f4, addend: 1 }
+      - { offset: 0x4A8C, type: abs32, symbol: gUnknown_0807125a }
+      - { offset: 0x4A90, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x4A94, type: abs32, symbol: gUnknown_08ed898c }
+      - { offset: 0x4A98, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4AC0, type: thumb_call, symbol: FUN_08020160 }
+      - { offset: 0x4ACA, type: thumb_call, symbol: FUN_0801e3cc }
+      - { offset: 0x4AD0, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x4AD4, type: abs32, symbol: gUnknown_08071245 }
+      - { offset: 0x4AD8, type: abs32, symbol: gUnknown_03003e10 }
+      - { offset: 0x4ADE, type: thumb_call, symbol: FUN_0801d870 }
+      - { offset: 0x4B10, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x4B14, type: abs32, symbol: FUN_0801ed50, addend: 1 }
+      - { offset: 0x4B18, type: abs32, symbol: gUnknown_08ed8a8c }
+      - { offset: 0x3674, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3678, type: abs32, symbol: gUnknown_03003d88 }
+      - { offset: 0x36C0, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x36C4, type: abs32, symbol: gUnknown_03003d88 }
+      - { offset: 0x36E8, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x370C, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x3AF8, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x3B30, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x3B3A, type: thumb_call, symbol: ArcTan2 }
+      - { offset: 0x3B4C, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x3B50, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3B54, type: abs32, symbol: gUnknown_08ed8af4 }
+      - { offset: 0x24EAA, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x976A, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x9780, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x9784, type: abs32, symbol: FUN_0803d748, addend: 1 }
+      - { offset: 0x24EC2, type: thumb_call, symbol: FUN_080183d0 }
+      - { offset: 0x24ECE, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x24EDE, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x24EF0, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x24EF4, type: abs32, symbol: FUN_0801c930, addend: 1 }
+      - { offset: 0x25F2A, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x25F42, type: thumb_call, symbol: FUN_080183d0 }
+      - { offset: 0x25F4E, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x25F64, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x25F68, type: abs32, symbol: FUN_08000210, addend: 1 }
+      - { offset: 0x264C4, type: thumb_call, symbol: FUN_08040408 }
+      - { offset: 0x264E8, type: abs32, symbol: gUnknown_030001a4 }
+      - { offset: 0x2C15C, type: thumb_call, symbol: FUN_0803ff98 }
+      - { offset: 0x2C1A0, type: abs32, symbol: FUN_08045840, addend: 1 }
+      - { offset: 0x2C1A4, type: abs32, symbol: gUnknown_081a7f68 }
+      - { offset: 0x2C1A8, type: abs32, symbol: FUN_08045928, addend: 1 }
+      - { offset: 0x2F8C, type: thumb_call, symbol: FUN_08020840 }
+      - { offset: 0x2F90, type: thumb_call, symbol: FUN_080205d0 }
+      - { offset: 0x2FA0, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x2FA4, type: abs32, symbol: FUN_0801c8a4, addend: 1 }
+      - { offset: 0x2FA8, type: abs32, symbol: gUnknown_030013a0 }
+      - { offset: 0x9792, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x97A4, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x97AC, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x97B0, type: abs32, symbol: FUN_080402a0 }
+      - { offset: 0xA014, type: abs32, symbol: gUnknown_08edb820 }
+      - { offset: 0xA01C, type: abs32, symbol: FUN_0802392c, addend: 1 }
+      - { offset: 0x238E8, type: abs32, symbol: gUnknown_081a1d10 }
+      - { offset: 0x238EC, type: abs32, symbol: FUN_0803cfac, addend: 1 }
+      - { offset: 0x2239C, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x223A4, type: thumb_call, symbol: FUN_0803b764 }
+      - { offset: 0x223B8, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x223BC, type: abs32, symbol: FUN_0803bbc4, addend: 1 }
+      - { offset: 0x14402, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x1440C, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x14452, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x1445C, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1F094, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1F0A0, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x1F0A4, type: abs32, symbol: gUnknown_08edcee8 }
+      - { offset: 0x1F0A8, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x22586, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x22590, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x22594, type: abs32, symbol: gUnknown_08edd540 }
+      - { offset: 0x22598, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x2259C, type: abs32, symbol: gUnknown_030052e4 }
+      - { offset: 0x1F0E8, type: abs32, symbol: gUnknown_08159fd4 }
+      - { offset: 0x1F0EC, type: abs32, symbol: gUnknown_08edcee8 }
+      - { offset: 0x1F0F0, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x1F0F4, type: abs32, symbol: FUN_08038918, addend: 1 }
+      - { offset: 0x225E4, type: abs32, symbol: gUnknown_0816fa0c }
+      - { offset: 0x225E8, type: abs32, symbol: gUnknown_08edd540 }
+      - { offset: 0x225EC, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x225F0, type: abs32, symbol: gUnknown_030052e4 }
+      - { offset: 0x225F4, type: abs32, symbol: FUN_0803be04, addend: 1 }
+      - { offset: 0x22614, type: abs32, symbol: gUnknown_030052e4 }
+      - { offset: 0x22618, type: abs32, symbol: gUnknown_08edd54c }
+      - { offset: 0x2261C, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x2262C, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x22634, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x226A0, type: abs32, symbol: gUnknown_0816faf4 }
+      - { offset: 0x226A4, type: abs32, symbol: gUnknown_030052e8 }
+      - { offset: 0x226A8, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x226AC, type: abs32, symbol: gUnknown_08edd540 }
+      - { offset: 0x226B0, type: abs32, symbol: gUnknown_030052e4 }
+      - { offset: 0x226B4, type: abs32, symbol: FUN_0803bf68, addend: 1 }
+      - { offset: 0x226FC, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x22708, type: abs32, symbol: gUnknown_030052e8 }
+      - { offset: 0x2270C, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x22710, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x22714, type: abs32, symbol: gUnknown_08edd540 }
+      - { offset: 0x22718, type: abs32, symbol: gUnknown_030052e4 }
+      - { offset: 0x22224, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x22230, type: thumb_call, symbol: FUN_0803b764 }
+      - { offset: 0x22240, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x22254, type: abs32, symbol: FUN_0803bb08, addend: 1 }
+      - { offset: 0x222E0, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x222EC, type: thumb_call, symbol: FUN_0803b764 }
+      - { offset: 0x2230C, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x22310, type: abs32, symbol: FUN_0803bbc4, addend: 1 }
+      - { offset: 0x22466, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x22470, type: thumb_call, symbol: FUN_0803b5a8 }
+      - { offset: 0x2247A, type: thumb_call, symbol: FUN_0802188c }
+      - { offset: 0x2247E, type: thumb_call, symbol: FUN_080215a8 }
+      - { offset: 0x22494, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x2249C, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x224A0, type: abs32, symbol: FUN_08000210, addend: 1 }
+      - { offset: 0x224A4, type: abs32, symbol: gUnknown_03002610 }
+      - { offset: 0x224A8, type: abs32, symbol: gUnknown_030025f0 }
+      - { offset: 0x2A5D8, type: thumb_call, symbol: FUN_0804033c }
+      - { offset: 0x2A5E0, type: abs32, symbol: gUnknown_081a2aac }
+      - { offset: 0x2A61E, type: thumb_call, symbol: FUN_0804033c }
+      - { offset: 0x2A624, type: abs32, symbol: gUnknown_081a648c }
+      - { offset: 0x23884, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x2389C, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x238A0, type: abs32, symbol: FUN_0802cc78, addend: 1 }
+      - { offset: 0x238B0, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x238B4, type: abs32, symbol: FUN_0803fb2c, addend: 1 }
+      - { offset: 0x2A69C, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x2A6A0, type: abs32, symbol: FUN_08043e5c, addend: 1 }
+      - { offset: 0x2A6BC, type: thumb_call, symbol: FUN_080405a8 }
+      - { offset: 0x2A6C4, type: abs32, symbol: gUnknown_03005494 }
+      - { offset: 0x2A6C8, type: abs32, symbol: gUnknown_03005490 }
+      - { offset: 0x2BF4A, type: thumb_call, symbol: FUN_0801f744 }
+      - { offset: 0x2BF76, type: thumb_call, symbol: FUN_0804051c }
+      - { offset: 0x2BF80, type: abs32, symbol: gUnknown_03005440 }
+      - { offset: 0x2BF84, type: abs32, symbol: FUN_0801c82c, addend: 1 }
+      - { offset: 0x2BF88, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x2BF8C, type: abs32, symbol: FUN_080412dc, addend: 1 }
       - { offset: 0x2A4D0, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x2A4DC, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x2A4F0, type: abs32, symbol: gUnknown_030044d0 }
@@ -2399,6 +3131,7 @@ units:
       - { offset: 0x2A708, type: abs32, symbol: gUnknown_03005440 }
       - { offset: 0x5D52, type: thumb_call, symbol: FUN_08049030 }
       - { offset: 0x5D5E, type: thumb_call, symbol: FUN_08049724 }
+      - { offset: 0x5D6E, type: thumb_call, symbol: m4aSongNumStart }
       - { offset: 0x5D8A, type: thumb_call, symbol: FUN_08049170 }
       - { offset: 0x26BB8, type: abs32, symbol: gUnknown_03005478 }
       - { offset: 0x26D40, type: abs32, symbol: gUnknown_030001c8 }
@@ -2425,11 +3158,13 @@ units:
       - { offset: 0x21D18, type: abs32, symbol: gUnknown_03003150 }
       - { offset: 0x21D1C, type: abs32, symbol: FUN_080185d8, addend: 1 }
       - { offset: 0x21D20, type: abs32, symbol: FUN_08018654, addend: 1 }
+      - { offset: 0x21DCE, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x1E912, type: thumb_call, symbol: FUN_0801fc60 }
       - { offset: 0x1E916, type: thumb_call, symbol: FUN_0801f600 }
       - { offset: 0x1E920, type: abs32, symbol: gUnknown_03003150 }
       - { offset: 0x1E924, type: abs32, symbol: FUN_080381e4, addend: 1 }
       - { offset: 0x1E930, type: abs32, symbol: gUnknown_030052f4 }
+      - { offset: 0x1E9F6, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x1EB5A, type: thumb_call, symbol: FUN_0801fbfc }
       - { offset: 0x1EB5E, type: thumb_call, symbol: FUN_0801fb60 }
       - { offset: 0x1EB62, type: thumb_call, symbol: FUN_0801fb94 }
@@ -2507,10 +3242,23 @@ units:
       - { offset: 0x2EA1C, type: abs32, symbol: FUN_08047b40, addend: 1 }
       - { offset: 0x143CE, type: thumb_call, symbol: FUN_0801f978 }
       - { offset: 0x143D6, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x146A0, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x16AFA, type: thumb_call, symbol: FUN_0801fc60 }
+      - { offset: 0x16AFE, type: thumb_call, symbol: FUN_0801f600 }
+      - { offset: 0x178A6, type: thumb_call, symbol: FUN_0801f89c }
+      - { offset: 0x178AA, type: thumb_call, symbol: FUN_0801fda0 }
+      - { offset: 0x17CA4, type: thumb_call, symbol: FUN_0801f978 }
+      - { offset: 0x17CAC, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x1441E, type: thumb_call, symbol: FUN_0801f978 }
       - { offset: 0x14426, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1A338, type: thumb_call, symbol: FUN_0801f718 }
+      - { offset: 0x1A450, type: thumb_call, symbol: FUN_0801f718 }
+      - { offset: 0x1AC3A, type: thumb_call, symbol: FUN_0802036c }
+      - { offset: 0x1AC48, type: thumb_call, symbol: FUN_08020408 }
+      - { offset: 0x1B616, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x1B666, type: thumb_call, symbol: FUN_0801f978 }
       - { offset: 0x1B66E, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1BED0, type: thumb_call, symbol: FUN_0801fba0 }
       - { offset: 0x1BF08, type: thumb_call, symbol: FUN_0801f618 }
       - { offset: 0x1BF10, type: abs32, symbol: gUnknown_0300533c }
       - { offset: 0x1BF16, type: thumb_call, symbol: FUN_0801f618 }
@@ -2530,6 +3278,32 @@ units:
       - { offset: 0x1BFF8, type: abs32, symbol: gUnknown_030048e0 }
       - { offset: 0x1BFFC, type: abs32, symbol: gUnknown_03003e20 }
       - { offset: 0x1C000, type: abs32, symbol: FUN_0803551c, addend: 1 }
+      - { offset: 0x1C00E, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1C16E, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C198, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C1E8, type: thumb_call, symbol: FUN_08020500 }
+      - { offset: 0x1C1FC, type: thumb_call, symbol: FUN_08020500 }
+      - { offset: 0x1C24A, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C26C, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C29A, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C91A, type: thumb_call, symbol: FUN_08015924 }
+      - { offset: 0x1C922, type: thumb_call, symbol: FUN_08015f40 }
+      - { offset: 0x1C936, type: thumb_call, symbol: FUN_08015f58 }
+      - { offset: 0x1C95A, type: thumb_call, symbol: FUN_0802036c }
+      - { offset: 0x1C962, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1C9CA, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1CA5E, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1CAB6, type: thumb_call, symbol: __udivsi3 }
+      - { offset: 0x1CACA, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x1CADE, type: thumb_call, symbol: FUN_08020ecc }
+      - { offset: 0x1CB04, type: thumb_call, symbol: FUN_08020f64 }
+      - { offset: 0x1CB1C, type: thumb_call, symbol: FUN_08020978 }
+      - { offset: 0x1CC38, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x1CC4A, type: thumb_call, symbol: FUN_08020ecc }
+      - { offset: 0x1CC62, type: thumb_call, symbol: FUN_08020f64 }
+      - { offset: 0x1CC7A, type: thumb_call, symbol: FUN_08020978 }
+      - { offset: 0x21CB6, type: thumb_call, symbol: FUN_0801fc60 }
+      - { offset: 0x21CBA, type: thumb_call, symbol: FUN_0801f600 }
       - { offset: 0x1C2B8, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x1C2C0, type: abs32, symbol: gUnknown_03005378 }
       - { offset: 0x1C2E6, type: thumb_call, symbol: FUN_0801fed8 }
@@ -2544,6 +3318,31 @@ units:
       - { offset: 0x1C9AC, type: abs32, symbol: gUnknown_03005378 }
       - { offset: 0x17A50, type: thumb_call, symbol: FUN_0801fba0 }
       - { offset: 0x18ED0, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x18EF6, type: thumb_call, symbol: FUN_0801f92c }
+      - { offset: 0x18EFE, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x18F08, type: abs32, symbol: gUnknown_08edc4a4 }
+      - { offset: 0x18F14, type: thumb_call, symbol: FUN_0801f9a8 }
+      - { offset: 0x18F22, type: thumb_call, symbol: FUN_08021244 }
+      - { offset: 0x18F28, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x18F32, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x18F42, type: thumb_call, symbol: FUN_0801f9a8 }
+      - { offset: 0x18F50, type: thumb_call, symbol: FUN_08021244 }
+      - { offset: 0x18F56, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x18F60, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x197D2, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x197DC, type: abs32, symbol: gUnknown_08edc544 }
+      - { offset: 0x198D0, type: abs32, symbol: FUN_08033090, addend: 1 }
+      - { offset: 0x19B34, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x19B50, type: abs32, symbol: gUnknown_03003e20 }
+      - { offset: 0x19B78, type: abs32, symbol: FUN_08033228, addend: 1 }
+      - { offset: 0x19D68, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x19D72, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x19DB8, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x19DC2, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x19DE8, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x19DF2, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x19E18, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0x19E22, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x1C364, type: thumb_call, symbol: FUN_0801fba0 }
       - { offset: 0x1C9E8, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x1C9F0, type: abs32, symbol: gUnknown_03005378 }
@@ -2685,12 +3484,25 @@ units:
       - { offset: 0x1714C, type: abs32, symbol: gUnknown_030052e0 }
       - { offset: 0x17150, type: abs32, symbol: gUnknown_030052f8 }
       - { offset: 0x17154, type: abs32, symbol: FUN_08030a08, addend: 1 }
+      - { offset: 0x17292, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1729C, type: thumb_call, symbol: FUN_0803035c }
+      - { offset: 0x172A8, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x172B0, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x172B4, type: abs32, symbol: FUN_08029250, addend: 1 }
+      - { offset: 0x17332, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1733C, type: thumb_call, symbol: FUN_0803035c }
+      - { offset: 0x17348, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x17350, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x17354, type: abs32, symbol: FUN_080340b8, addend: 1 }
       - { offset: 0x2E9E6, type: thumb_call, symbol: FUN_0804af6c }
       - { offset: 0x2E9F0, type: abs32, symbol: gUnknown_081a7f60 }
       - { offset: 0x2E9F4, type: abs32, symbol: FUN_08046aa4, addend: 1 }
       - { offset: 0x179FA, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x17A10, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x17A14, type: abs32, symbol: FUN_08031164, addend: 1 }
+      - { offset: 0x17A24, type: thumb_call, symbol: FUN_08020500 }
+      - { offset: 0x17A40, type: abs32, symbol: gUnknown_08130364 }
+      - { offset: 0x17A44, type: abs32, symbol: FUN_0803128c, addend: 1 }
       - { offset: 0x18CC6, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x18CDC, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x18CE0, type: abs32, symbol: FUN_08039e20, addend: 1 }
@@ -2703,12 +3515,30 @@ units:
       - { offset: 0x1A352, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x1A368, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x1A36C, type: abs32, symbol: FUN_08000210, addend: 1 }
+      - { offset: 0x129BC, type: abs32, symbol: gUnknown_03005264 }
+      - { offset: 0x129C0, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x129C4, type: abs32, symbol: FUN_0803c378 }
+      - { offset: 0x129D4, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x129D8, type: abs32, symbol: FUN_08029250 }
       - { offset: 0x12F32, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x12F48, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x12F4C, type: abs32, symbol: FUN_0802c25c, addend: 1 }
+      - { offset: 0x12FCA, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x12FD4, type: abs32, symbol: gUnknown_08edbc1c }
+      - { offset: 0x12FD8, type: abs32, symbol: gUnknown_03005270 }
+      - { offset: 0x13082, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x1308C, type: abs32, symbol: gUnknown_08edbc2c }
+      - { offset: 0x13090, type: abs32, symbol: gUnknown_03005270 }
+      - { offset: 0x1311A, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x13124, type: abs32, symbol: gUnknown_08edbc3c }
+      - { offset: 0x13128, type: abs32, symbol: gUnknown_03005270 }
+      - { offset: 0x1321A, type: thumb_call, symbol: FUN_0801fed8 }
+      - { offset: 0x13224, type: abs32, symbol: gUnknown_08edbc4c }
+      - { offset: 0x13228, type: abs32, symbol: gUnknown_03005270 }
       - { offset: 0x13E8E, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x13EA4, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x13EA8, type: abs32, symbol: FUN_08039e20, addend: 1 }
+      - { offset: 0x13EB2, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x2045A, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x20470, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x20474, type: abs32, symbol: FUN_08039e20, addend: 1 }
@@ -2731,6 +3561,21 @@ units:
       - { offset: 0x1717C, type: abs32, symbol: FUN_080304e4, addend: 1 }
       - { offset: 0x1EF18, type: abs32, symbol: gUnknown_030052f8 }
       - { offset: 0x1EF28, type: abs32, symbol: FUN_08038448, addend: 1 }
+      - { offset: 0x1EF7A, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x1EF84, type: thumb_call, symbol: FUN_080380b0 }
+      - { offset: 0x1EF90, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x1EF98, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x1EF9C, type: abs32, symbol: FUN_08039e20, addend: 1 }
+      - { offset: 0x22436, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x22440, type: thumb_call, symbol: FUN_0803b5a8 }
+      - { offset: 0x2244C, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x22454, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x22458, type: abs32, symbol: FUN_08039e20, addend: 1 }
+      - { offset: 0x224B6, type: thumb_call, symbol: FUN_0802067c }
+      - { offset: 0x224C0, type: thumb_call, symbol: FUN_0803b5a8 }
+      - { offset: 0x224CC, type: thumb_call, symbol: FUN_080217d0 }
+      - { offset: 0x224D4, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x224D8, type: abs32, symbol: FUN_0803b3c4, addend: 1 }
       - { offset: 0x222B8, type: abs32, symbol: gUnknown_030052f8 }
       - { offset: 0x222C8, type: abs32, symbol: FUN_0803b82c, addend: 1 }
       - { offset: 0x22374, type: abs32, symbol: gUnknown_030052f8 }
@@ -3122,6 +3967,8 @@ units:
       - { offset: 0x11936, type: thumb_call, symbol: FUN_0802067c }
       - { offset: 0x1194C, type: abs32, symbol: gUnknown_03002030 }
       - { offset: 0x11950, type: abs32, symbol: FUN_08039e20, addend: 1 }
+      - { offset: 0x11968, type: abs32, symbol: gUnknown_03005268 }
+      - { offset: 0x1198C, type: abs32, symbol: gUnknown_03005268 }
       - { offset: 0x11B7A, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x11B8A, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0x11BD4, type: abs32, symbol: gUnknown_0811c0d8 }
@@ -3298,6 +4145,7 @@ units:
       - { offset: 0x63F8, type: thumb_call, symbol: FUN_0801f6a0 }
       - { offset: 0x6418, type: abs32, symbol: gUnknown_03004470 }
       - { offset: 0x6420, type: abs32, symbol: gUnknown_03004480 }
+      - { offset: 0x6710, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x67B4, type: abs32, symbol: gUnknown_030048d4 }
       - { offset: 0x67B8, type: abs32, symbol: gUnknown_030044d0 }
       - { offset: 0x6800, type: abs32, symbol: gUnknown_030048d4 }
@@ -3551,6 +4399,7 @@ units:
       - { offset: 0xB2C4, type: abs32, symbol: gUnknown_08edb760 }
       - { offset: 0xB2C8, type: abs32, symbol: gUnknown_08edb84c }
       - { offset: 0xB2CC, type: abs32, symbol: gUnknown_03004dc0 }
+      - { offset: 0xB2D6, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xB320, type: abs32, symbol: gUnknown_08edb740 }
       - { offset: 0xB324, type: abs32, symbol: FUN_08024994 }
       - { offset: 0xB368, type: abs32, symbol: gUnknown_08edb740 }
