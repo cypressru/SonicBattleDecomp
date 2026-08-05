@@ -826,6 +826,7 @@ extern struct UnknownEntityData gUnknown_03001c40[];
 extern struct UnknownEntityData gUnknown_03001c40_pool2[];
 extern u8 gUnknown_03003e10;
 extern u8 gUnknown_03003d88;
+extern u16 gUnknown_03001b28;
 extern u16 gUnknown_08071264[];
 extern const u8 gUnknown_08ed89d0[];
 extern const u8 gUnknown_08ed898c[];
@@ -1701,6 +1702,172 @@ void FUN_0801e41c(u8 value) {
         register u32 zero asm("r0") = 0;
 
         entity->field8 = zero;
+    }
+}
+
+void FUN_0801e4f4(u8 value) {
+    register u32 index asm("r4") = value;
+    register struct UnknownEntityData *metadataBase asm("r1") = gUnknown_03001c40;
+    register u32 metadataOffset asm("r0") = index * 252;
+    register struct UnknownEntityData *metadata asm("r0") =
+        (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+    register u32 type asm("r0") = metadata->field20;
+    register struct UnknownEntityData *savedMetadataBase asm("r5") = metadataBase;
+    register struct UnknownEntity *savedEntities asm("r12");
+    register u32 savedDoubled asm("r6");
+
+    if (type == 55) {
+        register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
+        register u32 doubled asm("r3") = index * 2;
+        register u32 entityOffset asm("r0") = (doubled + index) * 8;
+        register struct UnknownEntity *entity asm("r0") =
+            (struct UnknownEntity *)(entityOffset + (u32)entities);
+        register u32 timer asm("r1") = 60;
+
+        entity->field12 = timer;
+        savedEntities = entities;
+        savedDoubled = doubled;
+    } else {
+        register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
+        register u32 doubled asm("r2") = index * 2;
+        register u32 entityOffset asm("r0") = (doubled + index) * 8;
+        register struct UnknownEntity *entity asm("r3") =
+            (struct UnknownEntity *)(entityOffset + (u32)entities);
+        register u32 timer asm("r0") = entity->field12 + 1;
+
+        entity->field12 = timer;
+        timer <<= 24;
+        timer >>= 24;
+        savedEntities = entities;
+        savedDoubled = doubled;
+        if (timer > 60) {
+            entity->field12 = 0;
+        }
+    }
+    {
+        register u32 entityOffset asm("r0");
+
+        asm("add %0, %1, %2" : "=r"(entityOffset) : "r"(savedDoubled), "r"(index));
+        entityOffset *= 8;
+        {
+            register struct UnknownEntity *entity asm("r2") =
+                (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+            register u32 timer asm("r0") = entity->field12;
+
+            if (timer > 1) {
+                register u32 current asm("r0") = entity->field8;
+                register u32 mask asm("r1") = 0xFF0F;
+
+                mask &= current;
+                {
+                    register u32 bits asm("r3") = 0x200;
+
+                    asm("" : "+r"(bits));
+                    {
+                        register u32 bitsCopy asm("r0") = bits;
+
+                        asm("" : "+r"(bitsCopy));
+                        mask |= bitsCopy;
+                        entity->field8 = mask;
+                    }
+                }
+            } else {
+                register u32 current asm("r1") = entity->field8;
+                register u32 mask asm("r0") = 0xFF0F;
+
+                mask &= current;
+                entity->field8 = mask;
+            }
+        }
+    }
+    asm("" : : "r"(savedDoubled));
+    {
+        register u32 scaled asm("r3") = index * 64;
+        register u32 metadataOffset2 asm("r0") = (scaled - index) * 4;
+        register struct UnknownEntityData *metadata2 asm("r5") =
+            (struct UnknownEntityData *)(metadataOffset2 + (u32)savedMetadataBase);
+        register u32 counter asm("r2") = metadata2->field191;
+        register u32 limitBase asm("r0") = gUnknown_03001b28;
+        register u32 quarter asm("r1") = counter >> 2;
+        register s32 limit asm("r0") = limitBase - quarter;
+        u32 scaledBase = scaled;
+
+        if ((s32)counter > limit) {
+            register u32 entityOffset asm("r0");
+
+            asm("add %0, %1, %2" : "=r"(entityOffset) : "r"(savedDoubled), "r"(index));
+            entityOffset *= 8;
+            {
+                register struct UnknownEntity *entity asm("r0") =
+                    (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+                entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+            }
+        }
+
+        {
+            register u32 state asm("r0") = metadata2->field20;
+            register u32 mask asm("r2") = 0xF0;
+
+            mask &= state;
+            if (mask == 0x40 || mask == 0x50) {
+                register u32 entityOffset asm("r0");
+
+                asm("add %0, %1, %2" : "=r"(entityOffset) : "r"(savedDoubled), "r"(index));
+                entityOffset *= 8;
+                {
+                    register struct UnknownEntity *entity asm("r0") =
+                        (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+                    entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+                }
+            }
+        }
+
+        {
+            register u32 linked asm("r0") = (u8)FUN_0801d068(index);
+
+            if (linked != index) {
+                register struct UnknownEntityData *coordinateBase asm("r2") = gUnknown_03001c40;
+                register u32 linkedOffset asm("r1") = linked * 2;
+                register u32 ownOffset asm("r0") = (scaledBase - index) * 4;
+                register u32 coordinateOffset asm("r1") = linkedOffset + ownOffset;
+                register u8 *firstBase asm("r0") = (u8 *)coordinateBase + 54;
+                register s16 *firstPointer asm("r0") = (s16 *)(coordinateOffset + (u32)firstBase);
+                register u8 *secondBase asm("r2") = (u8 *)coordinateBase + 62;
+                register u16 second asm("r1") = *(u16 *)(coordinateOffset + (u32)secondBase);
+                register u32 biasValue asm("r2") = 0x4FF;
+
+                asm("" : "+r"(biasValue));
+                {
+                    register u32 bias asm("r3") = biasValue;
+                    register s32 first asm("r0") = *firstPointer;
+                    register u32 normalizedFirst asm("r0") = (u16)(first + bias);
+                    register u32 maximum asm("r2") = 0x9FE;
+
+                    if (normalizedFirst <= maximum) {
+                        register s32 signedSecond asm("r0") = (s16)second;
+                        register u32 normalizedSecond asm("r0") = (u16)(signedSecond + bias);
+
+                        if (normalizedSecond <= maximum) {
+                            register struct UnknownEntity *entities asm("r0") = gUnknown_03003db0;
+                            register u32 entityOffset asm("r1");
+
+                            asm("add %0, %1, %2"
+                                : "=r"(entityOffset)
+                                : "r"(savedDoubled), "r"(index));
+                            entityOffset *= 8;
+                            {
+                                register struct UnknownEntity *entity asm("r1") =
+                                    (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+                                entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
