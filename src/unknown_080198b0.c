@@ -178,6 +178,7 @@ extern const u8 gUnknown_0816fa0c[];
 extern const u8 gUnknown_08edd54c[];
 extern const u32 gUnknown_0816faf4[4];
 extern u8 gUnknown_030052e8[];
+extern const void **gUnknown_030052fc;
 extern u16 gUnknown_030052f4;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
@@ -8530,6 +8531,33 @@ void FUN_08038264(u8 index) {
         u32 zero = 0;
 
         FUN_0804a594(&zero, (void *)0x06007A00, 0x01000180);
+    }
+}
+
+void FUN_08032618(u32 first, u32 second) {
+    register u32 destination asm("r4") = first;
+    register const void *data asm("r5");
+    register const void *source asm("r0");
+
+    asm volatile("" : "+r"(destination));
+    destination <<= 24;
+    data = gUnknown_030052fc[(second << 24) >> 24];
+    source = (const void *)0x06010420;
+    asm volatile("" : : "r"(source));
+    destination = (destination >> 13) + 0x06015000;
+    FUN_0804a594(source, (void *)destination, 0x200);
+    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, (u8 *)destination, 16, 4, 0);
+    {
+        register u32 width asm("r1") = FUN_08020ad0(data);
+        register u32 halfWidth asm("r1");
+        register u32 x asm("r1");
+
+        asm volatile("" : : "r"(width));
+        halfWidth = width / 2;
+        asm volatile("" : : "r"(halfWidth));
+        x = 64 - halfWidth;
+        asm volatile("" : : "r"(x));
+        FUN_08020b74(x, 2, data, 8, 9);
     }
 }
 
