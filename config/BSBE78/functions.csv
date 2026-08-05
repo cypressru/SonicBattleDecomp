@@ -645,6 +645,7 @@ address,name,mode,confidence
 0x0802B134,FUN_0802b134,thumb,rom-pointer
 0x0802B1B4,FUN_0802b1b4,thumb,rom-pointer
 0x0802B1DC,FUN_0802b1dc,thumb,rom-pointer
+0x0802B204,FUN_0802b204,thumb,recovered-unreferenced+exact-body
 0x0802B248,FUN_0802b248,thumb,rom-pointer
 0x0802B2D4,FUN_0802b2d4,thumb,rom-pointer
 0x0802B31C,FUN_0802b31c,thumb,rom-pointer

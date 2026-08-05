@@ -6881,6 +6881,31 @@ void FUN_0802b1dc(void) {
     }
 }
 
+u32 FUN_0802b204(u8 player, u8 variant) {
+    u8 other;
+    register u32 result asm("r0");
+
+    for (other = 0; other <= 3; other++) {
+        if (other != player && gUnknown_03005268[other] == variant) {
+            break;
+        }
+    }
+
+    if (other == 4) {
+        goto noMatch;
+    }
+    result = 1;
+    asm("" : "+r"(result));
+    goto done;
+
+noMatch:
+    result = 0;
+    asm("" : "+r"(result));
+
+done:
+    return result;
+}
+
 void FUN_0802b424(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
 
 void FUN_0802b434(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }

@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,280 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,281 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
@@ -52,7 +52,7 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x39770 instruction bytes and 0xD784 owned non-code bytes.
+game category consequently contains 0x397B2 instruction bytes and 0xD742 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -66,7 +66,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x018444` | 163 | 70,212 | 27,140 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 977 | 167,398 | 23,718 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 978 | 167,464 | 23,652 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
@@ -143,6 +143,14 @@ The gap before `FUN_08024b90` contains a complete 0xE-byte unreferenced function
 halfword end exactly at the next accepted entry. Clean C reproduces every instruction and the call
 relocation. No decoded reference was found, so it retains the generic address name and
 `recovered-unreferenced+exact-body` provenance.
+
+The gap before `FUN_0802b248` contains a complete unreferenced function at `0x0802B204`. Its
+0x42-byte Thumb body scans the four bytes at `gUnknown_03005268`, skips a caller-supplied byte index,
+and returns an integer-width boolean indicating whether another slot contains the requested byte.
+The complete prologue/return, two aligned inline literal islands for the same global, and final
+alignment halfword end exactly at the next accepted entry. Clean C reproduces every instruction,
+mapping transition, and relocation. No decoded call or stored pointer was found, so it retains the
+generic address name and `recovered-unreferenced+exact-body` provenance.
 
 Six additional graphics-queue leaf routines in the unresolved tail now reconstruct as ordinary C:
 `0x08017ED0`, `0x08017EEC`, `0x08017F00`, `0x08017F34`, `0x08017F58`, and
