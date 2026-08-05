@@ -164,7 +164,7 @@ extern void FUN_0802da00(struct UnknownListNode *node);
 extern void FUN_0804a0a0(const void *value, u16 other);
 extern void FUN_0804a0c4(const void *value, u16 first, u16 second);
 extern void FUN_0804a1a0(const void *value, u16 first, s8 second);
-extern void FUN_0804a594(void *destination, const void *source, u32 size);
+extern void FUN_0804a594(const void *source, void *destination, u32 size);
 extern void FUN_0804af6c(struct UnknownListNode *node, const void *data);
 extern u16 FUN_0804afa4(u32 value, u32 divisor);
 extern struct UnknownListNode *FUN_0801f7d0(void (*callback)(struct UnknownListNode *), u32 size,
@@ -1560,7 +1560,7 @@ void FUN_0801fc60(void) {
 
 void FUN_0801ffa4(u8 force) {
     if (gUnknown_030048d0 != 0 || force != 0) {
-        FUN_0804a594(gUnknown_030044d0, (const void *)0x07000000, 0x100);
+        FUN_0804a594(gUnknown_030044d0, (void *)0x07000000, 0x100);
     }
     gUnknown_030048d0 = 0;
 }
@@ -3692,7 +3692,7 @@ void FUN_080283f8(u32 index) {
     register u32 entry asm("r0");
 
     for (i = 0; i <= 20; i++) {
-        FUN_0804a594(destination, source, 16);
+        FUN_0804a594(destination, (void *)source, 16);
         source += 64;
     }
     if (selectedIndex == 0) {
@@ -7304,7 +7304,7 @@ void FUN_0803cb38(struct UnknownListNode *node) {
 void FUN_08039c3c(void) {
     u32 zero = 0;
 
-    FUN_0804a594(&zero, (const void *)0x06008000, 0x01000b68);
+    FUN_0804a594(&zero, (void *)0x06008000, 0x01000b68);
 }
 
 void FUN_08043ee4(struct UnknownState482d0 *state) {
@@ -8446,4 +8446,10 @@ void FUN_08041f84(struct UnknownState420dc *state) {
         }
     }
     FUN_080405a8(state->field2, 0);
+}
+
+void FUN_08043d74(void) {
+    FUN_0804a594((const void *)0x06000000, (void *)0x02028000, 0x6000);
+    FUN_0804a594(gUnknown_030044d0, (void *)0x02027c00, 0x100);
+    gUnknown_03005440.field35 = 0;
 }
