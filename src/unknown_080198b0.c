@@ -115,6 +115,7 @@ extern u16 gUnknown_03005370;
 extern u8 gUnknown_03005374;
 extern u16 gUnknown_03005378;
 extern u16 gUnknown_03005384;
+extern u8 gUnknown_0300537c;
 extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
@@ -139,6 +140,7 @@ extern const u16 gUnknown_08edcbe4[];
 extern const u16 gUnknown_0810bcd4[];
 extern const u32 gUnknown_08edbbbc[];
 extern const u16 *const gUnknown_08edcc3c[];
+extern const u32 gUnknown_0807163c[];
 extern const u16 gUnknown_08155588[];
 extern const u16 gUnknown_081555e8[];
 extern void FUN_08046aa4(void);
@@ -6813,6 +6815,42 @@ void FUN_08036350(void) {
             rowIndex = 0;
         }
     }
+}
+
+u8 FUN_08036428(u16 tile) {
+    u16 slot = 0;
+    u8 result;
+
+    if ((gUnknown_0300537c & gUnknown_0807163c[slot]) != 0) {
+        u8 *usedSlots = &gUnknown_0300537c;
+        const u32 *slotMasks = gUnknown_0807163c;
+
+        do {
+            slot++;
+            if (slot > 15) {
+                break;
+            }
+        } while ((*usedSlots & slotMasks[slot]) != 0);
+    }
+    if (slot <= 15) {
+        u8 *destination;
+        u32 zero;
+        u32 glyphWidth;
+        u16 x;
+
+        gUnknown_0300537c |= gUnknown_0807163c[slot];
+        destination = (u8 *)0x06017800 + slot * 128;
+        zero = 0;
+        FUN_0804a594(&zero, destination, 0x01000020);
+        FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, destination, 2, 2, 0);
+        glyphWidth = FUN_08020f64(tile);
+        x = 8 - (glyphWidth >> 1);
+        FUN_08020978(x, 0, tile, 2);
+        result = slot;
+    } else {
+        result = 0;
+    }
+    return result;
 }
 
 void FUN_08035c0c(struct UnknownListNode *node) {
