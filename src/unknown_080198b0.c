@@ -89,6 +89,7 @@ extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
 extern u8 gUnknown_030052f8;
 extern void FUN_08030a08(struct UnknownListNode *node);
+extern void FUN_08033090(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
@@ -655,6 +656,8 @@ extern const u8 gUnknown_08ed8a8c[];
 extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
 extern const u8 gUnknown_08ed8ae4[];
+extern const s16 gUnknown_08edc4a4[];
+extern const u16 gUnknown_08edc544[];
 extern const struct UnknownSoundIndex gUnknown_08bf7244[];
 extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 extern u8 gUnknown_03000008[100];
@@ -6246,6 +6249,49 @@ void FUN_08032778(struct UnknownListNode *node) {
 
     FUN_0801fba0(30, *(u8 *)counter);
     *counter -= 1;
+}
+
+void FUN_08032790(struct UnknownListNode *node) {
+    FUN_0801f92c(node, 104, gUnknown_08edc4a4[node->position->field13]);
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_080327bc(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f9a8(node, -16) != 0) {
+        FUN_08021244(node->position->field14);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_080327ec(struct UnknownListNode *node) {
+    if ((u8)FUN_0801f9a8(node, 160) != 0) {
+        FUN_08021244(node->position->field14);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
+}
+
+void FUN_08033060(struct UnknownListNode *node) {
+    u32 *angle = node->allocation;
+
+    *angle += 16;
+    if (*angle > 95) {
+        *angle -= 96;
+    }
+    FUN_0801fba0(8, gUnknown_08edc544[*angle >> 4]);
+}
+
+void FUN_0803315c(struct UnknownListNode *node) {
+    struct UnknownPosition *position = node->position;
+
+    position->field14++;
+    if (position->field14 > 29) {
+        node->position->field14 = 0;
+        node->data = (const void *)((u32)FUN_08033090 + 1);
+    }
 }
 
 void FUN_08035c0c(struct UnknownListNode *node) {
