@@ -248,7 +248,7 @@ address,name,mode,confidence
 0x0801D8F4,FUN_0801d8f4,thumb,rom-pointer+exact-body
 0x0801D9E0,FUN_0801d9e0,thumb,direct-call+exact-body
 0x0801DAEC,FUN_0801daec,thumb,rom-pointer+exact-body
-0x0801DB4C,FUN_0801db4c,thumb,rom-pointer+direct-call
+0x0801DB4C,FUN_0801db4c,thumb,rom-pointer+direct-call+exact-body
 0x0801DBD0,FUN_0801dbd0,thumb,rom-pointer
 0x0801DDA0,FUN_0801dda0,thumb,rom-pointer
 0x0801DE5C,FUN_0801de5c,thumb,direct-call+exact-body
