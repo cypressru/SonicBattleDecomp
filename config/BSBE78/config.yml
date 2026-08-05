@@ -6,6 +6,26 @@ sha1: 8cf4fbbe73f6b1907ab9997caab4c4e7d9708937
 rom_size: 0x1000000
 compiler: agbcc
 function_size_map: config/BSBE78/function_extents.csv
+long_branch_targets:
+  # GCC reaches an intra-function label beyond the +/-2 KiB `B` range by emitting
+  # `BL` wherever `lr` is already dead. Each address below was an accepted start
+  # whose predecessor's extent ended at exactly its first byte, so it is a
+  # fall-through continuation of that function rather than an entry.
+  - 0x080029BC
+  - 0x0800343E
+  - 0x080034C2
+  - 0x08003798
+  - 0x0800410C
+  - 0x080043C2
+  - 0x0800B086
+  - 0x0800C780
+  - 0x0800F028
+  - 0x08010F1C
+  - 0x08010F1E
+  - 0x0801103C
+  - 0x08011C2E
+  - 0x08011C32
+  - 0x08015374
 rejected_function_pointers:
   # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
   # destination is midway through a switch case in FUN_08020244 and depends
