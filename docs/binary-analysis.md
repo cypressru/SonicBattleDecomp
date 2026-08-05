@@ -311,10 +311,25 @@ extent for conditional branches into another accepted start finds exactly three 
   branch, so the direction is inverted from the other two: the enclosing function would start at or
   before `0x08010B00` and `0x08010B0C` would be interior to it, not the other way round.
 
-None of the three is absorbed yet. All three would extend an extent across bytes that are currently
-outside every extent, which is the exact hazard that broke `raw_asset_map.py` on the first repair
-attempt, so each needs the byte-coverage guard in `repair2.py` plus a rebuild and a full re-check of
-the matched set before it can be accepted.
+All three were tried and all three were rejected, each by a different check. They are recorded here
+so the class is not re-attempted naively.
+
+`0x0800EAEC` is a real function, not a fragment: `check_function_map.py` reported 25 direct callers
+the moment it stopped being a symbol. The conditional branch the scan found was a pool word inside
+one of `0x0800D20A`'s literal islands decoded as an instruction, which is the standing hazard when
+scanning a 6,370-byte body that contains islands. Any future use of this detector has to skip mapped
+data first.
+
+`0x08002376` survives the function map, `configure.py` and a bit-exact rebuild - the 132-byte gap is
+an in-function literal island, not asset-referencing data, so `raw_asset_map.py` still finds all 152
+starts. It fails on accounting instead: extending the extent over the island moves those 132 bytes
+from data to code, taking the objdiff report from 252,402 code bytes to 252,534. Calling a literal
+pool "code" is a modelling error, so the absorption is only correct together with `mappings` entries
+that mark the island's exact bounds as data. Deriving those bounds is the actual work, and it is the
+same work the 40 "walk unclean" cases need.
+
+`0x08010B00` was not attempted: its branch runs backward, so the enclosing function starts at or
+before it, and the repair is a start move rather than an absorption.
 
 ### Decoded but not yet reconstructed: `0x08016A44`
 
