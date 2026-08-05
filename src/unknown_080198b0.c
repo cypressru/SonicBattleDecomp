@@ -9,6 +9,23 @@ struct UnknownState43f00;
 
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
+extern void FUN_080182ac(void);
+extern void FUN_08016684(void);
+extern void FUN_08017ed0(void);
+extern void FUN_08013214(u8 value);
+extern void FUN_08017f6c(void);
+extern void FUN_08006ff4(u8 value);
+extern void FUN_0800f9c0(void);
+extern void FUN_08011c7c(void);
+extern void FUN_080175d4(void);
+extern void FUN_08017d58(void);
+extern void FUN_08017c5c(void);
+void FUN_08019ed8(void);
+void FUN_08019b5c(void);
+void FUN_0801aadc(void);
+void FUN_0801a898(void);
+extern u8 gUnknown_0300138c;
+extern u8 gUnknown_03003d94;
 extern void FUN_0801c8a4(void);
 extern void FUN_080402a0(void);
 extern void FUN_0802392c(struct UnknownListNode *node);
@@ -1087,6 +1104,34 @@ void FUN_0801c82c(void) {
     FUN_08020840(24);
     FUN_080205d0();
     gUnknown_030013a0 = 1;
+}
+
+void FUN_0801c85c(u8 first, u8 second) {
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(first);
+    FUN_08017f6c();
+    if (first != 10) {
+        FUN_08006ff4(second);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+}
+
+void FUN_0801c8a4(void) {
+    FUN_08019ed8();
+    FUN_08012b98(10);
+    if (gUnknown_0300138c != 0) {
+        gUnknown_03002030 = FUN_0801aadc;
+    } else {
+        FUN_08019b5c();
+        gUnknown_03002030 = FUN_0801a898;
+    }
+    FUN_0801f618(gUnknown_03003d94);
 }
 
 void FUN_08023038(void) {
