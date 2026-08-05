@@ -98,9 +98,16 @@ extern void FUN_08035b74(struct UnknownListNode *node);
 extern void FUN_08035bc0(struct UnknownListNode *node);
 extern void FUN_08035ba4(struct UnknownListNode *node);
 extern void FUN_08035bf0(struct UnknownListNode *node);
+extern void FUN_08036174(struct UnknownListNode *node);
+extern void FUN_08036260(struct UnknownListNode *node);
+extern void FUN_08036288(struct UnknownListNode *node);
+extern void FUN_080362a4(struct UnknownListNode *node);
 extern void FUN_0803631c(struct UnknownListNode *node);
 extern u8 gUnknown_03005300;
 extern u8 gUnknown_0300533c;
+extern u16 gUnknown_0300536c;
+extern u16 gUnknown_03005370;
+extern u8 gUnknown_03005374;
 extern u16 gUnknown_03005378;
 extern void FUN_08041808(void *state);
 extern void FUN_0802fcb4(u8 value);
@@ -116,6 +123,12 @@ extern const u32 gUnknown_08edc8a8[];
 extern const u8 gUnknown_08edc980[];
 extern const u8 gUnknown_08edc998[];
 extern const u16 gUnknown_08edca64[];
+extern const u8 gUnknown_08edcb1c[];
+extern const u8 gUnknown_08edcb24[];
+extern const u8 gUnknown_08edcb5c[];
+extern const u8 gUnknown_08edcb6c[];
+extern const u8 gUnknown_08edcbd4[];
+extern const u16 gUnknown_08edcbe4[];
 extern const u16 gUnknown_08155588[];
 extern const u16 gUnknown_081555e8[];
 extern void FUN_08046aa4(void);
@@ -6619,6 +6632,103 @@ void FUN_08035bc0(struct UnknownListNode *node) {
         node->position->x = 88;
         node->data = (const void *)((u32)FUN_08035bf0 + 1);
     }
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08035f54(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcb24;
+    node->position->tile = gUnknown_03005370;
+    node->position->x = gUnknown_03005378 + 4;
+    node->position->y = gUnknown_0300536c + 10;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_08036244 + 1);
+}
+
+void FUN_08035fac(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcb1c;
+    node->position->tile = gUnknown_03005370;
+    {
+        register struct UnknownPosition *position asm("r3") = node->position;
+        register const u16 *base asm("r4") = &gUnknown_03005378;
+        register u32 index asm("r2") = position->field13;
+        register u32 x asm("r1") = index * 6 + 48;
+
+        x += *base;
+        position->x = x;
+    }
+    node->position->y = gUnknown_0300536c + 2;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_08036260 + 1);
+}
+
+void FUN_08036014(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcb5c;
+    node->position->tile = gUnknown_03005370;
+    node->position->x = gUnknown_03005378 + 4;
+    node->position->y = gUnknown_0300536c + 3;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_08036288 + 1);
+}
+
+void FUN_0803606c(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcbd4;
+    node->position->tile = gUnknown_03005370;
+    node->position->x = gUnknown_03005378 + 32;
+    node->position->y = gUnknown_0300536c + 71;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_080362a4 + 1);
+}
+
+void FUN_080360c4(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcbd4;
+    node->position->tile = gUnknown_03005370;
+    node->position->x = gUnknown_03005378 + 32;
+    node->position->y = gUnknown_0300536c + 77;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_080362a4 + 1);
+}
+
+void FUN_0803611c(struct UnknownListNode *node) {
+    node->position->field0 = gUnknown_08edcb6c;
+    node->position->tile = gUnknown_03005370;
+    node->position->x = gUnknown_03005378 + 16;
+    node->position->y = gUnknown_0300536c + 16;
+    node->position->field10 = 0;
+    node->position->field11 = 0;
+    node->position->field12 = (gUnknown_03005374 << 4) | 8;
+    node->data = (const void *)((u32)FUN_08036174 + 1);
+}
+
+void FUN_08036260(struct UnknownListNode *node) {
+    register struct UnknownPosition *position asm("r3") = node->position;
+    register const u16 *base asm("r4") = &gUnknown_03005378;
+    register u32 index asm("r2") = position->field13;
+    register u32 x asm("r1") = index * 6 + 48;
+
+    x += *base;
+    position->x = x;
+    FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_080362dc(struct UnknownListNode *node) {
+    struct UnknownPosition *position = node->position;
+    u32 frame = position->field14 + 1;
+
+    position->field14 = frame;
+    if ((u8)frame > 31) {
+        node->position->field14 = 0;
+    }
+    node->position->tile = gUnknown_08edcbe4[(node->position->field14 >> 3) & 3];
     FUN_0801fed8(node->field6, 0);
 }
 
