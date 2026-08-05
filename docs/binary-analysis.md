@@ -348,9 +348,19 @@ load. The second is scheduling: retail groups both `lsrs` shifts of the CSE'd `c
 immediately after it and ahead of the red channel, while agbcc defers the `>> 26` until the blue
 channel needs it. Everything else, including the clamp order and the pack, is identical.
 
-Three shapes that look like they should force the grouping all lose the common subexpression instead
-and land 130 bytes further away: an explicit `shifted` local, raw per-channel locals extracted before
-the tints are added, and computing green and blue before red. The lever is not statement order.
+Nineteen source shapes and four compiler flags were tried and none beats 33 bytes, so the list is
+recorded to stop it being repeated. Three that look like they should force the shift grouping instead
+lose the common subexpression and land 130 bytes further away: an explicit `shifted` local, raw
+per-channel locals extracted before the tints are added, and computing green and blue before red.
+Neutral, all still 33: `int` versus `u32` for the colour, `const` on the source pointer, every
+declaration order of the six locals, `i < 256` versus `i <= 255`, and a `(u16)` cast on the packed
+result. Worse: `u16` channels with `(s16)` casts in the comparisons, a `mask` local instead of the
+literal, `% 32` in place of `& 31` on either side, ternary clamps, reversed pack order, `>> 5` and
+`>> 10` in place of the `<< 16` shifts, a walking source pointer, and `-fmove-all-movables`.
+
+The lever is therefore neither statement order nor operand spelling. Both remaining differences are
+about *where* agbcc places an already-correct instruction, which is the same open question as the
+other parked routines.
 
 ### Decoded but not yet reconstructed: `0x0800673C`
 
