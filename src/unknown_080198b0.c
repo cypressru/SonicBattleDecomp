@@ -1994,9 +1994,9 @@ void FUN_0803d128(struct UnknownListNode *node) {
 
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         if (state[8] != 0) {
-            gUnknown_03002030 = FUN_0802cc78;
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_0802cc78 + 1);
         } else {
-            gUnknown_03002030 = FUN_0803fb2c;
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_0803fb2c + 1);
         }
     }
 }
