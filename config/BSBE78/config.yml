@@ -110,6 +110,8 @@ rejected_function_pointers:
   # An odd pointer-like word inside opaque ROM data lands on the padding and
   # literal word following FUN_08020ecc, not on executable instructions.
   - { source: 0x0D872DC, destination: 0x08020F12 }
+  # 0x08024398 is the literal pool between FUN_0802436c and FUN_080243a4.
+  # It contains two relocated addresses and one scalar word, not Thumb code.
   # Pointer-like bytes inside opaque main ROM data land on literal pools in
   # the graphics-command queue rather than executable instructions.
   - { source: 0x0CA98FC, destination: 0x08020400 }

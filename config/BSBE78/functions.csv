@@ -480,7 +480,6 @@ address,name,mode,confidence
 0x080242BC,FUN_080242bc,thumb,rom-pointer
 0x08024304,FUN_08024304,thumb,rom-pointer
 0x0802436C,FUN_0802436c,thumb,rom-pointer
-0x08024398,FUN_08024398,thumb,recursive-disassembly
 0x080243A4,FUN_080243a4,thumb,rom-pointer
 0x080243D4,FUN_080243d4,thumb,rom-pointer
 0x0802440C,FUN_0802440c,thumb,rom-pointer
