@@ -50,6 +50,7 @@ void FUN_0801eacc(u8 value);
 void FUN_0801eaf8(u8 value);
 void FUN_0801eb24(u8 value);
 extern void FUN_0801d870(u8 value);
+extern u32 FUN_0801d188_wide(u8 value) asm("FUN_0801d188");
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08015924(u8 first, u16 second, u8 third, u16 fourth, u8 fifth);
 extern s16 FUN_08015f40(u8 index);
@@ -1758,6 +1759,73 @@ u8 FUN_0801d188(u8 value) {
     } while (attempt <= 5);
 
     return value;
+}
+
+u32 FUN_0801d200(u8 value) {
+    u8 attempt = 0;
+
+    do {
+        u32 candidate = (FUN_08020144() & 6) >> 1;
+        u32 savedCandidate = candidate;
+
+        if (candidate != value) {
+            register u8 *state asm("r3") = (u8 *)gUnknown_03001c40;
+            register u8 *entryBase asm("r0");
+            register u8 *entry asm("r0");
+
+            asm("" : "+r"(state));
+            entryBase = state;
+            entryBase += 20;
+            entry = (u8 *)(candidate + (u32)entryBase);
+            if (*entry != 0xFF) {
+                register u8 *groupBase asm("r0");
+                register u8 *valueGroup asm("r1");
+                register u8 *candidateGroup asm("r0");
+
+                if (state[8] == 0) {
+                    goto check_type;
+                }
+                groupBase = state;
+                groupBase += 32;
+                valueGroup = (u8 *)(value + (u32)groupBase);
+                candidateGroup = (u8 *)(candidate + (u32)groupBase);
+                if (*valueGroup != *candidateGroup) {
+                check_type: {
+                    register struct UnknownEntityData *metadata asm("r1") = gUnknown_03001c40_pool2;
+                    register u8 *availabilityBase asm("r0");
+                    register u8 *availability asm("r0");
+                    u32 type;
+
+                    asm("" : "+r"(metadata));
+                    type = metadata[savedCandidate].field20;
+
+                    if (type == 0xFC) {
+                        goto retry;
+                    }
+                    if (type == 0xFD) {
+                        goto retry;
+                    }
+                    if (type == 0xFE) {
+                        goto retry;
+                    }
+                    if (type == 0xFF) {
+                        goto retry;
+                    }
+                    availabilityBase = state;
+                    availabilityBase += 28;
+                    availability = (u8 *)(savedCandidate + (u32)availabilityBase);
+                    if (*availability == 0) {
+                        return savedCandidate;
+                    }
+                }
+                }
+            }
+        }
+    retry:
+        attempt++;
+    } while (attempt <= 5);
+
+    return FUN_0801d188_wide(value);
 }
 
 void FUN_0801d5d4(u8 value) {
