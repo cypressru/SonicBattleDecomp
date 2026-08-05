@@ -77,6 +77,7 @@ extern void FUN_08043f2c(void);
 extern u8 gUnknown_030052e0;
 extern void FUN_0802ea64(u8 value);
 extern void FUN_0802ded4(struct UnknownListNode *node);
+extern void FUN_0803c378(void);
 extern void FUN_080375d8(u8 value);
 extern void FUN_0803b69c(u8 value);
 extern void FUN_0803a9dc(u8 value);
@@ -7439,6 +7440,14 @@ void FUN_08033cdc(struct UnknownListNode *node) {
 void FUN_0802c7d8(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_0802c25c;
+    }
+}
+
+void FUN_0802c25c(void) {
+    if (gUnknown_03005264 == 2) {
+        gUnknown_03002030 = FUN_0803c378;
+    } else {
+        gUnknown_03002030 = FUN_08029250;
     }
 }
 
