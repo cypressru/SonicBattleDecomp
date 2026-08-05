@@ -806,6 +806,7 @@ extern const u8 gUnknown_08ed8a8c[];
 extern const u8 gUnknown_08ed8a9c[];
 extern const u8 gUnknown_08ed8aac[];
 extern const u8 gUnknown_08ed8ae4[];
+extern const u8 gUnknown_08ed8ad4[];
 extern const s16 gUnknown_08edc4a4[];
 extern const u16 gUnknown_08edc544[];
 extern const struct UnknownSoundIndex gUnknown_08bf7244[];
@@ -1132,6 +1133,38 @@ void FUN_0801c8a4(void) {
         gUnknown_03002030 = FUN_0801a898;
     }
     FUN_0801f618(gUnknown_03003d94);
+}
+
+void FUN_0801e9ec(u8 value) {
+    u32 random = FUN_08020144();
+    u16 *table = gUnknown_08071250;
+    u16 *base = &table[gUnknown_03003e10];
+    u16 result = *base + ((random & 0xFFF) * *base >> 12);
+
+    gUnknown_03003db0[value].field10 = result;
+    FUN_0801d870(value);
+}
+
+u8 FUN_0801e99c(u8 value) {
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = &entities[value];
+    u8 linked = entity->field15;
+    struct UnknownEntityData *data = gUnknown_03001c40;
+    u32 offset = linked * 2 + value * sizeof(*data);
+    u8 *firstBase = (u8 *)data + 54;
+    s16 *first = (s16 *)(firstBase + offset);
+
+    {
+        u8 *secondBase = (u8 *)data + 62;
+        s16 *second = (s16 *)(secondBase + offset);
+
+        {
+            const u8 *lookup = gUnknown_08ed8ad4;
+            u16 angle = ArcTan2(*first, *second);
+
+            return lookup[angle >> 12];
+        }
+    }
 }
 
 void FUN_08023038(void) {
