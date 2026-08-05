@@ -48,7 +48,6 @@ extern void FUN_0801e41c(void);
 void FUN_0801eacc(u8 value);
 void FUN_0801eaf8(u8 value);
 void FUN_0801eb24(u8 value);
-extern void FUN_0801d870(u8 value);
 extern u32 FUN_0801d188_wide(u8 value) asm("FUN_0801d188");
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08015924(u8 first, u16 second, u8 third, u16 fourth, u8 fifth);
@@ -1767,6 +1766,50 @@ u32 FUN_0801d288(u8 value) {
     finalEntity = (struct UnknownEntity *)(finalOffset + (u32)finalBase);
     finalEntity->field8 = (finalEntity->field8 & 0xFF0F) | result;
     return result;
+}
+
+void FUN_0801d870(u32 value) {
+    register u32 index asm("r5") = value;
+    register struct UnknownEntity *entities asm("r2");
+    register u32 entityOffset asm("r4");
+    register struct UnknownEntity *entity asm("r6");
+    register u32 zero asm("r8");
+    struct UnknownEntity *volatile savedEntities;
+
+    asm("" : "+r"(index));
+    index <<= 24;
+    index >>= 24;
+    entities = gUnknown_03003db0;
+    entityOffset = index * 24;
+    entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+    entity->callback = (UnknownCallback)FUN_0801d8f4;
+    zero = 0;
+    asm("" : : : "r0");
+    entity->field8 = 0;
+    entity->field12 = zero;
+    entity->field13 = zero;
+    {
+        register u16 *table asm("r1") = gUnknown_0807125a;
+        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
+        register u32 predicateArgument asm("r0") = table[*tableIndex];
+        register u32 result asm("r0");
+
+        asm("" : "+r"(predicateArgument));
+        savedEntities = entities;
+        result = FUN_08020160(predicateArgument);
+        entity->field18 = result != 0;
+    }
+    {
+        register const void *data asm("r0") = gUnknown_08ed898c;
+        register struct UnknownEntity *dataBase asm("r2");
+
+        entities = savedEntities;
+        dataBase = (struct UnknownEntity *)((u32)entities + 4);
+        entityOffset += (u32)dataBase;
+        *(const void **)entityOffset = data;
+    }
+    entity->field14 = zero;
+    entity->field16 = gUnknown_03001c40[index].field16;
 }
 
 u16 FUN_0801d370(u8 value) {
