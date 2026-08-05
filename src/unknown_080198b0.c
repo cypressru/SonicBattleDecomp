@@ -82,7 +82,7 @@ extern void FUN_080419d4(void);
 extern void FUN_0804280c(struct UnknownState420dc *state);
 extern void FUN_08043e5c(void);
 extern void FUN_08043f7c(struct UnknownState43f00 *state);
-extern void FUN_08043f2c(void);
+extern void FUN_08043f2c(struct UnknownState420dc *state);
 extern u8 gUnknown_030052e0;
 extern u8 gUnknown_030052e4;
 extern void FUN_0802ea64(u8 value);
@@ -1361,6 +1361,31 @@ void FUN_0803d128(struct UnknownListNode *node) {
             gUnknown_03002030 = FUN_0803fb2c;
         }
     }
+}
+
+void FUN_08043f2c(struct UnknownState420dc *state) {
+    u16 displayActive = gUnknown_03005440.field8 & 0x200;
+
+    if (displayActive == 0) {
+        state->callback = (const void *)((u32)FUN_08043e5c + 1);
+        state->fade = displayActive;
+    } else {
+        state->field8.half.high = state->baseX - gUnknown_03005494;
+        state->field14 = state->baseY - gUnknown_03005490;
+        FUN_080405a8(state->field2, 2);
+    }
+}
+
+void FUN_080457f0(struct UnknownState482d0 *state) {
+    FUN_0801f744(gUnknown_03005440.field12, 1);
+    gUnknown_03005440.callback = (const void *)((u32)FUN_0801c82c + 1);
+    gUnknown_03005440.field32 = 1;
+    gUnknown_03005440.field33 = 0;
+    gUnknown_03005440.field34 = 1;
+    gUnknown_03005440.field35 = 1;
+    gUnknown_03005440.field8 |= 1;
+    gUnknown_03002030 = FUN_080412dc;
+    FUN_0804051c(state);
 }
 
 void FUN_0801c910(void) {
