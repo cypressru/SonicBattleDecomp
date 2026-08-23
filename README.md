@@ -60,7 +60,8 @@ complete must match all of its owned code, alignment, literal-pool, and data sec
 
 CI regenerates and validates the objdiff report on every trusted pull request, verifies the rebuilt
 ROM SHA-1, checks the embedded-payload and function maps, and uploads the report as
-`BSBE78_report` for decomp.dev.
+`BSBE78_report` for decomp.dev. A manually supplied, locally verified report is published as
+`BSBE78_report-local`, retaining the version/report prefix that decomp.dev discovers.
 
 The main executable code ends at ROM offset `0x4B718`. See
 [`docs/binary-analysis.md`](docs/binary-analysis.md) for the current evidence and boundary map.

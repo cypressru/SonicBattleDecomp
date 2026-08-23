@@ -105,6 +105,12 @@ class NormalizeObjdiffReportTest(unittest.TestCase):
         self.assertEqual(measures["total_data"], "2")
         self.assertEqual(report["measures"]["total_data"], "2")
 
+        normalize(report)
+        measures = report["units"][0]["measures"]
+        self.assertEqual(measures["total_code"], "4")
+        self.assertEqual(measures["total_data"], "2")
+        self.assertEqual(report["measures"]["total_data"], "2")
+
 
 if __name__ == "__main__":
     unittest.main()

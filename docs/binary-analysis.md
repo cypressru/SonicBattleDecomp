@@ -65,7 +65,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x018444` | 163 | 70,212 | 27,140 |
+| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 131 | 68,698 | 26,630 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 984 | 167,664 | 23,452 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
@@ -86,11 +86,12 @@ unit boundary or source name is inferred from linker order alone.
 
 The boundary audit also recovered an otherwise unreferenced function at `0x08018410`. Its 30-byte
 Thumb body constructs two DMA descriptors, terminates with a normal return, and owns the aligned
-literal pool ending at the next accepted function at `0x08018444`. It has no decoded direct caller
-or stored function pointer, which explains why call-closure discovery missed it. The function is
-reconstructed in C and matches all 30 instruction bytes in objdiff. Its source is attached to the
-conservative placeholder object and does not assert an original filename or TU boundary; the
-surrounding TU boundary remains unresolved.
+literal pool ending at the independently established `main/unknown_08018444` boundary. The complete
+`0x08017C5C-0x08018444` range is now separated as `main/unknown_08017C5C`: it begins after the normal
+return and aligned literal pool owned by `FUN_08017b74`, and it ends after `FUN_08018410`'s complete
+return and pool. Its 33 contiguous display, background-control, transfer-queue, transform, camera,
+and blend helpers all reconstruct in ordinary C. Objdiff verifies all 1,734 instruction bytes, all
+290 owned non-code bytes, and all 33 functions at 100%.
 
 The same exact-body audit recovered an otherwise unreferenced function at `0x0801E34C`. Its
 0x74-byte Thumb body dispatches from the established 252-byte metadata record, owns an aligned
@@ -326,19 +327,23 @@ address, while agbcc emits the index address first, which also swaps two literal
 operand order in the source does not change this - the multiply makes the index side the costlier
 operand, and agbcc expands it first regardless of how the addition is written.
 
-### An unresolved register-allocation difference
+### Queue-entry value shape
 
-Two routines in this placeholder reproduce every instruction except one redundant
-register-to-register copy, where retail writes a value straight into its final register and the
-pinned agbcc emits an extra `adds rD, rS, #0`. It remains at `0x08017F80` and `0x08017FB0`, the two
-queue-submit wrappers around `FUN_080200D8`.
+The queue-submit wrappers at `0x08017F80` and `0x08017FB0` match once their two input words are
+represented as one eight-byte union passed by value. The first routine splits that value into four
+halfwords and submits it to `FUN_080200D8`. The second walks the queued values and uses the same
+operation through a small inline helper. That relationship is significant: spelling the loop as
+four independent halfword loads or as two unrelated word parameters changes register allocation,
+while the shared value-shape emits retail's two word loads, redundant low-halfword reload, and
+`r4`/`r5` preservation exactly. Their 44- and 72-byte instruction extents and call relocations now
+match completely in clean C.
 
 Four routines that were in this list are now matched, and the two causes turned out to be source
 shapes rather than allocator noise. `0x080178D0` needed `int`-width locals for the values read out
 of memory; `0x080179D0` needed the early-`return` form and the double-shift spelling of its bitfield
 extraction; `0x08017CF4` and `0x08015FA4` needed the OAM loop written as an ascending `for` over a
-post-incremented `volatile u16 *`. Both idioms are recorded above. `0x08017F80` and `0x08017FB0`
-have been retried against all of them and are unchanged, so their divergence is a different cause.
+post-incremented `volatile u16 *`. Both idioms are recorded above. The queue wrappers instead needed
+the shared eight-byte value shape described above.
 
 At `0x08015E30` the whole body, the register assignment and the 272-byte size all reproduce, and the
 only difference is where the two 16-bit arguments are extended: retail copies them unextended in the
@@ -828,6 +833,13 @@ pinned `old_agbcc -O2 -fno-builtin` library path and match their full target sec
 zero-padding bytes; mapping symbols prevent that padding from inflating the function sizes.
 
 ## Original source language
+
+The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
+at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
+function. It initializes six halfwords in each of four 16-byte link records, exchanges those
+records, validates their offset-14 marker, and copies successful participant bytes back into the
+caller's record. The ordinary-C reconstruction and all seven relocations match byte-for-byte; the
+24-byte literal pool at `0x08017B5C-0x08017B74` remains data.
 
 Undetermined pending the complete TU inventory. Current negative evidence: the main executable
 contains no detected C++ mangling, RTTI/typeinfo strings, vtable labels, exception runtime names,

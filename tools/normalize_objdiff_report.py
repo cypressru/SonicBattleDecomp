@@ -37,16 +37,22 @@ def normalize_unit(unit: dict[str, object]) -> None:
     if any(float(section.get("fuzzy_match_percent", 0.0)) != 100.0 for section in non_rom_sections):
         raise ValueError(f"{unit.get('name', 'unit')}: synthetic section does not match")
     non_rom_total = sum(int(section.get("size", 0)) for section in non_rom_sections)
-    if non_rom_total:
-        total_data = amount(measures, "total_data")
-        if non_rom_total > total_data:
-            raise ValueError(f"{unit.get('name', 'unit')}: synthetic sections exceed data total")
-        measures["total_data"] = str(total_data - non_rom_total)
     section_total = sum(
         int(section.get("size", 0))
         for section in unit.get("sections", [])
         if section.get("name") not in non_rom_names
     )
+    if non_rom_total:
+        total_data = amount(measures, "total_data")
+        if non_rom_total > total_data:
+            # A previously normalized report has already removed NOBITS from
+            # total_data. Accept it only when its ROM totals now exactly equal
+            # the owned PROGBITS sections; other undersized totals are invalid.
+            measured_total = amount(measures, "total_code") + total_data
+            if measured_total != section_total:
+                raise ValueError(f"{unit.get('name', 'unit')}: synthetic sections exceed data total")
+        else:
+            measures["total_data"] = str(total_data - non_rom_total)
     measured_total = amount(measures, "total_code") + amount(measures, "total_data")
     if section_total < measured_total:
         raise ValueError(f"{unit.get('name', 'unit')}: measures exceed owned sections")
