@@ -4320,6 +4320,7 @@ units:
     category: sdk
     source: src/agb_flash.c
     cflags: [-O1, -mthumb-interwork]
+    complete: true
     synthetic_sections:
       - { name: .bss, size: 0xA }
     base_symbol_size_overrides:
@@ -4447,6 +4448,7 @@ units:
     category: sdk
     source: src/agb_flash_512k.c
     cflags: [-O1, -mthumb-interwork]
+    complete: true
     base_symbol_size_overrides:
       IdentifyFlash: 0x94
       WaitForFlashWrite512K_Common: 0x88
@@ -4485,6 +4487,7 @@ units:
     category: sdk
     source: src/agb_flash_le_512k.c
     cflags: [-O1, -mthumb-interwork]
+    complete: true
     base_symbol_size_overrides:
       EraseFlashChip_LE: 0x74
       EraseFlashSector_LE: 0x9C
@@ -4547,6 +4550,7 @@ units:
     category: sdk
     source: src/agb_flash_mx_512k.c
     cflags: [-O1, -mthumb-interwork]
+    complete: true
     base_symbol_size_overrides:
       ProgramFlashSector_MX: 0xAC
     mappings:
