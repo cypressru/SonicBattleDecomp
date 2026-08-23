@@ -504,6 +504,8 @@ units:
       FUN_08017f34: 0x1C
       FUN_08017f58: 0x0A
       FUN_08017f6c: 0x0A
+      FUN_08017f80: 0x2C
+      FUN_08017fb0: 0x48
       FUN_08018004: 0x80
       FUN_0801808c: 0x44
       FUN_080180d4: 0x16
@@ -633,6 +635,8 @@ units:
       - { offset: 0x1776C, type: abs32, symbol: gUnknown_030017c0 }
       - { offset: 0x1777C, type: abs32, symbol: gUnknown_030017c8 }
       - { offset: 0x17780, type: abs32, symbol: gUnknown_030017cc }
+      - { offset: 0x1779E, type: thumb_call, symbol: FUN_080200d8 }
+      - { offset: 0x177DC, type: thumb_call, symbol: FUN_080200d8 }
       - { offset: 0x1786E, type: thumb_call, symbol: CpuFastSet }
       - { offset: 0x17888, type: abs32, symbol: gUnknown_030017cc }
       - { offset: 0x1788C, type: abs32, symbol: gUnknown_030033e0 }

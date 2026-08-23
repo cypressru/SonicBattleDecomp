@@ -53,9 +53,12 @@ struct UnknownQueueEntry08017f00 {
     u32 words[4];
 };
 
-struct UnknownQueueEntry08017f34 {
-    void *first;
-    void *second;
+union UnknownQueueEntry08017f34 {
+    struct {
+        u32 first;
+        u32 second;
+    } words;
+    u16 halves[4];
 };
 
 struct UnknownQueueEntry08018004 {
@@ -171,7 +174,7 @@ struct UnknownRecord03001c40 {
     u8 padding202[50];
 };
 
-extern struct UnknownQueueEntry08017f34 gUnknown_03003190[];
+extern union UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern union UnknownQueueRecord030033e0 gUnknown_030033e0[];
 extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
 extern struct UnknownState030030d0 gUnknown_030030d0;
@@ -923,12 +926,12 @@ void FUN_08017f00(u32 first, u32 second, u32 third, u32 fourth) {
 }
 
 void FUN_08017f34(void *first, void *second) {
-    struct UnknownQueueEntry08017f34 *entries = gUnknown_03003190;
+    union UnknownQueueEntry08017f34 *entries = gUnknown_03003190;
     u8 *count = &gUnknown_03001388;
-    struct UnknownQueueEntry08017f34 *entry = &entries[*count];
+    union UnknownQueueEntry08017f34 *entry = &entries[*count];
 
-    entry->first = first;
-    entry->second = second;
+    entry->words.first = (u32)first;
+    entry->words.second = (u32)second;
     (*count)++;
 }
 
@@ -938,6 +941,23 @@ void FUN_08017f58(u8 first, u8 second) {
 }
 
 void FUN_08017f6c(void) { gUnknown_030017c8 = gUnknown_030017cc; }
+
+static inline void UploadQueueEntry08017f80(union UnknownQueueEntry08017f34 entry) {
+    u16 index = gUnknown_03003170;
+
+    FUN_080200d8(index, entry.halves[0], entry.halves[1], entry.halves[2], entry.halves[3]);
+    gUnknown_03003170++;
+}
+
+void FUN_08017f80(union UnknownQueueEntry08017f34 entry) { UploadQueueEntry08017f80(entry); }
+
+void FUN_08017fb0(void) {
+    u8 i;
+
+    for (i = 0; i < gUnknown_03001388; i++) {
+        UploadQueueEntry08017f80(gUnknown_03003190[i]);
+    }
+}
 
 void FUN_08018004(u16 first, u16 second, u8 third, u16 fourth, u8 fifth, u8 sixth, u8 seventh,
                   u8 eighth, u8 ninth) {

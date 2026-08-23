@@ -154,8 +154,8 @@ address,name,mode,confidence
 0x08017F34,FUN_08017f34,thumb,direct-call+exact-body
 0x08017F58,FUN_08017f58,thumb,direct-call+exact-body
 0x08017F6C,FUN_08017f6c,thumb,direct-call+exact-body
-0x08017F80,FUN_08017f80,thumb,recursive-disassembly
-0x08017FB0,FUN_08017fb0,thumb,direct-call
+0x08017F80,FUN_08017f80,thumb,recursive-disassembly+exact-body
+0x08017FB0,FUN_08017fb0,thumb,direct-call+exact-body
 0x08018004,FUN_08018004,thumb,direct-call+exact-body
 0x0801808C,FUN_0801808c,thumb,recursive-disassembly+exact-body
 0x080180D4,FUN_080180d4,thumb,coherent-leaf+owned-literal-pool+exact-body

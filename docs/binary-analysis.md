@@ -326,19 +326,23 @@ address, while agbcc emits the index address first, which also swaps two literal
 operand order in the source does not change this - the multiply makes the index side the costlier
 operand, and agbcc expands it first regardless of how the addition is written.
 
-### An unresolved register-allocation difference
+### Queue-entry value shape
 
-Two routines in this placeholder reproduce every instruction except one redundant
-register-to-register copy, where retail writes a value straight into its final register and the
-pinned agbcc emits an extra `adds rD, rS, #0`. It remains at `0x08017F80` and `0x08017FB0`, the two
-queue-submit wrappers around `FUN_080200D8`.
+The queue-submit wrappers at `0x08017F80` and `0x08017FB0` match once their two input words are
+represented as one eight-byte union passed by value. The first routine splits that value into four
+halfwords and submits it to `FUN_080200D8`. The second walks the queued values and uses the same
+operation through a small inline helper. That relationship is significant: spelling the loop as
+four independent halfword loads or as two unrelated word parameters changes register allocation,
+while the shared value-shape emits retail's two word loads, redundant low-halfword reload, and
+`r4`/`r5` preservation exactly. Their 44- and 72-byte instruction extents and call relocations now
+match completely in clean C.
 
 Four routines that were in this list are now matched, and the two causes turned out to be source
 shapes rather than allocator noise. `0x080178D0` needed `int`-width locals for the values read out
 of memory; `0x080179D0` needed the early-`return` form and the double-shift spelling of its bitfield
 extraction; `0x08017CF4` and `0x08015FA4` needed the OAM loop written as an ascending `for` over a
-post-incremented `volatile u16 *`. Both idioms are recorded above. `0x08017F80` and `0x08017FB0`
-have been retried against all of them and are unchanged, so their divergence is a different cause.
+post-incremented `volatile u16 *`. Both idioms are recorded above. The queue wrappers instead needed
+the shared eight-byte value shape described above.
 
 At `0x08015E30` the whole body, the register assignment and the 272-byte size all reproduce, and the
 only difference is where the two 16-bit arguments are extended: retail copies them unextended in the
