@@ -833,6 +833,13 @@ zero-padding bytes; mapping symbols prevent that padding from inflating the func
 
 ## Original source language
 
+The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
+at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
+function. It initializes six halfwords in each of four 16-byte link records, exchanges those
+records, validates their offset-14 marker, and copies successful participant bytes back into the
+caller's record. The ordinary-C reconstruction and all seven relocations match byte-for-byte; the
+24-byte literal pool at `0x08017B5C-0x08017B74` remains data.
+
 Undetermined pending the complete TU inventory. Current negative evidence: the main executable
 contains no detected C++ mangling, RTTI/typeinfo strings, vtable labels, exception runtime names,
 `operator new`/`operator delete` identifiers, static-constructor markers, or C++ source suffixes.

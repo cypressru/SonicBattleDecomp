@@ -191,6 +191,8 @@ extern const u16 gUnknown_0847aa18[];
 struct UnknownState03001b10 {
     s16 first;
     s16 second;
+    s16 padding4[5];
+    s16 check;
 };
 extern struct UnknownState03001b10 gUnknown_03001b10;
 extern s16 gUnknown_030016f0[][8];
@@ -761,6 +763,43 @@ u8 FUN_080179d0(void) {
         return 255;
     }
     return count;
+}
+
+struct UnknownParticipantState17a80 {
+    u8 padding0[20];
+    u8 participants[4];
+};
+
+u32 FUN_08017a80(struct UnknownParticipantState17a80 *state, u8 participantCount) {
+    u32 matches;
+    u8 i;
+
+    gUnknown_03001b10.first = state->participants[gUnknown_03001380];
+    gUnknown_03001b10.check = 0x3210;
+    for (i = 0; i < 4; i++) {
+        gUnknown_030016f0[i][0] = 0;
+        gUnknown_030016f0[i][1] = 0;
+        gUnknown_030016f0[i][2] = 0;
+        gUnknown_030016f0[i][3] = 0;
+        gUnknown_030016f0[i][4] = 0;
+        gUnknown_030016f0[i][7] = 0;
+    }
+    gUnknown_030013a4 = gUnknown_03001730;
+    gUnknown_03001730 = FUN_08018730(gUnknown_030016f0[0]);
+    FUN_08018c20();
+    matches = 1;
+    for (i = 0; i < participantCount; i++) {
+        if (matches && gUnknown_030016f0[i][7] != gUnknown_03001b10.check) {
+            matches = 0;
+        }
+    }
+    if (matches) {
+        state->participants[0] = gUnknown_030016f0[0][0];
+        state->participants[1] = gUnknown_030016f0[1][0];
+        state->participants[2] = gUnknown_030016f0[2][0];
+        state->participants[3] = gUnknown_030016f0[3][0];
+    }
+    return matches;
 }
 
 void FUN_08017c5c(void) {

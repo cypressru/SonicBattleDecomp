@@ -138,6 +138,7 @@ address,name,mode,confidence
 0x080178D0,FUN_080178d0,thumb,direct-call+exact-body
 0x08017964,FUN_08017964,thumb,direct-call+exact-body
 0x080179D0,FUN_080179d0,thumb,recursive-disassembly+exact-body
+0x08017A80,FUN_08017a80,thumb,sequential-prologue+complete-control-flow+exact-body
 0x08017B74,FUN_08017b74,thumb,direct-call
 0x08017C5C,FUN_08017c5c,thumb,direct-call+exact-body
 0x08017C74,FUN_08017c74,thumb,direct-call+exact-body
