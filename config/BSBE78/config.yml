@@ -36,6 +36,10 @@ long_branch_targets:
   - 0x08011C2E
   - 0x08011C32
   - 0x08015374
+  # Code at 0x0801E828 reaches FUN_0801f7d0's post-literal continuation with a
+  # long BL. The target relies on the allocation owner's saved frame and
+  # then unwinds it, so it cannot be called as an independent function.
+  - 0x0801F82A
 rejected_function_pointers:
   # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
   # destination is midway through a switch case in FUN_08020244 and depends
@@ -73,6 +77,10 @@ rejected_function_pointers:
   # An opaque payload word points at the gUnknown_03001620 literal inside
   # FUN_0800486c. The surrounding path uses the real entry's live state.
   - { source: 0x0F23E30, destination: 0x08005110 }
+  # An opaque asset word points at the upper halfword of the
+  # gUnknown_03005248 literal inside FUN_08027660. The surrounding block is
+  # skipped as data and live code resumes at 0x08027738.
+  - { source: 0x0F2C9D8, destination: 0x0802772A }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -2094,6 +2102,9 @@ units:
       - { offset: 0x5EC0, mode: thumb }
       - { offset: 0x5ECE, mode: data }
       - { offset: 0x5ED0, mode: thumb }
+      # FUN_0801F7D0 branches around its aligned four-word literal island.
+      - { offset: 0x5F8C, mode: data }
+      - { offset: 0x5F9C, mode: thumb }
       - { offset: 0x5FEA, mode: data }
       - { offset: 0x5FEC, mode: thumb }
       - { offset: 0x600A, mode: data }
@@ -2376,6 +2387,16 @@ units:
       - { offset: 0xCDFC, mode: thumb }
       - { offset: 0xD508, mode: data }
       - { offset: 0xD524, mode: thumb }
+      # FUN_08027660 branches around three internal literal islands and owns
+      # the trailing literal pool before FUN_08027778.
+      - { offset: 0xDE0A, mode: data }
+      - { offset: 0xDE38, mode: thumb }
+      - { offset: 0xDE6E, mode: data }
+      - { offset: 0xDE88, mode: thumb }
+      - { offset: 0xDE8E, mode: data }
+      - { offset: 0xDE94, mode: thumb }
+      - { offset: 0xDEBA, mode: data }
+      - { offset: 0xDEC8, mode: thumb }
       - { offset: 0xDFF4, mode: data }
       - { offset: 0xE004, mode: thumb }
       - { offset: 0xE038, mode: data }
