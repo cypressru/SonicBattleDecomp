@@ -17,6 +17,9 @@ long_branch_targets:
   - 0x08003798
   - 0x0800410C
   - 0x080043C2
+  # FUN_080040fa branches over its final literal island to the shared epilogue.
+  # The target unwinds the frame opened by FUN_080040fa and is not callable alone.
+  - 0x08004434
   - 0x0800B086
   - 0x0800C780
   - 0x0800F028
@@ -1696,6 +1699,9 @@ units:
       - { offset: 0x3A8C, mode: data }
       - { offset: 0x3A90, mode: thumb }
       - { offset: 0x3AB8, mode: data }
+      # FUN_080040fa's final branch-skipped literal island and resumed tail.
+      - { offset: 0x3BB6, mode: data }
+      - { offset: 0x3BE4, mode: thumb }
       - { offset: 0x402C, mode: data }
       - { offset: 0x40B2, mode: data }
       - { offset: 0x40CC, mode: thumb }

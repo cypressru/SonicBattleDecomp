@@ -1256,8 +1256,8 @@ void FUN_08016a44(const u16 *palette) {
     for (i = 0; i <= 255; i++) {
         colour = palette[i];
         red = (colour & 31) + gUnknown_030016b8;
-        green = (((colour << 16) >> 21) & 31) + gUnknown_030020fc;
-        blue = (((colour << 16) >> 26) & 31) + gUnknown_03001b20;
+        green = ((((u32)colour << 16) >> 21) & 31) + gUnknown_030020fc;
+        blue = ((((u32)colour << 16) >> 26) & 31) + gUnknown_03001b20;
         if (red > 31) {
             red = 31;
         }
@@ -1422,14 +1422,13 @@ u32 FUN_08017a80(struct UnknownParticipantState17a80 *state, u8 participantCount
 
 u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     volatile u32 valid;
-    register u32 status;
     u8 *acceptedCount;
     u8 i;
 
     (void)unused;
     gUnknown_03001b10.first = marker;
     gUnknown_03001b10.second = 0x8844;
-    ((u8 *)&gUnknown_03001620)[0x84] = 0;
+    gUnknown_03001620.activeSlots[112] = 0;
     for (i = 0; i < participantCount; i++) {
         gUnknown_030016f0[i][0] = 0;
     }
@@ -1438,8 +1437,7 @@ u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     FUN_08018c20();
     valid = 1;
     for (i = 0; i < participantCount; i++) {
-        status = gUnknown_03001730;
-        if (status & (1 << i)) {
+        if (gUnknown_03001730 & (1 << i)) {
             acceptedCount = &gUnknown_030016a4;
             if (gUnknown_030016f0[i][1] == gUnknown_03001b10.second || i == gUnknown_03001380) {
                 (*acceptedCount)++;
