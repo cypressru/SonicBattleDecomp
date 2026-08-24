@@ -3306,18 +3306,16 @@ void FUN_0803bf68(struct UnknownListNode *node);
 void FUN_0803bb08(struct UnknownListNode *node);
 
 void FUN_0803bef0(struct UnknownListNode *node) {
-    register u8 *allocation asm("r3") = node->allocation;
-    register struct UnknownPosition *graphics asm("r2") =
-        (struct UnknownPosition *)(allocation + 16);
-    register u16 tile asm("r2");
-    register u8 graphicsOffset asm("r1");
-    register struct UnknownPosition *position asm("r1");
-    register u32 zero asm("r5");
+    u8 *allocation = node->allocation;
+    struct UnknownPosition *graphics = (struct UnknownPosition *)(allocation + 16);
+    u16 tile;
+    u8 graphicsOffset;
+    struct UnknownPosition *position;
+    u32 zero;
 
     *graphics = *(const struct UnknownPosition *)gUnknown_0816faf4;
     graphicsOffset = -(gUnknown_030052e8[gUnknown_030052e0] + 12);
     tile = 0;
-    asm volatile("" : "+r"(tile));
     allocation[21] = graphicsOffset;
     position = node->position;
     allocation += 16;
@@ -6791,18 +6789,18 @@ void FUN_08028f98(struct UnknownListNode *node) {
 }
 
 void FUN_08029014(struct UnknownListNode *node) {
-    register struct UnknownPosition *position asm("r2") = node->position;
-    register u32 zero asm("r4");
-    register u32 halfwordZero asm("r1");
+    struct UnknownPosition *position = node->position;
+    u32 zero;
+    u32 halfwordZero;
 
     position->field0 = gUnknown_08edb97c;
     zero = 0;
     halfwordZero = 0;
     position->tile = halfwordZero;
     {
-        register struct UnknownPosition *selected asm("r3") = node->position;
-        register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
-        register u32 offset asm("r1") = selected->field13 * 8;
+        struct UnknownPosition *selected = node->position;
+        const u8 *table = (const u8 *)gUnknown_08edb98c;
+        u32 offset = selected->field13 * 8;
 
         selected->x = *(const u16 *)(offset + (u32)table);
         selected = node->position;
@@ -9867,28 +9865,23 @@ void FUN_08038264(u8 index) {
 }
 
 void FUN_08032618(u32 first, u32 second) {
-    register u32 destination asm("r4") = first;
-    register const void *data asm("r5");
-    register const void *source asm("r0");
+    u32 destination = first;
+    const void *data;
+    const void *source;
 
-    asm volatile("" : "+r"(destination));
     destination <<= 24;
     data = gUnknown_030052fc[(second << 24) >> 24];
     source = (const void *)0x06010420;
-    asm volatile("" : : "r"(source));
     destination = (destination >> 13) + 0x06015000;
     FUN_0804a594(source, (void *)destination, 0x200);
     FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, (u8 *)destination, 16, 4, 0);
     {
-        register u32 width asm("r1") = FUN_08020ad0(data);
-        register u32 halfWidth asm("r1");
-        register u32 x asm("r1");
+        u32 width = FUN_08020ad0(data);
+        u32 halfWidth;
+        u32 x;
 
-        asm volatile("" : : "r"(width));
         halfWidth = width / 2;
-        asm volatile("" : : "r"(halfWidth));
         x = 64 - halfWidth;
-        asm volatile("" : : "r"(x));
         FUN_08020b74(x, 2, data, 8, 9);
     }
 }
