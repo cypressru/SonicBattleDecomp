@@ -536,17 +536,15 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 void FUN_08046bc4(struct UnknownState460ac *state) {
     s32 destination;
     s32 delta;
-    u8 mode;
 
     if (state->field40 != 0) {
         state->field40--;
     }
-    mode = state->field27;
-    if (mode != 0xff && mode != 2 && (gUnknown_030048e0.third & 1) != 0) {
+    if (state->field27 != 0xff && state->field27 != 2 && (gUnknown_030048e0.third & 1) != 0) {
         state->field40 = 0xf;
     }
 
-    switch (state->field27) {
+    switch (((volatile struct UnknownState460ac *)state)->field27) {
     case 0: {
         destination = (s16)state->field34;
         if (state->field23 != 0) {
@@ -573,16 +571,19 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
 
             state->field26 = 0;
             field36 = &state->field36;
-            do {
+            {
+                u32 emptyCommand = 0xce;
+                const u16 *soundTable;
+
+                emptyCommand <<= 2;
+                soundTable = gUnknown_08edda44;
+            scriptLoop:
+            parseNext: {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
                 const u16 *nextScript = script + 1;
-                u32 emptyCommand = 0xce;
-                const u16 *soundTable = gUnknown_08edda44;
 
                 state->field28.script = nextScript;
-                done = 1;
-                emptyCommand <<= 2;
 
                 switch (command) {
                 case 0xfffe:
@@ -606,15 +607,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                             state->field27 = 3;
                         }
                     } else {
-                        done = 0;
+                        goto parseNext;
                     }
                     break;
                 case 0xfffb:
                     command = nextScript[0];
                     state->field28.script = nextScript + 1;
                     state->field37 = command;
-                    done = 0;
-                    break;
+                    goto parseNext;
                 case 0xfff9: {
                     s32 conversionResult;
 
@@ -654,12 +654,18 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     }
                     break;
                 }
-            } while (done == 0);
+                done = emptyCommand != 0;
+            }
+            }
+            if (done != 0) {
+                goto switchDone;
+            }
+            goto scriptLoop;
         }
-        break;
+        goto switchDone;
     case 2:
         if ((gUnknown_030048e0.third & 1) != 0) {
-            state->field27 = mode + 1;
+            state->field27++;
         }
         break;
     case 3:
@@ -692,6 +698,7 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         }
         break;
     }
+switchDone:
     if (state->field36 != 0) {
         FUN_080405f4(state->field2, 0);
     }
