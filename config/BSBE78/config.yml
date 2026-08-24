@@ -2019,6 +2019,10 @@ units:
       - { offset: 0x3A58, mode: thumb }
       - { offset: 0x3A8C, mode: data }
       - { offset: 0x3A90, mode: thumb }
+      - { offset: 0x3778, mode: data }
+      - { offset: 0x3784, mode: thumb }
+      - { offset: 0x37B6, mode: data }
+      - { offset: 0x37B8, mode: thumb }
       - { offset: 0x37F0, mode: data }
       - { offset: 0x3800, mode: thumb }
       - { offset: 0x3878, mode: data }
