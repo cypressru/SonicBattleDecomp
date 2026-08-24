@@ -42,7 +42,9 @@ void FUN_0801c4bc(void);
 extern void FUN_08020840(u16 value);
 extern u32 FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
-extern u8 FUN_0801d068(u8 value);
+u32 FUN_0801d068(u8 value);
+u8 FUN_0801d188(u8 value);
+u32 FUN_0801d200(u8 value);
 extern void FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
@@ -1166,6 +1168,7 @@ extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
 extern const u8 gUnknown_08071237[];
+extern const u8 gUnknown_0807124a[];
 extern void FUN_0801eea8(u8 value);
 extern u16 ArcTan2(s16 x, s16 y);
 extern u16 gUnknown_08071250[];
@@ -2914,6 +2917,77 @@ u8 FUN_0801d3ac(u8 value) {
 
     ArcTan2(first, second);
     return gUnknown_08ed8af4[ArcTan2(first, second) >> 12];
+}
+
+u32 FUN_0801d068(u8 value) {
+    s32 *scores = (s32 *)&gUnknown_03001c40[value];
+    s32 bestScore = 0x7fffffff;
+    u8 *state;
+    u32 bestIndex;
+    u32 index;
+
+    if (FUN_08020160((s8)gUnknown_0807124a[gUnknown_03003e10]) != 0) {
+        return FUN_0801d200(value);
+    }
+    if (FUN_08020160(20) != 0) {
+        return FUN_0801d188_wide(value);
+    }
+
+    bestIndex = 0;
+    state = &gUnknown_03001620;
+    if (state[8] != 0) {
+        u8 group = state[value + 32];
+        u8 *entries = state + 20;
+        u8 *groups = state + 32;
+        s32 *score = scores;
+        struct UnknownEntityData *candidate =
+            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+
+        for (index = 0; index <= 3; candidate++, score++, index++) {
+            if (index != value && entries[index] != 0xff && groups[index] != group &&
+                bestScore > *score) {
+                u16 type = candidate->field20;
+
+                if (type == 0xfc)
+                    continue;
+                if (type == 0xfd)
+                    continue;
+                if (type == 0xfe)
+                    continue;
+                if (type == 0xff)
+                    continue;
+                bestScore = *score;
+                bestIndex = index;
+            }
+        }
+    } else {
+        u8 *entries = state + 20;
+        s32 *score = scores;
+        struct UnknownEntityData *candidate =
+            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+
+        for (index = 0; index <= 3; candidate++, score++, index++) {
+            if (index != value && entries[index] != 0xff && bestScore > *score) {
+                u16 type = candidate->field20;
+
+                if (type == 0xfc)
+                    continue;
+                if (type == 0xfd)
+                    continue;
+                if (type == 0xfe)
+                    continue;
+                if (type == 0xff)
+                    continue;
+                bestScore = *score;
+                bestIndex = index;
+            }
+        }
+    }
+
+    if (bestScore == 0x7fffffff) {
+        return value;
+    }
+    return bestIndex;
 }
 
 u8 FUN_0801d188(u8 value) {
