@@ -275,7 +275,10 @@ struct UnknownEntityData {
     s32 field72[4];
     s16 field88[14];
     u32 field116;
-    s32 field120[15];
+    s32 field120[13];
+    u16 field172;
+    u16 field174;
+    u32 field176;
     u32 field180;
     u8 filler184[7];
     u8 field191;
@@ -3292,6 +3295,19 @@ void FUN_0801ce70(void) {
     gUnknown_03001b00[5] = 0;
     gUnknown_03001b00[6] = 0;
     gUnknown_03001b00[7] = 0;
+}
+
+u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
+    struct UnknownEntityData *metadata = gUnknown_03001c40;
+
+    if ((metadata[index].field116 & 0x1F00) == value) {
+        gUnknown_03003d88++;
+    }
+    if ((metadata[index].field174 & 0x7C0) == (value >> 2)) {
+        gUnknown_03003d88++;
+    }
+
+    return gUnknown_03003d88 >= threshold;
 }
 
 void FUN_0801eacc(u8 value) {
