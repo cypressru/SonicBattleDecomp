@@ -237,9 +237,11 @@ extern struct UnknownListNode *FUN_0801f7d0(void (*callback)(struct UnknownListN
 
 typedef void (*UnknownCallback)(void);
 
+struct UnknownEntityFrame;
+
 struct UnknownEntity {
     UnknownCallback callback;
-    const void *data;
+    const struct UnknownEntityFrame *data;
     u16 field8;
     u16 field10;
     u8 field12;
@@ -1203,6 +1205,165 @@ void FUN_080252d0(struct UnknownListNode *node);
 void FUN_08025f5c(struct UnknownListNode *node);
 void FUN_08025fd4(struct UnknownListNode *node);
 extern void FUN_08018444(void);
+extern void FUN_080184c8(void);
+extern void FUN_08018530(void);
+extern void FUN_080176e4(s16 target);
+extern void FUN_080182e4(s16 target);
+extern void FUN_08018300(s16 target);
+extern void FUN_08018318(s16 first, s16 second);
+extern void FUN_080006d0(void);
+extern u16 gUnknown_03001378;
+extern void FUN_080177b8(u8 participant);
+extern u8 FUN_080153e0(void);
+extern u8 FUN_0801584c(void);
+void FUN_080207ec(u16 value);
+void FUN_0801bd90(void);
+void FUN_0801c910(void);
+void FUN_0801a04c(u8 value);
+
+void FUN_0801a61c(u8 mode) {
+    u8 *selection;
+    u8 selected;
+
+    switch (mode) {
+    case 0:
+    case 1: {
+        u8 index;
+        u8 *active;
+        u8 *values;
+
+        selected = 0;
+        index = 1;
+        selection = (u8 *)0x03003d90;
+        active = (u8 *)0x03001634;
+        values = active + 19;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)((u32)index + (u32)active) != 0xff &&
+                *(u8 *)((u32)selected + (u32)values) > *(u8 *)((u32)index + (u32)values)) {
+                selected = index;
+            }
+        }
+        break;
+    }
+    case 2: {
+        u8 index;
+        u8 *active;
+        u16 *values;
+
+        selected = 0;
+        index = 1;
+        selection = (u8 *)0x03003d90;
+        active = (u8 *)0x03001634;
+        values = (u16 *)(active + 86);
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)((u32)index + (u32)active) != 0xff && values[selected] > values[index]) {
+                selected = index;
+            }
+        }
+        break;
+    }
+    default:
+        return;
+    }
+    *selection = selected;
+}
+
+void FUN_0801aadc(void) {
+    u8 random = FUN_0801f9e8(0x1593);
+    u8 *state = (u8 *)0x03003d98;
+
+    if (*state > 8) {
+        *state = 0;
+        FUN_08018530();
+        FUN_08019b5c();
+        gUnknown_03002030 = FUN_0801a898;
+    } else if (*state != 0) {
+        (*state)++;
+    } else if (random == *(u8 *)0x03003d9c) {
+        *state = 1;
+    } else {
+        u8 *timer = &gUnknown_03001620;
+
+        timer += 0x85;
+
+        (*timer)++;
+        if (*timer > 240) {
+            FUN_080184c8();
+            gUnknown_03002030 = FUN_0803d1a0;
+            return;
+        }
+    }
+
+    FUN_080006d0();
+    FUN_080176e4((s16)(gUnknown_03001378 << 3));
+    FUN_080182e4(256);
+    FUN_08018318(0, 0);
+    FUN_08018300(768);
+}
+
+void FUN_0801bcac(void) {
+    FUN_080177b8(gUnknown_03001380);
+    FUN_080006d0();
+    {
+        u8 status = FUN_080153e0();
+
+        if (status == 0) {
+            gUnknown_03002030 = FUN_0801c910;
+            FUN_080182ac();
+            FUN_08016684();
+            FUN_08017ed0();
+            FUN_08013214(0x45);
+            FUN_08017f6c();
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+            FUN_08011c7c();
+            FUN_080175d4();
+            FUN_08017d58();
+            FUN_08017c5c();
+            return;
+        }
+        if (status == 1) {
+            u8 *scene = &gUnknown_03001620;
+
+            scene += 117;
+            *scene = status;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+    {
+        struct SceneSelection {
+            u8 filler[136];
+            u8 selection;
+        } *scene = (struct SceneSelection *)&gUnknown_03001620;
+        u8 *selection = &scene->selection;
+
+        if (*selection == 0xff) {
+            FUN_0801a04c(gUnknown_03001380);
+        } else {
+            FUN_0801a04c(*selection);
+        }
+    }
+    {
+        u8 mode = FUN_0801584c();
+
+        FUN_080182ac();
+        FUN_08016684();
+        FUN_08017ed0();
+        FUN_08013214(mode);
+        FUN_08017f6c();
+        if (mode != 10) {
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+        }
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+}
 
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
@@ -3301,38 +3462,38 @@ void FUN_0801ce70(void) {
 
 u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
     struct UnknownEntityData *metadata = gUnknown_03001c40;
+    u32 offset = index * sizeof(struct UnknownEntityData);
 
-    if ((metadata[index].field116 & 0x1F00) == value) {
+    if ((*(u32 *)((u32)&metadata->field116 + offset) & 0x1F00) == value) {
         gUnknown_03003d88++;
     }
-    if ((metadata[index].field174 & 0x7C0) == (value >> 2)) {
+    if ((*(u16 *)((u32)&metadata->field174 + offset) & 0x7C0) == (value >> 2)) {
         gUnknown_03003d88++;
     }
 
-    return gUnknown_03003d88 >= threshold;
+    if (gUnknown_03003d88 >= threshold) {
+        return 1;
+    }
+    return 0;
 }
 
 u32 FUN_0801cfc8(u8 value) {
     u32 offset = value * sizeof(struct UnknownEntity);
     struct UnknownEntity *entities = gUnknown_03003db0;
     struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
-    const struct UnknownEntityFrame *frame = entity->data;
-    u8 counter = entity->field14;
     struct UnknownEntity *savedEntities = entities;
 
-    while (counter >= frame->duration) {
-        if (frame->duration == 0) {
+    while (entity->field14 >= entity->data->duration) {
+        if (entity->data->duration == 0) {
             entity->field8 = 0;
             return 0;
         }
         entity->field14 = 0;
-        frame++;
-        entity->data = frame;
-        counter = entity->field14;
+        entity->data++;
     }
 
-    entity->field8 = frame->flags & 0x3FF;
-    if ((frame->flags & 0x8000) != 0) {
+    entity->field8 = entity->data->flags & 0x3FF;
+    if ((entity->data->flags & 0x8000) != 0) {
         entity->field8 = (entity->field8 & 0xFF0F) | FUN_0801e99c(value);
     } else if (savedEntities[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
         entity->field8 ^= 0x30;
