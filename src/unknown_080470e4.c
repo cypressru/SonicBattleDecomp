@@ -794,8 +794,9 @@ struct UnknownGraphicsSources47448 {
 extern const struct UnknownGraphicsSources47448 gUnknown_081b94c8[];
 extern void FUN_0804a5b8(const void *source, void *destination);
 extern s16 *gUnknown_03000274;
-extern const void *gUnknown_08edda68[];
-extern const void *gUnknown_08edda6c[];
+typedef void (*UnknownStateCallback)(struct UnknownState482d0 *state);
+extern const UnknownStateCallback gUnknown_08edda68[];
+extern const UnknownStateCallback gUnknown_08edda6c[];
 extern const struct UnknownGraphicsBundle47d1c gUnknown_081bbbe8[];
 extern const u8 gUnknown_081a7f78[];
 extern const u8 gUnknown_081a7f80[];
@@ -1951,3 +1952,10 @@ void FUN_08048300(struct UnknownState482d0 *state) {
     state->field39 = 16;
     state->callback = (const void *)((u32)FUN_08047c30 + 1);
 }
+
+const UnknownStateCallback gUnknown_08edda68[] = {FUN_080471dc};
+
+const UnknownStateCallback gUnknown_08edda6c[] = {
+    FUN_080482a8, FUN_080482b4, FUN_080482d0, FUN_080482e8,
+    FUN_08048300, FUN_08048300, FUN_080482a8,
+};

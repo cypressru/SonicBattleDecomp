@@ -173,6 +173,15 @@ retail table word against the reviewed Thumb symbol order. Objdiff verifies all 
 bytes, 60 literal/alignment bytes, 56 table bytes, all relocations, and all sixteen functions at
 100% from ordinary C.
 
+The previously separated `main/unknown_080470E4` range is now complete across its remote data as
+well as its code. Its standalone source already emitted exactly `0x1258` bytes of `.text` through
+the main executable's final game-code boundary. The callback arrays at `0x08EDDA68-0x08EDDA88`
+are the source object's sole `0x20`-byte `.rodata` section: their eight entries point only to
+functions in this unit, both arrays are consumed here, and the following table is referenced by a
+different owner. Configure-time validation checks all eight retail Thumb pointers. Objdiff now
+verifies 4,372 instruction bytes, 324 literal/alignment bytes, all 32 callback-table bytes, all
+relocations, and all 36 functions at 100% from ordinary C.
+
 Related-title linker order is supporting evidence, not a boundary by itself. The public
 [Sonic Advance 3 linker script](https://github.com/SAT-R/sa3/blob/master/ldscript.txt) places
 `core.o`, `main.o`, and `task.o` consecutively, which makes the start
