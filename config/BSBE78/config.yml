@@ -6061,6 +6061,7 @@ units:
     category: sdk
     function_map: config/BSBE78/functions.csv
     source: src/m4a.c
+    complete: true
     cflags: [-O2, -mthumb-interwork]
     mappings:
       - { offset: 0x98, mode: data }
