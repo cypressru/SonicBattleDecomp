@@ -534,6 +534,9 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 }
 
 void FUN_08046bc4(struct UnknownState460ac *state) {
+    s32 destination;
+    s32 delta;
+
     if (state->field40 != 0) {
         state->field40--;
     }
@@ -542,14 +545,19 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
     }
 
     switch (state->field27) {
-    case 0:
-        *(s32 *)&state->field8 -= FUN_0804a59c(
-            *(s32 *)&state->field8 - (((s16)state->field34 + (state->field23 != 0)) << 16), 6);
+    case 0: {
+        destination = (s16)state->field34;
+        if (state->field23 != 0) {
+            destination++;
+        }
+        delta = FUN_0804a59c(*(s32 *)&state->field8 - (destination << 16), 6);
+        *(s32 *)&state->field8 -= delta;
         if ((s16)state->field34 == (s16)state->field10) {
             state->field8 = 8;
             state->field27++;
         }
         break;
+    }
     case 1:
         if ((gUnknown_030048e0.third & 1) != 0) {
             state->field38 = 0;
