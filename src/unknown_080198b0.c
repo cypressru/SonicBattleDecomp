@@ -2043,29 +2043,25 @@ void FUN_0801e41c(u8 value) {
         if (subtype == 2) {
             struct UnknownEntity *entities = gUnknown_03003db0;
             u32 entityOffset = index * 24;
-            struct UnknownEntity *entity =
-                (struct UnknownEntity *)(entityOffset + (u32)entities);
+            struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
             entity->field8 = 0x80;
         } else if (subtype == 4) {
             struct UnknownEntity *entities = gUnknown_03003db0;
             u32 entityOffset = index * 24;
-            struct UnknownEntity *entity =
-                (struct UnknownEntity *)(entityOffset + (u32)entities);
+            struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
             entity->field8 = 0x20;
         } else if (subtype == 6) {
             struct UnknownEntity *entities = gUnknown_03003db0;
             u32 entityOffset = index * 24;
-            struct UnknownEntity *entity =
-                (struct UnknownEntity *)(entityOffset + (u32)entities);
+            struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
             entity->field8 = 0x10;
         } else if (subtype == 8) {
             struct UnknownEntity *entities = gUnknown_03003db0;
             u32 entityOffset = index * 24;
-            struct UnknownEntity *entity =
-                (struct UnknownEntity *)(entityOffset + (u32)entities);
+            struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
             entity->field8 = 0x40;
         } else {
