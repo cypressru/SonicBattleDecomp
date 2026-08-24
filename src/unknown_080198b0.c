@@ -3605,7 +3605,6 @@ u32 FUN_0801cfc8(u8 value) {
     u32 offset = value * sizeof(struct UnknownEntity);
     struct UnknownEntity *entities = gUnknown_03003db0;
     struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
-    struct UnknownEntity *savedEntities = entities;
 
     while (entity->field14 >= entity->data->duration) {
         if (entity->data->duration == 0) {
@@ -3619,7 +3618,7 @@ u32 FUN_0801cfc8(u8 value) {
     entity->field8 = entity->data->flags & 0x3FF;
     if ((entity->data->flags & 0x8000) != 0) {
         entity->field8 = (entity->field8 & 0xFF0F) | FUN_0801e99c(value);
-    } else if (savedEntities[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
+    } else if (gUnknown_03003db0[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
         entity->field8 ^= 0x30;
     }
 
