@@ -1377,18 +1377,32 @@ void FUN_0801c8f0(void) {
 }
 
 void FUN_0801c770(void) {
+    struct SceneState {
+        u8 field0;
+        u8 field1;
+        u8 field2;
+        u8 field3;
+        u8 filler4[16];
+        u8 choices[4];
+        u8 filler24[4];
+        u8 flags[4];
+        u8 filler32[4];
+        u8 field36;
+        u8 filler37[88];
+        u8 field125;
+    };
     u8 choices[8];
-    u8 *scene;
+    struct SceneState *scene;
     u8 index;
     u8 choice;
 
     memcpy(choices, gUnknown_08071237, 7);
-    scene = &gUnknown_03001620;
-    scene[36] = 4;
-    scene[28] = 1;
-    scene[29] = 1;
-    scene[30] = 1;
-    scene[31] = 1;
+    scene = (struct SceneState *)&gUnknown_03001620;
+    scene->field36 = 4;
+    scene->flags[0] = 1;
+    scene->flags[1] = 1;
+    scene->flags[2] = 1;
+    scene->flags[3] = 1;
 
     choice = FUN_08020144() % 7;
     for (index = 0; index <= 3; index++) {
@@ -1396,13 +1410,13 @@ void FUN_0801c770(void) {
             choice = FUN_08020144() % 7;
         }
         choices[choice] = 0;
-        scene[index + 20] = choice;
+        scene->choices[index] = choice;
     }
 
-    scene[1] = 0;
-    scene[2] = 1;
-    scene[3] = FUN_08020144() % 9;
-    scene[125] = 0xff;
+    scene->field1 = 0;
+    scene->field2 = 1;
+    scene->field3 = FUN_08020144() % 9;
+    scene->field125 = 0xff;
     FUN_08019ed8();
     FUN_08019b5c();
     FUN_08012b98(50);

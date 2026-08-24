@@ -1905,6 +1905,8 @@ units:
       - { offset: 0x2FAC, mode: thumb }
       - { offset: 0x2FF2, mode: data }
       - { offset: 0x2FF4, mode: thumb }
+      - { offset: 0x2F6A, mode: data }
+      - { offset: 0x2F7C, mode: thumb }
       - { offset: 0x300E, mode: data }
       - { offset: 0x301C, mode: thumb }
       - { offset: 0x3032, mode: data }
