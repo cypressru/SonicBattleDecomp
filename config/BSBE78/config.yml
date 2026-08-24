@@ -2017,6 +2017,12 @@ units:
       - { offset: 0x3A58, mode: thumb }
       - { offset: 0x3A8C, mode: data }
       - { offset: 0x3A90, mode: thumb }
+      - { offset: 0x37F0, mode: data }
+      - { offset: 0x3800, mode: thumb }
+      - { offset: 0x3878, mode: data }
+      - { offset: 0x387C, mode: thumb }
+      - { offset: 0x38C4, mode: data }
+      - { offset: 0x38C8, mode: thumb }
       - { offset: 0x3AB8, mode: data }
       - { offset: 0x402C, mode: data }
       - { offset: 0x40B2, mode: data }
