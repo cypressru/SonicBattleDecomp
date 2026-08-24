@@ -1429,7 +1429,7 @@ u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     (void)unused;
     gUnknown_03001b10.first = marker;
     gUnknown_03001b10.second = 0x8844;
-    ((u8 *)&gUnknown_03001620)[0x84] = 0;
+    gUnknown_03001620.activeSlots[112] = 0;
     for (i = 0; i < participantCount; i++) {
         gUnknown_030016f0[i][0] = 0;
     }
