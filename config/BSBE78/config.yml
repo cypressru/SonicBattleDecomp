@@ -713,6 +713,9 @@ units:
       # FUN_080176E4 branches around a two-word in-function literal island.
       - { offset: 0x16F40, mode: data }
       - { offset: 0x16F48, mode: thumb }
+      # FUN_080177B8 branches around a three-word in-function literal island.
+      - { offset: 0x17098, mode: data }
+      - { offset: 0x170A4, mode: thumb }
       # FUN_08015858 branches around two in-function literal islands.
       - { offset: 0x15076, mode: data }
       - { offset: 0x1507C, mode: thumb }
