@@ -22,8 +22,6 @@ address,name,mode,confidence
 0x080040FA,FUN_080040fa,thumb,direct-call
 0x0800444C,FUN_0800444c,thumb,direct-call
 0x0800486C,FUN_0800486c,thumb,direct-call
-0x08005110,FUN_08005110,thumb,rom-pointer
-0x080052E8,FUN_080052e8,thumb,direct-call
 0x08005310,FUN_08005310,thumb,direct-call
 0x0800597C,FUN_0800597c,thumb,direct-call
 0x08006134,FUN_08006134,thumb,direct-call
