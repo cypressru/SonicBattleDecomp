@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,274 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,273 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Starts inside `main/unknown_080007FC` are removed when control flow proves
@@ -52,7 +52,7 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x39A08 report-accounted code bytes and 0xD4EC owned non-code bytes.
+game category consequently contains 0x39A0A report-accounted code bytes and 0xD4EA owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -76,6 +76,11 @@ blocks: each depends on the real entry's saved high registers or stack slots and
 common epilogue. The consolidated extent has one accepted start and passes the frame/control-flow
 audit with every table and literal island explicitly mapped.
 
+The asset-derived `0x080047E0` entry is the scalar literal `0x00000115` inside `FUN_0800444C`, not
+Thumb code. Control flow branches around it, resumes at `0x080047E4` with the real entry's saved r8,
+and reaches the shared return at `0x0800486A`. The consolidated owner has seven mapped literal
+islands and a clean frame-balanced control-flow extent.
+
 ### Translation-unit inventory status
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
@@ -84,7 +89,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 117 | 69,096 | 26,232 |
+| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 116 | 69,098 | 26,230 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 984 | 167,664 | 23,452 |
 
 These objects are conservative coverage buckets, not claims that either range was one original

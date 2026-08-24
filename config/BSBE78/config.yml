@@ -65,6 +65,9 @@ rejected_function_pointers:
   - { source: 0x0F6BA2F, destination: 0x08003220 }
   - { source: 0x0F25614, destination: 0x08003338 }
   - { source: 0x0126A70, destination: 0x08003370 }
+  # An opaque asset word points at the scalar literal 0x00000115 inside
+  # FUN_0800444c. Live code resumes four bytes later and shares its epilogue.
+  - { source: 0x0126FE0, destination: 0x080047E0 }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -1845,7 +1848,22 @@ units:
       # FUN_080040fa's final branch-skipped literal island and resumed tail.
       - { offset: 0x3BB6, mode: data }
       - { offset: 0x3BE4, mode: thumb }
-      - { offset: 0x402C, mode: data }
+      # FUN_0800444C's complete literal-island map, including the scalar at
+      # the former false 0x080047E0 entry.
+      - { offset: 0x3D3E, mode: data }
+      - { offset: 0x3D44, mode: thumb }
+      - { offset: 0x3DC0, mode: data }
+      - { offset: 0x3DC8, mode: thumb }
+      - { offset: 0x3ED6, mode: data }
+      - { offset: 0x3EE8, mode: thumb }
+      - { offset: 0x3F58, mode: data }
+      - { offset: 0x3F60, mode: thumb }
+      - { offset: 0x3FE2, mode: data }
+      - { offset: 0x3FE8, mode: thumb }
+      - { offset: 0x4030, mode: data }
+      - { offset: 0x4038, mode: thumb }
+      - { offset: 0x4052, mode: data }
+      - { offset: 0x4058, mode: thumb }
       - { offset: 0x40B2, mode: data }
       - { offset: 0x40CC, mode: thumb }
       - { offset: 0x40F8, mode: data }
