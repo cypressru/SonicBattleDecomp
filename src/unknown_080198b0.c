@@ -1213,6 +1213,13 @@ extern void FUN_08018300(s16 target);
 extern void FUN_08018318(s16 first, s16 second);
 extern void FUN_080006d0(void);
 extern u16 gUnknown_03001378;
+extern void FUN_080177b8(u8 participant);
+extern u8 FUN_080153e0(void);
+extern u8 FUN_0801584c(void);
+void FUN_080207ec(u16 value);
+void FUN_0801bd90(void);
+void FUN_0801c910(void);
+void FUN_0801a04c(u8 value);
 
 void FUN_0801a61c(u8 mode) {
     u8 *selection;
@@ -1294,6 +1301,68 @@ void FUN_0801aadc(void) {
     FUN_080182e4(256);
     FUN_08018318(0, 0);
     FUN_08018300(768);
+}
+
+void FUN_0801bcac(void) {
+    FUN_080177b8(gUnknown_03001380);
+    FUN_080006d0();
+    {
+        u8 status = FUN_080153e0();
+
+        if (status == 0) {
+            gUnknown_03002030 = FUN_0801c910;
+            FUN_080182ac();
+            FUN_08016684();
+            FUN_08017ed0();
+            FUN_08013214(0x45);
+            FUN_08017f6c();
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+            FUN_08011c7c();
+            FUN_080175d4();
+            FUN_08017d58();
+            FUN_08017c5c();
+            return;
+        }
+        if (status == 1) {
+            u8 *scene = &gUnknown_03001620;
+
+            scene += 117;
+            *scene = status;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+    {
+        struct SceneSelection {
+            u8 filler[136];
+            u8 selection;
+        } *scene = (struct SceneSelection *)&gUnknown_03001620;
+        u8 *selection = &scene->selection;
+
+        if (*selection == 0xff) {
+            FUN_0801a04c(gUnknown_03001380);
+        } else {
+            FUN_0801a04c(*selection);
+        }
+    }
+    {
+        u8 mode = FUN_0801584c();
+
+        FUN_080182ac();
+        FUN_08016684();
+        FUN_08017ed0();
+        FUN_08013214(mode);
+        FUN_08017f6c();
+        if (mode != 10) {
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+        }
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
 }
 
 void FUN_0801c8f0(void) {
