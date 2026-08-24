@@ -1356,6 +1356,7 @@ units:
     source: src/unknown_080198b0.c
     cflags: [-O2, -mthumb-interwork]
     base_symbol_size_overrides:
+      FUN_0801a61c: 0x84
       FUN_0801d188: 0x76
       FUN_0801d200: 0x86
       FUN_0801d288: 0xE0
@@ -1868,6 +1869,10 @@ units:
       FUN_080291a8: 0x4E
       FUN_08029200: 0x46
     mappings:
+      - { offset: 0xDAE, mode: data }
+      - { offset: 0xDB8, mode: thumb }
+      - { offset: 0xDF0, mode: data }
+      - { offset: 0xDF8, mode: thumb }
       - { offset: 0x2FA0, mode: data }
       - { offset: 0x2FAC, mode: thumb }
       - { offset: 0x2FF2, mode: data }

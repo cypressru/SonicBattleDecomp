@@ -1206,6 +1206,55 @@ void FUN_08025f5c(struct UnknownListNode *node);
 void FUN_08025fd4(struct UnknownListNode *node);
 extern void FUN_08018444(void);
 
+void FUN_0801a61c(u8 mode) {
+    u8 *selection;
+    u8 selected;
+
+    switch (mode) {
+    case 0:
+    case 1: {
+        u8 index;
+        u8 *active;
+        u8 *values;
+
+        selected = 0;
+        index = 1;
+        selection = (u8 *)0x03003d90;
+        active = (u8 *)0x03001634;
+        values = active + 19;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)((u32)index + (u32)active) != 0xff &&
+                *(u8 *)((u32)selected + (u32)values) > *(u8 *)((u32)index + (u32)values)) {
+                selected = index;
+            }
+        }
+        break;
+    }
+    case 2: {
+        u8 index;
+        u8 *active;
+        u16 *values;
+
+        selected = 0;
+        index = 1;
+        selection = (u8 *)0x03003d90;
+        active = (u8 *)0x03001634;
+        values = (u16 *)(active + 86);
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)((u32)index + (u32)active) != 0xff && values[selected] > values[index]) {
+                selected = index;
+            }
+        }
+        break;
+    }
+    default:
+        return;
+    }
+    *selection = selected;
+}
+
 void FUN_0801c8f0(void) {
     FUN_08012b98(60);
     gUnknown_03002030 = FUN_0801bcac;
