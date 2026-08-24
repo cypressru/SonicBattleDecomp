@@ -571,12 +571,13 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
 
             state->field26 = 0;
             field36 = &state->field36;
-            do {
+            {
                 u32 emptyCommand = 0xce;
                 const u16 *soundTable;
 
                 emptyCommand <<= 2;
                 soundTable = gUnknown_08edda44;
+            scriptLoop:
             parseNext: {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
@@ -655,9 +656,13 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                 }
                 done = emptyCommand != 0;
             }
-            } while (done == 0);
+            }
+            if (done != 0) {
+                goto switchDone;
+            }
+            goto scriptLoop;
         }
-        break;
+        goto switchDone;
     case 2:
         if ((gUnknown_030048e0.third & 1) != 0) {
             state->field27++;
@@ -693,6 +698,7 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         }
         break;
     }
+switchDone:
     if (state->field36 != 0) {
         FUN_080405f4(state->field2, 0);
     }
