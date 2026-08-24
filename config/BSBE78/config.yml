@@ -12,6 +12,11 @@ long_branch_targets:
   # whose predecessor's extent ended at exactly its first byte, so it is a
   # fall-through continuation of that function rather than an entry.
   - 0x080029BC
+  # FUN_0800290c uses long Thumb BL branches to four shared case/tail blocks.
+  - 0x080033B4
+  - 0x08003414
+  - 0x08003428
+  - 0x08003488
   - 0x0800343E
   - 0x080034C2
   - 0x08003798
@@ -53,6 +58,13 @@ rejected_function_pointers:
   # Another opaque asset word points into FUN_08001b0c's 21-entry switch table.
   # 0x08002442 contains the upper halfword of the table entry 0x08002762.
   - { source: 0x0F4AD58, destination: 0x08002442 }
+  # Opaque/payload words point into FUN_0800290c's switch cases or table.
+  # None starts a new frame, and every path joins the real owner's shared tail.
+  - { source: 0x01AB66C, destination: 0x08003142 }
+  - { source: 0x0D75214, destination: 0x08003220 }
+  - { source: 0x0F6BA2F, destination: 0x08003220 }
+  - { source: 0x0F25614, destination: 0x08003338 }
+  - { source: 0x0126A70, destination: 0x08003370 }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -455,6 +467,58 @@ units:
       - { offset: 0x02098, mode: thumb }
       - { offset: 0x020D8, mode: data }
       - { offset: 0x020DC, mode: thumb }
+      # FUN_0800290C owns the remaining literal islands and its eleven-entry
+      # switch table through the shared return at 0x080034E4.
+      - { offset: 0x02224, mode: data }
+      - { offset: 0x02230, mode: thumb }
+      - { offset: 0x023B4, mode: data }
+      - { offset: 0x023B8, mode: thumb }
+      - { offset: 0x02414, mode: data }
+      - { offset: 0x02424, mode: thumb }
+      - { offset: 0x024DA, mode: data }
+      - { offset: 0x024E0, mode: thumb }
+      - { offset: 0x02504, mode: data }
+      - { offset: 0x02508, mode: thumb }
+      - { offset: 0x0256C, mode: data }
+      - { offset: 0x02570, mode: thumb }
+      - { offset: 0x025A8, mode: data }
+      - { offset: 0x025AC, mode: thumb }
+      - { offset: 0x0260C, mode: data }
+      - { offset: 0x02618, mode: thumb }
+      - { offset: 0x0268A, mode: data }
+      - { offset: 0x02690, mode: thumb }
+      - { offset: 0x026BE, mode: data }
+      - { offset: 0x026C4, mode: thumb }
+      - { offset: 0x026E0, mode: data }
+      - { offset: 0x026E4, mode: thumb }
+      - { offset: 0x02710, mode: data }
+      - { offset: 0x02714, mode: thumb }
+      - { offset: 0x027FA, mode: data }
+      - { offset: 0x02814, mode: thumb }
+      - { offset: 0x028C8, mode: data }
+      - { offset: 0x028CC, mode: thumb }
+      - { offset: 0x028FE, mode: data }
+      - { offset: 0x02908, mode: thumb }
+      - { offset: 0x0292A, mode: data }
+      - { offset: 0x0295C, mode: thumb }
+      - { offset: 0x029AC, mode: data }
+      - { offset: 0x029B8, mode: thumb }
+      - { offset: 0x029EA, mode: data }
+      - { offset: 0x029F8, mode: thumb }
+      - { offset: 0x02A4A, mode: data }
+      - { offset: 0x02A54, mode: thumb }
+      - { offset: 0x02A96, mode: data }
+      - { offset: 0x02AA4, mode: thumb }
+      - { offset: 0x02B6E, mode: data }
+      - { offset: 0x02B78, mode: thumb }
+      - { offset: 0x02BB0, mode: data }
+      - { offset: 0x02BB8, mode: thumb }
+      - { offset: 0x02BF4, mode: data }
+      - { offset: 0x02BFC, mode: thumb }
+      - { offset: 0x02C12, mode: data }
+      - { offset: 0x02C18, mode: thumb }
+      - { offset: 0x02C7A, mode: data }
+      - { offset: 0x02C8C, mode: thumb }
       # FUN_080153E0 branches around two in-function literal islands.
       - { offset: 0x14BF8, mode: data }
       - { offset: 0x14C00, mode: thumb }

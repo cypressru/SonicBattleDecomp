@@ -17,14 +17,6 @@ address,name,mode,confidence
 0x0800186C,FUN_0800186c,thumb,direct-call
 0x08001B0C,FUN_08001b0c,thumb,direct-call
 0x0800290C,FUN_0800290c,thumb,rom-pointer+direct-call
-0x08003142,FUN_08003142,thumb,rom-pointer
-0x08003220,FUN_08003220,thumb,rom-pointer
-0x08003338,FUN_08003338,thumb,rom-pointer
-0x08003370,FUN_08003370,thumb,rom-pointer
-0x080033B4,FUN_080033b4,thumb,direct-call
-0x08003414,FUN_08003414,thumb,direct-call
-0x08003428,FUN_08003428,thumb,direct-call
-0x08003488,FUN_08003488,thumb,direct-call
 0x080034F0,FUN_080034f0,thumb,direct-call+exact-body
 0x080036DC,FUN_080036dc,thumb,direct-call
 0x080040FA,FUN_080040fa,thumb,direct-call
