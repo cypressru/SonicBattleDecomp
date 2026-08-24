@@ -8255,7 +8255,6 @@ void FUN_0802b1dc(void) {
 
 u32 FUN_0802b204(u8 player, u8 variant) {
     u8 other;
-    register u32 result asm("r0");
 
     for (other = 0; other <= 3; other++) {
         if (other != player && gUnknown_03005268[other] == variant) {
@@ -8264,18 +8263,9 @@ u32 FUN_0802b204(u8 player, u8 variant) {
     }
 
     if (other == 4) {
-        goto noMatch;
+        return 0;
     }
-    result = 1;
-    asm("" : "+r"(result));
-    goto done;
-
-noMatch:
-    result = 0;
-    asm("" : "+r"(result));
-
-done:
-    return result;
+    return 1;
 }
 
 void FUN_0802b424(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
@@ -8444,14 +8434,13 @@ void FUN_08040470(void) {
     u8 *recycleIndex;
     u8 *secondaryIndex;
     u8 *activeCount;
-    register struct UnknownPoolNode404ec **poolAddress asm("r12");
-    register struct UnknownPoolNode404ec **poolCopy asm("r2");
+    struct UnknownPoolNode404ec **poolAddress;
+    struct UnknownPoolNode404ec **poolCopy;
 
     gUnknown_030001a8 = (u8 *)0x02002580;
     gUnknown_0300547c = (struct UnknownPoolNode404ec *)0x02002600;
     index = 0;
     poolAddress = (struct UnknownPoolNode404ec **)&gUnknown_0300547c;
-    asm volatile("" : "+r"(poolAddress));
     recycleIndex = &gUnknown_030001ac;
     secondaryIndex = &gUnknown_030001ad;
     activeCount = &gUnknown_03005480;
@@ -8466,7 +8455,6 @@ void FUN_08040470(void) {
     dma = (volatile u32 *)0x040000d4;
     dma[0] = (u32)&zero;
     poolCopy = poolAddress;
-    asm volatile("" : "+r"(poolCopy));
     dma[1] = (u32)*poolCopy;
     dma[2] = 0x8500000b;
     dma[2];
@@ -10305,15 +10293,13 @@ void FUN_08041f24(struct UnknownState41f24 *state) {
 }
 
 void FUN_08042044(struct UnknownState420dc *state) {
-    register const void *const *table asm("r2") = gUnknown_0817adc8;
-    register u32 index asm("r0");
+    const void *const *table = gUnknown_0817adc8;
+    u32 index;
     const void *source;
     struct UnknownState420dc *child;
 
-    asm volatile("" : "+r"(table));
     index = gUnknown_03005440.field31 * 3 + gUnknown_03005440.field29;
     index <<= 2;
-    asm volatile("" : "+r"(table), "+r"(index));
     table++;
     index += (u32)table;
     source = *(const void *const *)index;
@@ -10791,8 +10777,8 @@ updateAnimation: {
 }
 
 void FUN_0804280c(struct UnknownState420dc *state) {
-    register u16 *first asm("r0");
-    register u16 *second asm("r1");
+    u16 *first;
+    u16 *second;
 
     gUnknown_030001d4 = FUN_0803ff98((const void *)((u32)FUN_08045d30 + 14), gUnknown_03007c54, 0);
     gUnknown_0300023c = (s16)gUnknown_03005494 << 16;
@@ -10802,7 +10788,7 @@ void FUN_0804280c(struct UnknownState420dc *state) {
     state->graphics = gUnknown_08173510;
     state->field24 = 40;
     if (FUN_08043cf8(state->baseX, state->baseY) == 0) {
-        register u16 *address asm("r2") = &gUnknown_030001e0;
+        u16 *address = &gUnknown_030001e0;
 
         *address = state->baseX;
         second = &gUnknown_030001f0;
@@ -10815,9 +10801,8 @@ void FUN_0804280c(struct UnknownState420dc *state) {
         *first = 0;
     }
     {
-        register u16 *secondCopy asm("r2") = second;
+        u16 *secondCopy = second;
 
-        asm volatile("" : "+r"(secondCopy));
         gUnknown_03000200 = *first;
         gUnknown_03000210 = *secondCopy;
     }
@@ -10846,13 +10831,11 @@ void FUN_08041f84(struct UnknownState420dc *state) {
             return;
         }
         if (state->field3 != 0) {
-            register u32 position asm("r0") = state->field8.fixed;
-            register u32 delta asm("r1") = (u32)-0x1c000;
+            u32 position = state->field8.fixed;
+            u32 delta = (u32)-0x1c000;
 
-            asm volatile("" : "+r"(position), "+r"(delta));
             position += delta;
             state->field8.fixed = position;
-            asm volatile("" : "+r"(position));
         } else {
             state->field8.fixed += 0x1c000;
             FUN_0801fba0(0x52, state->fade | ((16 - state->fade) << 8));
