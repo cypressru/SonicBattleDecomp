@@ -339,16 +339,16 @@ void FUN_08046538(struct UnknownState460ac *state) {
 }
 
 void FUN_0804666c(struct UnknownState460ac *state) {
+    s16 index;
+
     switch (state->field27) {
     case 0: {
         s16 values[6];
-        s16 copyIndex;
         s16 sourceIndex;
-        s16 pairIndex;
+        u16 mode;
 
-        for (copyIndex = 0, sourceIndex = state->field20; copyIndex < 6;
-             copyIndex++, sourceIndex++) {
-            values[copyIndex] = gUnknown_03000274[sourceIndex];
+        for (index = 0, sourceIndex = state->field20; index < 6; index++, sourceIndex++) {
+            values[index] = gUnknown_03000274[sourceIndex];
         }
         if (values[4] == values[2]) {
             values[4] = 0;
@@ -361,24 +361,22 @@ void FUN_0804666c(struct UnknownState460ac *state) {
         }
 
         gUnknown_0300027c.count = 0;
-        for (pairIndex = 0; pairIndex < 6; pairIndex += 2) {
-            s16 poolIndex;
-
-            for (poolIndex = 0; poolIndex < gUnknown_03000278.count; poolIndex++) {
-                if (gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].field36 ==
-                    values[pairIndex]) {
+        for (index = 0; index < 6; index += 2) {
+            for (sourceIndex = 0; sourceIndex < gUnknown_03000278.count; sourceIndex++) {
+                if (gUnknown_0300547c[gUnknown_03000278.indices[sourceIndex]].field36 ==
+                    values[index]) {
                     break;
                 }
             }
-            if (poolIndex < gUnknown_03000278.count) {
-                u16 mode = values[pairIndex + 1];
+            if (sourceIndex < gUnknown_03000278.count) {
+                mode = values[index + 1];
 
                 if (mode > 3) {
                     mode = 2;
                 }
-                gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].callback =
+                gUnknown_0300547c[gUnknown_03000278.indices[sourceIndex]].callback =
                     gUnknown_08edda34[(s16)mode];
-                ((u8 *)&gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]])[27] = 0;
+                ((u8 *)&gUnknown_0300547c[gUnknown_03000278.indices[sourceIndex]])[27] = 0;
                 gUnknown_0300027c.count++;
             }
         }
@@ -400,7 +398,6 @@ void FUN_0804666c(struct UnknownState460ac *state) {
             FUN_0804051c(state);
         } else {
             s16 outer;
-            s16 index;
 
             for (outer = 0; outer < 2; outer++) {
                 for (index = 0; index < 2; index++) {
@@ -417,8 +414,6 @@ void FUN_0804666c(struct UnknownState460ac *state) {
         }
         break;
     case 2: {
-        s16 index;
-
         for (index = 0; index < gUnknown_03000278.count; index++) {
             if ((gUnknown_0300547c[gUnknown_03000278.indices[index]].field3 & 0x80) != 0) {
                 break;
@@ -539,6 +534,9 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 }
 
 void FUN_08046bc4(struct UnknownState460ac *state) {
+    s32 destination;
+    s32 delta;
+
     if (state->field40 != 0) {
         state->field40--;
     }
@@ -547,14 +545,21 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
     }
 
     switch (state->field27) {
-    case 0:
-        *(s32 *)&state->field8 -= FUN_0804a59c(
-            *(s32 *)&state->field8 - (((s16)state->field34 + (state->field23 != 0)) << 16), 6);
+    case 0: {
+        destination = (s16)state->field34;
+        if (state->field23 != 0) {
+            destination++;
+        }
+        destination = FUN_0804a59c(*(s32 *)&state->field8 - (destination << 16), 6);
+        delta = *(s32 *)&state->field8;
+        delta -= destination;
+        *(s32 *)&state->field8 = delta;
         if ((s16)state->field34 == (s16)state->field10) {
             state->field8 = 8;
             state->field27++;
         }
         break;
+    }
     case 1:
         if ((gUnknown_030048e0.third & 1) != 0) {
             state->field38 = 0;
@@ -569,10 +574,11 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
             do {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
+                const u16 *nextScript = script + 1;
                 u16 emptyCommand = 0x338;
                 const u16 *soundTable = gUnknown_08edda44;
 
-                state->field28.script = script + 1;
+                state->field28.script = nextScript;
                 done = 1;
 
                 switch (command) {
@@ -601,22 +607,29 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     }
                     break;
                 case 0xfffb:
-                    command = script[1];
-                    state->field28.script = script + 2;
+                    command = nextScript[0];
+                    state->field28.script = nextScript + 1;
                     state->field37 = command;
                     done = 0;
                     break;
-                case 0xfff9:
-                    command = script[1];
-                    state->field28.script = script + 2;
-                    gUnknown_03000285 =
+                case 0xfff9: {
+                    s32 conversionResult;
+
+                    command = nextScript[0];
+                    state->field28.script = nextScript + 1;
+                    conversionResult =
                         FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
-                    if (gUnknown_03000285 < 0) {
+                    gUnknown_03000285 = conversionResult;
+                    if (conversionResult < 0) {
                         gUnknown_03000285 = 0;
                     }
                     FUN_08046af8(state);
-                    state->field27 = gUnknown_03000285 > 4 ? 1 : 4;
+                    state->field27 = 4;
+                    if (conversionResult > 4) {
+                        state->field27 = 1;
+                    }
                     break;
+                }
                 default:
                     gUnknown_0300028c.second = 0;
                     if ((command == 0 || command == emptyCommand) &&
