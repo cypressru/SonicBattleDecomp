@@ -44,10 +44,14 @@ extern s16 gUnknown_03001b04;
 extern s16 gUnknown_03001b08;
 extern u8 gUnknown_03001390;
 extern u8 gUnknown_03001370;
+extern s16 gUnknown_03001374;
+extern s16 gUnknown_03001b24;
+extern s16 gUnknown_03002100;
 extern s16 gUnknown_030016bc;
 extern s16 gUnknown_030016c0;
 extern s16 gUnknown_03001b2c;
 extern s16 gUnknown_03001384;
+extern s16 FUN_08018390(void);
 extern u16 gUnknown_03003380[][16];
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
@@ -164,11 +168,20 @@ struct UnknownState080180f0 {
 };
 
 struct UnknownRecord03001c40 {
-    u8 padding0[20];
+    s16 x;
+    s16 y;
+    u16 height;
+    u8 padding6[14];
     u16 first;
-    u8 padding22[94];
+    u8 padding22[88];
+    u8 midpointMode;
+    u8 padding111;
+    u8 maximumMode;
+    u8 padding113[3];
     u32 field74;
-    u8 padding120[30];
+    u8 padding120[5];
+    u8 partner;
+    u8 padding126[24];
     u8 second;
     u8 padding151[8];
     u8 style;
@@ -382,6 +395,104 @@ void FUN_080066d8(void) {
     next:
         i++;
     } while (i <= 3);
+}
+
+void FUN_0800673c(u8 index) {
+    struct UnknownRecord03001c40 *initialRecords;
+    struct UnknownRecord03001c40 *records;
+    struct UnknownRecord03001c40 *record;
+    u32 initialScaledIndex;
+    u32 scaledIndex;
+    u8 midpointMode;
+    s16 angle;
+
+    if (index > 3) {
+        return;
+    }
+
+    initialRecords = gUnknown_03001c40;
+    initialScaledIndex = index << 6;
+    record =
+        (struct UnknownRecord03001c40 *)((u32)initialRecords + ((initialScaledIndex - index) << 2));
+    midpointMode = record->midpointMode;
+    records = initialRecords;
+    scaledIndex = initialScaledIndex;
+    if (midpointMode != 0) {
+        switch (record->partner) {
+        case 0:
+            gUnknown_03001374 = (record->x + gUnknown_03001c40[0].x) >> 1;
+            gUnknown_03001b24 = (record->y + gUnknown_03001c40[0].y) >> 1;
+            break;
+        case 1:
+            gUnknown_03001374 = (record->x + gUnknown_03001c40[1].x) >> 1;
+            gUnknown_03001b24 = (record->y + gUnknown_03001c40[1].y) >> 1;
+            break;
+        case 2:
+            gUnknown_03001374 = (record->x + gUnknown_03001c40[2].x) >> 1;
+            gUnknown_03001b24 = (record->y + gUnknown_03001c40[2].y) >> 1;
+            break;
+        case 3:
+            gUnknown_03001374 = (record->x + gUnknown_03001c40[3].x) >> 1;
+            gUnknown_03001b24 = (record->y + gUnknown_03001c40[3].y) >> 1;
+            break;
+        default:
+            break;
+        }
+        gUnknown_03002100 =
+            ((struct UnknownRecord03001c40 *)((u32)records + ((scaledIndex - index) << 2)))->height
+            << 1;
+    } else if (record->maximumMode != 0) {
+        switch (record->partner) {
+        case 0:
+            if ((s16)record->height > (s16)gUnknown_03001c40[0].height) {
+                gUnknown_03002100 = record->height << 1;
+            } else {
+                gUnknown_03002100 = gUnknown_03001c40[0].height << 1;
+            }
+            break;
+        case 1:
+            if ((s16)record->height > (s16)gUnknown_03001c40[1].height) {
+                gUnknown_03002100 = record->height << 1;
+            } else {
+                gUnknown_03002100 = gUnknown_03001c40[1].height << 1;
+            }
+            break;
+        case 2:
+            if ((s16)record->height > (s16)gUnknown_03001c40[2].height) {
+                gUnknown_03002100 = record->height << 1;
+            } else {
+                gUnknown_03002100 = gUnknown_03001c40[2].height << 1;
+            }
+            break;
+        case 3:
+            if ((s16)record->height > (s16)gUnknown_03001c40[3].height) {
+                gUnknown_03002100 = record->height << 1;
+            } else {
+                gUnknown_03002100 = gUnknown_03001c40[3].height << 1;
+            }
+            break;
+        default:
+            break;
+        }
+        gUnknown_03001374 =
+            ((struct UnknownRecord03001c40 *)((u32)records + ((scaledIndex - index) << 2)))->x;
+        gUnknown_03001b24 =
+            ((struct UnknownRecord03001c40 *)((u32)records + ((scaledIndex - index) << 2)))->y;
+    } else {
+        gUnknown_03001374 = record->x;
+        gUnknown_03001b24 = record->y;
+        gUnknown_03002100 = record->height << 1;
+    }
+    angle = FUN_08018390();
+    if ((u16)(angle - 0x400) > 0x1800) {
+        gUnknown_03001370 = 0;
+    } else if ((u16)(angle - 0x401) <= 0x7FE) {
+        gUnknown_03001370 = 2;
+    } else if ((u16)(angle - 0xC01) <= 0x7FE) {
+        gUnknown_03001370 = 1;
+    } else if ((u16)(angle - 0x1401) <= 0x7FE) {
+        gUnknown_03001370 = 3;
+    }
 }
 
 void FUN_08007e24(void) {
