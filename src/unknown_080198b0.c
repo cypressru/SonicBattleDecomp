@@ -3439,7 +3439,7 @@ void FUN_08043ea0(struct UnknownState482d0 *state) {
 }
 
 void FUN_0803d128(struct UnknownListNode *node) {
-    register u16 *state asm("r4") = node->allocation;
+    u16 *state = node->allocation;
 
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         if (state[8] != 0) {
@@ -6842,7 +6842,7 @@ void FUN_08029014(struct UnknownListNode *node) {
 }
 
 void FUN_08029060(struct UnknownListNode *node) {
-    register const u8 *table asm("r1") = gUnknown_0804df7c;
+    const u8 *table = gUnknown_0804df7c;
     struct UnknownPosition *position;
     s32 value;
 
@@ -7896,7 +7896,7 @@ void FUN_080299c0(void) {
 }
 
 void FUN_08029ba0(void) {
-    register u32 *counter asm("r5");
+    u32 *counter;
 
     if (gUnknown_03005254 != 0) {
         counter = &gUnknown_03005258;
@@ -7925,22 +7925,20 @@ void FUN_08029ba0(void) {
 }
 
 void FUN_08029c2c(u32 index) {
-    register u32 selected asm("r1") = index;
-
-    if (selected <= 4) {
-        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected + 2) << 9), 512);
+    if (index <= 4) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((index + 2) << 9), 512);
         FUN_0802036c(0x06016200, (u32)gUnknown_08117368, 2048);
-    } else if (selected <= 9) {
-        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected - 4) << 9), 512);
+    } else if (index <= 9) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((index - 4) << 9), 512);
         FUN_0802036c(0x06016200, (u32)gUnknown_08117b68, 2048);
-    } else if (selected <= 14) {
-        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((selected - 10) << 9), 512);
+    } else if (index <= 14) {
+        FUN_0802036c(0x06016000, (u32)gUnknown_08116568 + ((index - 10) << 9), 512);
         FUN_0802036c(0x06016200, (u32)gUnknown_08118368, 2048);
     }
 }
 
 void FUN_08029cc8(u32 index, u32 selection) {
-    register u32 playerIndex asm("r2") = index;
+    u32 playerIndex = index;
 
     if (selection > 9) {
         selection = 10;
@@ -8335,25 +8333,22 @@ void FUN_0802b638(struct UnknownListNode *node) {
 }
 
 void FUN_0802b688(struct UnknownListNode *node) {
-    register struct UnknownListNode *current asm("r2") = node;
-
-    asm volatile("" : "+r"(current));
     {
         u8 *states = gUnknown_0300524c;
-        struct UnknownPosition *position = current->position;
+        struct UnknownPosition *position = node->position;
 
         if (states[position->field13] > 9) {
             position->tile = 256;
-            current->position->field12 = 168;
+            node->position->field12 = 168;
         } else {
             if (gUnknown_03002600[4] != 0 && (gUnknown_03005268[position->field13] & 2) != 0) {
                 position->tile = 160;
             } else {
-                current->position->tile = 64;
+                node->position->tile = 64;
             }
-            current->position->field12 = 184;
+            node->position->field12 = 184;
         }
-        FUN_0801fed8(current->field6, 0);
+        FUN_0801fed8(node->field6, 0);
     }
 }
 
@@ -9190,9 +9185,8 @@ void FUN_08034ebc(void) {
 
 void FUN_08035760(struct UnknownListNode *node) {
     s16 *state = node->allocation;
-    register s32 value asm("r1") = 256;
+    s32 value = 256;
 
-    asm volatile("" : "+r"(value));
     state[0] = value;
     state[1] = 30;
     gUnknown_03005378 = value + 84;
@@ -9876,7 +9870,7 @@ u16 *FUN_08039c1c(u16 *destination, const u16 *source) {
 
 void FUN_0803b63c(u8 index) {
     if (index != 0xFF) {
-        register u32 zero asm("r4") = 0;
+        u32 zero = 0;
         u32 *row = (u32 *)(0x06008038 + index * 64);
         u32 y;
 
@@ -9897,7 +9891,7 @@ void FUN_0803b63c(u8 index) {
 
 void FUN_08038264(u8 index) {
     if (index != 0xFF) {
-        register u32 zero asm("r4") = 0;
+        u32 zero = 0;
         u32 *row = (u32 *)(0x06008038 + index * 64);
         u32 y;
 
