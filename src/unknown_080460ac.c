@@ -620,11 +620,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     conversionResult =
                         FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
                     gUnknown_03000285 = conversionResult;
-                    if (gUnknown_03000285 < 0) {
+                    if (conversionResult < 0) {
                         gUnknown_03000285 = 0;
                     }
                     FUN_08046af8(state);
-                    state->field27 = gUnknown_03000285 > 4 ? 1 : 4;
+                    state->field27 = 4;
+                    if (conversionResult > 4) {
+                        state->field27 = 1;
+                    }
                     break;
                 }
                 default:
