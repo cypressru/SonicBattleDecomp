@@ -253,13 +253,18 @@ extern union UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern union UnknownQueueRecord030033e0 gUnknown_030033e0[];
 extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
 extern struct UnknownState030030d0 gUnknown_030030d0;
-extern struct UnknownState080180d4 gUnknown_030048e0;
+extern volatile struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
 extern const u16 gUnknown_0847aa18[];
+extern const u16 gUnknown_08055800[];
+extern const u16 gUnknown_0805587e[];
+extern const u16 gUnknown_08055994[];
+extern const u16 gUnknown_080559d8[];
+extern const u16 gUnknown_080576e8[];
 
 /* The link send slot and the four receive slots. Each receive slot is a
    16-byte record whose first halfword carries the handshake marker. */
@@ -296,6 +301,8 @@ extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
 extern void FUN_0800baac(u8 index);
+extern u8 FUN_0800b098(u16 animation);
+extern void FUN_08020440(u32 first, u16 second, u16 third);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
@@ -619,7 +626,6 @@ void FUN_08006e64(void) {
 
 void FUN_08006ff4(u8 count) {
     union UnknownQueueEntry08017f00 entry;
-    struct UnknownRecord03001c40 *renderRecord;
     u32 originalX;
     u32 originalY;
     s16 x;
@@ -644,24 +650,23 @@ void FUN_08006ff4(u8 count) {
             (record->stateType != 2 || identifier != 0x116 || index == gUnknown_03001380) &&
             (record->stateType != 3 || identifier != 0x115 || index == gUnknown_03001380) &&
             gUnknown_03001620.activeSlots[index] != 0xFF) {
-#undef record
             s16 adjustedY;
-
-            renderRecord = &gUnknown_03001c40[index];
-#define record renderRecord
 
             FUN_0801816c(&x, &y, record->x, record->y);
             FUN_08018204(&x, &y, x, y);
             entry.fields.yMinus6 = y - 6;
-            originalX = x - 16;
-            originalY = y - 4;
+            originalX = (u16)(x - 16);
+            originalY = (u16)(y - 4);
 
-            if (record->directionMode == 0) {
+            switch (record->directionMode) {
+            case 0:
                 x -= record->offsetX + 24;
                 y += record->offsetY - 40;
-            } else if (record->directionMode == 1) {
+                break;
+            case 1:
                 x += record->offsetX - 24;
                 y += record->offsetY - 40;
+                break;
             }
 
             record->screenX = x;
@@ -675,16 +680,19 @@ void FUN_08006ff4(u8 count) {
                 entry.fields.direction = record->directionMode;
                 entry.fields.height = record->height;
 
-                if (record->directionMode == 0) {
+                switch (record->directionMode) {
+                case 0:
                     SUBMIT_QUEUE(x, y, tile, 11);
                     SUBMIT_QUEUE(x, y + 32, tile + 16, 12);
                     SUBMIT_QUEUE(x + 32, y, tile + 24, 13);
                     SUBMIT_QUEUE(x + 32, y + 32, tile + 32, 14);
-                } else if (record->directionMode == 1) {
+                    break;
+                case 1:
                     SUBMIT_QUEUE(x, y, tile + 24, 13);
                     SUBMIT_QUEUE(x, y + 32, tile + 32, 14);
                     SUBMIT_QUEUE(x + 16, y, tile, 11);
                     SUBMIT_QUEUE(x + 16, y + 32, tile + 16, 12);
+                    break;
                 }
             }
 
@@ -707,8 +715,6 @@ void FUN_08006ff4(u8 count) {
                 SUBMIT_QUEUE(originalX, originalY, indicator * 8 + 0x90, 0x14);
             }
         }
-#undef record
-#define record (&gUnknown_03001c40[index])
 
         record->previousDirection = record->directionMode;
         record->directionMode = record->requestedDirection;
@@ -1015,6 +1021,168 @@ void FUN_080158e4(void) {
     gUnknown_03003120[1] = 0;
     gUnknown_03003120[2] = 0;
     gUnknown_03003120[3] = 0;
+}
+
+/* Advances one slot's packed animation command stream. Commands use their
+   upper halfword as an opcode and their lower halfword as the frame/value. */
+u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
+    const u32 *commands;
+    u32 command;
+    u32 opcode;
+    u32 resource;
+    u16 commandIndex;
+    u8 animationIndex;
+    u32 remapped;
+
+    resource = 0;
+    if (character != 9) {
+        goto not_remapped;
+    }
+    remapped = 1;
+    character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
+    goto animation_ready;
+
+invalid_stream:
+    gUnknown_03003110[slot] = 0;
+    gUnknown_03003108[slot] = 1 - direction;
+    return 0xff;
+
+not_remapped:
+    remapped = 0;
+
+animation_ready:
+
+    animationIndex = FUN_0800b098(animation);
+    commands = *(const u32 *const *)(0x0868eda8 + character * 0x118 + animationIndex * 4);
+
+    if (gUnknown_030030f8[slot] != animation || gUnknown_03003120[slot] != character ||
+        (s16)gUnknown_03003108[slot] == 0) {
+        gUnknown_030030f8[slot] = animation;
+        gUnknown_03003120[slot] = character;
+        gUnknown_03003108[slot] = 0;
+        gUnknown_03003110[slot] = 0;
+        gUnknown_03003100[slot] = 0;
+        gUnknown_03003118[slot] = 0;
+    }
+
+    if ((s16)gUnknown_03003108[slot] < 0) {
+        goto advance_frame;
+    }
+
+    while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
+        gUnknown_03003110[slot]++;
+        if (gUnknown_03003110[slot] > 0xfe) {
+            goto invalid_stream;
+        }
+    }
+
+    commandIndex = gUnknown_03003110[slot];
+    if ((u16)commands[commandIndex] != (s16)gUnknown_03003108[slot]) {
+        goto advance_frame;
+    }
+
+    gUnknown_03003110[slot] = commandIndex + 1;
+    while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
+        command = commands[gUnknown_03003110[slot]];
+        opcode = command & 0xffff0000;
+        if (opcode == 0x11000000) {
+            gUnknown_03003100[slot] = command;
+        } else if (opcode > 0x11000000) {
+            if (opcode == 0x12000000) {
+                gUnknown_03003118[slot] = command;
+            } else if (opcode == 0xfffe0000) {
+                goto loop_command;
+            }
+        } else if (opcode == 0x00f00000) {
+            goto loop_command;
+        } else if (opcode == 0x10000000) {
+            switch (character) {
+            case 0:
+                resource = !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8
+                                                                                     : 0x08787d18;
+                break;
+            case 1:
+            case 10:
+            case 11:
+            case 21:
+                resource = 0x08787d18;
+                break;
+            case 2:
+            case 22:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158
+                                                                                    : 0x08528418;
+                break;
+            case 3:
+            case 23:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38
+                                                                                    : 0x084cadf8;
+                break;
+            case 4:
+            case 24:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578
+                                                                                    : 0x0858d838;
+                break;
+            case 5:
+            case 25:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98
+                                                                                    : 0x085f3e58;
+                break;
+            case 6:
+            case 26:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8
+                                                                                    : 0x08636478;
+                break;
+            case 7:
+            case 27:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8
+                                                                                    : 0x086f6ab8;
+                break;
+            case 8:
+            case 28:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8
+                                                                                    : 0x08681a98;
+                break;
+            case 9:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418
+                                                                                    : 0x087336d8;
+                break;
+            default:
+                break;
+            }
+
+            if (character == 1) {
+                if (animation == 19) {
+                    gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
+                    gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
+                } else if (animation == 20) {
+                    gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
+                    gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
+                }
+            } else if (character == 2 && animation == 21) {
+                gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+            }
+            FUN_08020440(resource, sound, command);
+        }
+        goto command_done;
+
+    loop_command:
+        if ((s16)gUnknown_03003108[slot] == 0) {
+            goto invalid_stream;
+        }
+        gUnknown_03003110[slot] = 0;
+        gUnknown_03003108[slot] = 1 - direction;
+        return 0;
+
+    command_done:
+        gUnknown_03003110[slot]++;
+        if (gUnknown_03003110[slot] > 0xfe) {
+            goto invalid_stream;
+        }
+    }
+
+advance_frame:
+    gUnknown_03003108[slot]++;
+    return 1;
 }
 
 /* Bubble-sorts the live part of the 0x030033E0 queue into descending order of
