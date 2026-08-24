@@ -1911,6 +1911,8 @@ units:
       - { offset: 0x301C, mode: thumb }
       - { offset: 0x3032, mode: data }
       - { offset: 0x3040, mode: thumb }
+      - { offset: 0x362C, mode: data }
+      - { offset: 0x3634, mode: thumb }
       - { offset: 0x513C, mode: thumb }
       - { offset: 0x50EC, mode: thumb }
       - { offset: 0x5130, mode: data }
