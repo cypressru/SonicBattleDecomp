@@ -575,11 +575,12 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
                 const u16 *nextScript = script + 1;
-                u16 emptyCommand = 0x338;
+                u32 emptyCommand = 0xce;
                 const u16 *soundTable = gUnknown_08edda44;
 
                 state->field28.script = nextScript;
                 done = 1;
+                emptyCommand <<= 2;
 
                 switch (command) {
                 case 0xfffe:
