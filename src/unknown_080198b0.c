@@ -358,9 +358,22 @@ struct UnknownPoolNode404ec {
     u8 padding2;
     u8 field3;
     const void *data;
-    u8 padding8[19];
+    u8 padding8[2];
+    u16 field10;
+    u8 padding12[2];
+    u16 field14;
+    u8 padding16[10];
+    u8 field26;
     u8 field27;
-    u8 padding28[16];
+    u8 padding28[2];
+    u16 field30;
+    u8 padding32[2];
+    u16 field34;
+    u8 field36;
+    u8 field37;
+    u8 padding38[2];
+    u16 field40;
+    u8 padding42[2];
 };
 
 struct UnknownPoolCommand4051c {
@@ -600,7 +613,9 @@ struct UnknownState482d0 {
     const void *graphics;
     u16 field20;
     u8 field22;
-    u8 filler23[3];
+    u8 filler23;
+    u8 field24;
+    u8 filler25;
     u8 field26;
     u8 field27;
     u8 filler28[2];
@@ -625,6 +640,23 @@ struct UnknownTriple47c30 {
     u16 first;
     u16 second;
     u16 third;
+};
+
+struct UnknownPoolOrder47384 {
+    u8 indices[3];
+    u8 count;
+};
+
+struct UnknownGraphicsRecord47258 {
+    u8 filler0[5];
+    s8 offset;
+    u8 filler6[2];
+};
+
+struct UnknownGraphicsBundle47d1c {
+    const void *palette;
+    const void *graphics;
+    u32 size;
 };
 
 struct UnknownTransferRecord4033c {
@@ -674,7 +706,7 @@ struct UnknownGlobalRenderState {
     u8 filler37[3];
     u32 field40;
     u8 field44;
-    u8 filler45;
+    u8 field45;
     u8 field46;
 };
 
@@ -701,6 +733,7 @@ extern u16 gUnknown_03000210;
 extern const u8 gUnknown_08173510[];
 extern const u8 gUnknown_08173540[];
 extern const u8 gUnknown_081a2aac[];
+extern const struct UnknownBounds4230c gUnknown_081a2a4c[];
 extern const u8 gUnknown_081a648c[];
 extern const struct UnknownBounds4230c gUnknown_081a4c2a[];
 extern void FUN_08045d30(void);
@@ -715,9 +748,11 @@ extern void FUN_080481c8(struct UnknownState482d0 *state);
 extern void FUN_0804825c(struct UnknownState482d0 *state);
 extern void FUN_08047acc(struct UnknownState482d0 *state);
 extern void FUN_08047c30(struct UnknownState482d0 *state);
+extern void FUN_08047fe4(struct UnknownState482d0 *state);
 extern void FUN_0804033c(const void *source, void *destination, u32 size);
 extern void FUN_0804051c(void *state);
 extern void FUN_0803fe98(u16 first, u16 second, u16 third);
+extern void FUN_0803fd9c(u16 first, u16 second, u16 third);
 extern void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, u32 flags);
 void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s32 offset);
 extern const u8 gUnknown_081a81d0[];
@@ -727,6 +762,8 @@ extern void FUN_08036560(void);
 extern void FUN_080412dc(void);
 extern void FUN_080405a8(u8 first, u8 second);
 extern s16 FUN_08040698(u8 value);
+extern s16 FUN_08040684(u8 value);
+extern u32 FUN_080406b4(void);
 extern s16 FUN_08040684_wide(u32 value) asm("FUN_08040684");
 extern s16 FUN_08040698_wide(u32 value) asm("FUN_08040698");
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
@@ -741,6 +778,21 @@ extern const u8 gUnknown_081a7f18[];
 extern const u8 gUnknown_081a7f68[];
 extern struct UnknownPair4825c gUnknown_03000288;
 extern void FUN_080405f4(u8 first, u8 second);
+extern void FUN_08046918(struct UnknownState482d0 *state);
+extern void FUN_0801fba0(u16 offset, u16 value);
+extern struct UnknownPoolOrder47384 gUnknown_03000278;
+extern void FUN_08045a5c(u8 value);
+extern void FUN_08047258(struct UnknownState482d0 *state);
+extern struct UnknownGraphicsRecord47258 gUnknown_03000290[];
+extern const u8 gUnknown_081a7f38[];
+extern const void *gUnknown_081b94c8[];
+extern void FUN_0804a5b8(const void *source, void *destination);
+extern s16 *gUnknown_03000274;
+extern const void *gUnknown_08edda68[];
+extern const void *gUnknown_08edda6c[];
+extern const struct UnknownGraphicsBundle47d1c gUnknown_081bbbe8[];
+extern const u8 gUnknown_081a7f78[];
+extern const u8 gUnknown_081a7f80[];
 
 struct UnknownAllocation3128c {
     u8 filler0[2];
@@ -8637,18 +8689,6 @@ void FUN_0803b588(void) {
     *registers = copy;
 }
 
-void FUN_080482d0(struct UnknownState482d0 *state) {
-    state->field12.half.high = 96;
-    state->field38 = 5;
-    state->callback = (const void *)((u32)FUN_08047bd8 + 1);
-}
-
-void FUN_080482e8(struct UnknownState482d0 *state) {
-    state->field12.half.high = 96;
-    state->field38 = 7;
-    state->callback = (const void *)((u32)FUN_08047bd8 + 1);
-}
-
 void FUN_0803128c(struct UnknownListNode *node) {
     struct UnknownAllocation3128c *allocation = node->allocation;
 
@@ -8704,13 +8744,6 @@ void FUN_0803bb34(struct UnknownListNode *node) {
 void FUN_0803bbf0(struct UnknownListNode *node) {
     FUN_0803b69c(gUnknown_030052e0);
     node->data = (const void *)((u32)FUN_0803bc10 + 1);
-}
-
-void FUN_080482b4(struct UnknownState482d0 *state) {
-    state->field12.half.high = 96;
-    state->field30 = state->field10;
-    state->field39 = 64;
-    state->callback = (const void *)((u32)FUN_08047b40 + 1);
 }
 
 void FUN_0802dc78(struct UnknownListNode *node) {
@@ -9717,14 +9750,6 @@ void FUN_080309e0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_08030a08 + 1);
 }
 
-void FUN_08048284(struct UnknownState482d0 *state) {
-    state->field10 = 226;
-    state->field12.half.high = 153;
-    state->graphics = gUnknown_081a7f60;
-    state->callback = (const void *)((u32)FUN_08046aa4 + 1);
-    FUN_0804af6c((struct UnknownListNode *)state, state->callback);
-}
-
 void FUN_080312a0(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08031164;
@@ -9929,225 +9954,6 @@ void FUN_08032f10(struct UnknownListNode *node) {
     FUN_080214c0(gUnknown_03005300);
     node->data = (const void *)((u32)FUN_08032f34 + 1);
     FUN_0804af6c(node, node->data);
-}
-
-void FUN_08047fc0(struct UnknownState482d0 *state) {
-    FUN_0801f744(gUnknown_03005440.field12, 2);
-    state->field26 = 36;
-    state->callback = (const void *)((u32)FUN_080481c8 + 1);
-}
-
-void FUN_08047fe4(struct UnknownState482d0 *state) {
-    state->field30 = state->field10;
-    state->field34 = state->field12.half.high;
-    state->graphics = gUnknown_081a7f18 + ((state->field3 & 4) << 3);
-    state->callback = (const void *)((u32)FUN_0804825c + 1);
-    FUN_0804af6c((struct UnknownListNode *)state, state->callback);
-}
-
-void FUN_0804825c(struct UnknownState482d0 *state) {
-    register u16 first asm("r1") = gUnknown_03000288.first;
-    register u16 firstOffset asm("r3") = state->field30;
-    register u16 second asm("r1");
-    register u16 secondOffset asm("r2");
-
-    asm volatile("" : "+r"(first), "+r"(firstOffset));
-    first += firstOffset;
-    state->field10 = first;
-    second = gUnknown_03000288.second;
-    secondOffset = state->field34;
-    asm volatile("" : "+r"(second), "+r"(secondOffset));
-    second += secondOffset;
-    state->field12.half.high = second;
-    FUN_080405f4(state->field2, state->field39);
-}
-
-void FUN_080482a8(struct UnknownState482d0 *state) {
-    state->callback = (const void *)((u32)FUN_08047acc + 1);
-}
-
-void FUN_08048300(struct UnknownState482d0 *state) {
-    FUN_0804033c((const void *)0x02028000, (void *)0x06013200, 0x800);
-    state->field12.half.high = -32;
-    state->field20 = 0;
-    state->field39 = 16;
-    state->callback = (const void *)((u32)FUN_08047c30 + 1);
-}
-
-void FUN_080481c8(struct UnknownState482d0 *state) {
-    if (--state->field26 == 0) {
-        gUnknown_03005440.field12 = state->field20;
-        FUN_0801f618(gUnknown_03005440.field12);
-        gUnknown_03005440.field8 &= ~4;
-        FUN_0804051c(state);
-    }
-}
-
-void FUN_08048148(struct UnknownState482d0 *state) {
-    state->field27++;
-    FUN_0803fe98(16, 176, (u8)state->field27 >> 1);
-    if (state->field27 > 31) {
-        gUnknown_03005440.field8 &= ~4;
-        FUN_0804051c(state);
-    }
-}
-
-void FUN_08048184(struct UnknownState482d0 *state) {
-    state->field27++;
-    FUN_0803fe98(16, 176, (u16)(16 - ((u8)state->field27 >> 1)));
-    if (state->field27 > 31) {
-        gUnknown_03005440.field8 &= ~4;
-        FUN_0804051c(state);
-    }
-}
-
-void FUN_08047f7c(struct UnknownState482d0 *state) {
-    state->field27++;
-    FUN_0803fe98(0, 512, (u16)(16 - state->field27));
-    if (state->field27 > 15) {
-        gUnknown_03005440.field8 &= ~1;
-        FUN_0804051c(state);
-    }
-}
-
-void FUN_08047f20(struct UnknownState482d0 *state) {
-    u8 variant = gUnknown_03005440.field36 + 1;
-
-    if (variant > 3) {
-        variant = 1;
-    }
-    FUN_080403c0(gUnknown_081a81d0 + variant * 360, (void *)0x06019b80, 30, 6, 0);
-    gUnknown_03005440.field46 = variant;
-    state->field12.half.high = 48;
-    state->callback = (const void *)((u32)FUN_0804542c + 1);
-}
-
-void FUN_08047ec4(struct UnknownState482d0 *state) {
-    FUN_0801f744(gUnknown_03005440.field12, 1);
-    gUnknown_03005380 = 1;
-    gUnknown_03005440.callback = (const void *)((u32)FUN_08036560 + 1);
-    gUnknown_03005440.field32 = 0;
-    gUnknown_03005440.field33 = 0;
-    gUnknown_03005440.field34 = 1;
-    gUnknown_03005440.field35 = 1;
-    gUnknown_03005440.field8 |= 1;
-    gUnknown_03002030 = FUN_080412dc;
-    FUN_0804051c(state);
-}
-
-void FUN_08047bd8(struct UnknownState482d0 *state) {
-    register u32 mask asm("r2");
-    u32 value;
-    u8 *limit;
-
-    state->field26++;
-    mask = 0xFF;
-    asm volatile("" : "+r"(mask));
-    if ((u8)state->field26 > 2) {
-        state->field26 = 0;
-        value = state->field27 + 1;
-        state->field27 = value;
-        limit = &state->field38;
-        asm volatile("" : "+r"(limit));
-        if ((value & mask) >= *limit) {
-            gUnknown_03005440.field8 &= ~4;
-            FUN_0804051c(state);
-            return;
-        }
-    }
-    state->field20 = state->field27 << 4;
-    FUN_080405a8(state->field2, 1);
-}
-
-void FUN_08047b40(struct UnknownState482d0 *state) {
-    register u32 zero asm("r2");
-    register u32 mask asm("r1");
-    u32 value = state->field26 + 1;
-
-    zero = 0;
-    asm volatile("" : "+r"(zero));
-    state->field26 = value;
-    mask = 0xFF;
-    asm volatile("" : "+r"(mask));
-    if ((u8)value > 6) {
-        state->field26 = zero;
-        value = state->field27 + 1;
-        state->field27 = value;
-        value &= mask;
-        if (value > 5) {
-            state->field27 = zero;
-        }
-    }
-
-    state->field20 = gUnknown_081a7f88[state->field27];
-    state->field10 = state->field30 + FUN_0804a59c(FUN_08040698(state->field39), 1536);
-    state->field39 += 3;
-    state->field12.fixed += 0xFFFF6000;
-    if ((s16)state->field12.half.high <= -16) {
-        gUnknown_03005440.field8 &= ~4;
-        FUN_0804051c(state);
-    } else {
-        FUN_080405a8(state->field2, 1);
-    }
-}
-
-void FUN_08047c30(struct UnknownState482d0 *state) {
-    register u32 zero asm("r2");
-    register u32 mask asm("r1");
-
-    switch (state->field37) {
-    case 0:
-        state->field12.fixed += 0x8000;
-        if ((s16)state->field12.half.high > 79) {
-            state->field37++;
-        }
-        break;
-    case 1:
-        state->field40++;
-        if ((u16)state->field40 > 59) {
-            state->field37++;
-        }
-        break;
-    case 2: {
-        register u32 fade asm("r1");
-
-        state->field22 = 1;
-        fade = FUN_0804a59c(4096, state->field39);
-        asm volatile("" : "+r"(fade));
-        gUnknown_030002d0.second = fade;
-        gUnknown_030002d0.first = fade;
-        gUnknown_030002d0.third = 0;
-        FUN_0804a5c4(&gUnknown_030002d0, gUnknown_030044d6, 1, 8);
-        state->field39--;
-        if ((u8)state->field39 == 0) {
-            gUnknown_03005440.field8 &= ~4;
-            FUN_0804051c(state);
-            return;
-        }
-        break;
-    }
-    }
-
-    {
-        u32 frame = state->field26 + 1;
-
-        zero = 0;
-        asm volatile("" : "+r"(zero));
-        state->field26 = frame;
-        mask = 0xFF;
-        asm volatile("" : "+r"(mask));
-        if ((u8)frame > 4) {
-            state->field26 = zero;
-            frame = state->field27 + 1;
-            state->field27 = frame;
-            frame &= mask;
-            if (frame > 5) {
-                state->field27 = zero;
-            }
-            FUN_0804033c((void *)(0x02028000 + state->field27 * 0x800), (void *)0x06013200, 0x800);
-        }
-    }
-    FUN_080405a8(state->field2, 1);
 }
 
 void FUN_08040328(void) {
