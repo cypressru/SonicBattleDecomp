@@ -534,8 +534,8 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 }
 
 void FUN_08046bc4(struct UnknownState460ac *state) {
-    s32 delta;
     s32 destination;
+    s32 delta;
 
     if (state->field40 != 0) {
         state->field40--;
@@ -612,17 +612,21 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     state->field37 = command;
                     done = 0;
                     break;
-                case 0xfff9:
+                case 0xfff9: {
+                    s32 conversionResult;
+
                     command = nextScript[0];
                     state->field28.script = nextScript + 1;
-                    gUnknown_03000285 =
+                    conversionResult =
                         FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
+                    gUnknown_03000285 = conversionResult;
                     if (gUnknown_03000285 < 0) {
                         gUnknown_03000285 = 0;
                     }
                     FUN_08046af8(state);
                     state->field27 = gUnknown_03000285 > 4 ? 1 : 4;
                     break;
+                }
                 default:
                     gUnknown_0300028c.second = 0;
                     if ((command == 0 || command == emptyCommand) &&
