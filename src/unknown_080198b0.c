@@ -6486,21 +6486,19 @@ void FUN_08028bec(void) {
 }
 
 void FUN_08028c80(struct UnknownListNode *node) {
-    register struct UnknownListNode *owner asm("r5") = node;
-    register s32 command asm("r6");
-    register u16 *commandState asm("r0");
+    struct UnknownListNode *owner = node;
+    s32 command;
+    u16 *commandState;
     u32 complete;
-    register u32 count asm("r1");
-    register u32 i asm("r2");
-    register u32 loopCount asm("r3");
-    register u8 *records asm("r0");
-    register s32 expected asm("r12");
+    u32 count;
+    u32 i;
+    u32 loopCount;
+    u8 *records;
+    s32 expected;
     s16 *recordValue;
 
     commandState = gUnknown_03001b10;
-    asm volatile("" : "+r"(commandState));
     command = 0x2345;
-    asm volatile("" : : "r"(command));
     commandState[1] = command;
     FUN_0802f328(&commandState[2]);
     FUN_0801fab0(0x1357);
@@ -6510,9 +6508,7 @@ void FUN_08028c80(struct UnknownListNode *node) {
         count = gUnknown_0300525c;
         if (complete < count) {
             records = (u8 *)&gUnknown_030016f0;
-            asm volatile("" : "+r"(records));
             expected = command;
-            asm volatile("" : : "r"(expected));
             loopCount = count;
             recordValue = (s16 *)(records + 18);
             do {
@@ -10135,21 +10131,18 @@ void FUN_0804033c(const void *source, void *destination, u32 size) {
 }
 
 void FUN_08040360(void) {
-    register u32 index asm("r4") = 1;
-    register struct UnknownTransferList4033c **queue asm("r6");
-    register struct UnknownTransferList4033c **globalAddress asm("r0") = &gUnknown_030001a0;
-    register struct UnknownTransferList4033c *list asm("r3") = *globalAddress;
-    register u32 count asm("r1") = list->records[0].size;
+    u32 index = 1;
+    struct UnknownTransferList4033c **queue;
+    struct UnknownTransferList4033c **globalAddress = &gUnknown_030001a0;
+    struct UnknownTransferList4033c *list = *globalAddress;
+    u32 count = list->records[0].size;
 
     queue = globalAddress;
-    asm volatile("" : "+r"(queue), "+r"(list), "+r"(count));
     if (index < count) {
-        register volatile struct UnknownTransferRecord4033c *destination asm("r2") =
-            &gUnknown_030000d4;
-        register struct UnknownTransferRecord4033c *record asm("r1") = &list->records[1];
-        register u32 flags asm("r5") = 0x84000000;
+        volatile struct UnknownTransferRecord4033c *destination = &gUnknown_030000d4;
+        struct UnknownTransferRecord4033c *record = &list->records[1];
+        u32 flags = 0x84000000;
 
-        asm volatile("" : "+r"(destination), "+r"(record), "+r"(flags));
         do {
             destination->source = record->source;
             destination->destination = record->destination;
@@ -10333,15 +10326,15 @@ void FUN_080420dc(struct UnknownState420dc *state) {
 }
 
 void FUN_08042180(struct UnknownState420dc *state) {
-    register u32 tableIndex asm("r6") = gUnknown_03005440.field31;
-    register u32 tableIndexCopy = tableIndex;
-    register u32 poolField asm("r4") = gUnknown_0300547c[state->poolIndex].field27;
-    register const struct UnknownRecord41f24 *const *recordTable asm("r0");
-    register u32 tableOffset asm("r2");
-    register u32 recordOffset asm("r1");
-    register const void *records asm("r0");
-    register const void *const *resourceTable asm("r1");
-    register u32 resourceOffset asm("r0");
+    u32 tableIndex = gUnknown_03005440.field31;
+    u32 tableIndexCopy = tableIndex;
+    u32 poolField = gUnknown_0300547c[state->poolIndex].field27;
+    const struct UnknownRecord41f24 *const *recordTable;
+    u32 tableOffset;
+    u32 recordOffset;
+    const void *records;
+    const void *const *resourceTable;
+    u32 resourceOffset;
     const void *source;
 
     if (state->cachedPoolField != poolField) {
@@ -10359,11 +10352,8 @@ void FUN_08042180(struct UnknownState420dc *state) {
         tableOffset = tableIndexCopy << 2;
     }
 foundTable:
-    asm volatile("" : "+r"(recordTable), "+r"(tableOffset));
     tableOffset += (u32)recordTable;
-    asm volatile("" : "+r"(tableOffset));
     records = *(const void *const *)tableOffset;
-    asm volatile("" : "+r"(records));
     recordOffset = poolField << 5;
     state->baseX = *(const u16 *)(recordOffset + (u32)records + 4);
     state->baseY = *(const u16 *)(recordOffset + (u32) * (const void *const *)tableOffset + 6);
@@ -10372,11 +10362,9 @@ foundTable:
     state->field24 = 8;
     resourceTable = (const void *const *)gUnknown_08edda00;
     resourceOffset = gUnknown_03005440.field29 << 2;
-    asm volatile("" : "+r"(resourceTable), "+r"(resourceOffset));
     resourceOffset += (u32)resourceTable;
     resourceTable = *(const void *const **)resourceOffset;
     resourceOffset = poolField << 2;
-    asm volatile("" : "+r"(resourceTable), "+r"(resourceOffset));
     resourceOffset += (u32)resourceTable;
     source = *(const void *const *)resourceOffset;
     LZ77UnCompWram(source, (void *)0x02010600);
