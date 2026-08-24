@@ -202,6 +202,16 @@ rejected_function_pointers:
   - { source: 0x0DB97C8, destination: 0x08030D02 }
   - { source: 0x0CB58C0, destination: 0x0803EDEE }
   - { source: 0x0C26614, destination: 0x0801D5B6 }
+  # Opaque asset coincidences point into live switch cases, embedded literals,
+  # and shared epilogues owned by the surrounding frame-establishing entries.
+  - { source: 0x0D466F8, destination: 0x0801D70A }
+  - { source: 0x0C51FBC, destination: 0x0801DDA0 }
+  - { source: 0x0D7AC64, destination: 0x080213E4 }
+  - { source: 0x0EEF480, destination: 0x08032D0C }
+  - { source: 0x0F9D46C, destination: 0x0803F474 }
+  - { source: 0x0C6E20C, destination: 0x0803F510 }
+  - { source: 0x0F89F64, destination: 0x0803F510 }
+  - { source: 0x0D98AF0, destination: 0x0801FFF8 }
   # The old 0x08031146 candidate begins in a literal pool. A real aligned
   # callback literal at 0x08031150 points to the prologue at 0x08031154.
   - { source: 0x053D934, destination: 0x08031146 }
@@ -2169,6 +2179,9 @@ units:
       - { offset: 0x63A4, mode: thumb }
       - { offset: 0x63AC, mode: data }
       - { offset: 0x63B0, mode: thumb }
+      # FUN_0801ffe4's internal two-word literal island.
+      - { offset: 0x6768, mode: data }
+      - { offset: 0x6770, mode: thumb }
       - { offset: 0x6780, mode: data }
       - { offset: 0x6784, mode: thumb }
       - { offset: 0x67B4, mode: data }

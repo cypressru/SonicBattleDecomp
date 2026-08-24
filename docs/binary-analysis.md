@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,243 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,233 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Starts inside `main/unknown_080007FC` are removed when control flow proves
@@ -52,7 +52,7 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x3B978 report-accounted code bytes and 0xB57C owned non-code bytes.
+game category consequently contains 0x3CB16 report-accounted code bytes and 0xA3DE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -134,6 +134,14 @@ and `0x08041110` entries begin inside live case blocks and depend on state estab
 entry. Their three opaque asset references are rejected, and the switch table plus seven literal
 regions are mapped within the consolidated owner.
 
+The final frame audit consolidated eight more owners: `FUN_0801D408`, `FUN_0801D618`,
+`FUN_0801DBD0`, `FUN_08021268`, `FUN_0802DF68`, `FUN_0803139C`, `FUN_08032BE0`, and
+`FUN_0803F0C8`. Ten former entries were switch cases, literals, or shared epilogues that unwind
+frames established only by those real entries. The recovered `FUN_0801FFE4` entry replaces an
+asset-derived pointer into its body at `0x0801FFF8`. With their tables and literal islands mapped,
+the late-gameplay range has zero control-flow extent disagreements and zero entries that unwind a
+frame they never establish.
+
 ### Translation-unit inventory status
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
@@ -143,7 +151,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 925 | 166,834 | 19,586 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 915 | 171,344 | 15,076 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
