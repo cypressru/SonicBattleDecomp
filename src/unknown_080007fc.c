@@ -1031,12 +1031,22 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     u32 remapped;
 
     resource = 0;
-    if (character == 9) {
-        remapped = 1;
-        character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
-    } else {
-        remapped = 0;
+    if (character != 9) {
+        goto not_remapped;
     }
+    remapped = 1;
+    character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
+    goto animation_ready;
+
+invalid_stream:
+    gUnknown_03003110[slot] = 0;
+    gUnknown_03003108[slot] = 1 - direction;
+    return 0xff;
+
+not_remapped:
+    remapped = 0;
+
+animation_ready:
 
     animationIndex = FUN_0800b098(animation);
     commands = *(const u32 *const *)(0x0868eda8 + character * 0x118 + animationIndex * 4);
@@ -1178,11 +1188,6 @@ command_done:
 advance_frame:
     gUnknown_03003108[slot]++;
     return 1;
-
-invalid_stream:
-    gUnknown_03003110[slot] = 0;
-    gUnknown_03003108[slot] = 1 - direction;
-    return 0xff;
 }
 
 /* Bubble-sorts the live part of the 0x030033E0 queue into descending order of
