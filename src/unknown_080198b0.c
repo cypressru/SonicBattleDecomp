@@ -237,9 +237,11 @@ extern struct UnknownListNode *FUN_0801f7d0(void (*callback)(struct UnknownListN
 
 typedef void (*UnknownCallback)(void);
 
+struct UnknownEntityFrame;
+
 struct UnknownEntity {
     UnknownCallback callback;
-    const void *data;
+    const struct UnknownEntityFrame *data;
     u16 field8;
     u16 field10;
     u8 field12;
@@ -3301,38 +3303,38 @@ void FUN_0801ce70(void) {
 
 u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
     struct UnknownEntityData *metadata = gUnknown_03001c40;
+    u32 offset = index * sizeof(struct UnknownEntityData);
 
-    if ((metadata[index].field116 & 0x1F00) == value) {
+    if ((*(u32 *)((u32)&metadata->field116 + offset) & 0x1F00) == value) {
         gUnknown_03003d88++;
     }
-    if ((metadata[index].field174 & 0x7C0) == (value >> 2)) {
+    if ((*(u16 *)((u32)&metadata->field174 + offset) & 0x7C0) == (value >> 2)) {
         gUnknown_03003d88++;
     }
 
-    return gUnknown_03003d88 >= threshold;
+    if (gUnknown_03003d88 >= threshold) {
+        return 1;
+    }
+    return 0;
 }
 
 u32 FUN_0801cfc8(u8 value) {
     u32 offset = value * sizeof(struct UnknownEntity);
     struct UnknownEntity *entities = gUnknown_03003db0;
     struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
-    const struct UnknownEntityFrame *frame = entity->data;
-    u8 counter = entity->field14;
     struct UnknownEntity *savedEntities = entities;
 
-    while (counter >= frame->duration) {
-        if (frame->duration == 0) {
+    while (entity->field14 >= entity->data->duration) {
+        if (entity->data->duration == 0) {
             entity->field8 = 0;
             return 0;
         }
         entity->field14 = 0;
-        frame++;
-        entity->data = frame;
-        counter = entity->field14;
+        entity->data++;
     }
 
-    entity->field8 = frame->flags & 0x3FF;
-    if ((frame->flags & 0x8000) != 0) {
+    entity->field8 = entity->data->flags & 0x3FF;
+    if ((entity->data->flags & 0x8000) != 0) {
         entity->field8 = (entity->field8 & 0xFF0F) | FUN_0801e99c(value);
     } else if (savedEntities[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
         entity->field8 ^= 0x30;
