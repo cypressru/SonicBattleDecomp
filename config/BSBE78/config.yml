@@ -1910,10 +1910,14 @@ units:
       - { offset: 0x2FAC, mode: thumb }
       - { offset: 0x2FF2, mode: data }
       - { offset: 0x2FF4, mode: thumb }
+      - { offset: 0x2F6A, mode: data }
+      - { offset: 0x2F7C, mode: thumb }
       - { offset: 0x300E, mode: data }
       - { offset: 0x301C, mode: thumb }
       - { offset: 0x3032, mode: data }
       - { offset: 0x3040, mode: thumb }
+      - { offset: 0x362C, mode: data }
+      - { offset: 0x3634, mode: thumb }
       - { offset: 0x513C, mode: thumb }
       - { offset: 0x50EC, mode: thumb }
       - { offset: 0x5130, mode: data }
@@ -2022,6 +2026,16 @@ units:
       - { offset: 0x3A58, mode: thumb }
       - { offset: 0x3A8C, mode: data }
       - { offset: 0x3A90, mode: thumb }
+      - { offset: 0x3778, mode: data }
+      - { offset: 0x3784, mode: thumb }
+      - { offset: 0x37B6, mode: data }
+      - { offset: 0x37B8, mode: thumb }
+      - { offset: 0x37F0, mode: data }
+      - { offset: 0x3800, mode: thumb }
+      - { offset: 0x3878, mode: data }
+      - { offset: 0x387C, mode: thumb }
+      - { offset: 0x38C4, mode: data }
+      - { offset: 0x38C8, mode: thumb }
       - { offset: 0x3AB8, mode: data }
       - { offset: 0x402C, mode: data }
       - { offset: 0x40B2, mode: data }
