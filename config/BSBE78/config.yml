@@ -5555,13 +5555,36 @@ units:
       FUN_0801f578: 0x72
   - name: main/unknown_0801F5EC
     start: 0x01F5EC
-    end: 0x0470E4
+    end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
     category: game
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080198b0.c
     cflags: [-O2, -mthumb-interwork]
+  - name: main/unknown_080460AC
+    start: 0x0460AC
+    end: 0x0470E4
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080460ac.c
+    cflags: [-O2, -mthumb-interwork]
+    base_symbol_size_overrides:
+      FUN_080460ac: 0xE6
+      FUN_080461b4: 0x100
+      FUN_080462c8: 0x10E
+      FUN_080463f4: 0x140
+      FUN_08046538: 0x12C
+      FUN_0804666c: 0x29C
+      FUN_08046918: 0x74
+      FUN_08046998: 0x7E
+      FUN_08046a18: 0x8A
+      FUN_08046aa4: 0x54
+      FUN_08046af8: 0xC8
+      FUN_08046bc4: 0x33C
+      FUN_08046f00: 0x1BA
   - name: main/unknown_080470E4
     start: 0x0470E4
     end: 0x04833C
