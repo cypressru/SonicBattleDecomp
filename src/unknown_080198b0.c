@@ -1205,6 +1205,14 @@ void FUN_080252d0(struct UnknownListNode *node);
 void FUN_08025f5c(struct UnknownListNode *node);
 void FUN_08025fd4(struct UnknownListNode *node);
 extern void FUN_08018444(void);
+extern void FUN_080184c8(void);
+extern void FUN_08018530(void);
+extern void FUN_080176e4(s16 target);
+extern void FUN_080182e4(s16 target);
+extern void FUN_08018300(s16 target);
+extern void FUN_08018318(s16 first, s16 second);
+extern void FUN_080006d0(void);
+extern u16 gUnknown_03001378;
 
 void FUN_0801a61c(u8 mode) {
     u8 *selection;
@@ -1253,6 +1261,39 @@ void FUN_0801a61c(u8 mode) {
         return;
     }
     *selection = selected;
+}
+
+void FUN_0801aadc(void) {
+    u8 random = FUN_0801f9e8(0x1593);
+    u8 *state = (u8 *)0x03003d98;
+
+    if (*state > 8) {
+        *state = 0;
+        FUN_08018530();
+        FUN_08019b5c();
+        gUnknown_03002030 = FUN_0801a898;
+    } else if (*state != 0) {
+        (*state)++;
+    } else if (random == *(u8 *)0x03003d9c) {
+        *state = 1;
+    } else {
+        u8 *timer = &gUnknown_03001620;
+
+        timer += 0x85;
+
+        (*timer)++;
+        if (*timer > 240) {
+            FUN_080184c8();
+            gUnknown_03002030 = FUN_0803d1a0;
+            return;
+        }
+    }
+
+    FUN_080006d0();
+    FUN_080176e4((s16)(gUnknown_03001378 << 3));
+    FUN_080182e4(256);
+    FUN_08018318(0, 0);
+    FUN_08018300(768);
 }
 
 void FUN_0801c8f0(void) {

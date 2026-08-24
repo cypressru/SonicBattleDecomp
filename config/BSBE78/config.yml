@@ -1357,6 +1357,7 @@ units:
     cflags: [-O2, -mthumb-interwork]
     base_symbol_size_overrides:
       FUN_0801a61c: 0x84
+      FUN_0801aadc: 0xB0
       FUN_0801d188: 0x76
       FUN_0801d200: 0x86
       FUN_0801d288: 0xE0
@@ -1873,6 +1874,14 @@ units:
       - { offset: 0xDB8, mode: thumb }
       - { offset: 0xDF0, mode: data }
       - { offset: 0xDF8, mode: thumb }
+      - { offset: 0x1256, mode: data }
+      - { offset: 0x1268, mode: thumb }
+      - { offset: 0x1280, mode: data }
+      - { offset: 0x1284, mode: thumb }
+      - { offset: 0x12A2, mode: data }
+      - { offset: 0x12B0, mode: thumb }
+      - { offset: 0x12DC, mode: data }
+      - { offset: 0x12E0, mode: thumb }
       - { offset: 0x2FA0, mode: data }
       - { offset: 0x2FAC, mode: thumb }
       - { offset: 0x2FF2, mode: data }
@@ -3420,6 +3429,20 @@ units:
       - { offset: 0x18EC2, mode: data }
       - { offset: 0x18EC8, mode: thumb }
     relocations:
+      - { offset: 0x1230, type: thumb_call, symbol: FUN_0801f9e8 }
+      - { offset: 0x1246, type: thumb_call, symbol: FUN_08018530 }
+      - { offset: 0x124A, type: thumb_call, symbol: FUN_08019b5c }
+      - { offset: 0x1260, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x1264, type: abs32, symbol: FUN_0801a898 }
+      - { offset: 0x1296, type: thumb_call, symbol: FUN_080184c8 }
+      - { offset: 0x12A4, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x12A8, type: abs32, symbol: gUnknown_03002030 }
+      - { offset: 0x12AC, type: abs32, symbol: FUN_0803d1a0 }
+      - { offset: 0x12B0, type: thumb_call, symbol: FUN_080006d0 }
+      - { offset: 0x12BC, type: thumb_call, symbol: FUN_080176e4 }
+      - { offset: 0x12C4, type: thumb_call, symbol: FUN_080182e4 }
+      - { offset: 0x12CC, type: thumb_call, symbol: FUN_08018318 }
+      - { offset: 0x12D4, type: thumb_call, symbol: FUN_08018300 }
       - { offset: 0x18DC8, type: abs32, symbol: gUnknown_030052fc }
       - { offset: 0x18D8A, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x18D9E, type: thumb_call, symbol: FUN_08020ecc }
