@@ -3527,8 +3527,8 @@ void FUN_0803fd4c(void) {
 }
 
 void FUN_08045a00(struct UnknownState420dc *input) {
-    register struct UnknownState420dc *state asm("r5") = input;
-    register u16 index asm("r4") = 0;
+    struct UnknownState420dc *state = input;
+    u16 index = 0;
 
     for (;;) {
         struct UnknownState420dc *child =
@@ -3539,7 +3539,7 @@ void FUN_08045a00(struct UnknownState420dc *input) {
         child->field14 = 76;
         child->graphics = gUnknown_081a7f68;
         {
-            register s32 signedIndex asm("r2") = (s16)index;
+            s32 signedIndex = (s16)index;
 
             child->field20 = signedIndex * 24 + 40;
             child->field24 = 16;
@@ -4073,18 +4073,16 @@ u32 FUN_08020034(u16 first, u16 second, u16 third) {
 void FUN_08020074(void) {
     if (gUnknown_030048d4 >= 0) {
         u8 index = gUnknown_030048d4;
-        register u32 offset asm("r1") = index << 3;
-        register struct UnknownQueuedValue *base asm("r0") = gUnknown_030044d0;
+        u32 offset = index << 3;
+        struct UnknownQueuedValue *base = gUnknown_030044d0;
         struct UnknownQueuedValue *entry;
 
-        asm volatile("" : "+r"(offset), "+r"(base));
         entry = (struct UnknownQueuedValue *)(offset + (u32)base);
 
         if ((s8)index >= 0) {
-            register u32 rawValue asm("r0") = 0x200;
-            register u16 value asm("r3") = rawValue;
+            u32 rawValue = 0x200;
+            u16 value = rawValue;
 
-            asm volatile("" : "+r"(value));
             do {
                 entry->first = value;
                 entry++;
@@ -4706,16 +4704,15 @@ u32 FUN_080218dc(u8 sector, u8 *data) {
 }
 
 void FUN_080219e4(u8 *data, u32 count) {
-    register u32 end asm("r4") = count - 1;
-    register u32 i asm("r3") = 0;
+    u32 end = count - 1;
+    u32 i = 0;
 
     if (i < end) {
-        register const u8 *table asm("r5") = gUnknown_0807b780;
+        const u8 *table = gUnknown_0807b780;
 
-        asm volatile("" : "+r"(table));
         do {
-            register u32 index asm("r1") = data[0];
-            register u32 value asm("r0");
+            u32 index = data[0];
+            u32 value;
 
             index += (u32)table;
             value = data[1];
@@ -5675,17 +5672,13 @@ void FUN_08027bfc(struct UnknownListNode *node) {
     u32 value;
 
     {
-        register struct UnknownFourByteMessage *message asm("r1") = &gUnknown_03001b1c;
-        register u32 byteZero asm("r0") = 0;
+        struct UnknownFourByteMessage *message = &gUnknown_03001b1c;
+        u32 byteZero = 0;
+        u16 halfwordZero = 0;
 
         message->type = byteZero;
         message->index = byteZero;
-        asm volatile("" : : : "r0");
-        {
-            register u16 halfwordZero asm("r0") = 0;
-
-            message->value = halfwordZero;
-        }
+        message->value = halfwordZero;
     }
     value = FUN_0801f9e8(0x3579);
     gUnknown_03005248 = value;
@@ -5931,10 +5924,10 @@ void FUN_08028038(struct UnknownListNode *node) {
 
 u32 FUN_080280b8(struct UnknownListNode *node, s32 x, s32 y) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
-    register s32 newX asm("r3") = (s16)allocation->field20;
-    register s32 targetX asm("r1") = (s16)x;
-    register s32 newY asm("r0");
-    register s32 targetY asm("r5");
+    s32 newX = (s16)allocation->field20;
+    s32 targetX = (s16)x;
+    s32 newY;
+    s32 targetY;
 
     newX = targetX + (newX - targetX) / 2;
     allocation->field20 = newX;
@@ -8414,19 +8407,16 @@ void FUN_080405f4(u8 first, u8 second) {
 }
 
 void FUN_080404ec(void) {
-    register struct UnknownPoolNode404ec **address asm("r1") =
-        (struct UnknownPoolNode404ec **)&gUnknown_0300547c;
-    register u32 index asm("r4") = (*address)[0].next;
+    struct UnknownPoolNode404ec **address = (struct UnknownPoolNode404ec **)&gUnknown_0300547c;
+    u32 index = (*address)[0].next;
 
     if (index != 0) {
-        register struct UnknownPoolNode404ec **globalAddress asm("r5") = address;
-        register u32 stride asm("r6") = sizeof(struct UnknownPoolNode404ec);
+        struct UnknownPoolNode404ec **globalAddress = address;
+        u32 stride = sizeof(struct UnknownPoolNode404ec);
 
-        asm volatile("" : "+r"(globalAddress), "+r"(stride));
         do {
-            register struct UnknownPoolNode404ec *node asm("r0") = *globalAddress;
+            struct UnknownPoolNode404ec *node = *globalAddress;
 
-            asm volatile("" : "+r"(node));
             index *= stride;
             node = (struct UnknownPoolNode404ec *)(index + (u32)node);
             FUN_0804af6c((struct UnknownListNode *)node, node->data);
@@ -9374,10 +9364,10 @@ void FUN_08035fac(struct UnknownListNode *node) {
     node->position->field0 = gUnknown_08edcb1c;
     node->position->tile = gUnknown_03005370;
     {
-        register struct UnknownPosition *position asm("r3") = node->position;
-        register const u16 *base asm("r4") = &gUnknown_03005378;
-        register u32 index asm("r2") = position->field13;
-        register u32 x asm("r1") = index * 6 + 48;
+        struct UnknownPosition *position = node->position;
+        const u16 *base = &gUnknown_03005378;
+        u32 index = position->field13;
+        u32 x = index * 6 + 48;
 
         x += *base;
         position->x = x;
@@ -9434,9 +9424,9 @@ void FUN_0803611c(struct UnknownListNode *node) {
 }
 
 void FUN_08036174(struct UnknownListNode *node) {
-    register const struct UnknownLookupRecord29250 *records asm("r1") =
+    const struct UnknownLookupRecord29250 *records =
         (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
-    register const u16 *recordIndex asm("r3") = &gUnknown_03005368;
+    const u16 *recordIndex = &gUnknown_03005368;
     u16 selection = records[*recordIndex].value;
 
     if (selection > 19) {
@@ -9447,8 +9437,8 @@ void FUN_08036174(struct UnknownListNode *node) {
     }
 
     {
-        register struct UnknownPosition *position asm("r1") = node->position;
-        register u32 frame asm("r0") = position->field15 + 1;
+        struct UnknownPosition *position = node->position;
+        u32 frame = position->field15 + 1;
 
         position->field15 = frame;
         frame &= 0xFF;
@@ -9466,10 +9456,10 @@ void FUN_08036174(struct UnknownListNode *node) {
 }
 
 void FUN_08036260(struct UnknownListNode *node) {
-    register struct UnknownPosition *position asm("r3") = node->position;
-    register const u16 *base asm("r4") = &gUnknown_03005378;
-    register u32 index asm("r2") = position->field13;
-    register u32 x asm("r1") = index * 6 + 48;
+    struct UnknownPosition *position = node->position;
+    const u16 *base = &gUnknown_03005378;
+    u32 index = position->field13;
+    u32 x = index * 6 + 48;
 
     x += *base;
     position->x = x;
@@ -10285,23 +10275,20 @@ void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s3
 }
 
 void FUN_08041808(void *value) {
-    register struct UnknownFadeState41808 *state asm("r4") = value;
-    register u32 progress asm("r0") = state->step;
-    register u32 oldProgress asm("r1") = state->progress;
+    struct UnknownFadeState41808 *state = value;
+    u32 progress = state->step;
+    u32 oldProgress = state->progress;
 
-    asm volatile("" : "+r"(state), "+r"(progress), "+r"(oldProgress));
     progress += oldProgress;
     state->progress = progress;
-    asm volatile("" : "+r"(progress));
     progress = (u8)progress;
     if (progress > 15) {
         state->progress = 16;
     }
     {
-        register u32 blend asm("r1") = state->progress;
-        register u32 inverse asm("r0") = 16 - blend;
+        u32 blend = state->progress;
+        u32 inverse = 16 - blend;
 
-        asm volatile("" : "+r"(blend), "+r"(inverse));
         blend |= inverse << 8;
         FUN_0801fba0(0x52, (u16)blend);
     }
