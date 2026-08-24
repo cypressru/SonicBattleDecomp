@@ -5996,10 +5996,8 @@ void FUN_08028158(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = byteZero;
@@ -6013,10 +6011,8 @@ void FUN_08028190(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = byteZero;
@@ -6030,10 +6026,8 @@ void FUN_080281c8(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = byteZero;
@@ -6047,10 +6041,8 @@ void FUN_08028200(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = byteZero;
@@ -6064,10 +6056,8 @@ void FUN_08028238(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 32;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 32;
     node->position->field10 = byteZero;
@@ -6081,10 +6071,8 @@ void FUN_08028270(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 32;
-    register u32 byteZero asm("r4") = 0;
-    register u16 halfwordZero asm("r5") = 0;
-
-    asm volatile("" : : "r"(byteZero), "r"(halfwordZero));
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
     position->x = x;
     node->position->y = allocation->field22 - 32;
     node->position->field10 = byteZero;
@@ -6098,9 +6086,8 @@ void FUN_080282a8(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = zero;
@@ -6113,9 +6100,8 @@ void FUN_080282e0(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = zero;
@@ -6128,9 +6114,8 @@ void FUN_08028318(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = zero;
@@ -6143,9 +6128,8 @@ void FUN_08028350(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 16;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 16;
     node->position->field10 = zero;
@@ -6158,9 +6142,8 @@ void FUN_08028388(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 32;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 32;
     node->position->field10 = zero;
@@ -6173,9 +6156,8 @@ void FUN_080283c0(struct UnknownListNode *node) {
     struct UnknownAllocation27db8 *allocation = node->allocation;
     struct UnknownPosition *position = node->position;
     s32 x = allocation->field20 - 32;
-    register u32 zero asm("r3") = 0;
+    u32 zero = 0;
 
-    asm volatile("" : : "r"(zero));
     position->x = x;
     node->position->y = allocation->field22 - 32;
     node->position->field10 = zero;
