@@ -1106,10 +1106,10 @@ void FUN_08015e30(s16 x, s16 y, u8 fourth, u8 fifth, u8 index) {
                  113, 0, 0);
     FUN_08018004(x - gUnknown_03003100[index], (s16)(gUnknown_03003118[index] + 32) + y, 0,
                  fourth + 16, fifth, 0, 111, 0, 0);
-    FUN_08018004(x - (gUnknown_03003100[index] - 32), y + gUnknown_03003118[index], 0,
-                 fourth + 24, fifth, 0, 112, 0, 0);
-    FUN_08018004(x - (gUnknown_03003100[index] - 32),
-                 (s16)(gUnknown_03003118[index] + 32) + y, 0, fourth + 32, fifth, 0, 110, 0, 0);
+    FUN_08018004(x - (gUnknown_03003100[index] - 32), y + gUnknown_03003118[index], 0, fourth + 24,
+                 fifth, 0, 112, 0, 0);
+    FUN_08018004(x - (gUnknown_03003100[index] - 32), (s16)(gUnknown_03003118[index] + 32) + y, 0,
+                 fourth + 32, fifth, 0, 110, 0, 0);
 }
 
 s16 FUN_08015f40(u8 index) { return -gUnknown_03003100[index]; }
