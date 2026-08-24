@@ -37,7 +37,8 @@ extern void FUN_0803bbc4(struct UnknownListNode *node);
 extern const u8 gUnknown_081a1d10[];
 extern void FUN_0801bcac(void);
 extern void FUN_0801b394(void);
-extern void FUN_0801c770(void);
+void FUN_0801c770(void);
+void FUN_0801c4bc(void);
 extern void FUN_08020840(u16 value);
 extern u32 FUN_080205d0(void);
 extern u32 FUN_0801cfc8(u8 value);
@@ -1164,6 +1165,7 @@ extern void FUN_0801e6a0(void);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
+extern const u8 gUnknown_08071237[];
 extern void FUN_0801eea8(u8 value);
 extern u16 ArcTan2(s16 x, s16 y);
 extern u16 gUnknown_08071250[];
@@ -1369,6 +1371,40 @@ void FUN_0801c8f0(void) {
     FUN_08012b98(60);
     gUnknown_03002030 = FUN_0801bcac;
     gUnknown_03002030();
+}
+
+void FUN_0801c770(void) {
+    u8 choices[8];
+    u8 *scene;
+    u8 index;
+    u8 choice;
+
+    memcpy(choices, gUnknown_08071237, 7);
+    scene = &gUnknown_03001620;
+    scene[36] = 4;
+    scene[28] = 1;
+    scene[29] = 1;
+    scene[30] = 1;
+    scene[31] = 1;
+
+    choice = FUN_08020144() % 7;
+    for (index = 0; index <= 3; index++) {
+        while (choices[choice] == 0) {
+            choice = FUN_08020144() % 7;
+        }
+        choices[choice] = 0;
+        scene[index + 20] = choice;
+    }
+
+    scene[1] = 0;
+    scene[2] = 1;
+    scene[3] = FUN_08020144() % 9;
+    scene[125] = 0xff;
+    FUN_08019ed8();
+    FUN_08019b5c();
+    FUN_08012b98(50);
+    gUnknown_03002030 = (void (*)(void))((u32)FUN_0801c4bc + 1);
+    FUN_080205d0();
 }
 
 void FUN_0801c82c(void) {
