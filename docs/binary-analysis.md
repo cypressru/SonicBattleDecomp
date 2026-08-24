@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,287 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,282 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
@@ -52,10 +52,22 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x3987A instruction bytes and 0xD67A owned non-code bytes.
+game category consequently contains 0x3999E report-accounted code bytes and 0xD556 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
+
+The switch owner at `0x08000E04` now spans all three of its jump tables and case groups through the
+shared return at `0x080016C4`. The former `0x08001476` and `0x080014A8` symbols were internal case
+fragments, while `0x08001614` is the third jump table itself; two opaque asset words that happen to
+encode its Thumb-tagged address are recorded as rejected coincidences. Explicit mapping transitions
+keep every table and case-literal island classified as data inside the single function extent.
+
+The pointer-derived `0x08002442` and `0x08002700` starts are instead internal to `FUN_08001B0C`.
+The former is the upper halfword of a jump-table entry; the latter begins at a conditional test with
+live r6/r7/r8 state. The reachable return at `0x08002908` restores the 0x34-byte frame and high
+registers saved only by the real entry. Both Thumb-shaped references are opaque asset coincidences;
+the recovered owner includes the complete 21-entry switch table and nine later literal islands.
 
 ### Translation-unit inventory status
 
@@ -65,7 +77,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 131 | 68,698 | 26,630 |
+| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 125 | 68,990 | 26,338 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 984 | 167,664 | 23,452 |
 
 These objects are conservative coverage buckets, not claims that either range was one original

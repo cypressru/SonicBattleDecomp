@@ -13,14 +13,9 @@ address,name,mode,confidence
 0x08000A2C,FUN_08000a2c,thumb,direct-call
 0x08000CF4,FUN_08000cf4,thumb,direct-call+exact-body
 0x08000E04,FUN_08000e04,thumb,direct-call
-0x08001476,FUN_08001476,thumb,internal-switch-fragment
-0x080014A8,FUN_080014a8,thumb,internal-switch-fragment
-0x08001614,FUN_08001614,thumb,rom-pointer
 0x080016C4,FUN_080016c4,thumb,direct-call+exact-body
 0x0800186C,FUN_0800186c,thumb,direct-call
 0x08001B0C,FUN_08001b0c,thumb,direct-call
-0x08002442,FUN_08002442,thumb,rom-pointer
-0x08002700,FUN_08002700,thumb,rom-pointer
 0x0800290C,FUN_0800290c,thumb,rom-pointer+direct-call
 0x08003142,FUN_08003142,thumb,rom-pointer
 0x08003220,FUN_08003220,thumb,rom-pointer
