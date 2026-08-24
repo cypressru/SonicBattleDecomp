@@ -1833,7 +1833,7 @@ void FUN_0801e044(u8 value) {
     if (type == 0) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = index * sizeof(struct UnknownEntity);
-        struct UnknownEntity *entity;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         UnknownCallback callback;
 
         entity = (struct UnknownEntity *)((u8 *)entities + entityOffset);
@@ -1905,7 +1905,9 @@ void FUN_0801e0c4(u8 value) {
         struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)savedEntities + 4);
 
         *(const void **)(entityOffset + (u32)dataBase) = data;
-        goto common;
+        entity->field14 = zero;
+        entity->field16 = metadata->field16;
+        return;
     }
 
     caseTwo: {
@@ -2030,7 +2032,7 @@ void FUN_0801e41c(u8 value) {
     if (type == 0) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = index * 24;
-        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        struct UnknownEntity *entity;
 
         entity->field8 = type;
         entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
@@ -2160,9 +2162,10 @@ void FUN_0801e4f4(u8 value) {
                 entity->field8 = mask;
             }
         }
+        savedDoubled = entityOffset / 8 - index;
     }
     {
-        u32 scaled = index * 64;
+        u32 scaled = savedDoubled * 32;
         u32 metadataOffset2 = (scaled - index) * 4;
         struct UnknownEntityData *metadata2 =
             (struct UnknownEntityData *)(metadataOffset2 + (u32)savedMetadataBase);
@@ -2224,6 +2227,7 @@ void FUN_0801e4f4(u8 value) {
                     u32 normalizedFirst = (u16)(first + bias);
                     u32 maximum = 0x9FE;
 
+                    biasValue = savedDoubled;
                     if (normalizedFirst <= maximum) {
                         s32 signedSecond = (s16)second;
                         u32 normalizedSecond = (u16)(signedSecond + bias);
@@ -2232,7 +2236,7 @@ void FUN_0801e4f4(u8 value) {
                             struct UnknownEntity *entities = gUnknown_03003db0;
                             u32 entityOffset;
 
-                            entityOffset = savedDoubled + index;
+                            entityOffset = biasValue + index;
                             entityOffset *= 8;
                             {
                                 struct UnknownEntity *entity =
@@ -3021,7 +3025,8 @@ u32 FUN_0801d068(u8 value) {
     bestIndex = 0;
     state = &gUnknown_03001620;
     if (state[8] != 0) {
-        u8 group = state[value + 32];
+        u8 *groupBase = state + 32;
+        u8 group = groupBase[value];
         u8 *entries = state + 20;
         u8 *groups = state + 32;
         s32 *score = scores;
@@ -3084,12 +3089,24 @@ u8 FUN_0801d188(u8 value) {
 
         if (candidate != value) {
             u8 *state = (u8 *)gUnknown_03001c40;
+            u8 *entryBase;
+            u8 *entry;
 
-            if (state[candidate + 20] != 0xFF) {
+            entryBase = state;
+            entryBase += 20;
+            entry = (u8 *)(candidate + (u32)entryBase);
+            if (*entry != 0xFF) {
+                u8 *groupBase;
+                u8 *valueGroup;
+                u8 *candidateGroup;
+
                 if (state[8] == 0) {
                     goto check_type;
                 }
-                if (state[value + 32] != state[candidate + 32]) {
+                groupBase = entryBase + 12;
+                valueGroup = (u8 *)(value + (u32)groupBase);
+                candidateGroup = (u8 *)(candidate + (u32)groupBase);
+                if (*valueGroup != *candidateGroup) {
                 check_type: {
                     struct UnknownEntityData *metadata = gUnknown_03001c40_pool2;
                     u32 type;
@@ -3143,8 +3160,7 @@ u32 FUN_0801d200(u8 value) {
                 if (state[8] == 0) {
                     goto check_type;
                 }
-                groupBase = state;
-                groupBase += 32;
+                groupBase = entryBase + 12;
                 valueGroup = (u8 *)(value + (u32)groupBase);
                 candidateGroup = (u8 *)(candidate + (u32)groupBase);
                 if (*valueGroup != *candidateGroup) {
