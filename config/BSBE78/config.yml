@@ -81,6 +81,19 @@ rejected_function_pointers:
   # gUnknown_03005248 literal inside FUN_08027660. The surrounding block is
   # skipped as data and live code resumes at 0x08027738.
   - { source: 0x0F2C9D8, destination: 0x0802772A }
+  # Opaque asset words point into literals embedded in four switch owners.
+  # Each destination is data skipped by real control flow, not a Thumb entry.
+  - { source: 0x0DA993C, destination: 0x0802F8F4 }
+  - { source: 0x0DA43E0, destination: 0x0802F9E4 }
+  - { source: 0x0CBC20C, destination: 0x0802FA12 }
+  - { source: 0x0C4B17D, destination: 0x0802FAF6 }
+  - { source: 0x0D36FE0, destination: 0x0802FAF6 }
+  - { source: 0x0D964C7, destination: 0x0802FAF6 }
+  - { source: 0x0BF9EF8, destination: 0x0802FBFA }
+  - { source: 0x0BFA2CB, destination: 0x0802FBFA }
+  - { source: 0x0C37A1C, destination: 0x0802FBFA }
+  - { source: 0x0D8972B, destination: 0x0802FBFA }
+  - { source: 0x0E6CB4C, destination: 0x0802FCFA }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -2800,6 +2813,92 @@ units:
       - { offset: 0x26E24, mode: thumb }
       - { offset: 0x26EA6, mode: data }
       - { offset: 0x26EA8, mode: thumb }
+      # Four consecutive switch owners, including their jump tables, internal
+      # literal islands, padding, and trailing pools.
+      - { offset: 0x15EAE, mode: data }
+      - { offset: 0x15ED0, mode: thumb }
+      - { offset: 0x15EE4, mode: data }
+      - { offset: 0x15EF8, mode: thumb }
+      - { offset: 0x15F1C, mode: data }
+      - { offset: 0x15F38, mode: thumb }
+      - { offset: 0x15F3C, mode: data }
+      - { offset: 0x15F40, mode: thumb }
+      - { offset: 0x15F62, mode: data }
+      - { offset: 0x15F80, mode: thumb }
+      - { offset: 0x15F94, mode: data }
+      - { offset: 0x15FA8, mode: thumb }
+      - { offset: 0x15FBC, mode: data }
+      - { offset: 0x15FD0, mode: thumb }
+      - { offset: 0x15FE2, mode: data }
+      - { offset: 0x15FF0, mode: thumb }
+      - { offset: 0x1600A, mode: data }
+      - { offset: 0x16024, mode: thumb }
+      - { offset: 0x16040, mode: data }
+      - { offset: 0x16054, mode: thumb }
+      - { offset: 0x1607A, mode: data }
+      - { offset: 0x1609C, mode: thumb }
+      - { offset: 0x160B2, mode: data }
+      - { offset: 0x160D4, mode: thumb }
+      - { offset: 0x160F0, mode: data }
+      - { offset: 0x1610C, mode: thumb }
+      - { offset: 0x16128, mode: data }
+      - { offset: 0x1613C, mode: thumb }
+      - { offset: 0x1615E, mode: data }
+      - { offset: 0x1617C, mode: thumb }
+      - { offset: 0x16186, mode: data }
+      - { offset: 0x16190, mode: thumb }
+      - { offset: 0x161A4, mode: data }
+      - { offset: 0x161B8, mode: thumb }
+      - { offset: 0x161D2, mode: data }
+      - { offset: 0x161E8, mode: thumb }
+      - { offset: 0x16204, mode: data }
+      - { offset: 0x16220, mode: thumb }
+      - { offset: 0x16232, mode: data }
+      - { offset: 0x16240, mode: thumb }
+      - { offset: 0x1625C, mode: data }
+      - { offset: 0x16270, mode: thumb }
+      - { offset: 0x1628E, mode: data }
+      - { offset: 0x162A8, mode: thumb }
+      - { offset: 0x162BE, mode: data }
+      - { offset: 0x162E0, mode: thumb }
+      - { offset: 0x162EC, mode: data }
+      - { offset: 0x162F8, mode: thumb }
+      - { offset: 0x16304, mode: data }
+      - { offset: 0x16310, mode: thumb }
+      - { offset: 0x1632A, mode: data }
+      - { offset: 0x16340, mode: thumb }
+      - { offset: 0x1634A, mode: data }
+      - { offset: 0x16354, mode: thumb }
+      - { offset: 0x16366, mode: data }
+      - { offset: 0x16378, mode: thumb }
+      - { offset: 0x1638A, mode: data }
+      - { offset: 0x16398, mode: thumb }
+      - { offset: 0x163AA, mode: data }
+      - { offset: 0x163BC, mode: thumb }
+      - { offset: 0x163D0, mode: data }
+      - { offset: 0x163DC, mode: thumb }
+      - { offset: 0x163F2, mode: data }
+      - { offset: 0x16404, mode: thumb }
+      - { offset: 0x1641A, mode: data }
+      - { offset: 0x1643C, mode: thumb }
+      - { offset: 0x16448, mode: data }
+      - { offset: 0x16454, mode: thumb }
+      - { offset: 0x16460, mode: data }
+      - { offset: 0x1646C, mode: thumb }
+      - { offset: 0x16486, mode: data }
+      - { offset: 0x1649C, mode: thumb }
+      - { offset: 0x164A6, mode: data }
+      - { offset: 0x164B0, mode: thumb }
+      - { offset: 0x164BC, mode: data }
+      - { offset: 0x164C8, mode: thumb }
+      - { offset: 0x164DA, mode: data }
+      - { offset: 0x164E8, mode: thumb }
+      - { offset: 0x164F4, mode: data }
+      - { offset: 0x16500, mode: thumb }
+      - { offset: 0x16512, mode: data }
+      - { offset: 0x16524, mode: thumb }
+      - { offset: 0x16538, mode: data }
+      - { offset: 0x16548, mode: thumb }
       - { offset: 0x16B1C, mode: thumb }
       - { offset: 0x16B2E, mode: data }
       - { offset: 0x16B3C, mode: thumb }

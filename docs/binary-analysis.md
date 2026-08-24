@@ -42,7 +42,7 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,269 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,262 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Starts inside `main/unknown_080007FC` are removed when control flow proves
@@ -52,7 +52,7 @@ an inline DMA literal sequence, and four land inside pointer-table data. Each ac
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x39B68 report-accounted code bytes and 0xD38C owned non-code bytes.
+game category consequently contains 0x39F06 report-accounted code bytes and 0xCFEE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -98,6 +98,13 @@ The pointer-derived `0x0802772A` start is the upper halfword of a global-address
 literal block and resumes at `0x08027738` with the owner's live state. The consolidated function
 contains three internal literal islands and reaches its frame-balanced return at `0x0802776A`.
 
+Four consecutive switch functions at `0x0802F748`, `0x0802F94C`, `0x0802FB58`, and `0x0802FCB4`
+are now represented by their complete bodies. Each has its own prologue, eight-entry dispatch table,
+case groups, shared epilogue, and trailing literal pool. The real `0x0802F94C` entry was previously
+missing, while eight accepted starts inside the cluster were either case fragments or halves of
+embedded literals. Eleven opaque asset words that coincidentally encode six of those literal
+addresses are rejected explicitly; all 42 table/pool regions have code/data transitions recorded.
+
 ### Translation-unit inventory status
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
@@ -107,7 +114,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 951 | 163,692 | 22,728 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 944 | 164,618 | 21,802 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
