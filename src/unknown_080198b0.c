@@ -1818,17 +1818,17 @@ void FUN_0801e0c4(u8 value) {
 }
 
 void FUN_0801e174(u8 value) {
-    register u32 index asm("r4") = value;
-    register u32 savedIndex asm("r5") = index;
-    register struct UnknownEntityData *metadata asm("r1") = gUnknown_03001c40;
-    register u32 metadataOffset asm("r0") = index * 252;
+    u32 index = value;
+    u32 savedIndex = index;
+    struct UnknownEntityData *metadata = gUnknown_03001c40;
+    u32 metadataOffset = index * 252;
 
     if (((struct UnknownEntityData *)(metadataOffset + (u32)metadata))->field20 == 66) {
-        register u8 *table asm("r1") = gUnknown_08071245;
-        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
-        register u32 tableOffset asm("r0") = *tableIndex;
-        register u32 raw asm("r0");
-        register s32 argument asm("r0");
+        u8 *table = gUnknown_08071245;
+        u8 *tableIndex = &gUnknown_03003e10;
+        u32 tableOffset = *tableIndex;
+        u32 raw;
+        s32 argument;
 
         tableOffset += (u32)table;
         raw = *(u8 *)tableOffset;
@@ -1846,10 +1846,9 @@ void FUN_0801e174(u8 value) {
         return;
     }
     {
-        register struct UnknownEntity *entities asm("r0") = gUnknown_03003db0;
-        register u32 entityOffset asm("r1") = index * 24;
-        register struct UnknownEntity *entity asm("r1") =
-            (struct UnknownEntity *)(entityOffset + (u32)entities);
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = index * 24;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         if (entity->field15 == index) {
             FUN_0801e2c8(index);
@@ -1857,20 +1856,20 @@ void FUN_0801e174(u8 value) {
         }
     }
     {
-        register u8 *table asm("r1") = gUnknown_08071240;
-        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
-        register u32 tableOffset asm("r0") = *tableIndex;
-        register u32 raw asm("r0");
-        register s32 argument asm("r0");
+        u8 *table = gUnknown_08071240;
+        u8 *tableIndex = &gUnknown_03003e10;
+        u32 tableOffset = *tableIndex;
+        u32 raw;
+        s32 argument;
 
         tableOffset += (u32)table;
         raw = *(u8 *)tableOffset;
         argument = (s8)raw;
 
         if (FUN_08020160(argument) != 0) {
-            register u32 random asm("r0") = FUN_08020144();
-            register u32 result asm("r1") = random;
-            register u32 mask asm("r0") = 0x30;
+            u32 random = FUN_08020144();
+            u32 result = random;
+            u32 mask = 0x30;
 
             result &= mask;
 
@@ -3320,17 +3319,16 @@ void FUN_0803bef0(struct UnknownListNode *node) {
 }
 
 void FUN_0803bf68(struct UnknownListNode *node) {
-    register struct UnknownListNode *owner asm("r5") = node;
-    register u8 *allocation asm("r3") = owner->allocation;
-    register const u8 *graphicsOffsets asm("r1") = gUnknown_030052e8;
-    register u8 *indexPointer asm("r2") = &gUnknown_030052e0;
-    register const u8 *graphicsOffsetPointer asm("r0") = (const u8 *)(u32)*indexPointer;
-    register u32 value asm("r0");
-    register struct UnknownPosition *position asm("r1");
-    register u8 *fadePointer asm("r3");
-    register struct UnknownPosition *savedPosition asm("r4");
+    struct UnknownListNode *owner = node;
+    u8 *allocation = owner->allocation;
+    const u8 *graphicsOffsets = gUnknown_030052e8;
+    u8 *indexPointer = &gUnknown_030052e0;
+    const u8 *graphicsOffsetPointer = (const u8 *)(u32)*indexPointer;
+    u32 value;
+    struct UnknownPosition *position;
+    u8 *fadePointer;
+    struct UnknownPosition *savedPosition;
 
-    asm volatile("" : "+r"(graphicsOffsetPointer));
     graphicsOffsetPointer += (u32)graphicsOffsets;
     value = *graphicsOffsetPointer;
     value += 12;
@@ -10178,41 +10176,34 @@ void FUN_080403c0(const void *source, void *destination, u32 width, u32 height, 
 }
 
 void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s32 offset) {
-    register const u16 *sourceCursor asm("r4") = source;
-    register u16 *destinationCursor asm("r1") = destination;
-    register s32 rawWidth asm("r2") = width;
-    register u32 encodedRows asm("r3");
-    register u32 rawOffset asm("r0");
-    register s32 columns asm("r5");
-    register u16 tileOffset asm("r6");
-    register u32 rowStride asm("r2");
+    const u16 *sourceCursor = source;
+    u16 *destinationCursor = destination;
+    s32 rawWidth = width;
+    u32 encodedRows;
+    u32 rawOffset;
+    s32 columns;
+    u16 tileOffset;
+    u32 rowStride;
 
-    asm volatile("" : "+r"(sourceCursor));
     rawOffset = offset;
-    asm volatile("" : "+r"(rawOffset));
     rawWidth <<= 24;
-    asm volatile("" : "+r"(rawWidth));
     columns = (u32)rawWidth >> 24;
     encodedRows = height << 24;
-    asm volatile("" : "+r"(columns), "+r"(encodedRows));
     rawOffset <<= 16;
     tileOffset = rawOffset >> 16;
-    asm volatile("" : "+r"(tileOffset));
     rawOffset = 32 - columns;
     rawOffset <<= 24;
     rowStride = rawOffset >> 24;
 
     {
-        register u32 decrement asm("r0") = 0xFFu << 24;
+        u32 decrement = 0xFFu << 24;
 
-        asm volatile("" : "+r"(decrement));
         encodedRows += decrement;
     }
     rawOffset = encodedRows >> 24;
     if (rawOffset != 0xFF) {
-        register u32 strideBytes = rowStride << 1;
+        u32 strideBytes = rowStride << 1;
 
-        asm volatile("" : "+r"(strideBytes));
         do {
             s16 column = 0;
 
