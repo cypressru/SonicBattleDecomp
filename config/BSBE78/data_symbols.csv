@@ -537,6 +537,8 @@ address,name,mode,confidence
 0x08BF23F0,m4a_voicegroup_000,data,song-header-pointer+tone-record-size
 0x08ED66A8,libgcc_clz_tab,data,source-built-libgcc-unique-byte-match
 0x08ED67A8,data_gap_after_libgcc_clz_tab,data,libgcc-table-size
+0x08ED8B04,owned_unknown_0801f080_rodata,data,function-pointer-table-owner
+0x08ED8B3C,data_gap_after_unknown_0801f080_rodata,data,function-pointer-table-size
 0x0847AA18,palette_emerl_sonic,data,public-sbhax-offset+retail-32-byte-record
 0x0847AA38,palette_emerl_tails,data,public-sbhax-offset+retail-32-byte-record
 0x0847AA58,palette_emerl_knuckles,data,public-sbhax-offset+retail-32-byte-record

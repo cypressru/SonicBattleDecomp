@@ -9,7 +9,9 @@ import sys
 from pathlib import Path
 
 
-def replace_elf_sections(elf: bytes, replacements: dict[str, bytes]) -> bytes:
+def replace_elf_sections(
+    elf: bytes, replacements: dict[str, bytes], *, preserve_relocated_bytes: bool = False
+) -> bytes:
     if elf[:7] != b"\x7fELF\x01\x01\x01":
         raise ValueError("archive member is not a 32-bit little-endian ELF object")
     section_offset = struct.unpack_from("<I", elf, 0x20)[0]
@@ -23,6 +25,7 @@ def replace_elf_sections(elf: bytes, replacements: dict[str, bytes]) -> bytes:
     names_header = section(names_index)
     names = elf[names_header[4] : names_header[4] + names_header[5]]
     output = bytearray(elf)
+    replacement_indices: dict[int, str] = {}
     found: set[str] = set()
     for index in range(section_count):
         header = section(index)
@@ -37,9 +40,25 @@ def replace_elf_sections(elf: bytes, replacements: dict[str, bytes]) -> bytes:
             )
         output[header[4] : header[4] + header[5]] = payload
         found.add(name)
+        replacement_indices[index] = name
     missing = replacements.keys() - found
     if missing:
         raise ValueError(f"ELF has no requested section: {', '.join(sorted(missing))}")
+    if preserve_relocated_bytes:
+        for index in range(section_count):
+            header = section(index)
+            if header[1] != 9 or header[7] not in replacement_indices:
+                continue
+            target = section(header[7])
+            entry_size = header[9] or 8
+            if entry_size != 8 or header[5] % entry_size:
+                raise ValueError("unsupported ELF relocation section")
+            for offset in range(header[4], header[4] + header[5], entry_size):
+                relocation_offset = struct.unpack_from("<I", elf, offset)[0]
+                if relocation_offset + 4 > target[5]:
+                    raise ValueError("relocation extends beyond its target section")
+                target_offset = target[4] + relocation_offset
+                output[target_offset : target_offset + 4] = elf[target_offset : target_offset + 4]
     return bytes(output)
 
 

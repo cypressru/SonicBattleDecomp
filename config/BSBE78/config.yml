@@ -298,6 +298,8 @@ rejected_function_pointers:
 range_overrides:
   libgcc_clz_tab:
     exclude_from_objdiff: true
+  owned_unknown_0801f080_rodata:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -1346,7 +1348,7 @@ units:
       - { offset: 0x334, type: abs32, symbol: gSio32MultiLoadArea }
   - name: main/unknown_080198B0
     start: 0x0198B0
-    end: 0x0470E4
+    end: 0x01F080
     category: game
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080198b0.c
@@ -2771,6 +2773,8 @@ units:
       - { offset: 0x5A30, mode: thumb }
       - { offset: 0x5A54, mode: data }
       - { offset: 0x5A58, mode: thumb }
+      - { offset: 0x5AE0, mode: data }
+      - { offset: 0x5AE4, mode: thumb }
       - { offset: 0x362C, mode: data }
       - { offset: 0x3634, mode: thumb }
       - { offset: 0x3778, mode: data }
@@ -4695,6 +4699,8 @@ units:
       - { offset: 0x5A54, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5A62, type: thumb_call, symbol: FUN_08020160 }
       - { offset: 0x5A94, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5AD4, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x5AE0, type: abs32, symbol: gUnknown_08ed8b04 }
       - { offset: 0x5B30, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5B64, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5B94, type: abs32, symbol: gUnknown_03001c40 }
@@ -5500,6 +5506,60 @@ units:
       - { offset: 0xF94C, type: abs32, symbol: gUnknown_03002110 }
       - { offset: 0xF998, type: abs32, symbol: gUnknown_03002110 }
       - { offset: 0xF99C, type: abs32, symbol: gUnknown_03002600 }
+  - name: main/unknown_0801F080
+    start: 0x01F080
+    end: 0x01F5EC
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0801f080.c
+    complete: true
+    cflags: [-O2, -mthumb-interwork]
+    target_sections:
+      - { name: .text, start: 0x01F080, end: 0x01F5EC }
+      - { name: .rodata, start: 0xED8B04, end: 0xED8B3C }
+    owned_pointer_table:
+      start: 0xED8B04
+      symbols:
+        - FUN_0801f080
+        - FUN_0801f128
+        - FUN_0801f274
+        - FUN_0801f1d0
+        - FUN_0801f308
+        - FUN_0801f31c
+        - FUN_0801f350
+        - FUN_0801f3a4
+        - FUN_0801f3b0
+        - FUN_0801f3e4
+        - FUN_0801f418
+        - FUN_0801f448
+        - FUN_0801f474
+        - FUN_0801f4f4
+    base_symbol_size_overrides:
+      FUN_0801f080: 0xA4
+      FUN_0801f128: 0xA4
+      FUN_0801f1d0: 0x9E
+      FUN_0801f274: 0x90
+      FUN_0801f308: 0x12
+      FUN_0801f31c: 0x32
+      FUN_0801f350: 0x54
+      FUN_0801f3a4: 0xA
+      FUN_0801f3b0: 0x2E
+      FUN_0801f3e4: 0x2E
+      FUN_0801f418: 0x2A
+      FUN_0801f448: 0x26
+      FUN_0801f474: 0x7C
+      FUN_0801f4f4: 0x2C
+      FUN_0801f524: 0x52
+      FUN_0801f578: 0x72
+  - name: main/unknown_0801F5EC
+    start: 0x01F5EC
+    end: 0x0470E4
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
   - name: main/unknown_080470E4
     start: 0x0470E4
     end: 0x04833C
