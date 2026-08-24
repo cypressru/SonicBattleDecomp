@@ -418,6 +418,7 @@ void FUN_080066d8(void) {
     u32 base;
     u32 flagsBase;
     u32 flagsAddress;
+    u32 fieldAddress;
     u32 offset;
     u32 *field74;
     u32 flagValue;
@@ -428,9 +429,8 @@ void FUN_080066d8(void) {
     flagsBase = base + 0xB4;
     do {
         offset = (i * 63) << 2;
-        flagValue = base;
-        flagValue += 0x74;
-        field74 = (u32 *)(offset + flagValue);
+        fieldAddress = base + 0x74;
+        field74 = (u32 *)(offset + fieldAddress);
 
         if ((*field74 & 0x1F00) == 0x900) {
             flagsAddress = offset + flagsBase;
