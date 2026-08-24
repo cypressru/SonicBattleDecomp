@@ -1103,6 +1103,10 @@ units:
       FUN_0801ef4c: 0x24
       FUN_0801ef7c: 0x58
       FUN_0801efd4: 0x44
+      FUN_0801f080: 0xA4
+      FUN_0801f128: 0xA4
+      FUN_0801f1d0: 0x9E
+      FUN_0801f274: 0x90
       FUN_08029250: 0x71E
       FUN_080299c0: 0x1BC
       FUN_08029ba0: 0x88
@@ -2438,6 +2442,38 @@ units:
       - { offset: 0x2A5AC, mode: thumb }
       - { offset: 0x2A5AE, mode: data }
       - { offset: 0x2A5B0, mode: thumb }
+      - { offset: 0x5CAA, mode: data }
+      - { offset: 0x5CB0, mode: thumb }
+      - { offset: 0x5D1A, mode: data }
+      - { offset: 0x5D20, mode: thumb }
+      - { offset: 0x5820, mode: data }
+      - { offset: 0x5824, mode: thumb }
+      - { offset: 0x5842, mode: data }
+      - { offset: 0x5848, mode: thumb }
+      - { offset: 0x5874, mode: data }
+      - { offset: 0x5878, mode: thumb }
+      - { offset: 0x58C8, mode: data }
+      - { offset: 0x58CC, mode: thumb }
+      - { offset: 0x58EA, mode: data }
+      - { offset: 0x58F0, mode: thumb }
+      - { offset: 0x591C, mode: data }
+      - { offset: 0x5920, mode: thumb }
+      - { offset: 0x5970, mode: data }
+      - { offset: 0x5974, mode: thumb }
+      - { offset: 0x5992, mode: data }
+      - { offset: 0x5998, mode: thumb }
+      - { offset: 0x59BE, mode: data }
+      - { offset: 0x59C4, mode: thumb }
+      - { offset: 0x5A10, mode: data }
+      - { offset: 0x5A14, mode: thumb }
+      - { offset: 0x5A2A, mode: data }
+      - { offset: 0x5A30, mode: thumb }
+      - { offset: 0x5A54, mode: data }
+      - { offset: 0x5A58, mode: thumb }
+      - { offset: 0x362C, mode: data }
+      - { offset: 0x3634, mode: thumb }
+      - { offset: 0x3778, mode: data }
+      - { offset: 0x3784, mode: thumb }
       - { offset: 0x5D50, mode: thumb }
       - { offset: 0x5D5A, mode: data }
       - { offset: 0x5D5C, mode: thumb }
@@ -4117,6 +4153,22 @@ units:
       - { offset: 0x57BC, type: thumb_call, symbol: FUN_0801d188 }
       - { offset: 0x57C8, type: abs32, symbol: gUnknown_03003db0 }
       - { offset: 0x57CC, type: abs32, symbol: FUN_0801d618, addend: 1 }
+      - { offset: 0x362C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x3630, type: abs32, symbol: gUnknown_03003d88 }
+      - { offset: 0x3766, type: thumb_call, symbol: FUN_0801e99c }
+      - { offset: 0x3778, type: abs32, symbol: gUnknown_03003db0 }
+      - { offset: 0x5820, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5844, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5874, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x58C8, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x58EC, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x591C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5970, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5994, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x59C0, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5A10, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5A2C, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5A54, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5A62, type: thumb_call, symbol: FUN_08020160 }
       - { offset: 0x5A94, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5B30, type: abs32, symbol: gUnknown_03001c40 }
@@ -4127,6 +4179,10 @@ units:
       - { offset: 0x5C20, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5C40, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x5C70, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x5C9E, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x5CAC, type: abs32, symbol: gUnknown_08ed8b04 }
+      - { offset: 0x5CFE, type: thumb_call, symbol: _call_via_r3 }
+      - { offset: 0x5D1C, type: abs32, symbol: gUnknown_08ed8b04 }
       - { offset: 0x5D7E, type: thumb_call, symbol: FUN_08049108 }
       - { offset: 0x5DAC, type: thumb_call, symbol: FUN_08049234 }
       - { offset: 0x5DB4, type: abs32, symbol: gUnknown_08bf71fc }

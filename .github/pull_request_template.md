@@ -21,6 +21,7 @@
 - [ ] `python tools/check_no_proprietary.py`
 - [ ] `clang-format -i` on changed files under `src/` and `include/`
 - [ ] objdiff result recorded below
+- [ ] PR CI uploaded `BSBE78_report` for decomp.dev
 - [ ] `ninja` passes
 - [ ] `sha1sum -c config/BSBE78/build.sha1` passes
 

@@ -236,6 +236,9 @@ extern struct UnknownListNode *FUN_0801f7d0(void (*callback)(struct UnknownListN
                                             struct UnknownListNode *nodes, u8 flag);
 
 typedef void (*UnknownCallback)(void);
+typedef u32 (*UnknownEntityCondition)(u8 value, u8 other, const u32 **stream);
+
+extern const UnknownEntityCondition gUnknown_08ed8b04[];
 
 struct UnknownEntity {
     UnknownCallback callback;
@@ -254,6 +257,11 @@ struct UnknownEntity {
     u8 filler21[3];
 };
 
+struct UnknownEntityFrame {
+    u16 duration;
+    u16 flags;
+};
+
 struct UnknownEntityData {
     u8 filler0[16];
     u8 field16;
@@ -269,9 +277,13 @@ struct UnknownEntityData {
     s16 field54[4];
     s16 field62[4];
     u8 filler70[2];
-    s32 field72[11];
+    s32 field72[4];
+    s16 field88[14];
     u32 field116;
-    s32 field120[15];
+    s32 field120[13];
+    u16 field172;
+    u16 field174;
+    u32 field176;
     u32 field180;
     u8 filler184[7];
     u8 field191;
@@ -3290,6 +3302,49 @@ void FUN_0801ce70(void) {
     gUnknown_03001b00[7] = 0;
 }
 
+u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
+    struct UnknownEntityData *metadata = gUnknown_03001c40;
+
+    if ((metadata[index].field116 & 0x1F00) == value) {
+        gUnknown_03003d88++;
+    }
+    if ((metadata[index].field174 & 0x7C0) == (value >> 2)) {
+        gUnknown_03003d88++;
+    }
+
+    return gUnknown_03003d88 >= threshold;
+}
+
+u32 FUN_0801cfc8(u8 value) {
+    u32 offset = value * sizeof(struct UnknownEntity);
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
+    const struct UnknownEntityFrame *frame = entity->data;
+    u8 counter = entity->field14;
+    struct UnknownEntity *savedEntities = entities;
+
+    while (counter >= frame->duration) {
+        if (frame->duration == 0) {
+            entity->field8 = 0;
+            return 0;
+        }
+        entity->field14 = 0;
+        frame++;
+        entity->data = frame;
+        counter = entity->field14;
+    }
+
+    entity->field8 = frame->flags & 0x3FF;
+    if ((frame->flags & 0x8000) != 0) {
+        entity->field8 = (entity->field8 & 0xFF0F) | FUN_0801e99c(value);
+    } else if (savedEntities[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
+        entity->field8 ^= 0x30;
+    }
+
+    entity->field14++;
+    return 1;
+}
+
 void FUN_0801eacc(u8 value) {
     if (FUN_0801cfc8(value) == 0) {
         gUnknown_03003db0[value].callback = FUN_0801dfdc;
@@ -3555,6 +3610,123 @@ void FUN_0801f058(u8 value) {
     entity->field15 = FUN_0801d188(value);
 }
 
+u32 FUN_0801f080(u8 value, u8 other, const u32 **stream) {
+    u32 word = **stream;
+    s16 operand = word >> 16;
+    u8 operation = (word & 0xFF00) >> 8;
+    u32 result = 0;
+
+    switch (operation) {
+    case 0:
+        if (gUnknown_03001c40[value].field54[other] == operand) {
+            result = 1;
+        }
+        break;
+    case 1:
+        if (gUnknown_03001c40[value].field54[other] < operand) {
+            result = 1;
+        }
+        break;
+    case 2:
+        if (gUnknown_03001c40[value].field54[other] > operand) {
+            result = 1;
+        }
+        break;
+    }
+
+    (*stream)++;
+    return result;
+}
+
+u32 FUN_0801f128(u8 value, u8 other, const u32 **stream) {
+    u32 word = **stream;
+    s16 operand = word >> 16;
+    u8 operation = (word & 0xFF00) >> 8;
+    u32 result = 0;
+
+    switch (operation) {
+    case 0:
+        if (gUnknown_03001c40[value].field62[other] == operand) {
+            result = 1;
+        }
+        break;
+    case 1:
+        if (gUnknown_03001c40[value].field62[other] < operand) {
+            result = 1;
+        }
+        break;
+    case 2:
+        if (gUnknown_03001c40[value].field62[other] > operand) {
+            result = 1;
+        }
+        break;
+    }
+
+    (*stream)++;
+    return result;
+}
+
+u32 FUN_0801f1d0(u8 value, u8 other, const u32 **stream) {
+    u32 word = *(*stream)++;
+    s16 operand = word >> 16;
+    u8 operation = (word & 0xFF00) >> 8;
+    u32 result = 0;
+
+    switch (operation) {
+    case 0:
+        if (gUnknown_03001c40[value].field88[other] == operand) {
+            result = 1;
+        }
+        break;
+    case 1:
+        if (gUnknown_03001c40[value].field88[other] < operand) {
+            result = 1;
+        }
+        break;
+    case 2:
+        if (gUnknown_03001c40[value].field88[other] > operand) {
+            result = 1;
+        }
+        break;
+    }
+
+    return result;
+}
+
+u32 FUN_0801f274(u8 value, u8 other, const u32 **stream) {
+    const u32 *current = *stream;
+    u32 word = *current;
+    s32 operand;
+    u8 operation;
+    u32 result;
+
+    *stream = current + 1;
+    operand = current[1];
+    operation = (word & 0xFF00) >> 8;
+    result = 0;
+
+    switch (operation) {
+    case 0:
+        if (gUnknown_03001c40[value].field72[other] == operand) {
+            result = 1;
+        }
+        break;
+    case 1:
+        if (gUnknown_03001c40[value].field72[other] < operand) {
+            result = 1;
+        }
+        break;
+    case 2:
+        if (gUnknown_03001c40[value].field72[other] > operand) {
+            result = 1;
+        }
+        break;
+    }
+
+    (*stream)++;
+    return result;
+}
+
 u32 FUN_0801f308(u8 value, u8 other, const u32 **stream) {
     u32 word = *(*stream)++;
 
@@ -3568,6 +3740,30 @@ u32 FUN_0801f31c(u8 value, u8 other, const u32 **stream) {
         return 1;
     }
     return 0;
+}
+
+u32 FUN_0801f350(u8 value, u8 other, const u32 **stream) {
+    u32 result;
+    const UnknownEntityCondition *conditions;
+
+    (*stream)++;
+    result = 0;
+    conditions = gUnknown_08ed8b04;
+    while (1) {
+        const u32 *current = *stream;
+        u8 operation = *(const u8 *)current;
+
+        if (operation == 0xFF) {
+            break;
+        }
+        if (operation == 7) {
+            *stream = current + 1;
+        } else if (conditions[*(const u8 *)*stream](value, other, stream) != 0) {
+            result = 1;
+        }
+    }
+
+    return result;
 }
 
 u32 FUN_0801f3a4(u8 value, u8 other, const u32 **stream) {
@@ -3633,6 +3829,50 @@ u32 FUN_0801f474(u8 value, u8 other, const u32 **stream) {
 u32 FUN_0801f4f4(u8 value, u8 other, const u32 **stream) {
     *stream += 1;
     return (u16)(gUnknown_03001c40[other].field20 - 252) <= 3;
+}
+
+u32 FUN_0801f524(u8 value, u8 other, const u32 *stream) {
+    if (*(const u8 *)stream != 0xFF) {
+        const UnknownEntityCondition *conditions = gUnknown_08ed8b04;
+        u32 mask = 0xFF;
+
+        do {
+            if (conditions[*stream & mask](value, other, &stream) == 0) {
+                return 0x10;
+            }
+        } while ((*stream & mask) != 0xFF);
+    }
+
+    return ((const u16 *)stream)[1];
+}
+
+u32 FUN_0801f578(u8 value, u8 other, const u32 **streams) {
+    while (*streams != 0) {
+        const u32 *stream = *streams;
+        u32 result;
+
+        if (*(const u8 *)stream != 0xFF) {
+            const UnknownEntityCondition *conditions = gUnknown_08ed8b04;
+            u32 mask = 0xFF;
+
+            do {
+                if (conditions[*stream & mask](value, other, &stream) == 0) {
+                    result = 0x10;
+                    goto checkResult;
+                }
+            } while ((*stream & mask) != 0xFF);
+        }
+
+        result = ((const u16 *)stream)[1];
+
+    checkResult:
+        if (result != 0x10) {
+            return result;
+        }
+        streams++;
+    }
+
+    return 0x10;
 }
 
 void FUN_0801f628(u16 value) { FUN_08049108(value); }
