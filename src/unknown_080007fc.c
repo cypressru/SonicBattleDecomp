@@ -626,7 +626,6 @@ void FUN_08006e64(void) {
 
 void FUN_08006ff4(u8 count) {
     union UnknownQueueEntry08017f00 entry;
-    struct UnknownRecord03001c40 *renderRecord;
     u32 originalX;
     u32 originalY;
     s16 x;
@@ -651,11 +650,7 @@ void FUN_08006ff4(u8 count) {
             (record->stateType != 2 || identifier != 0x116 || index == gUnknown_03001380) &&
             (record->stateType != 3 || identifier != 0x115 || index == gUnknown_03001380) &&
             gUnknown_03001620.activeSlots[index] != 0xFF) {
-#undef record
             s16 adjustedY;
-
-            renderRecord = &gUnknown_03001c40[index];
-#define record renderRecord
 
             FUN_0801816c(&x, &y, record->x, record->y);
             FUN_08018204(&x, &y, x, y);
@@ -714,8 +709,6 @@ void FUN_08006ff4(u8 count) {
                 SUBMIT_QUEUE(originalX, originalY, indicator * 8 + 0x90, 0x14);
             }
         }
-#undef record
-#define record (&gUnknown_03001c40[index])
 
         record->previousDirection = record->directionMode;
         record->directionMode = record->requestedDirection;
