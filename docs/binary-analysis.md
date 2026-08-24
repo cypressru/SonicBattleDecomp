@@ -42,20 +42,50 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,287 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,271 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
-per-symbol provenance. Eighteen starts inside `main/unknown_080007FC` were removed after being shown to be
-fall-through continuations rather than entries; fifteen of those are declared as validated
-long-branch targets instead. Five pointer-shaped asset words are explicitly rejected: one lands in
+per-symbol provenance. Starts inside `main/unknown_080007FC` are removed when control flow proves
+them to be tables, switch cases, or fall-through continuations rather than entries; twenty-one decoded
+long-branch destinations are declared as validated internal targets instead. Five pointer-shaped asset words are explicitly rejected: one lands in
 an inline DMA literal sequence, and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x3987A instruction bytes and 0xD67A owned non-code bytes.
+game category consequently contains 0x39B24 report-accounted code bytes and 0xD3D0 owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
+
+The switch owner at `0x08000E04` now spans all three of its jump tables and case groups through the
+shared return at `0x080016C4`. The former `0x08001476` and `0x080014A8` symbols were internal case
+fragments, while `0x08001614` is the third jump table itself; two opaque asset words that happen to
+encode its Thumb-tagged address are recorded as rejected coincidences. Explicit mapping transitions
+keep every table and case-literal island classified as data inside the single function extent.
+
+The pointer-derived `0x08002442` and `0x08002700` starts are instead internal to `FUN_08001B0C`.
+The former is the upper halfword of a jump-table entry; the latter begins at a conditional test with
+live r6/r7/r8 state. The reachable return at `0x08002908` restores the 0x34-byte frame and high
+registers saved only by the real entry. Both Thumb-shaped references are opaque asset coincidences;
+the recovered owner includes the complete 21-entry switch table and nine later literal islands.
+
+`FUN_0800290C` similarly owns the entire range through its return at `0x080034E4`. Four former
+pointer-derived starts are switch-table or case-block coincidences in opaque data. The decoded calls
+to `0x080033B4`, `0x08003414`, `0x08003428`, and `0x08003488` are GCC long branches into shared
+blocks: each depends on the real entry's saved high registers or stack slots and reaches its one
+common epilogue. The consolidated extent has one accepted start and passes the frame/control-flow
+audit with every table and literal island explicitly mapped.
+
+The asset-derived `0x080047E0` entry is the scalar literal `0x00000115` inside `FUN_0800444C`, not
+Thumb code. Control flow branches around it, resumes at `0x080047E4` with the real entry's saved r8,
+and reaches the shared return at `0x0800486A`. The consolidated owner has seven mapped literal
+islands and a clean frame-balanced control-flow extent.
+
+`FUN_0800486C` continues through the former `0x08005110` and `0x080052E8` starts to its return at
+`0x080052F8`. The first is a global-address literal reached only as data; the second is the common
+epilogue targeted by two compiler-generated long branches. Its stack and high-register restores
+exactly match the frame established by `0x0800486C`, and all intervening code paths and 23 literal
+islands are now owned by that single function.
 
 ### Translation-unit inventory status
 
@@ -65,7 +95,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
-| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 131 | 68,698 | 26,630 |
+| `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
 | `main/unknown_080198B0` | `0x0198B0-0x04833C` | 984 | 167,664 | 23,452 |
 
 These objects are conservative coverage buckets, not claims that either range was one original

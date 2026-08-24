@@ -12,6 +12,13 @@ long_branch_targets:
   # whose predecessor's extent ended at exactly its first byte, so it is a
   # fall-through continuation of that function rather than an entry.
   - 0x080029BC
+  # FUN_0800290c uses long Thumb BL branches to four shared case/tail blocks.
+  - 0x080033B4
+  - 0x08003414
+  - 0x08003428
+  - 0x08003488
+  # FUN_0800486c reaches its shared saved-register epilogue with long BLs.
+  - 0x080052E8
   - 0x0800343E
   - 0x080034C2
   - 0x08003798
@@ -41,6 +48,31 @@ rejected_function_pointers:
   - { source: 0x0192EFE, destination: 0x08001476 }
   - { source: 0x0EF8940, destination: 0x08001476 }
   - { source: 0x015E550, destination: 0x080014A8 }
+  # Two opaque asset words also happen to point at FUN_08000e04's third
+  # switch table. 0x08001614 is table data; reachable case code resumes at
+  # 0x0800163C and shares the real entry's saved-register epilogue.
+  - { source: 0x0C4253E, destination: 0x08001614 }
+  - { source: 0x0F97948, destination: 0x08001614 }
+  # Opaque asset data points into a live conditional block of FUN_08001b0c.
+  # The target uses that owner's r6/r7/r8 state and later unwinds its 0x34-byte
+  # stack frame, so it cannot be called as a function entry.
+  - { source: 0x019B7F0, destination: 0x08002700 }
+  # Another opaque asset word points into FUN_08001b0c's 21-entry switch table.
+  # 0x08002442 contains the upper halfword of the table entry 0x08002762.
+  - { source: 0x0F4AD58, destination: 0x08002442 }
+  # Opaque/payload words point into FUN_0800290c's switch cases or table.
+  # None starts a new frame, and every path joins the real owner's shared tail.
+  - { source: 0x01AB66C, destination: 0x08003142 }
+  - { source: 0x0D75214, destination: 0x08003220 }
+  - { source: 0x0F6BA2F, destination: 0x08003220 }
+  - { source: 0x0F25614, destination: 0x08003338 }
+  - { source: 0x0126A70, destination: 0x08003370 }
+  # An opaque asset word points at the scalar literal 0x00000115 inside
+  # FUN_0800444c. Live code resumes four bytes later and shares its epilogue.
+  - { source: 0x0126FE0, destination: 0x080047E0 }
+  # An opaque payload word points at the gUnknown_03001620 literal inside
+  # FUN_0800486c. The surrounding path uses the real entry's live state.
+  - { source: 0x0F23E30, destination: 0x08005110 }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -376,6 +408,192 @@ units:
     source: src/unknown_080007fc.c
     cflags: [-O2, -mthumb-interwork]
     mappings:
+      # FUN_08000E04 owns three switch tables and the literal islands used by
+      # their case blocks. The formerly named 0x08001476, 0x080014A8, and
+      # 0x08001614 fragments are all inside this one saved-register frame.
+      - { offset: 0x00C4C, mode: data }
+      - { offset: 0x00C78, mode: thumb }
+      - { offset: 0x00C84, mode: data }
+      - { offset: 0x00C88, mode: thumb }
+      - { offset: 0x00C94, mode: data }
+      - { offset: 0x00C98, mode: thumb }
+      - { offset: 0x00CA4, mode: data }
+      - { offset: 0x00CA8, mode: thumb }
+      - { offset: 0x00CB4, mode: data }
+      - { offset: 0x00CB8, mode: thumb }
+      - { offset: 0x00CC4, mode: data }
+      - { offset: 0x00CC8, mode: thumb }
+      - { offset: 0x00CD4, mode: data }
+      - { offset: 0x00CD8, mode: thumb }
+      - { offset: 0x00CE4, mode: data }
+      - { offset: 0x00CE8, mode: thumb }
+      - { offset: 0x00CF4, mode: data }
+      - { offset: 0x00CF8, mode: thumb }
+      - { offset: 0x00D30, mode: data }
+      - { offset: 0x00D5C, mode: thumb }
+      - { offset: 0x00D68, mode: data }
+      - { offset: 0x00D6C, mode: thumb }
+      - { offset: 0x00D78, mode: data }
+      - { offset: 0x00D7C, mode: thumb }
+      - { offset: 0x00D88, mode: data }
+      - { offset: 0x00D8C, mode: thumb }
+      - { offset: 0x00D98, mode: data }
+      - { offset: 0x00D9C, mode: thumb }
+      - { offset: 0x00DA8, mode: data }
+      - { offset: 0x00DAC, mode: thumb }
+      - { offset: 0x00DB8, mode: data }
+      - { offset: 0x00DBC, mode: thumb }
+      - { offset: 0x00DC8, mode: data }
+      - { offset: 0x00DCC, mode: thumb }
+      - { offset: 0x00DD8, mode: data }
+      - { offset: 0x00DDC, mode: thumb }
+      - { offset: 0x00DE8, mode: data }
+      - { offset: 0x00DEC, mode: thumb }
+      - { offset: 0x00E14, mode: data }
+      - { offset: 0x00E40, mode: thumb }
+      # FUN_08001B0C's switch-table padding, address literal, and 21-entry
+      # table precede the case blocks at 0x08002488.
+      - { offset: 0x01C2E, mode: data }
+      - { offset: 0x01C8C, mode: thumb }
+      # The same owner has five early case-literal islands and four more after
+      # the former false entry at 0x08002700.
+      - { offset: 0x01CBA, mode: data }
+      - { offset: 0x01CC0, mode: thumb }
+      - { offset: 0x01CEC, mode: data }
+      - { offset: 0x01CF4, mode: thumb }
+      - { offset: 0x01D18, mode: data }
+      - { offset: 0x01D1C, mode: thumb }
+      - { offset: 0x01D36, mode: data }
+      - { offset: 0x01D3C, mode: thumb }
+      - { offset: 0x01D64, mode: data }
+      - { offset: 0x01D70, mode: thumb }
+      - { offset: 0x01F80, mode: data }
+      - { offset: 0x01F84, mode: thumb }
+      - { offset: 0x02028, mode: data }
+      - { offset: 0x02034, mode: thumb }
+      - { offset: 0x02090, mode: data }
+      - { offset: 0x02098, mode: thumb }
+      - { offset: 0x020D8, mode: data }
+      - { offset: 0x020DC, mode: thumb }
+      # FUN_0800290C owns the remaining literal islands and its eleven-entry
+      # switch table through the shared return at 0x080034E4.
+      - { offset: 0x02224, mode: data }
+      - { offset: 0x02230, mode: thumb }
+      - { offset: 0x023B4, mode: data }
+      - { offset: 0x023B8, mode: thumb }
+      - { offset: 0x02414, mode: data }
+      - { offset: 0x02424, mode: thumb }
+      - { offset: 0x024DA, mode: data }
+      - { offset: 0x024E0, mode: thumb }
+      - { offset: 0x02504, mode: data }
+      - { offset: 0x02508, mode: thumb }
+      - { offset: 0x0256C, mode: data }
+      - { offset: 0x02570, mode: thumb }
+      - { offset: 0x025A8, mode: data }
+      - { offset: 0x025AC, mode: thumb }
+      - { offset: 0x0260C, mode: data }
+      - { offset: 0x02618, mode: thumb }
+      - { offset: 0x0268A, mode: data }
+      - { offset: 0x02690, mode: thumb }
+      - { offset: 0x026BE, mode: data }
+      - { offset: 0x026C4, mode: thumb }
+      - { offset: 0x026E0, mode: data }
+      - { offset: 0x026E4, mode: thumb }
+      - { offset: 0x02710, mode: data }
+      - { offset: 0x02714, mode: thumb }
+      - { offset: 0x027FA, mode: data }
+      - { offset: 0x02814, mode: thumb }
+      - { offset: 0x028C8, mode: data }
+      - { offset: 0x028CC, mode: thumb }
+      - { offset: 0x028FE, mode: data }
+      - { offset: 0x02908, mode: thumb }
+      - { offset: 0x0292A, mode: data }
+      - { offset: 0x0295C, mode: thumb }
+      - { offset: 0x029AC, mode: data }
+      - { offset: 0x029B8, mode: thumb }
+      - { offset: 0x029EA, mode: data }
+      - { offset: 0x029F8, mode: thumb }
+      - { offset: 0x02A4A, mode: data }
+      - { offset: 0x02A54, mode: thumb }
+      - { offset: 0x02A96, mode: data }
+      - { offset: 0x02AA4, mode: thumb }
+      - { offset: 0x02B6E, mode: data }
+      - { offset: 0x02B78, mode: thumb }
+      - { offset: 0x02BB0, mode: data }
+      - { offset: 0x02BB8, mode: thumb }
+      - { offset: 0x02BF4, mode: data }
+      - { offset: 0x02BFC, mode: thumb }
+      - { offset: 0x02C12, mode: data }
+      - { offset: 0x02C18, mode: thumb }
+      - { offset: 0x02C7A, mode: data }
+      - { offset: 0x02C8C, mode: thumb }
+      # FUN_080040fa's final branch-skipped literal island and resumed tail.
+      - { offset: 0x3BB6, mode: data }
+      - { offset: 0x3BE4, mode: thumb }
+      # FUN_0800444C's complete literal-island map, including the scalar at
+      # the former false 0x080047E0 entry.
+      - { offset: 0x3D3E, mode: data }
+      - { offset: 0x3D44, mode: thumb }
+      - { offset: 0x3DC0, mode: data }
+      - { offset: 0x3DC8, mode: thumb }
+      - { offset: 0x3ED6, mode: data }
+      - { offset: 0x3EE8, mode: thumb }
+      - { offset: 0x3F58, mode: data }
+      - { offset: 0x3F60, mode: thumb }
+      - { offset: 0x3FE2, mode: data }
+      - { offset: 0x3FE8, mode: thumb }
+      - { offset: 0x4030, mode: data }
+      - { offset: 0x4038, mode: thumb }
+      - { offset: 0x4052, mode: data }
+      - { offset: 0x4058, mode: thumb }
+      # FUN_0800486C's branch-skipped literal islands through its shared
+      # epilogue at 0x080052E8.
+      - { offset: 0x4112, mode: data }
+      - { offset: 0x4124, mode: thumb }
+      - { offset: 0x4186, mode: data }
+      - { offset: 0x4190, mode: thumb }
+      - { offset: 0x41F0, mode: data }
+      - { offset: 0x41F4, mode: thumb }
+      - { offset: 0x421E, mode: data }
+      - { offset: 0x4224, mode: thumb }
+      - { offset: 0x424E, mode: data }
+      - { offset: 0x4254, mode: thumb }
+      - { offset: 0x4284, mode: data }
+      - { offset: 0x4288, mode: thumb }
+      - { offset: 0x42C6, mode: data }
+      - { offset: 0x42CC, mode: thumb }
+      - { offset: 0x435C, mode: data }
+      - { offset: 0x436C, mode: thumb }
+      - { offset: 0x43A0, mode: data }
+      - { offset: 0x43A8, mode: thumb }
+      - { offset: 0x43E2, mode: data }
+      - { offset: 0x43EC, mode: thumb }
+      - { offset: 0x456C, mode: data }
+      - { offset: 0x4590, mode: thumb }
+      - { offset: 0x45CE, mode: data }
+      - { offset: 0x45D4, mode: thumb }
+      - { offset: 0x45FE, mode: data }
+      - { offset: 0x4604, mode: thumb }
+      - { offset: 0x461C, mode: data }
+      - { offset: 0x4620, mode: thumb }
+      - { offset: 0x46A6, mode: data }
+      - { offset: 0x46AC, mode: thumb }
+      - { offset: 0x46E6, mode: data }
+      - { offset: 0x46EC, mode: thumb }
+      - { offset: 0x472C, mode: data }
+      - { offset: 0x4730, mode: thumb }
+      - { offset: 0x47A4, mode: data }
+      - { offset: 0x47AC, mode: thumb }
+      - { offset: 0x47F2, mode: data }
+      - { offset: 0x47F8, mode: thumb }
+      - { offset: 0x490C, mode: data }
+      - { offset: 0x491C, mode: thumb }
+      - { offset: 0x4976, mode: data }
+      - { offset: 0x497C, mode: thumb }
+      - { offset: 0x49A6, mode: data }
+      - { offset: 0x49AC, mode: thumb }
+      - { offset: 0x49DA, mode: data }
+      - { offset: 0x49E0, mode: thumb }
       # FUN_080153E0 branches around two in-function literal islands.
       - { offset: 0x14BF8, mode: data }
       - { offset: 0x14C00, mode: thumb }
@@ -1699,9 +1917,6 @@ units:
       - { offset: 0x3A8C, mode: data }
       - { offset: 0x3A90, mode: thumb }
       - { offset: 0x3AB8, mode: data }
-      # FUN_080040fa's final branch-skipped literal island and resumed tail.
-      - { offset: 0x3BB6, mode: data }
-      - { offset: 0x3BE4, mode: thumb }
       - { offset: 0x402C, mode: data }
       - { offset: 0x40B2, mode: data }
       - { offset: 0x40CC, mode: thumb }
