@@ -583,12 +583,12 @@ four such sites, and `0x08011C2C`-`0x08011C36` is a six-instruction "store 3 and
 entered at three different offsets from five sites inside `0x080110F0`. None of the fifteen has a
 stored ROM pointer.
 
-The consequence is recorded rather than acted on here: the analyzer's `direct-call` evidence class
-cannot distinguish a call from a long intra-function jump, so every routine in this placeholder that
-contains a far branch is currently split into several entries with extents truncated at the jump
-target. Those routines cannot be matched as units until the inventory separates the two cases. The
-functions matched so far are unaffected - none of them contains a far branch, and each compiled
-symbol size equals its accepted extent.
+The inventory now absorbs the independently closed `0x08004434` epilogue into `FUN_080040fa`.
+That target unwinds the exact frame established at `0x080040FA`; the PC-relative loads identify the
+branch-skipped literal island at `0x080043B2-0x080043E0`, and reachable instructions resume through
+the shared return at `0x08004444`. The target remains declared as a validated long-branch target.
+The analyzer's `direct-call` evidence class cannot distinguish these jumps from calls, so the other
+candidate tails remain conservative until their complete owners and literal islands are recovered.
 
 ### Translation-unit boundary status inside the placeholder
 
