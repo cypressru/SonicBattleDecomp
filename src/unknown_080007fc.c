@@ -655,8 +655,8 @@ void FUN_08006ff4(u8 count) {
             FUN_0801816c(&x, &y, record->x, record->y);
             FUN_08018204(&x, &y, x, y);
             entry.fields.yMinus6 = y - 6;
-            originalX = x - 16;
-            originalY = y - 4;
+            originalX = (u16)(x - 16);
+            originalY = (u16)(y - 4);
 
             if (record->directionMode == 0) {
                 x -= record->offsetX + 24;
