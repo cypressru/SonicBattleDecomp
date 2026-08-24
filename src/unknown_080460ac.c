@@ -534,8 +534,8 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 }
 
 void FUN_08046bc4(struct UnknownState460ac *state) {
-    s32 destination;
     s32 delta;
+    s32 destination;
 
     if (state->field40 != 0) {
         state->field40--;
@@ -550,8 +550,10 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         if (state->field23 != 0) {
             destination++;
         }
-        delta = FUN_0804a59c(*(s32 *)&state->field8 - (destination << 16), 6);
-        *(s32 *)&state->field8 -= delta;
+        destination = FUN_0804a59c(*(s32 *)&state->field8 - (destination << 16), 6);
+        delta = *(s32 *)&state->field8;
+        delta -= destination;
+        *(s32 *)&state->field8 = delta;
         if ((s16)state->field34 == (s16)state->field10) {
             state->field8 = 8;
             state->field27++;
@@ -572,10 +574,11 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
             do {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
+                const u16 *nextScript = script + 1;
                 u16 emptyCommand = 0x338;
                 const u16 *soundTable = gUnknown_08edda44;
 
-                state->field28.script = script + 1;
+                state->field28.script = nextScript;
                 done = 1;
 
                 switch (command) {
@@ -604,14 +607,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     }
                     break;
                 case 0xfffb:
-                    command = script[1];
-                    state->field28.script = script + 2;
+                    command = nextScript[0];
+                    state->field28.script = nextScript + 1;
                     state->field37 = command;
                     done = 0;
                     break;
                 case 0xfff9:
-                    command = script[1];
-                    state->field28.script = script + 2;
+                    command = nextScript[0];
+                    state->field28.script = nextScript + 1;
                     gUnknown_03000285 =
                         FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
                     if (gUnknown_03000285 < 0) {
