@@ -1195,11 +1195,13 @@ extern void FUN_08018444(void);
 void FUN_080470e4(struct UnknownState482d0 *state) {
     s16 i;
     s16 identity;
-    u32 stride = sizeof(struct UnknownPoolNode404ec);
+    u32 stride;
     struct UnknownPoolNode404ec *nodes;
     struct UnknownPoolOrder47384 *order;
 
-    for (i = 0; i < gUnknown_03000278.count; i++) {
+    i = 0;
+    stride = sizeof(struct UnknownPoolNode404ec);
+    while (i < gUnknown_03000278.count) {
         struct UnknownPoolNode404ec *node;
 
         order = &gUnknown_03000278;
@@ -1209,6 +1211,7 @@ void FUN_080470e4(struct UnknownState482d0 *state) {
         if (node->field36 == identity) {
             break;
         }
+        i++;
     }
     if (i >= gUnknown_03000278.count || gUnknown_03000274[state->field20 + 1] != 0) {
         gUnknown_03005440.field8 &= ~4;
