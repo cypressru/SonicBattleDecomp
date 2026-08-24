@@ -371,6 +371,15 @@ struct UnknownPoolNode404ec {
     u8 padding42[2];
 };
 
+#define SET_POOL_NODE_FLAGS(node, flags)                                                           \
+    do {                                                                                           \
+        (flags) = (node)->field3 & 4;                                                              \
+        if ((flags) != 0) {                                                                        \
+            (flags) = 0x80;                                                                        \
+        }                                                                                          \
+        (node)->field26 = (flags);                                                                 \
+    } while (0)
+
 struct UnknownPoolCommand4051c {
     u8 node;
     u8 replacement;
@@ -1410,11 +1419,7 @@ void FUN_080475dc(struct UnknownState482d0 *state) {
 
         node->data = (const void *)((u32)FUN_08047448 + 1);
         node->field37 = gUnknown_03000274[state->field20 + 1];
-        flags = node->field3 & 4;
-        if (flags != 0) {
-            flags = 0x80;
-        }
-        node->field26 = flags;
+        SET_POOL_NODE_FLAGS(node, flags);
     }
     gUnknown_030044d0[2].fourth = 0;
     gUnknown_030044d0[1].fourth = 0;
