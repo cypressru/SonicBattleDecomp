@@ -343,12 +343,11 @@ void FUN_0804666c(struct UnknownState460ac *state) {
     case 0: {
         s16 values[6];
         s16 copyIndex;
-        s16 pairIndex;
         s16 sourceIndex;
+        s16 pairIndex;
 
-        copyIndex = 0;
-        sourceIndex = state->field20;
-        for (; copyIndex < 6; copyIndex++, sourceIndex++) {
+        for (copyIndex = 0, sourceIndex = state->field20; copyIndex < 6;
+             copyIndex++, sourceIndex++) {
             values[copyIndex] = gUnknown_03000274[sourceIndex];
         }
         if (values[4] == values[2]) {
@@ -378,19 +377,15 @@ void FUN_0804666c(struct UnknownState460ac *state) {
                     mode = 2;
                 }
                 gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].callback =
-                    gUnknown_08edda34[mode];
+                    gUnknown_08edda34[(s16)mode];
                 ((u8 *)&gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]])[27] = 0;
                 gUnknown_0300027c.count++;
             }
         }
-        {
-            u8 completedCount = gUnknown_0300027c.count;
-
-            if (completedCount != 0) {
-                gUnknown_0300027c.count = gUnknown_03000278.count - completedCount;
-                state->field27++;
-                break;
-            }
+        if (gUnknown_0300027c.count != 0) {
+            gUnknown_0300027c.count = gUnknown_03000278.count - gUnknown_0300027c.count;
+            state->field27++;
+            break;
         }
         gUnknown_03005440.field8 &= 0xfffb;
         FUN_0804051c(state);
@@ -552,18 +547,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
     }
 
     switch (state->field27) {
-    case 0: {
-        s32 target = ((s16)state->field34 + (state->field23 != 0)) << 16;
-        s32 *position = (s32 *)&state->field8;
-        s32 delta = FUN_0804a59c(*position - target, 6);
-
-        *position -= delta;
+    case 0:
+        *(s32 *)&state->field8 -= FUN_0804a59c(
+            *(s32 *)&state->field8 - (((s16)state->field34 + (state->field23 != 0)) << 16), 6);
         if ((s16)state->field34 == (s16)state->field10) {
             state->field8 = 8;
             state->field27++;
         }
         break;
-    }
     case 1:
         if ((gUnknown_030048e0.third & 1) != 0) {
             state->field38 = 0;
@@ -571,9 +562,10 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         state->field26++;
         if (state->field26 >= state->field38) {
             u8 done;
-            u8 *field36 = &state->field36;
+            u8 *field36;
 
             state->field26 = 0;
+            field36 = &state->field36;
             do {
                 u16 command = *state->field28.script++;
                 u16 emptyCommand = 0x338;
