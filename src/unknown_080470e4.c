@@ -1194,18 +1194,18 @@ extern void FUN_08018444(void);
 
 void FUN_080470e4(struct UnknownState482d0 *state) {
     s16 i;
-    s16 identity;
+    s32 identity;
     u32 stride;
     struct UnknownPoolNode404ec *nodes;
     struct UnknownPoolOrder47384 *order;
 
     i = 0;
-    stride = sizeof(struct UnknownPoolNode404ec);
     while (i < gUnknown_03000278.count) {
         struct UnknownPoolNode404ec *node;
 
         order = &gUnknown_03000278;
         nodes = gUnknown_0300547c;
+        stride = sizeof(struct UnknownPoolNode404ec);
         identity = gUnknown_03000274[state->field20];
         node = (struct UnknownPoolNode404ec *)(order->indices[i] * stride + (u32)nodes);
         if (node->field36 == identity) {
@@ -1379,33 +1379,27 @@ void FUN_08047448(struct UnknownState482d0 *state) {
 }
 
 void FUN_080475dc(struct UnknownState482d0 *state) {
-    struct UnknownPoolOrder47384 *order;
     s16 i;
-    s16 identity;
-    u16 parameterIndex;
-    s16 *parameterBase;
-    s16 *parameters;
-    struct UnknownPoolNode404ec *nodes;
+    s32 identity;
     u32 stride;
+    struct UnknownPoolNode404ec *nodes;
+    struct UnknownPoolOrder47384 *order;
 
     i = 0;
-    order = &gUnknown_03000278;
-    while (i < order->count) {
+    while (i < gUnknown_03000278.count) {
         struct UnknownPoolNode404ec *node;
 
+        order = &gUnknown_03000278;
         nodes = gUnknown_0300547c;
         stride = sizeof(*node);
-        parameterIndex = state->field20;
-        parameterBase = gUnknown_03000274;
-        parameters = &parameterBase[parameterIndex];
-        identity = parameters[0];
+        identity = gUnknown_03000274[state->field20];
         node = (struct UnknownPoolNode404ec *)(order->indices[i] * stride + (u32)nodes);
         if (node->field36 == identity) {
             break;
         }
         i++;
     }
-    if (i >= order->count || parameters[1] > 3) {
+    if (i >= gUnknown_03000278.count || gUnknown_03000274[state->field20 + 1] > 3) {
         gUnknown_03005440.field8 &= ~4;
         FUN_0804051c(state);
         return;
@@ -1415,12 +1409,12 @@ void FUN_080475dc(struct UnknownState482d0 *state) {
         u8 flags;
 
         node->data = (const void *)((u32)FUN_08047448 + 1);
-        node->field37 = parameterBase[state->field20 + 1];
+        node->field37 = gUnknown_03000274[state->field20 + 1];
         flags = node->field3 & 4;
         if (flags != 0) {
             flags = 0x80;
         }
-        *(volatile u8 *)&node->field26 = flags;
+        node->field26 = flags;
     }
     gUnknown_030044d0[2].fourth = 0;
     gUnknown_030044d0[1].fourth = 0;
