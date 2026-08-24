@@ -1643,20 +1643,20 @@ void FUN_0801df7c(u8 value) {
 }
 
 void FUN_0801dfdc(u8 value) {
-    register u32 index asm("r2") = value;
-    register u32 savedIndex asm("r4") = index;
-    register struct UnknownEntityData *metadataBase asm("r1") = gUnknown_03001c40;
-    register u32 metadataOffset asm("r0") = index * 252;
-    register struct UnknownEntityData *metadata asm("r5") =
+    u32 index = value;
+    u32 savedIndex = index;
+    struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+    u32 metadataOffset = index * 252;
+    struct UnknownEntityData *metadata =
         (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
-    register struct UnknownEntity *entity asm("r1");
-    register UnknownCallback callback asm("r0");
-    register u32 type asm("r0");
+    struct UnknownEntity *entity;
+    UnknownCallback callback;
+    u32 type;
 
     type = metadata->field20;
     if (type == 0) {
-        register struct UnknownEntity *entities asm("r0") = gUnknown_03003db0;
-        register u32 entityOffset asm("r1") = index * 24;
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = index * 24;
 
         entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
@@ -1665,11 +1665,10 @@ void FUN_0801dfdc(u8 value) {
             return;
         }
         {
-            register const void *data asm("r3") = gUnknown_08ed8ac4;
-            register struct UnknownEntity *entities asm("r2") = gUnknown_03003db0;
-            register u32 entityOffset asm("r1") = savedIndex * 24;
-            register struct UnknownEntity *dataBase asm("r0") =
-                (struct UnknownEntity *)((u32)entities + 4);
+            const void *data = gUnknown_08ed8ac4;
+            struct UnknownEntity *entities = gUnknown_03003db0;
+            u32 entityOffset = savedIndex * 24;
+            struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
             *(const void **)(entityOffset + (u32)dataBase) = data;
             entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
@@ -2260,19 +2259,19 @@ void FUN_0801e2c8(u32 value) {
 }
 
 void FUN_0801e34c(u8 value) {
-    register u32 index asm("r4") = value;
-    register struct UnknownEntityData *metadataBase asm("r1") = gUnknown_03001c40;
-    register u32 metadataOffset asm("r0") = index * 252;
-    register struct UnknownEntityData *metadata asm("r5") =
+    u32 index = value;
+    struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+    u32 metadataOffset = index * 252;
+    struct UnknownEntityData *metadata =
         (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
-    register u32 type asm("r1") = metadata->field20;
+    u32 type = metadata->field20;
 
     if (type == 66) {
-        register u8 *table asm("r1") = gUnknown_08071245;
-        register u8 *tableIndex asm("r0") = &gUnknown_03003e10;
-        register u32 tableOffset asm("r0") = *tableIndex;
-        register u32 raw asm("r0");
-        register s32 argument asm("r0");
+        u8 *table = gUnknown_08071245;
+        u8 *tableIndex = &gUnknown_03003e10;
+        u32 tableOffset = *tableIndex;
+        u32 raw;
+        s32 argument;
 
         tableOffset += (u32)table;
         raw = *(u8 *)tableOffset;
@@ -2283,21 +2282,19 @@ void FUN_0801e34c(u8 value) {
             FUN_0801d870(index);
         }
     } else {
-        register struct UnknownEntity *entities asm("r6") = gUnknown_03003db0;
-        register u32 scaled asm("r0") = index * 3;
-        register u32 entityOffset asm("r3");
-        register struct UnknownEntity *entity asm("r2");
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 scaled = index * 3;
+        u32 entityOffset;
+        struct UnknownEntity *entity;
 
-        asm("" : "+r"(scaled));
         entityOffset = scaled * 8;
         entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         entity->field8 = 0;
         if (type == 0) {
             entity->callback = (UnknownCallback)FUN_0801ed50;
             {
-                register const void *data asm("r1") = gUnknown_08ed8a8c;
-                register struct UnknownEntity *dataBase asm("r0") =
-                    (struct UnknownEntity *)((u32)entities + 4);
+                const void *data = gUnknown_08ed8a8c;
+                struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
                 *(const void **)(entityOffset + (u32)dataBase) = data;
             }
@@ -3001,18 +2998,17 @@ u8 FUN_0801d188(u8 value) {
         u32 savedCandidate = candidate;
 
         if (candidate != value) {
-            register u8 *state asm("r1") = (u8 *)gUnknown_03001c40;
-            register u8 *entryBase asm("r0");
-            register u8 *entry asm("r0");
+            u8 *state = (u8 *)gUnknown_03001c40;
+            u8 *entryBase;
+            u8 *entry;
 
-            asm("" : "+r"(state));
             entryBase = state;
             entryBase += 20;
             entry = (u8 *)(candidate + (u32)entryBase);
             if (*entry != 0xFF) {
-                register u8 *groupBase asm("r0");
-                register u8 *valueGroup asm("r1");
-                register u8 *candidateGroup asm("r0");
+                u8 *groupBase;
+                u8 *valueGroup;
+                u8 *candidateGroup;
 
                 if (state[8] == 0) {
                     goto check_type;
@@ -3023,10 +3019,9 @@ u8 FUN_0801d188(u8 value) {
                 candidateGroup = (u8 *)(candidate + (u32)groupBase);
                 if (*valueGroup != *candidateGroup) {
                 check_type: {
-                    register struct UnknownEntityData *metadata asm("r1") = gUnknown_03001c40_pool2;
+                    struct UnknownEntityData *metadata = gUnknown_03001c40_pool2;
                     u32 type;
 
-                    asm("" : "+r"(metadata));
                     type = metadata[savedCandidate].field20;
 
                     if (type == 0xFC) {
@@ -3061,18 +3056,17 @@ u32 FUN_0801d200(u8 value) {
         u32 savedCandidate = candidate;
 
         if (candidate != value) {
-            register u8 *state asm("r3") = (u8 *)gUnknown_03001c40;
-            register u8 *entryBase asm("r0");
-            register u8 *entry asm("r0");
+            u8 *state = (u8 *)gUnknown_03001c40;
+            u8 *entryBase;
+            u8 *entry;
 
-            asm("" : "+r"(state));
             entryBase = state;
             entryBase += 20;
             entry = (u8 *)(candidate + (u32)entryBase);
             if (*entry != 0xFF) {
-                register u8 *groupBase asm("r0");
-                register u8 *valueGroup asm("r1");
-                register u8 *candidateGroup asm("r0");
+                u8 *groupBase;
+                u8 *valueGroup;
+                u8 *candidateGroup;
 
                 if (state[8] == 0) {
                     goto check_type;
@@ -3083,12 +3077,11 @@ u32 FUN_0801d200(u8 value) {
                 candidateGroup = (u8 *)(candidate + (u32)groupBase);
                 if (*valueGroup != *candidateGroup) {
                 check_type: {
-                    register struct UnknownEntityData *metadata asm("r1") = gUnknown_03001c40_pool2;
-                    register u8 *availabilityBase asm("r0");
-                    register u8 *availability asm("r0");
+                    struct UnknownEntityData *metadata = gUnknown_03001c40_pool2;
+                    u8 *availabilityBase;
+                    u8 *availability;
                     u32 type;
 
-                    asm("" : "+r"(metadata));
                     type = metadata[savedCandidate].field20;
 
                     if (type == 0xFC) {
@@ -8780,7 +8773,7 @@ u32 FUN_08020144(void) { return gUnknown_0300019c = gUnknown_0300019c * 0x0014fa
 u32 FUN_08020160(u32 threshold) {
     u32 random = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af;
     u32 percent;
-    register u32 result asm("r2");
+    u32 result;
 
     gUnknown_0300019c = random;
     percent = ((random & 0xFFFF) * 100) >> 16;
