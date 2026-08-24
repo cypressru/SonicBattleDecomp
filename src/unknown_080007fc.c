@@ -1256,8 +1256,8 @@ void FUN_08016a44(const u16 *palette) {
     for (i = 0; i <= 255; i++) {
         colour = palette[i];
         red = (colour & 31) + gUnknown_030016b8;
-        green = (((colour << 16) >> 21) & 31) + gUnknown_030020fc;
-        blue = (((colour << 16) >> 26) & 31) + gUnknown_03001b20;
+        green = ((((u32)colour << 16) >> 21) & 31) + gUnknown_030020fc;
+        blue = ((((u32)colour << 16) >> 26) & 31) + gUnknown_03001b20;
         if (red > 31) {
             red = 31;
         }
@@ -1422,7 +1422,7 @@ u32 FUN_08017a80(struct UnknownParticipantState17a80 *state, u8 participantCount
 
 u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     volatile u32 valid;
-    register u32 status;
+    u32 status;
     u8 *acceptedCount;
     u8 i;
 
