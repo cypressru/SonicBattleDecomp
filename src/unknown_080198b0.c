@@ -5649,20 +5649,13 @@ void FUN_08027ae8(struct UnknownListNode *node) {
 
 void FUN_08027b84(struct UnknownListNode *node) {
     u32 value;
-    register struct UnknownFourByteMessage *message asm("r1") = &gUnknown_03001b1c;
+    struct UnknownFourByteMessage *message = &gUnknown_03001b1c;
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
 
-    {
-        register u32 byteZero asm("r0") = 0;
-
-        message->type = byteZero;
-        message->index = byteZero;
-    }
-    asm volatile("" : : : "r0");
-    {
-        register u16 halfwordZero asm("r0") = 0;
-
-        message->value = halfwordZero;
-    }
+    message->type = byteZero;
+    message->index = byteZero;
+    message->value = halfwordZero;
     value = FUN_0801f9e8(0x3579);
     gUnknown_03005248 = value;
     if (gUnknown_0300525c != (u8)value) {
@@ -5751,20 +5744,13 @@ void FUN_08027c8c(struct UnknownListNode *node) {
 
 void FUN_08027d18(struct UnknownListNode *node) {
     u32 value;
-    register struct UnknownFourByteMessage *message asm("r1") = &gUnknown_03001b1c;
+    struct UnknownFourByteMessage *message = &gUnknown_03001b1c;
+    u32 byteZero = 0;
+    u16 halfwordZero = 0;
 
-    {
-        register u32 byteZero asm("r0") = 0;
-
-        message->type = byteZero;
-        message->index = byteZero;
-    }
-    asm volatile("" : : : "r0");
-    {
-        register u16 halfwordZero asm("r0") = 0;
-
-        message->value = halfwordZero;
-    }
+    message->type = byteZero;
+    message->index = byteZero;
+    message->value = halfwordZero;
     value = FUN_0801f9e8(0x3579);
     gUnknown_03005248 = value;
     FUN_0801f718(31, 60);
@@ -6853,9 +6839,9 @@ void FUN_08029060(struct UnknownListNode *node) {
 }
 
 void FUN_080290b4(struct UnknownListNode *node) {
-    register struct UnknownPosition *position asm("r2") = node->position;
-    register u32 zero asm("r3");
-    register u32 halfwordZero asm("r1");
+    struct UnknownPosition *position = node->position;
+    u32 zero;
+    u32 halfwordZero;
 
     position->field0 = gUnknown_08edb94c;
     zero = 0;
@@ -6870,9 +6856,9 @@ void FUN_080290b4(struct UnknownListNode *node) {
 }
 
 void FUN_0802cb30(struct UnknownListNode *node) {
-    register struct UnknownPosition *position asm("r2") = node->position;
-    register u32 zero asm("r3");
-    register u32 halfwordZero asm("r1");
+    struct UnknownPosition *position = node->position;
+    u32 zero;
+    u32 halfwordZero;
 
     position->field0 = (const void *)0x0811DBA8;
     zero = 0;
@@ -8823,15 +8809,13 @@ void FUN_0803cb54(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0);
 s16 FUN_08040684(u8 index) { return gUnknown_081231d6[index]; }
 
 s16 FUN_08040698(u8 index) {
-    register u32 adjusted asm("r0") = index;
-    register const s16 *table asm("r2");
-    register u32 mask asm("r1");
+    u32 adjusted = index;
+    const s16 *table;
+    u32 mask;
 
-    asm volatile("" : "+r"(adjusted));
     table = gUnknown_081231d6;
     adjusted += 64;
     mask = 0xFF;
-    asm volatile("" : "+r"(table), "+r"(adjusted), "+r"(mask));
     return table[adjusted & mask];
 }
 
@@ -8867,53 +8851,41 @@ u32 FUN_080406b4(void) {
 }
 
 void FUN_080303cc(void) {
-    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
-    register u32 value asm("r2") = 0x1c09;
-    register u32 copy asm("r0");
+    volatile u16 *registers = (volatile u16 *)0x0400000a;
+    u32 value = 0x1c09;
+    u32 copy;
 
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
     registers++;
     value = 0x1b01;
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
 }
 
 void FUN_080381e4(void) {
-    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
-    register u32 value asm("r2") = 0x1e09;
-    register u32 copy asm("r0");
+    volatile u16 *registers = (volatile u16 *)0x0400000a;
+    u32 value = 0x1e09;
+    u32 copy;
 
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
     registers++;
     value = 0x1d01;
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
 }
 
 void FUN_0803b588(void) {
-    register volatile u16 *registers asm("r1") = (volatile u16 *)0x0400000a;
-    register u32 value asm("r2") = 0x1e09;
-    register u32 copy asm("r0");
+    volatile u16 *registers = (volatile u16 *)0x0400000a;
+    u32 value = 0x1e09;
+    u32 copy;
 
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
     registers++;
     value = 0x1d01;
-    asm volatile("" : "+r"(value));
     copy = value;
-    asm volatile("" : "+r"(copy));
     *registers = copy;
 }
 
@@ -8943,13 +8915,12 @@ void FUN_08043e28(struct UnknownState43e28 *state) {
 }
 
 u8 FUN_08043e44(s16 x, s16 y) {
-    register s32 row asm("r1") = y >> 3;
-    register s32 column asm("r0") = x >> 3;
-    register const u8 *map asm("r2") = (const u8 *)0x02020c00;
+    s32 row = y >> 3;
+    s32 column = x >> 3;
+    const u8 *map = (const u8 *)0x02020c00;
 
     row <<= 6;
     row += (u32)map;
-    asm volatile("" : "+r"(row));
     row += column;
     return *(const u8 *)row;
 }
@@ -10189,14 +10160,13 @@ void FUN_08040328(void) {
 }
 
 void FUN_0804033c(const void *source, void *destination, u32 size) {
-    register struct UnknownTransferList4033c *list asm("r5") = gUnknown_030001a0;
-    register u32 index asm("r4") = list->records[0].size;
-    register u32 recordAddress asm("r3");
+    struct UnknownTransferList4033c *list = gUnknown_030001a0;
+    u32 index = list->records[0].size;
+    u32 recordAddress;
     struct UnknownTransferRecord4033c *record;
 
     recordAddress = index * 12;
     recordAddress += (u32)list;
-    asm volatile("" : "+r"(recordAddress));
     record = (struct UnknownTransferRecord4033c *)recordAddress;
     record->source = source;
     record->destination = destination;
@@ -10926,9 +10896,9 @@ void FUN_08043f00(struct UnknownState43f00 *state) {
 void FUN_08043f7c(struct UnknownState43f00 *state) {
     state->counter++;
     {
-        register u32 counter asm("r2") = state->counter;
-        register u32 packed asm("r1") = counter << 8;
-        register u32 remaining asm("r0") = 16 - counter;
+        u32 counter = state->counter;
+        u32 packed = counter << 8;
+        u32 remaining = 16 - counter;
 
         packed |= remaining;
         FUN_0801fba0(0x52, (u16)packed);
