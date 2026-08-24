@@ -33,6 +33,8 @@ extern volatile u16 gUnknown_03003178[];
 #define REG_SIOCNT (*(volatile u32 *)0x04000128)
 #define REG_IME (*(volatile u16 *)0x04000208)
 extern u8 gUnknown_030016d0;
+extern u8 gUnknown_03001620[];
+extern u8 gUnknown_030016a4;
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
 extern u8 gUnknown_030017cc;
@@ -46,6 +48,7 @@ extern s16 gUnknown_030016bc;
 extern s16 gUnknown_030016c0;
 extern s16 gUnknown_03001b2c;
 extern s16 gUnknown_03001384;
+extern u16 gUnknown_03003380[][16];
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
 
@@ -213,6 +216,8 @@ extern void FUN_0801ffa4(u32 first);
 extern void FUN_0801fbd8(void);
 
 extern u16 gUnknown_030016b8;
+extern u16 gUnknown_030020fc;
+extern u16 gUnknown_03001b20;
 extern u16 gUnknown_03001d0c[][126];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
@@ -223,6 +228,8 @@ extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
 extern void FUN_08017fb0(void);
+extern void FUN_08018004(s16 first, s16 second, u8 third, u16 fourth, u8 fifth, u8 sixth,
+                         u8 seventh, u8 eighth, u8 ninth);
 extern void FUN_080200d8(u16 index, u16 first, u16 second, u16 third, u16 fourth);
 extern void FUN_0801f618(u32 index);
 extern void FUN_0801ff30(void);
@@ -502,6 +509,46 @@ void FUN_080163c0(u8 layer) {
     }
 }
 
+void FUN_08016438(u16 originX, u16 originY, s16 firstDenominator, u16 secondDenominator, u8 scaleX,
+                  u8 scaleY, u16 angle, u8 matrixIndex) {
+    u16 pa;
+    u16 pb;
+    u16 pc;
+    u16 pd;
+    s32 x;
+    s32 y;
+
+    pa = scaleX * DivArm(firstDenominator, gUnknown_0804df7c[angle + 0x800] << 3);
+    pb = scaleY * DivArm(firstDenominator, gUnknown_0804df7c[angle] << 3);
+    pc = scaleX * -DivArm((s16)secondDenominator, gUnknown_0804df7c[angle] << 3);
+    pd = DivArm((s16)secondDenominator, gUnknown_0804df7c[angle + 0x800] << 3) * scaleY;
+    x = 0x8000 - (s16)pa * (s16)originX - (s16)pb * (s16)originY;
+    y = 0x8000 - (s16)pc * (s16)originX - (s16)pd * (s16)originY;
+
+    switch (matrixIndex) {
+    case 2:
+        gUnknown_03003380[gUnknown_03003140 ^ 1][0] = pa;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][1] = pb;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][2] = pc;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][3] = pd;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][4] = x;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][5] = (x & 0x0fff0000) >> 16;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][6] = y;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][7] = (y & 0x0fff0000) >> 16;
+        break;
+    case 3:
+        gUnknown_03003380[gUnknown_03003140 ^ 1][8] = pa;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][9] = pb;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][10] = pc;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][11] = pd;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][12] = x;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][13] = (x & 0x0fff0000) >> 16;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][14] = y;
+        gUnknown_03003380[gUnknown_03003140 ^ 1][15] = (y & 0x0fff0000) >> 16;
+        break;
+    }
+}
+
 u8 FUN_08015384(void) {
     u16 previous;
 
@@ -644,6 +691,17 @@ u8 FUN_080158c0(void) {
     return 0;
 }
 
+void FUN_08015e30(s16 x, s16 y, u8 fourth, u8 fifth, u8 index) {
+    FUN_08018004(x - gUnknown_03003100[index], y + gUnknown_03003118[index], 0, fourth, fifth, 0,
+                 113, 0, 0);
+    FUN_08018004(x - gUnknown_03003100[index], y + gUnknown_03003118[index] + 32, 0, fourth + 16,
+                 fifth, 0, 111, 0, 0);
+    FUN_08018004(x - gUnknown_03003100[index] + 32, y + gUnknown_03003118[index], 0, fourth + 24,
+                 fifth, 0, 112, 0, 0);
+    FUN_08018004(x - gUnknown_03003100[index] + 32, y + gUnknown_03003118[index] + 32, 0,
+                 fourth + 32, fifth, 0, 110, 0, 0);
+}
+
 s16 FUN_08015f40(u8 index) { return -gUnknown_03003100[index]; }
 
 s16 FUN_08015f58(u8 index) { return gUnknown_03003118[index]; }
@@ -707,6 +765,156 @@ void FUN_08015fa4(void) {
     }
     gUnknown_030013a0 = 0;
     gUnknown_03002610++;
+}
+
+void FUN_08016684(void) {
+    s16 pb;
+    s16 pa;
+    s16 pc;
+    s16 pd;
+    s32 first;
+    s32 second;
+    s32 x;
+    s32 y;
+    const s16 *table;
+
+    table = gUnknown_0804df7c;
+    pa = DivArm(gUnknown_03001b04, table[gUnknown_03001b08 + 0x800] << 3);
+    pb = DivArm(gUnknown_03001b04, (table[gUnknown_03001b08] * gUnknown_030016c8) >> 5);
+    pc = -DivArm(gUnknown_03001b04, table[gUnknown_03001b08] << 3);
+    pd = DivArm(gUnknown_03001b04, (table[gUnknown_03001b08 + 0x800] * gUnknown_030016c8) >> 5);
+
+    first = (table[gUnknown_03001b08 + 0x800] * gUnknown_03001b2c -
+             table[gUnknown_03001b08] * gUnknown_030016c0) >>
+            13;
+    second = (-table[gUnknown_03001b08] * gUnknown_03001b2c -
+              table[gUnknown_03001b08 + 0x800] * gUnknown_030016c0) >>
+             13;
+    x = (first * (gUnknown_03001b04 << 7)) >> 20;
+    y = DivArm(gUnknown_030016c8, second * (gUnknown_03001b04 << 7)) >> 12;
+
+    gUnknown_03003380[gUnknown_03003140 ^ 1][0] = pa;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][1] = pb;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][2] = pc;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][3] = pd;
+    first = 0x10000 - pb * (y - gUnknown_03001384 + 82) - pa * (x + 120);
+    second = 0x10000 - pd * (y - gUnknown_03001384 + 82) - pc * (x + 120);
+    gUnknown_03003380[gUnknown_03003140 ^ 1][4] = first;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][5] = (first & 0x0fff0000) >> 16;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][6] = second;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][7] = (second & 0x0fff0000) >> 16;
+
+    gUnknown_03003380[gUnknown_03003140 ^ 1][8] = pa;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][9] = pb;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][10] = pc;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][11] = pd;
+    first = 0x10000 - pb * (y + 80) - pa * (x + 120);
+    second = 0x10000 - pd * (y + 80) - pc * (x + 120);
+    gUnknown_03003380[gUnknown_03003140 ^ 1][12] = first;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][13] = (first & 0x0fff0000) >> 16;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][14] = second;
+    gUnknown_03003380[gUnknown_03003140 ^ 1][15] = (second & 0x0fff0000) >> 16;
+}
+
+void FUN_0801694c(void) {
+    ((volatile u16 *)0x04000020)[0] = gUnknown_03003380[gUnknown_03003140][0];
+    ((volatile u16 *)0x04000020)[1] = gUnknown_03003380[gUnknown_03003140][1];
+    ((volatile u16 *)0x04000020)[2] = gUnknown_03003380[gUnknown_03003140][2];
+    ((volatile u16 *)0x04000020)[3] = gUnknown_03003380[gUnknown_03003140][3];
+    ((volatile u16 *)0x04000020)[4] = gUnknown_03003380[gUnknown_03003140][4];
+    ((volatile u16 *)0x04000020)[5] = gUnknown_03003380[gUnknown_03003140][5];
+    ((volatile u16 *)0x04000020)[6] = gUnknown_03003380[gUnknown_03003140][6];
+    ((volatile u16 *)0x04000020)[7] = gUnknown_03003380[gUnknown_03003140][7];
+    ((volatile u16 *)0x04000020)[8] = gUnknown_03003380[gUnknown_03003140][8];
+    ((volatile u16 *)0x04000020)[9] = gUnknown_03003380[gUnknown_03003140][9];
+    ((volatile u16 *)0x04000020)[10] = gUnknown_03003380[gUnknown_03003140][10];
+    ((volatile u16 *)0x04000020)[11] = gUnknown_03003380[gUnknown_03003140][11];
+    ((volatile u16 *)0x04000020)[12] = gUnknown_03003380[gUnknown_03003140][12];
+    ((volatile u16 *)0x04000020)[13] = gUnknown_03003380[gUnknown_03003140][13];
+    ((volatile u16 *)0x04000020)[14] = gUnknown_03003380[gUnknown_03003140][14];
+    ((volatile u16 *)0x04000020)[15] = gUnknown_03003380[gUnknown_03003140][15];
+}
+
+void FUN_08016a44(const u16 *palette) {
+    u16 output[256];
+    int colour;
+    s16 red;
+    s16 green;
+    s16 blue;
+    s16 i;
+
+    for (i = 0; i <= 255; i++) {
+        colour = palette[i];
+        red = (colour & 31) + gUnknown_030016b8;
+        green = (((colour << 16) >> 21) & 31) + gUnknown_030020fc;
+        blue = (((colour << 16) >> 26) & 31) + gUnknown_03001b20;
+        if (red > 31) {
+            red = 31;
+        }
+        if (green > 31) {
+            green = 31;
+        }
+        if (blue > 31) {
+            blue = 31;
+        }
+        if (red < 0) {
+            red = 0;
+        }
+        if (green < 0) {
+            green = 0;
+        }
+        if (blue < 0) {
+            blue = 0;
+        }
+        output[i] = (red & 31) | ((green & 31) << 5) | ((blue & 31) << 10);
+    }
+    CpuFastSet(output, (void *)0x05000000, 128);
+}
+
+void FUN_080177b8(u8 participant) {
+    u8 i;
+    volatile u32 participantSlot;
+    u32 initialParticipant;
+    u32 value;
+    u32 previous;
+    u32 changed;
+    u16 pressed;
+    u16 released;
+
+    participantSlot = participant;
+    value = gUnknown_030048e0.first;
+    pressed = gUnknown_030048e0.second;
+    released = gUnknown_030048e0.third;
+    initialParticipant = participantSlot;
+    gUnknown_03001b30[initialParticipant].position++;
+    if (gUnknown_03001b30[initialParticipant].position > 9) {
+        gUnknown_03001b30[initialParticipant].position = 0;
+    }
+    gUnknown_03001b30[initialParticipant].flags[gUnknown_03001b30[initialParticipant].position] =
+        pressed;
+    gUnknown_03001b30[initialParticipant].third[gUnknown_03001b30[initialParticipant].position] =
+        released;
+    gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[initialParticipant].position] =
+        value;
+
+    for (i = 0; i <= 3; i++) {
+        if (i != participantSlot) {
+            value = gUnknown_03001c40[i].value;
+            previous = gUnknown_03001b30[i].first[gUnknown_03001b30[i].position];
+            changed = value ^ previous;
+            pressed = value & changed;
+            released = previous & changed;
+            gUnknown_03001b30[i].position++;
+            if (gUnknown_03001b30[i].position > 9) {
+                gUnknown_03001b30[i].position = 0;
+            }
+            gUnknown_03001b30[i].flags[gUnknown_03001b30[i].position] = pressed;
+            gUnknown_03001b30[i].third[gUnknown_03001b30[i].position] = released;
+            gUnknown_03001b30[i].first[gUnknown_03001b30[i].position] = value;
+        } else {
+            gUnknown_03001c40[i].value = gUnknown_030048e0.first;
+        }
+    }
 }
 
 /* Advances every participant's input ring by one slot, deriving the pressed
@@ -800,4 +1008,34 @@ u32 FUN_08017a80(struct UnknownParticipantState17a80 *state, u8 participantCount
         state->participants[3] = gUnknown_030016f0[3][0];
     }
     return matches;
+}
+
+u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
+    volatile u32 valid;
+    register u32 status;
+    u8 *acceptedCount;
+    u8 i;
+
+    (void)unused;
+    gUnknown_03001b10.first = marker;
+    gUnknown_03001b10.second = 0x8844;
+    gUnknown_03001620[0x84] = 0;
+    for (i = 0; i < participantCount; i++) {
+        gUnknown_030016f0[i][0] = 0;
+    }
+    gUnknown_030013a4 = gUnknown_03001730;
+    gUnknown_03001730 = FUN_08018730(gUnknown_030016f0[0]);
+    FUN_08018c20();
+    valid = 1;
+    for (i = 0; i < participantCount; i++) {
+        status = gUnknown_03001730;
+        if (status & (1 << i)) {
+            acceptedCount = &gUnknown_030016a4;
+            if (gUnknown_030016f0[i][1] == gUnknown_03001b10.second || i == gUnknown_03001380) {
+                (*acceptedCount)++;
+            }
+        }
+        valid &= ((u8 *)gUnknown_030016f0[i])[0];
+    }
+    return valid;
 }
