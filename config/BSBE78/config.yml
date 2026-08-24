@@ -300,6 +300,8 @@ range_overrides:
     exclude_from_objdiff: true
   owned_unknown_0801f080_rodata:
     exclude_from_objdiff: true
+  owned_unknown_080460ac_rodata:
+    exclude_from_objdiff: true
   owned_unknown_080470e4_rodata:
     exclude_from_objdiff: true
 units:
