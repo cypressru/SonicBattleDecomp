@@ -1219,7 +1219,7 @@ extern u8 FUN_0801584c(void);
 void FUN_080207ec(u16 value);
 void FUN_0801bd90(void);
 void FUN_0801c910(void);
-void FUN_0801a04c(u8 value);
+void FUN_0801a04c(u32 value);
 
 void FUN_0801a61c(u8 mode) {
     u8 *selection;
@@ -1399,7 +1399,7 @@ void FUN_0801c8a4(void) {
     FUN_08019ed8();
     FUN_08012b98(10);
     if (gUnknown_0300138c != 0) {
-        gUnknown_03002030 = FUN_0801aadc;
+        gUnknown_03002030 = (void (*)(void))((u32)FUN_0801aadc + 1);
     } else {
         FUN_08019b5c();
         gUnknown_03002030 = FUN_0801a898;
@@ -1615,7 +1615,7 @@ void FUN_0801dfdc(u8 value) {
         register u32 entityOffset asm("r1") = index * 24;
 
         entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        callback = FUN_0801d618;
+        callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
     } else {
         if (type != 13) {
             return;
@@ -1658,7 +1658,7 @@ void FUN_0801e044(u8 value) {
         register UnknownCallback callback asm("r0");
 
         entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        callback = FUN_0801d618;
+        callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
         entity->callback = callback;
     } else if (type == 16) {
         register struct UnknownEntity *entities asm("r5") = gUnknown_03003db0;
