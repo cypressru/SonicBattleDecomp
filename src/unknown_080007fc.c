@@ -260,6 +260,11 @@ extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
 extern const u16 gUnknown_0847aa18[];
+extern const u16 gUnknown_08055800[];
+extern const u16 gUnknown_0805587e[];
+extern const u16 gUnknown_08055994[];
+extern const u16 gUnknown_080559d8[];
+extern const u16 gUnknown_080576e8[];
 
 /* The link send slot and the four receive slots. Each receive slot is a
    16-byte record whose first halfword carries the handshake marker. */
@@ -1157,14 +1162,14 @@ animation_ready:
 
             if (character == 1) {
                 if (animation == 19) {
-                    gUnknown_03003100[slot] = ((const u16 *)0x080556a8)[(s16)command] - 8;
-                    gUnknown_03003118[slot] = ((const u16 *)0x08055726)[(s16)command];
+                    gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
+                    gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
                 } else if (animation == 20) {
-                    gUnknown_03003100[slot] = ((const u16 *)0x080557bc)[(s16)command] - 8;
-                    gUnknown_03003118[slot] = ((const u16 *)0x08055800)[(s16)command];
+                    gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
+                    gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
                 }
             } else if (character == 2 && animation == 21) {
-                gUnknown_03003100[slot] = ((const u16 *)0x08057578)[(s16)command];
+                gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
             }
             FUN_08020440(resource, sound, command);
         }
