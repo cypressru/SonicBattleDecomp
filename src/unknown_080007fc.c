@@ -1098,66 +1098,57 @@ animation_ready:
             goto loop_command;
         } else if (opcode == 0x10000000) {
             switch (character) {
-                case 0:
-                    resource = !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1
-                                   ? 0x0847afd8
-                                   : 0x08787d18;
-                    break;
-                case 1:
-                case 10:
-                case 11:
-                case 21:
-                    resource = 0x08787d18;
-                    break;
-                case 2:
-                case 22:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x08835158
-                                   : 0x08528418;
-                    break;
-                case 3:
-                case 23:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x087d7b38
-                                   : 0x084cadf8;
-                    break;
-                case 4:
-                case 24:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x0889a578
-                                   : 0x0858d838;
-                    break;
-                case 5:
-                case 25:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x08900b98
-                                   : 0x085f3e58;
-                    break;
-                case 6:
-                case 26:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x089431b8
-                                   : 0x08636478;
-                    break;
-                case 7:
-                case 27:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x08a037f8
-                                   : 0x086f6ab8;
-                    break;
-                case 8:
-                case 28:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x0898e7d8
-                                   : 0x08681a98;
-                    break;
-                case 9:
-                    resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1
-                                   ? 0x08a40418
-                                   : 0x087336d8;
-                    break;
-                default:
-                    break;
+            case 0:
+                resource = !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8
+                                                                                     : 0x08787d18;
+                break;
+            case 1:
+            case 10:
+            case 11:
+            case 21:
+                resource = 0x08787d18;
+                break;
+            case 2:
+            case 22:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158
+                                                                                    : 0x08528418;
+                break;
+            case 3:
+            case 23:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38
+                                                                                    : 0x084cadf8;
+                break;
+            case 4:
+            case 24:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578
+                                                                                    : 0x0858d838;
+                break;
+            case 5:
+            case 25:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98
+                                                                                    : 0x085f3e58;
+                break;
+            case 6:
+            case 26:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8
+                                                                                    : 0x08636478;
+                break;
+            case 7:
+            case 27:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8
+                                                                                    : 0x086f6ab8;
+                break;
+            case 8:
+            case 28:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8
+                                                                                    : 0x08681a98;
+                break;
+            case 9:
+                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418
+                                                                                    : 0x087336d8;
+                break;
+            default:
+                break;
             }
 
             if (character == 1) {
@@ -1175,7 +1166,7 @@ animation_ready:
         }
         goto command_done;
 
-loop_command:
+    loop_command:
         if ((s16)gUnknown_03003108[slot] == 0) {
             goto invalid_stream;
         }
@@ -1183,7 +1174,7 @@ loop_command:
         gUnknown_03003108[slot] = 1 - direction;
         return 0;
 
-command_done:
+    command_done:
         gUnknown_03003110[slot]++;
         if (gUnknown_03003110[slot] > 0xfe) {
             goto invalid_stream;
