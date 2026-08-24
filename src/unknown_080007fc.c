@@ -658,12 +658,15 @@ void FUN_08006ff4(u8 count) {
             originalX = (u16)(x - 16);
             originalY = (u16)(y - 4);
 
-            if (record->directionMode == 0) {
+            switch (record->directionMode) {
+            case 0:
                 x -= record->offsetX + 24;
                 y += record->offsetY - 40;
-            } else if (record->directionMode == 1) {
+                break;
+            case 1:
                 x += record->offsetX - 24;
                 y += record->offsetY - 40;
+                break;
             }
 
             record->screenX = x;
@@ -677,16 +680,19 @@ void FUN_08006ff4(u8 count) {
                 entry.fields.direction = record->directionMode;
                 entry.fields.height = record->height;
 
-                if (record->directionMode == 0) {
+                switch (record->directionMode) {
+                case 0:
                     SUBMIT_QUEUE(x, y, tile, 11);
                     SUBMIT_QUEUE(x, y + 32, tile + 16, 12);
                     SUBMIT_QUEUE(x + 32, y, tile + 24, 13);
                     SUBMIT_QUEUE(x + 32, y + 32, tile + 32, 14);
-                } else if (record->directionMode == 1) {
+                    break;
+                case 1:
                     SUBMIT_QUEUE(x, y, tile + 24, 13);
                     SUBMIT_QUEUE(x, y + 32, tile + 32, 14);
                     SUBMIT_QUEUE(x + 16, y, tile, 11);
                     SUBMIT_QUEUE(x + 16, y + 32, tile + 16, 12);
+                    break;
                 }
             }
 
