@@ -575,11 +575,12 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                 const u16 *script = state->field28.script;
                 u16 command = script[0];
                 const u16 *nextScript = script + 1;
-                u16 emptyCommand = 0x338;
+                u32 emptyCommand = 0xce;
                 const u16 *soundTable = gUnknown_08edda44;
 
                 state->field28.script = nextScript;
                 done = 1;
+                emptyCommand <<= 2;
 
                 switch (command) {
                 case 0xfffe:
@@ -620,13 +621,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     conversionResult =
                         FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
                     gUnknown_03000285 = conversionResult;
-                    if (conversionResult < 0) {
+                    if ((s8)conversionResult < 0) {
                         gUnknown_03000285 = 0;
                     }
                     FUN_08046af8(state);
-                    state->field27 = 4;
-                    if (conversionResult > 4) {
+                    if (gUnknown_03000285 > 4) {
                         state->field27 = 1;
+                    } else {
+                        state->field27 = 4;
                     }
                     break;
                 }
