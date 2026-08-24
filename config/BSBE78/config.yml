@@ -918,7 +918,7 @@ units:
       - { offset: 0x16148, type: abs32, symbol: gUnknown_03003140 }
       - { offset: 0x1623C, type: abs32, symbol: gUnknown_03003380 }
       - { offset: 0x16240, type: abs32, symbol: gUnknown_03003140 }
-      - { offset: 0x1630C, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x1630A, type: thumb_call, symbol: CpuFastSet }
       - { offset: 0x16328, type: abs32, symbol: gUnknown_030016b8 }
       - { offset: 0x1632C, type: abs32, symbol: gUnknown_030020fc }
       - { offset: 0x16330, type: abs32, symbol: gUnknown_03001b20 }
