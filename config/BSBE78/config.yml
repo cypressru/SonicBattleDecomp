@@ -462,6 +462,9 @@ units:
       - { offset: 0x06174, mode: thumb }
       - { offset: 0x06186, mode: data }
       - { offset: 0x06190, mode: thumb }
+      # FUN_08006E64 branches around its globals and switch table.
+      - { offset: 0x066B0, mode: data }
+      - { offset: 0x066E4, mode: thumb }
     base_symbol_size_overrides:
       FUN_08000cf4: 0x100
       FUN_080016c4: 0x19C
@@ -483,6 +486,7 @@ units:
       FUN_08015f58: 0x0E
       FUN_080034f0: 0x1E2
       FUN_0800673c: 0x268
+      FUN_08006e64: 0x18E
       FUN_080163c0: 0x72
       FUN_08016438: 0x23E
       FUN_08016684: 0x2A0
@@ -522,6 +526,20 @@ units:
       - { offset: 0x06170, type: abs32, symbol: gUnknown_03001370 }
       - { offset: 0x0618C, type: abs32, symbol: gUnknown_03001370 }
       - { offset: 0x061AC, type: abs32, symbol: gUnknown_03001370 }
+      - { offset: 0x066B0, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x066B4, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x066B8, type: abs32, symbol: FUN_08006e64, addend: 0x54 }
+      - { offset: 0x066BC, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x066C0, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x066C4, type: abs32, symbol: FUN_08006e64, addend: 0xFE }
+      - { offset: 0x066C8, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x066CC, type: abs32, symbol: FUN_08006e64, addend: 0xD4 }
+      - { offset: 0x066D0, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x066D4, type: abs32, symbol: FUN_08006e64, addend: 0xE0 }
+      - { offset: 0x066D8, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x066DC, type: abs32, symbol: FUN_08006e64, addend: 0xF2 }
+      - { offset: 0x066E0, type: abs32, symbol: FUN_08006e64, addend: 0x7C }
+      - { offset: 0x067D4, type: thumb_call, symbol: FUN_0800c1c8 }
       - { offset: 0x02D38, type: abs32, symbol: gUnknown_03001b30 }
       - { offset: 0x02D3C, type: abs32, symbol: gUnknown_0806b2d4 }
       - { offset: 0x02D40, type: abs32, symbol: gUnknown_03001c40 }

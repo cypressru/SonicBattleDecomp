@@ -33,8 +33,13 @@ extern volatile u16 gUnknown_03003178[];
 #define REG_SIOCNT (*(volatile u32 *)0x04000128)
 #define REG_IME (*(volatile u16 *)0x04000208)
 extern u8 gUnknown_030016d0;
-extern u8 gUnknown_03001620[];
+struct UnknownState03001620 {
+    u8 padding0[20];
+    u8 activeSlots[113];
+};
+extern struct UnknownState03001620 gUnknown_03001620;
 extern u8 gUnknown_030016a4;
+extern u8 gUnknown_0300163c[];
 extern u8 gUnknown_030017c0;
 extern u8 gUnknown_030017c8;
 extern u8 gUnknown_030017cc;
@@ -52,12 +57,31 @@ extern s16 gUnknown_030016c0;
 extern s16 gUnknown_03001b2c;
 extern s16 gUnknown_03001384;
 extern s16 FUN_08018390(void);
+extern void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY);
+extern void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY);
+extern void FUN_08017f00(u32 first, u32 second, u32 third, u32 fourth);
+extern void FUN_080069ac(void);
+extern void FUN_0800c1c8(u16 active, u8 mode, s16 x, s16 y, s16 height, u32 sixth, u32 seventh,
+                         u32 eighth, u8 field172, u8 index, u8 field149);
 extern u16 gUnknown_03003380[][16];
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
 
-struct UnknownQueueEntry08017f00 {
+union UnknownQueueEntry08017f00 {
     u32 words[4];
+    struct {
+        u16 x;
+        u16 y;
+        u16 height;
+        u16 yMinus6;
+        u16 tile;
+        u8 padding10;
+        u8 zero11;
+        u8 index;
+        u8 type;
+        u8 padding14;
+        u8 direction;
+    } fields;
 };
 
 union UnknownQueueEntry08017f34 {
@@ -171,9 +195,24 @@ struct UnknownRecord03001c40 {
     s16 x;
     s16 y;
     u16 height;
-    u8 padding6[14];
+    u8 padding6[6];
+    u16 screenX;
+    u16 screenY;
+    u8 directionMode;
+    u8 previousDirection;
+    u8 requestedDirection;
+    u8 padding19;
     u16 first;
-    u8 padding22[88];
+    u8 padding22;
+    u8 stateType;
+    u8 padding24[4];
+    u8 status;
+    u8 substatus;
+    u8 padding30[6];
+    u8 renderMode;
+    u8 padding37[15];
+    s16 anchorHeight;
+    u8 padding54[56];
     u8 midpointMode;
     u8 padding111;
     u8 maximumMode;
@@ -181,17 +220,33 @@ struct UnknownRecord03001c40 {
     u32 field74;
     u8 padding120[5];
     u8 partner;
-    u8 padding126[24];
+    u8 padding126[21];
+    u8 field147;
+    u8 padding148;
+    u8 field149;
     u8 second;
     u8 padding151[8];
     u8 style;
-    u8 padding160[20];
+    s16 offsetX;
+    s16 offsetY;
+    u8 padding164[2];
+    u16 displacement;
+    u16 heightOffset;
+    u16 active;
+    u8 field172;
+    u8 padding173;
+    s16 field174;
+    s16 field176;
+    u8 padding178[2];
     u32 fieldB4;
     u8 padding184[12];
     u8 third;
-    u8 padding197[3];
+    u8 padding197[2];
+    u8 networkState;
     u16 value;
-    u8 padding202[50];
+    u8 padding202[34];
+    u8 field236;
+    u8 padding237[15];
 };
 
 extern union UnknownQueueEntry08017f34 gUnknown_03003190[];
@@ -494,6 +549,207 @@ void FUN_0800673c(u8 index) {
         gUnknown_03001370 = 3;
     }
 }
+
+void FUN_08006e64(void) {
+    u8 index;
+
+    index = 0;
+    do {
+        if (gUnknown_03001c40[index].active != 0 && gUnknown_03001620.activeSlots[index] != 0xFF) {
+            s16 xOffset = 0;
+            s16 yOffset = 0;
+
+            switch (gUnknown_03001c40[index].renderMode) {
+            case 0:
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 9:
+                if (gUnknown_03001c40[index].directionMode == 0) {
+                    if (gUnknown_03001c40[index].style == 0) {
+                        xOffset = gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 1) {
+                        xOffset = -gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 2) {
+                        yOffset = gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 3) {
+                        yOffset = -gUnknown_03001c40[index].displacement;
+                    }
+                } else {
+                    if (gUnknown_03001c40[index].style == 0) {
+                        xOffset = -gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 1) {
+                        xOffset = gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 2) {
+                        yOffset = -gUnknown_03001c40[index].displacement;
+                    } else if (gUnknown_03001c40[index].style == 3) {
+                        yOffset = gUnknown_03001c40[index].displacement;
+                    }
+                }
+                break;
+            case 4:
+                xOffset = gUnknown_03001c40[index].displacement;
+                break;
+            case 6:
+                xOffset = -gUnknown_03001c40[index].displacement;
+                break;
+            case 8:
+                yOffset = gUnknown_03001c40[index].displacement;
+                break;
+            case 2:
+                yOffset = -gUnknown_03001c40[index].displacement;
+                break;
+            default:
+                break;
+            }
+            FUN_0800c1c8(gUnknown_03001c40[index].active, gUnknown_03001c40[index].renderMode,
+                         gUnknown_03001c40[index].x + xOffset, gUnknown_03001c40[index].y + yOffset,
+                         gUnknown_03001c40[index].height + gUnknown_03001c40[index].heightOffset, 0,
+                         0, 0, gUnknown_03001c40[index].field172, index,
+                         gUnknown_03001c40[index].field149);
+            gUnknown_03001c40[index].field172 = 0;
+            gUnknown_03001c40[index].active = 0;
+        }
+        index++;
+    } while (index <= 3);
+}
+
+#define PACK_HALVES(low, high) ((u16)(low) | ((u32)(u16)(high) << 16))
+
+void FUN_08006ff4(u8 count) {
+    union UnknownQueueEntry08017f00 entry;
+    struct UnknownRecord03001c40 *renderRecord;
+    u32 originalX;
+    u32 originalY;
+    s16 x;
+    s16 y;
+    u8 index;
+
+#define SUBMIT_QUEUE(px, py, ptile, ptype)                                                         \
+    do {                                                                                           \
+        entry.fields.x = (px);                                                                     \
+        entry.fields.y = (py);                                                                     \
+        entry.fields.tile = (ptile);                                                               \
+        entry.fields.type = (ptype);                                                               \
+        FUN_08017f00(entry.words[0], entry.words[1], entry.words[2], entry.words[3]);              \
+    } while (0)
+#define record (&gUnknown_03001c40[index])
+    entry.fields.zero11 = 0;
+    index = 0;
+    while (index < count) {
+        u16 identifier = record->first;
+
+        if (identifier != 254 && (identifier != 255 || index == gUnknown_03001380) &&
+            (record->stateType != 2 || identifier != 0x116 || index == gUnknown_03001380) &&
+            (record->stateType != 3 || identifier != 0x115 || index == gUnknown_03001380) &&
+            gUnknown_03001620.activeSlots[index] != 0xFF) {
+#undef record
+            s16 adjustedY;
+
+            renderRecord = &gUnknown_03001c40[index];
+#define record renderRecord
+
+            FUN_0801816c(&x, &y, record->x, record->y);
+            FUN_08018204(&x, &y, x, y);
+            entry.fields.yMinus6 = y - 6;
+            originalX = x - 16;
+            originalY = y - 4;
+
+            if (record->directionMode == 0) {
+                x -= record->offsetX + 24;
+                y += record->offsetY - 40;
+            } else if (record->directionMode == 1) {
+                x += record->offsetX - 24;
+                y += record->offsetY - 40;
+            }
+
+            record->screenX = x;
+            adjustedY = y - record->height;
+            record->screenY = adjustedY;
+            if ((u16)(x + 64) <= 304 && adjustedY <= *(s16 *)&gUnknown_030017c0 &&
+                adjustedY >= *(s16 *)&gUnknown_030016d0 - 64) {
+                u16 tile = (u16)index * 36;
+
+                entry.fields.index = index;
+                entry.fields.direction = record->directionMode;
+                entry.fields.height = record->height;
+
+                if (record->directionMode == 0) {
+                    SUBMIT_QUEUE(x, y, tile, 11);
+                    SUBMIT_QUEUE(x, y + 32, tile + 16, 12);
+                    SUBMIT_QUEUE(x + 32, y, tile + 24, 13);
+                    SUBMIT_QUEUE(x + 32, y + 32, tile + 32, 14);
+                } else if (record->directionMode == 1) {
+                    SUBMIT_QUEUE(x, y, tile + 24, 13);
+                    SUBMIT_QUEUE(x, y + 32, tile + 32, 14);
+                    SUBMIT_QUEUE(x + 16, y, tile, 11);
+                    SUBMIT_QUEUE(x + 16, y + 32, tile + 16, 12);
+                }
+            }
+
+            if ((u16)(x + 64) <= 304 && (s16)y <= *(s16 *)&gUnknown_030017c0 &&
+                (s16)y >= *(s16 *)&gUnknown_030016d0 - 64 && record->first != 255) {
+                s16 indicator;
+
+                if (record->height < record->anchorHeight + 20) {
+                    indicator = 0;
+                } else if (record->height < record->anchorHeight + 40) {
+                    indicator = 1;
+                } else if (record->height < record->anchorHeight + 60) {
+                    indicator = 2;
+                } else {
+                    indicator = 3;
+                }
+                entry.fields.height = record->anchorHeight;
+                entry.fields.index = 4;
+                entry.fields.type = 0x14;
+                SUBMIT_QUEUE(originalX, originalY, indicator * 8 + 0x90, 0x14);
+            }
+        }
+#undef record
+#define record (&gUnknown_03001c40[index])
+
+        record->previousDirection = record->directionMode;
+        record->directionMode = record->requestedDirection;
+        if (record->first != 0x37 || gUnknown_0300138c == 0 || index == gUnknown_03001380 ||
+            (index == gUnknown_03001380 + 2 && gUnknown_0300163c[index] != 0)) {
+            if (gUnknown_03001370 == 1) {
+                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
+                    record->requestedDirection = 1;
+                } else if (record->renderMode == 6 || record->renderMode == 9 ||
+                           record->renderMode == 3) {
+                    record->requestedDirection = 0;
+                }
+            } else if (gUnknown_03001370 == 0) {
+                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
+                    record->requestedDirection = 0;
+                } else if (record->renderMode == 6 || record->renderMode == 9 ||
+                           record->renderMode == 3) {
+                    record->requestedDirection = 1;
+                }
+            } else if (gUnknown_03001370 == 2) {
+                if ((u8)(record->renderMode - 1) < 3) {
+                    record->requestedDirection = 0;
+                } else if ((u8)(record->renderMode - 7) < 3) {
+                    record->requestedDirection = 1;
+                }
+            } else if (gUnknown_03001370 == 3) {
+                if ((u8)(record->renderMode - 1) < 3) {
+                    record->requestedDirection = 1;
+                } else if ((u8)(record->renderMode - 7) < 3) {
+                    record->requestedDirection = 0;
+                }
+            }
+        }
+        index++;
+    }
+    FUN_080069ac();
+#undef record
+#undef SUBMIT_QUEUE
+}
+
+#undef PACK_HALVES
 
 void FUN_08007e24(void) {
     volatile u32 *dma;
@@ -1173,7 +1429,7 @@ u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     (void)unused;
     gUnknown_03001b10.first = marker;
     gUnknown_03001b10.second = 0x8844;
-    gUnknown_03001620[0x84] = 0;
+    ((u8 *)&gUnknown_03001620)[0x84] = 0;
     for (i = 0; i < participantCount; i++) {
         gUnknown_030016f0[i][0] = 0;
     }
