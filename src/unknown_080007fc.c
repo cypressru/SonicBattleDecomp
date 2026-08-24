@@ -296,6 +296,8 @@ extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
 extern void FUN_0800baac(u8 index);
+extern u8 FUN_0800b098(u16 animation);
+extern void FUN_08020440(u32 first, u16 second, u16 third);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
@@ -1015,6 +1017,77 @@ void FUN_080158e4(void) {
     gUnknown_03003120[1] = 0;
     gUnknown_03003120[2] = 0;
     gUnknown_03003120[3] = 0;
+}
+
+/* Advances one slot's packed animation command stream. Commands use their
+   upper halfword as an opcode and their lower halfword as the frame/value. */
+u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
+    const u32 *commands;
+    u32 command;
+    u32 opcode;
+    u16 commandIndex;
+    u8 animationIndex;
+
+    if (character == 9) {
+        character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
+    }
+
+    animationIndex = FUN_0800b098(animation);
+    commands = *(const u32 *const *)(0x0868eda8 + character * 0x118 + animationIndex * 4);
+
+    if (gUnknown_030030f8[slot] != animation || gUnknown_03003120[slot] != character ||
+        (s16)gUnknown_03003108[slot] == 0) {
+        gUnknown_030030f8[slot] = animation;
+        gUnknown_03003120[slot] = character;
+        gUnknown_03003108[slot] = 0;
+        gUnknown_03003110[slot] = 0;
+        gUnknown_03003100[slot] = 0;
+        gUnknown_03003118[slot] = 0;
+    }
+
+    if ((s16)gUnknown_03003108[slot] < 0) {
+        gUnknown_03003108[slot]++;
+        return 1;
+    }
+
+    while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
+        gUnknown_03003110[slot]++;
+        if (gUnknown_03003110[slot] > 0xfe) {
+            gUnknown_03003110[slot] = 0;
+            gUnknown_03003118[slot] = 1 - direction;
+            return 0xff;
+        }
+    }
+
+    commandIndex = gUnknown_03003110[slot];
+    if ((u16)commands[commandIndex] != (s16)gUnknown_03003108[slot]) {
+        gUnknown_03003108[slot]++;
+        return 1;
+    }
+
+    gUnknown_03003110[slot] = commandIndex + 1;
+    while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
+        command = commands[gUnknown_03003110[slot]];
+        opcode = command & 0xffff0000;
+        if (opcode == 0x11000000 || opcode == 0x12000000) {
+            gUnknown_03003118[slot] = command;
+        } else if (opcode == 0x00f00000 || opcode == 0xfffe0000) {
+            gUnknown_03003110[slot] = 0;
+            gUnknown_03003118[slot] = 1 - direction;
+            return 0;
+        } else if (opcode == 0x10000000) {
+            FUN_08020440(0, sound, command);
+        }
+        gUnknown_03003110[slot]++;
+        if (gUnknown_03003110[slot] > 0xfe) {
+            gUnknown_03003110[slot] = 0;
+            gUnknown_03003118[slot] = 1 - direction;
+            return 0xff;
+        }
+    }
+
+    gUnknown_03003108[slot]++;
+    return 1;
 }
 
 /* Bubble-sorts the live part of the 0x030033E0 queue into descending order of
