@@ -42,17 +42,17 @@ offset `0xEEB690` and has header title `AGB TEST PRG`, code `AGBJ`, maker `8P`.
 | `0x04B718-0xEEB690` | | Main ROM data/assets and auxiliary payload data | Exact outer range |
 | `0xEEB690-...` | | Embedded `AGB TEST PRG` GBA program | Exact start |
 
-Static analysis currently records 1,271 accepted function starts in the reviewed CSV. The
+Static analysis currently records 1,233 accepted function starts in the reviewed CSV. The
 inventory combines whole-ROM Thumb function pointers, decoded direct calls, and
 recursive disassembly; it is stored in `config/BSBE78/functions.csv` with generic names and
 per-symbol provenance. Starts inside `main/unknown_080007FC` are removed when control flow proves
-them to be tables, switch cases, or fall-through continuations rather than entries; twenty-one decoded
+them to be tables, switch cases, or fall-through continuations rather than entries; twenty-two decoded
 long-branch destinations are declared as validated internal targets instead. Five pointer-shaped asset words are explicitly rejected: one lands in
 an inline DMA literal sequence, and four land inside pointer-table data. Each accepted
 start is correlated with the recursive-disassembly end inventory; an extent is capped at the next
 accepted start and its enclosing object boundary directly in the reviewed CSV. This gives objdiff explicit target function
 sizes instead of extending each function through its following literal pool or alignment gap. The
-game category consequently contains 0x39B24 report-accounted code bytes and 0xD3D0 owned non-code bytes.
+game category consequently contains 0x3CB16 report-accounted code bytes and 0xA3DE owned non-code bytes.
 These analyzer-derived extents remain provisional: the inventory is sufficient to give objdiff
 symbol-bearing target code, but it is not accepted as proof that every start or end is correct or
 as proof of translation-unit boundaries.
@@ -87,6 +87,61 @@ epilogue targeted by two compiler-generated long branches. Its stack and high-re
 exactly match the frame established by `0x0800486C`, and all intervening code paths and 23 literal
 islands are now owned by that single function.
 
+The former `0x0801F82A` start is likewise a continuation of `FUN_0801F7D0`, not a second function.
+It begins with stores that use the allocation owner's live r4-r7/r9 state and ultimately restores
+the stack and high registers saved only at `0x0801F7D0`. The `BL` at `0x0801E828` is therefore a
+compiler-generated long branch into that shared continuation. The consolidated owner spans the
+aligned four-word literal island at `0x0801F83C-0x0801F84C` and returns at `0x0801F89A`.
+
+The pointer-derived `0x0802772A` start is the upper halfword of a global-address literal inside
+`FUN_08027660`. Its sole source is an opaque asset word, while real control flow branches around the
+literal block and resumes at `0x08027738` with the owner's live state. The consolidated function
+contains three internal literal islands and reaches its frame-balanced return at `0x0802776A`.
+
+Four consecutive switch functions at `0x0802F748`, `0x0802F94C`, `0x0802FB58`, and `0x0802FCB4`
+are now represented by their complete bodies. Each has its own prologue, eight-entry dispatch table,
+case groups, shared epilogue, and trailing literal pool. The real `0x0802F94C` entry was previously
+missing, while eight accepted starts inside the cluster were either case fragments or halves of
+embedded literals. Eleven opaque asset words that coincidentally encode six of those literal
+addresses are rejected explicitly; all 42 table/pool regions have code/data transitions recorded.
+
+The asset-derived `0x08030408` start is the second halfword of a `BL` inside `FUN_080303EC`;
+three opaque words happen to encode that impossible entry. The real function continues through its
+shared loop and return at `0x08030446`, followed by its one-word literal pool.
+
+`FUN_080304E4` owns the complete input-state dispatcher through `0x08030938`. Seven former starts
+inside it were table literals or case blocks, including two addresses that begin midway through
+instructions. Five opaque asset references into its live case code are rejected explicitly. The
+single owner preserves r4-r6 across both dispatch tables and all case groups, reaches one common
+epilogue, and has every internal literal island and its trailing pool mapped.
+
+The pointer-derived `0x08030D02` start is the upper halfword of a literal inside
+`FUN_08030CA8`. The owner branches around that data, resumes with its live frame, and returns at
+`0x08030D1A`; all three literal regions are mapped as data rather than executable entries.
+
+`FUN_0803E8D8` owns a 17-way switch and every case through its shared return at `0x0803F08C`.
+Four former entries in that range were case blocks or pointer coincidences that depend on the real
+entry's saved registers. The dispatch table, case-local literal islands, and trailing pool are now
+classified explicitly under the single frame-balanced owner.
+
+The former starts at `0x0803F9FE` and `0x0803FFFC` are literals inside `FUN_0803F8DC` and
+`FUN_0803FF98`, respectively. Likewise, `0x08040A0E` is live interior code in `FUN_08040758`, whose
+single prologue and epilogue enclose all three literal regions through `0x08040B52`.
+
+`FUN_08040E6C` establishes a high-register frame, dispatches through a six-way table, and owns the
+complete body through the shared epilogue at `0x080411CA`. The former `0x08040F00`, `0x08040FF2`,
+and `0x08041110` entries begin inside live case blocks and depend on state established by the real
+entry. Their three opaque asset references are rejected, and the switch table plus seven literal
+regions are mapped within the consolidated owner.
+
+The final frame audit consolidated eight more owners: `FUN_0801D408`, `FUN_0801D618`,
+`FUN_0801DBD0`, `FUN_08021268`, `FUN_0802DF68`, `FUN_0803139C`, `FUN_08032BE0`, and
+`FUN_0803F0C8`. Ten former entries were switch cases, literals, or shared epilogues that unwind
+frames established only by those real entries. The recovered `FUN_0801FFE4` entry replaces an
+asset-derived pointer into its body at `0x0801FFF8`. With their tables and literal islands mapped,
+the late-gameplay range has zero control-flow extent disagreements and zero entries that unwind a
+frame they never establish.
+
 ### Translation-unit inventory status
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
@@ -96,7 +151,7 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 984 | 167,664 | 23,452 |
+| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 915 | 171,344 | 15,076 |
 
 These objects are conservative coverage buckets, not claims that either range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even

@@ -36,6 +36,10 @@ long_branch_targets:
   - 0x08011C2E
   - 0x08011C32
   - 0x08015374
+  # Code at 0x0801E828 reaches FUN_0801f7d0's post-literal continuation with a
+  # long BL. The target relies on the allocation owner's saved frame and
+  # then unwinds it, so it cannot be called as an independent function.
+  - 0x0801F82A
 rejected_function_pointers:
   # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
   # destination is midway through a switch case in FUN_08020244 and depends
@@ -73,6 +77,56 @@ rejected_function_pointers:
   # An opaque payload word points at the gUnknown_03001620 literal inside
   # FUN_0800486c. The surrounding path uses the real entry's live state.
   - { source: 0x0F23E30, destination: 0x08005110 }
+  # An opaque asset word points at the upper halfword of the
+  # gUnknown_03005248 literal inside FUN_08027660. The surrounding block is
+  # skipped as data and live code resumes at 0x08027738.
+  - { source: 0x0F2C9D8, destination: 0x0802772A }
+  # Opaque asset words point into literals embedded in four switch owners.
+  # Each destination is data skipped by real control flow, not a Thumb entry.
+  - { source: 0x0DA993C, destination: 0x0802F8F4 }
+  - { source: 0x0DA43E0, destination: 0x0802F9E4 }
+  - { source: 0x0CBC20C, destination: 0x0802FA12 }
+  - { source: 0x0C4B17D, destination: 0x0802FAF6 }
+  - { source: 0x0D36FE0, destination: 0x0802FAF6 }
+  - { source: 0x0D964C7, destination: 0x0802FAF6 }
+  - { source: 0x0BF9EF8, destination: 0x0802FBFA }
+  - { source: 0x0BFA2CB, destination: 0x0802FBFA }
+  - { source: 0x0C37A1C, destination: 0x0802FBFA }
+  - { source: 0x0D8972B, destination: 0x0802FBFA }
+  - { source: 0x0E6CB4C, destination: 0x0802FCFA }
+  # Three opaque asset words encode the address of the second halfword of a
+  # BL instruction inside FUN_080303EC. It is not a Thumb entry.
+  - { source: 0x0C1E1C4, destination: 0x08030408 }
+  - { source: 0x0D5B363, destination: 0x08030408 }
+  - { source: 0x0D8C51D, destination: 0x08030408 }
+  # Pointer-shaped asset words land in live case blocks of FUN_080304E4.
+  # The destinations share its r4-r6 state and sole saved-register epilogue.
+  - { source: 0x0C7142D, destination: 0x08030608 }
+  - { source: 0x0D48788, destination: 0x08030608 }
+  - { source: 0x0D90C8E, destination: 0x08030608 }
+  - { source: 0x0D8F184, destination: 0x0803080E }
+  - { source: 0x0F91960, destination: 0x080308CA }
+  # Opaque asset words point into FUN_0803E8D8's dispatch table, case blocks,
+  # or literal islands. None is an independent entry.
+  - { source: 0x0CB8948, destination: 0x0803EC00 }
+  - { source: 0x0CF07AC, destination: 0x0803EC00 }
+  - { source: 0x0CB58C0, destination: 0x0803EDEE }
+  - { source: 0x0CB1594, destination: 0x0803EE0A }
+  - { source: 0x0D07598, destination: 0x0803EF02 }
+  - { source: 0x0F01093, destination: 0x0803EF02 }
+  # Two asset words point at the upper halfword of a global-address literal
+  # inside FUN_0803F8DC.
+  - { source: 0x0CD4701, destination: 0x0803F9FE }
+  - { source: 0x0DBB3D8, destination: 0x0803F9FE }
+  # Opaque asset bytes point into live blocks of FUN_08040e6c. The real entry
+  # establishes the high-register frame and dispatches through a six-way table;
+  # these destinations depend on that live state and share its epilogue.
+  - { source: 0x0E8717C, destination: 0x08040F00 }
+  - { source: 0x0CA8498, destination: 0x08040FF2 }
+  - { source: 0x04BEA1C, destination: 0x08041110 }
+  # Two asset words point at FUN_0803FF98's five-word literal island.
+  - { source: 0x0D2DFC6, destination: 0x0803FFFC }
+  - { source: 0x0E8F284, destination: 0x0803FFFC }
   # Payload bytes point into live switch/case blocks. FUN_0801700a branches
   # to FUN_080175aa's shared tail with r5 already initialized; FUN_080307fe
   # similarly branches to the shared tail inside FUN_080308ca.
@@ -148,6 +202,16 @@ rejected_function_pointers:
   - { source: 0x0DB97C8, destination: 0x08030D02 }
   - { source: 0x0CB58C0, destination: 0x0803EDEE }
   - { source: 0x0C26614, destination: 0x0801D5B6 }
+  # Opaque asset coincidences point into live switch cases, embedded literals,
+  # and shared epilogues owned by the surrounding frame-establishing entries.
+  - { source: 0x0D466F8, destination: 0x0801D70A }
+  - { source: 0x0C51FBC, destination: 0x0801DDA0 }
+  - { source: 0x0D7AC64, destination: 0x080213E4 }
+  - { source: 0x0EEF480, destination: 0x08032D0C }
+  - { source: 0x0F9D46C, destination: 0x0803F474 }
+  - { source: 0x0C6E20C, destination: 0x0803F510 }
+  - { source: 0x0F89F64, destination: 0x0803F510 }
+  - { source: 0x0D98AF0, destination: 0x0801FFF8 }
   # The old 0x08031146 candidate begins in a literal pool. A real aligned
   # callback literal at 0x08031150 points to the prologue at 0x08031154.
   - { source: 0x053D934, destination: 0x08031146 }
@@ -2094,6 +2158,9 @@ units:
       - { offset: 0x5EC0, mode: thumb }
       - { offset: 0x5ECE, mode: data }
       - { offset: 0x5ED0, mode: thumb }
+      # FUN_0801F7D0 branches around its aligned four-word literal island.
+      - { offset: 0x5F8C, mode: data }
+      - { offset: 0x5F9C, mode: thumb }
       - { offset: 0x5FEA, mode: data }
       - { offset: 0x5FEC, mode: thumb }
       - { offset: 0x600A, mode: data }
@@ -2112,6 +2179,9 @@ units:
       - { offset: 0x63A4, mode: thumb }
       - { offset: 0x63AC, mode: data }
       - { offset: 0x63B0, mode: thumb }
+      # FUN_0801ffe4's internal two-word literal island.
+      - { offset: 0x6768, mode: data }
+      - { offset: 0x6770, mode: thumb }
       - { offset: 0x6780, mode: data }
       - { offset: 0x6784, mode: thumb }
       - { offset: 0x67B4, mode: data }
@@ -2376,6 +2446,16 @@ units:
       - { offset: 0xCDFC, mode: thumb }
       - { offset: 0xD508, mode: data }
       - { offset: 0xD524, mode: thumb }
+      # FUN_08027660 branches around three internal literal islands and owns
+      # the trailing literal pool before FUN_08027778.
+      - { offset: 0xDE0A, mode: data }
+      - { offset: 0xDE38, mode: thumb }
+      - { offset: 0xDE6E, mode: data }
+      - { offset: 0xDE88, mode: thumb }
+      - { offset: 0xDE8E, mode: data }
+      - { offset: 0xDE94, mode: thumb }
+      - { offset: 0xDEBA, mode: data }
+      - { offset: 0xDEC8, mode: thumb }
       - { offset: 0xDFF4, mode: data }
       - { offset: 0xE004, mode: thumb }
       - { offset: 0xE038, mode: data }
@@ -2779,9 +2859,232 @@ units:
       - { offset: 0x26E24, mode: thumb }
       - { offset: 0x26EA6, mode: data }
       - { offset: 0x26EA8, mode: thumb }
+      # Four consecutive switch owners, including their jump tables, internal
+      # literal islands, padding, and trailing pools.
+      - { offset: 0x15EAE, mode: data }
+      - { offset: 0x15ED0, mode: thumb }
+      - { offset: 0x15EE4, mode: data }
+      - { offset: 0x15EF8, mode: thumb }
+      - { offset: 0x15F1C, mode: data }
+      - { offset: 0x15F38, mode: thumb }
+      - { offset: 0x15F3C, mode: data }
+      - { offset: 0x15F40, mode: thumb }
+      - { offset: 0x15F62, mode: data }
+      - { offset: 0x15F80, mode: thumb }
+      - { offset: 0x15F94, mode: data }
+      - { offset: 0x15FA8, mode: thumb }
+      - { offset: 0x15FBC, mode: data }
+      - { offset: 0x15FD0, mode: thumb }
+      - { offset: 0x15FE2, mode: data }
+      - { offset: 0x15FF0, mode: thumb }
+      - { offset: 0x1600A, mode: data }
+      - { offset: 0x16024, mode: thumb }
+      - { offset: 0x16040, mode: data }
+      - { offset: 0x16054, mode: thumb }
+      - { offset: 0x1607A, mode: data }
+      - { offset: 0x1609C, mode: thumb }
+      - { offset: 0x160B2, mode: data }
+      - { offset: 0x160D4, mode: thumb }
+      - { offset: 0x160F0, mode: data }
+      - { offset: 0x1610C, mode: thumb }
+      - { offset: 0x16128, mode: data }
+      - { offset: 0x1613C, mode: thumb }
+      - { offset: 0x1615E, mode: data }
+      - { offset: 0x1617C, mode: thumb }
+      - { offset: 0x16186, mode: data }
+      - { offset: 0x16190, mode: thumb }
+      - { offset: 0x161A4, mode: data }
+      - { offset: 0x161B8, mode: thumb }
+      - { offset: 0x161D2, mode: data }
+      - { offset: 0x161E8, mode: thumb }
+      - { offset: 0x16204, mode: data }
+      - { offset: 0x16220, mode: thumb }
+      - { offset: 0x16232, mode: data }
+      - { offset: 0x16240, mode: thumb }
+      - { offset: 0x1625C, mode: data }
+      - { offset: 0x16270, mode: thumb }
+      - { offset: 0x1628E, mode: data }
+      - { offset: 0x162A8, mode: thumb }
+      - { offset: 0x162BE, mode: data }
+      - { offset: 0x162E0, mode: thumb }
+      - { offset: 0x162EC, mode: data }
+      - { offset: 0x162F8, mode: thumb }
+      - { offset: 0x16304, mode: data }
+      - { offset: 0x16310, mode: thumb }
+      - { offset: 0x1632A, mode: data }
+      - { offset: 0x16340, mode: thumb }
+      - { offset: 0x1634A, mode: data }
+      - { offset: 0x16354, mode: thumb }
+      - { offset: 0x16366, mode: data }
+      - { offset: 0x16378, mode: thumb }
+      - { offset: 0x1638A, mode: data }
+      - { offset: 0x16398, mode: thumb }
+      - { offset: 0x163AA, mode: data }
+      - { offset: 0x163BC, mode: thumb }
+      - { offset: 0x163D0, mode: data }
+      - { offset: 0x163DC, mode: thumb }
+      - { offset: 0x163F2, mode: data }
+      - { offset: 0x16404, mode: thumb }
+      - { offset: 0x1641A, mode: data }
+      - { offset: 0x1643C, mode: thumb }
+      - { offset: 0x16448, mode: data }
+      - { offset: 0x16454, mode: thumb }
+      - { offset: 0x16460, mode: data }
+      - { offset: 0x1646C, mode: thumb }
+      - { offset: 0x16486, mode: data }
+      - { offset: 0x1649C, mode: thumb }
+      - { offset: 0x164A6, mode: data }
+      - { offset: 0x164B0, mode: thumb }
+      - { offset: 0x164BC, mode: data }
+      - { offset: 0x164C8, mode: thumb }
+      - { offset: 0x164DA, mode: data }
+      - { offset: 0x164E8, mode: thumb }
+      - { offset: 0x164F4, mode: data }
+      - { offset: 0x16500, mode: thumb }
+      - { offset: 0x16512, mode: data }
+      - { offset: 0x16524, mode: thumb }
+      - { offset: 0x16538, mode: data }
+      - { offset: 0x16548, mode: thumb }
       - { offset: 0x16B1C, mode: thumb }
       - { offset: 0x16B2E, mode: data }
       - { offset: 0x16B3C, mode: thumb }
+      - { offset: 0x16B96, mode: data }
+      - { offset: 0x16B9C, mode: thumb }
+      # FUN_080304E4's two dispatch tables, internal literal islands, and
+      # trailing pool.
+      - { offset: 0x16C8C, mode: data }
+      - { offset: 0x16C9C, mode: thumb }
+      - { offset: 0x16CC6, mode: data }
+      - { offset: 0x16CD8, mode: thumb }
+      - { offset: 0x16D12, mode: data }
+      - { offset: 0x16D44, mode: thumb }
+      - { offset: 0x16D50, mode: data }
+      - { offset: 0x16D54, mode: thumb }
+      - { offset: 0x16D6C, mode: data }
+      - { offset: 0x16D70, mode: thumb }
+      - { offset: 0x16DAE, mode: data }
+      - { offset: 0x16DB4, mode: thumb }
+      - { offset: 0x16DE6, mode: data }
+      - { offset: 0x16DF4, mode: thumb }
+      - { offset: 0x16E00, mode: data }
+      - { offset: 0x16E04, mode: thumb }
+      - { offset: 0x16E14, mode: data }
+      - { offset: 0x16E18, mode: thumb }
+      - { offset: 0x16E28, mode: data }
+      - { offset: 0x16E2C, mode: thumb }
+      - { offset: 0x16E46, mode: data }
+      - { offset: 0x16E4C, mode: thumb }
+      - { offset: 0x16E70, mode: data }
+      - { offset: 0x16E98, mode: thumb }
+      - { offset: 0x16EB0, mode: data }
+      - { offset: 0x16EB4, mode: thumb }
+      - { offset: 0x16ED0, mode: data }
+      - { offset: 0x16ED4, mode: thumb }
+      - { offset: 0x16F40, mode: data }
+      - { offset: 0x16F4C, mode: thumb }
+      - { offset: 0x16F58, mode: data }
+      - { offset: 0x16F5C, mode: thumb }
+      - { offset: 0x16F72, mode: data }
+      - { offset: 0x16F78, mode: thumb }
+      - { offset: 0x16F8E, mode: data }
+      - { offset: 0x16F94, mode: thumb }
+      - { offset: 0x16FAA, mode: data }
+      - { offset: 0x16FB0, mode: thumb }
+      - { offset: 0x16FBC, mode: data }
+      - { offset: 0x16FC0, mode: thumb }
+      - { offset: 0x16FD4, mode: data }
+      - { offset: 0x16FD8, mode: thumb }
+      - { offset: 0x17088, mode: data }
+      - { offset: 0x170B0, mode: thumb }
+      # FUN_08030CA8's two internal literal islands and trailing pool.
+      - { offset: 0x17428, mode: data }
+      - { offset: 0x17434, mode: thumb }
+      - { offset: 0x17450, mode: data }
+      - { offset: 0x17458, mode: thumb }
+      - { offset: 0x1746A, mode: data }
+      # FUN_0803E8D8's 17-entry switch table, case-local literal islands, and
+      # trailing pool.
+      - { offset: 0x25044, mode: data }
+      - { offset: 0x2504C, mode: thumb }
+      - { offset: 0x25082, mode: data }
+      - { offset: 0x2508C, mode: thumb }
+      - { offset: 0x250C0, mode: data }
+      - { offset: 0x250C4, mode: thumb }
+      - { offset: 0x2511A, mode: data }
+      - { offset: 0x2516C, mode: thumb }
+      - { offset: 0x251B6, mode: data }
+      - { offset: 0x251E8, mode: thumb }
+      - { offset: 0x2521A, mode: data }
+      - { offset: 0x25244, mode: thumb }
+      - { offset: 0x25274, mode: data }
+      - { offset: 0x252A0, mode: thumb }
+      - { offset: 0x252D2, mode: data }
+      - { offset: 0x252FC, mode: thumb }
+      - { offset: 0x2532C, mode: data }
+      - { offset: 0x25358, mode: thumb }
+      - { offset: 0x25390, mode: data }
+      - { offset: 0x253B8, mode: thumb }
+      - { offset: 0x253E8, mode: data }
+      - { offset: 0x25414, mode: thumb }
+      - { offset: 0x25446, mode: data }
+      - { offset: 0x25470, mode: thumb }
+      - { offset: 0x254A0, mode: data }
+      - { offset: 0x254CC, mode: thumb }
+      - { offset: 0x254FE, mode: data }
+      - { offset: 0x25528, mode: thumb }
+      - { offset: 0x25558, mode: data }
+      - { offset: 0x25584, mode: thumb }
+      - { offset: 0x2559A, mode: data }
+      - { offset: 0x255AC, mode: thumb }
+      - { offset: 0x255E8, mode: data }
+      - { offset: 0x2561C, mode: thumb }
+      - { offset: 0x25632, mode: data }
+      - { offset: 0x25644, mode: thumb }
+      - { offset: 0x2565C, mode: data }
+      - { offset: 0x25674, mode: thumb }
+      - { offset: 0x256A0, mode: data }
+      - { offset: 0x256B8, mode: thumb }
+      - { offset: 0x257DC, mode: data }
+      - { offset: 0x25818, mode: thumb }
+      # FUN_0803F8DC's three internal literal islands and trailing pool.
+      - { offset: 0x26046, mode: data }
+      - { offset: 0x26050, mode: thumb }
+      - { offset: 0x2608C, mode: data }
+      - { offset: 0x26090, mode: thumb }
+      - { offset: 0x26144, mode: data }
+      - { offset: 0x26168, mode: thumb }
+      - { offset: 0x261D4, mode: data }
+      - { offset: 0x261E0, mode: thumb }
+      - { offset: 0x2674C, mode: data }
+      - { offset: 0x26760, mode: thumb }
+      - { offset: 0x26790, mode: data }
+      - { offset: 0x26794, mode: thumb }
+      # FUN_08040758's three internal literal regions and trailing pool.
+      - { offset: 0x27076, mode: data }
+      - { offset: 0x27108, mode: thumb }
+      - { offset: 0x27138, mode: data }
+      - { offset: 0x27144, mode: thumb }
+      - { offset: 0x27222, mode: data }
+      - { offset: 0x27258, mode: thumb }
+      - { offset: 0x272A2, mode: data }
+      - { offset: 0x272BC, mode: thumb }
+      # FUN_08040e6c's switch table, internal literal regions, and trailing pool.
+      - { offset: 0x275DC, mode: data }
+      - { offset: 0x275FC, mode: thumb }
+      - { offset: 0x2763C, mode: data }
+      - { offset: 0x27648, mode: thumb }
+      - { offset: 0x2766C, mode: data }
+      - { offset: 0x2767C, mode: thumb }
+      - { offset: 0x27682, mode: data }
+      - { offset: 0x27688, mode: thumb }
+      - { offset: 0x276D2, mode: data }
+      - { offset: 0x276E4, mode: thumb }
+      - { offset: 0x27764, mode: data }
+      - { offset: 0x2777C, mode: thumb }
+      - { offset: 0x277C6, mode: data }
+      - { offset: 0x277D8, mode: thumb }
+      - { offset: 0x2791A, mode: data }
+      - { offset: 0x2794C, mode: thumb }
       - { offset: 0x1E934, mode: thumb }
       - { offset: 0x1E946, mode: data }
       - { offset: 0x1E954, mode: thumb }
