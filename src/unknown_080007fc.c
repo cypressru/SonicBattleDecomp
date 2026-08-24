@@ -1028,13 +1028,14 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     u32 resource;
     u16 commandIndex;
     u8 animationIndex;
-    u8 remapped;
+    u32 remapped;
 
     resource = 0;
-    remapped = 0;
     if (character == 9) {
         remapped = 1;
         character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
+    } else {
+        remapped = 0;
     }
 
     animationIndex = FUN_0800b098(animation);
