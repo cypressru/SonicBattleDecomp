@@ -1542,11 +1542,11 @@ void FUN_0801c770(void) {
 
     memcpy(choices, gUnknown_08071237, 7);
     scene = (struct SceneState *)&gUnknown_03001620;
-    scene->field36 = 4;
-    scene->flags[0] = 1;
-    scene->flags[1] = 1;
-    scene->flags[2] = 1;
-    scene->flags[3] = 1;
+    ((struct SceneState *)&gUnknown_03001620)->field36 = 4;
+    ((struct SceneState *)&gUnknown_03001620)->flags[0] = 1;
+    ((struct SceneState *)&gUnknown_03001620)->flags[1] = 1;
+    ((struct SceneState *)&gUnknown_03001620)->flags[2] = 1;
+    ((struct SceneState *)&gUnknown_03001620)->flags[3] = 1;
 
     choice = FUN_08020144() % 7;
     for (index = 0; index <= 3; index++) {
@@ -1554,13 +1554,13 @@ void FUN_0801c770(void) {
             choice = FUN_08020144() % 7;
         }
         choices[choice] = 0;
-        scene->choices[index] = choice;
+        ((struct SceneState *)&gUnknown_03001620)->choices[index] = choice;
     }
 
-    scene->field1 = 0;
-    scene->field2 = 1;
-    scene->field3 = FUN_08020144() % 9;
-    scene->field125 = 0xff;
+    ((struct SceneState *)&gUnknown_03001620)->field1 = 0;
+    ((struct SceneState *)&gUnknown_03001620)->field2 = 1;
+    ((struct SceneState *)&gUnknown_03001620)->field3 = FUN_08020144() % 9;
+    ((struct SceneState *)&gUnknown_03001620)->field125 = 0xff;
     FUN_08019ed8();
     FUN_08019b5c();
     FUN_08012b98(50);
@@ -1668,19 +1668,18 @@ void FUN_0801e3cc(u8 value) {
 
 void FUN_0801de5c(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 scaled = index * 3;
-    u32 offset;
     struct UnknownEntity *entity;
+    s16 offset = index * 3;
+    u32 dataAddress;
 
-    offset = scaled * 8;
+    offset <<= 3;
     entity = (struct UnknownEntity *)(offset + (u32)entities);
 
     if (entity->field15 == index) {
         FUN_0801d870(index);
     } else {
-        u32 result = (u8)FUN_0801ee4c(savedIndex);
+        u32 result = (u8)FUN_0801ee4c(value);
 
         if (result == 0) {
             entity->callback = (UnknownCallback)FUN_0801eacc;
@@ -1688,29 +1687,29 @@ void FUN_0801de5c(u8 value) {
                 const void *data = gUnknown_08ed8990;
                 struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
-                *(const void **)(offset + (u32)dataBase) = data;
+                dataAddress = (u32)dataBase;
+                *(const void **)(offset + dataAddress) = data;
             }
             entity->field14 = result;
-            entity->field16 = gUnknown_03001c40[savedIndex].field16;
+            entity->field16 = gUnknown_03001c40[value].field16;
         }
     }
 }
 
 void FUN_0801debc(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 scaled = index * 3;
-    u32 offset;
     struct UnknownEntity *entity;
+    s16 offset = index * 3;
+    u32 dataAddress;
 
-    offset = scaled * 8;
+    offset <<= 3;
     entity = (struct UnknownEntity *)(offset + (u32)entities);
 
     if (entity->field15 == index) {
         FUN_0801d870(index);
     } else {
-        u32 result = (u8)FUN_0801ee4c(savedIndex);
+        u32 result = (u8)FUN_0801ee4c(value);
 
         if (result == 0) {
             entity->callback = (UnknownCallback)FUN_0801eacc;
@@ -1718,29 +1717,29 @@ void FUN_0801debc(u8 value) {
                 const void *data = gUnknown_08ed89a0;
                 struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
-                *(const void **)(offset + (u32)dataBase) = data;
+                dataAddress = (u32)dataBase;
+                *(const void **)(offset + dataAddress) = data;
             }
             entity->field14 = result;
-            entity->field16 = gUnknown_03001c40[savedIndex].field16;
+            entity->field16 = gUnknown_03001c40[value].field16;
         }
     }
 }
 
 void FUN_0801df1c(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 scaled = index * 3;
-    u32 offset;
     struct UnknownEntity *entity;
+    s16 offset = index * 3;
+    u32 dataAddress;
 
-    offset = scaled * 8;
+    offset <<= 3;
     entity = (struct UnknownEntity *)(offset + (u32)entities);
 
     if (entity->field15 == index) {
         FUN_0801d870(index);
     } else {
-        u32 result = (u8)FUN_0801ee4c(savedIndex);
+        u32 result = (u8)FUN_0801ee4c(value);
 
         if (result == 0) {
             entity->callback = (UnknownCallback)FUN_0801eacc;
@@ -1748,29 +1747,29 @@ void FUN_0801df1c(u8 value) {
                 const void *data = gUnknown_08ed89b0;
                 struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
-                *(const void **)(offset + (u32)dataBase) = data;
+                dataAddress = (u32)dataBase;
+                *(const void **)(offset + dataAddress) = data;
             }
             entity->field14 = result;
-            entity->field16 = gUnknown_03001c40[savedIndex].field16;
+            entity->field16 = gUnknown_03001c40[value].field16;
         }
     }
 }
 
 void FUN_0801df7c(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 scaled = index * 3;
-    u32 offset;
     struct UnknownEntity *entity;
+    s16 offset = index * 3;
+    u32 dataAddress;
 
-    offset = scaled * 8;
+    offset <<= 3;
     entity = (struct UnknownEntity *)(offset + (u32)entities);
 
     if (entity->field15 == index) {
         FUN_0801d870(index);
     } else {
-        u32 result = (u8)FUN_0801ee4c(savedIndex);
+        u32 result = (u8)FUN_0801ee4c(value);
 
         if (result == 0) {
             entity->callback = (UnknownCallback)FUN_0801eacc;
@@ -1778,32 +1777,31 @@ void FUN_0801df7c(u8 value) {
                 const void *data = gUnknown_08ed89c0;
                 struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
 
-                *(const void **)(offset + (u32)dataBase) = data;
+                dataAddress = (u32)dataBase;
+                *(const void **)(offset + dataAddress) = data;
             }
             entity->field14 = result;
-            entity->field16 = gUnknown_03001c40[savedIndex].field16;
+            entity->field16 = gUnknown_03001c40[value].field16;
         }
     }
 }
 
 void FUN_0801dfdc(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntityData *metadataBase = gUnknown_03001c40;
     u32 metadataOffset = index * 252;
     struct UnknownEntityData *metadata =
         (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
-    struct UnknownEntity *entity;
-    UnknownCallback callback;
     u32 type;
 
     type = metadata->field20;
     if (type == 0) {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = index * 24;
+        struct UnknownEntity *entity = entities;
 
-        entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+        entity += index;
+        entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+        return;
     } else {
         if (type != 13) {
             return;
@@ -1811,28 +1809,25 @@ void FUN_0801dfdc(u8 value) {
         {
             const void *data = gUnknown_08ed8ac4;
             struct UnknownEntity *entities = gUnknown_03003db0;
-            u32 entityOffset = savedIndex * 24;
+            u32 entityOffset = value * 24;
             struct UnknownEntity *dataBase = (struct UnknownEntity *)((u32)entities + 4);
+            struct UnknownEntity *entity;
 
             *(const void **)(entityOffset + (u32)dataBase) = data;
             entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
             entity->field14 = 0;
             entity->field16 = metadata->field16;
-            callback = (UnknownCallback)FUN_0801eaf8;
+            entity->callback = (UnknownCallback)FUN_0801eaf8;
         }
     }
-
-    entity->callback = callback;
 }
 
 void FUN_0801e044(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntityData *metadataBase = gUnknown_03001c40;
     u32 scaled = index * 63;
-    u32 metadataOffset = scaled * 4;
     struct UnknownEntityData *metadata =
-        (struct UnknownEntityData *)((u8 *)metadataBase + metadataOffset);
+        (struct UnknownEntityData *)((u8 *)metadataBase + scaled * 4);
     u32 type = metadata->field20;
 
     if (type == 0) {
@@ -1846,14 +1841,14 @@ void FUN_0801e044(u8 value) {
         entity->callback = callback;
     } else if (type == 16) {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = savedIndex * sizeof(struct UnknownEntity);
+        u32 entityOffset = value * sizeof(struct UnknownEntity);
         struct UnknownEntity *entity = (struct UnknownEntity *)((u8 *)entities + entityOffset);
         u32 linked = entity->field15;
         u32 lookupOffset = linked * sizeof(s32);
         u8 *tableBase;
         s32 thresholdValue;
 
-        lookupOffset += metadataOffset;
+        lookupOffset += scaled * 4;
         tableBase = (u8 *)metadataBase + 72;
         thresholdValue = *(s32 *)(tableBase + lookupOffset);
         if (thresholdValue <= 0x3FFFF) {
@@ -1950,7 +1945,6 @@ void FUN_0801e0c4(u8 value) {
 
 void FUN_0801e174(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntityData *metadata = gUnknown_03001c40;
     u32 metadataOffset = index * 252;
 
@@ -2022,12 +2016,11 @@ void FUN_0801e174(u8 value) {
         }
     }
 
-    FUN_0801d870(savedIndex);
+    FUN_0801d870(value);
 }
 
 void FUN_0801e41c(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
     struct UnknownEntityData *metadataBase = gUnknown_03001c40;
     u32 metadataOffset = index * 252;
     struct UnknownEntityData *metadata =
@@ -2046,35 +2039,38 @@ void FUN_0801e41c(u8 value) {
 
     if (type == 66) {
         u32 subtype = metadata->field37;
-        u32 fieldValue;
-        struct UnknownEntity *entities;
-        u32 entityOffset;
-        struct UnknownEntity *entity;
 
         if (subtype == 2) {
-            entities = gUnknown_03003db0;
-            entityOffset = index * 24;
-            entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-            fieldValue = 0x80;
+            struct UnknownEntity *entities = gUnknown_03003db0;
+            u32 entityOffset = index * 24;
+            struct UnknownEntity *entity =
+                (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+            entity->field8 = 0x80;
         } else if (subtype == 4) {
-            entities = gUnknown_03003db0;
-            entityOffset = index * 24;
-            entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-            fieldValue = 0x20;
+            struct UnknownEntity *entities = gUnknown_03003db0;
+            u32 entityOffset = index * 24;
+            struct UnknownEntity *entity =
+                (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+            entity->field8 = 0x20;
         } else if (subtype == 6) {
-            entities = gUnknown_03003db0;
-            entityOffset = index * 24;
-            entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-            fieldValue = 0x10;
+            struct UnknownEntity *entities = gUnknown_03003db0;
+            u32 entityOffset = index * 24;
+            struct UnknownEntity *entity =
+                (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+            entity->field8 = 0x10;
         } else if (subtype == 8) {
-            entities = gUnknown_03003db0;
-            entityOffset = index * 24;
-            entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-            fieldValue = 0x40;
+            struct UnknownEntity *entities = gUnknown_03003db0;
+            u32 entityOffset = index * 24;
+            struct UnknownEntity *entity =
+                (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+            entity->field8 = 0x40;
         } else {
             return;
         }
-        entity->field8 = fieldValue;
         return;
     }
 
@@ -2090,7 +2086,7 @@ void FUN_0801e41c(u8 value) {
     }
     {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = savedIndex * 24;
+        u32 entityOffset = value * 24;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         u32 zero = 0;
 
@@ -2295,17 +2291,16 @@ void FUN_0801e62c(u8 value) {
 
 void FUN_0801e258(u8 value) {
     u32 index = value;
-    u32 savedIndex = index;
 
     if (FUN_0801cfc8(index) == 0) {
         FUN_0801d870(index);
     }
     {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        struct UnknownEntity *entity = &entities[savedIndex];
+        struct UnknownEntity *entity = &entities[value];
         u8 linked = entity->field15;
         struct UnknownEntityData *data = gUnknown_03001c40;
-        u32 offset = linked * 2 + savedIndex * sizeof(*data);
+        u32 offset = linked * 2 + value * sizeof(*data);
         u8 *firstBase = (u8 *)data + 54;
         s16 *first = (s16 *)(firstBase + offset);
 
@@ -2346,8 +2341,7 @@ void FUN_0801e2c8(u32 value) {
     entityOffset = index * 24;
     entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
     entity->callback = (UnknownCallback)FUN_0801d8f4;
-    zero = 0;
-    entity->field8 = zero;
+    zero = (entity->field8 = 0);
     entity->field12 = zero;
     entity->field13 = zero;
     {
@@ -2615,8 +2609,7 @@ void FUN_0801d870(u32 value) {
     entityOffset = index * 24;
     entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
     entity->callback = (UnknownCallback)FUN_0801d8f4;
-    zero = 0;
-    entity->field8 = zero;
+    zero = (entity->field8 = 0);
     entity->field12 = zero;
     entity->field13 = zero;
     {
@@ -2695,7 +2688,8 @@ void FUN_0801d8f4(u8 value) {
             upperBound = 0x09FE0000;
             if (adjustedFirst <= upperBound) {
                 shiftedSecond = (u32)(u16)second << 16;
-                signedSecond = (s32)shiftedSecond >> 16;
+                first = (s32)shiftedSecond >> 16;
+                signedSecond = first;
                 if (signedSecond <= 511) {
                     if (signedSecond > -512) {
                         FUN_0801ebb0(index);
@@ -2932,8 +2926,7 @@ void FUN_0801db4c(u32 value) {
     entityOffset = index * 24;
     entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
     entity->callback = (UnknownCallback)FUN_0801dbd0;
-    zero = 0;
-    entity->field8 = zero;
+    zero = (entity->field8 = 0);
     entity->field12 = zero;
     entity->field13 = zero;
     {
@@ -2964,19 +2957,21 @@ u16 FUN_0801d370(u8 value) {
     u32 offset = index * 24;
     struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
     u32 flags = entity->field8;
+    u32 mask = 0x30;
 
-    if ((flags & 0x30) != 0) {
-        u32 result = 0x30;
-
-        result ^= flags;
-        entity->field8 = result;
+    mask &= flags;
+    if (mask != 0) {
+        mask = 0x30;
+        mask ^= flags;
+        entity->field8 = mask;
     }
     flags = entity->field8;
-    if ((flags & 0xC0) != 0) {
-        u32 result = 0xC0;
-
-        result ^= flags;
-        entity->field8 = result;
+    mask = 0xC0;
+    mask &= flags;
+    if (mask != 0) {
+        mask = 0xC0;
+        mask ^= flags;
+        entity->field8 = mask;
     }
     return entity->field8;
 }
@@ -3093,25 +3088,12 @@ u8 FUN_0801d188(u8 value) {
 
         if (candidate != value) {
             u8 *state = (u8 *)gUnknown_03001c40;
-            u8 *entryBase;
-            u8 *entry;
 
-            entryBase = state;
-            entryBase += 20;
-            entry = (u8 *)(candidate + (u32)entryBase);
-            if (*entry != 0xFF) {
-                u8 *groupBase;
-                u8 *valueGroup;
-                u8 *candidateGroup;
-
+            if (state[candidate + 20] != 0xFF) {
                 if (state[8] == 0) {
                     goto check_type;
                 }
-                groupBase = state;
-                groupBase += 32;
-                valueGroup = (u8 *)(value + (u32)groupBase);
-                candidateGroup = (u8 *)(candidate + (u32)groupBase);
-                if (*valueGroup != *candidateGroup) {
+                if (state[value + 32] != state[candidate + 32]) {
                 check_type: {
                     struct UnknownEntityData *metadata = gUnknown_03001c40_pool2;
                     u32 type;
@@ -3656,12 +3638,18 @@ void FUN_0801ce70(void) {
 u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
     u32 metadata = (u32)gUnknown_03001c40;
     u32 scaled = index * 63;
-    u32 first = metadata + 116;
+    u32 firstOffset;
+    u32 secondOffset;
+    u32 first;
 
-    if ((*(u32 *)(scaled * 4 + first) & 0x1F00) == value) {
+    firstOffset = scaled * 4;
+    secondOffset = scaled * 4;
+    first = metadata + 116;
+    if ((*(u32 *)(firstOffset + first) & 0x1F00) == value) {
         gUnknown_03003d88++;
     }
-    if ((*(u16 *)(scaled * 4 + metadata + 174) & 0x7C0) == (value >> 2)) {
+    first = metadata;
+    if ((*(u16 *)(secondOffset + first + 174) & 0x7C0) == (value >> 2)) {
         gUnknown_03003d88++;
     }
 
