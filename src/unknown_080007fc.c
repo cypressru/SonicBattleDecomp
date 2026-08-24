@@ -1425,13 +1425,17 @@ void FUN_08016a44(const u16 *palette) {
     s16 red;
     s16 green;
     s16 blue;
+    u32 greenComponent;
+    u32 blueComponent;
     s16 i;
 
     for (i = 0; i <= 255; i++) {
         colour = palette[i];
+        greenComponent = ((u32)colour << 16) >> 21;
+        blueComponent = ((u32)colour << 16) >> 26;
         red = (colour & 31) + gUnknown_030016b8;
-        green = ((((u32)colour << 16) >> 21) & 31) + gUnknown_030020fc;
-        blue = ((((u32)colour << 16) >> 26) & 31) + gUnknown_03001b20;
+        green = (greenComponent & 31) + gUnknown_030020fc;
+        blue = (blueComponent & 31) + gUnknown_03001b20;
         if (red > 31) {
             red = 31;
         }
