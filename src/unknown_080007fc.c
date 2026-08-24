@@ -166,11 +166,15 @@ struct UnknownState080180f0 {
 struct UnknownRecord03001c40 {
     u8 padding0[20];
     u16 first;
-    u8 padding22[128];
+    u8 padding22[94];
+    u32 field74;
+    u8 padding120[30];
     u8 second;
     u8 padding151[8];
     u8 style;
-    u8 padding160[36];
+    u8 padding160[20];
+    u32 fieldB4;
+    u8 padding184[12];
     u8 third;
     u8 padding197[3];
     u16 value;
@@ -339,6 +343,45 @@ u8 FUN_080034f0(u8 index) {
         result = gUnknown_0806b2d4[gUnknown_03001c40[index].style][0];
     }
     return result;
+}
+
+void FUN_080066d8(void) {
+    u8 i;
+    u32 base;
+    u32 flagsBase;
+    u32 flagsAddress;
+    u32 offset;
+    u32 *field74;
+    u32 flagValue;
+    u32 mask;
+
+    i = 0;
+    base = (u32)gUnknown_03001c40;
+    flagsBase = base + 0xB4;
+    do {
+        offset = (i * 63) << 2;
+        flagValue = base;
+        flagValue += 0x74;
+        field74 = (u32 *)(offset + flagValue);
+
+        if ((*field74 & 0x1F00) == 0x900) {
+            flagsAddress = offset + flagsBase;
+            flagValue = *(u32 *)flagsAddress;
+            mask = 0x1000000;
+            if ((flagValue & mask) == 0) {
+                goto setFlag;
+            }
+        }
+        *field74 = 0;
+        offset += flagsBase;
+        *(u32 *)offset &= ~0x1000000;
+        goto next;
+
+    setFlag:
+        *(u32 *)flagsAddress = flagValue | mask;
+    next:
+        i++;
+    } while (i <= 3);
 }
 
 void FUN_08007e24(void) {
@@ -837,7 +880,7 @@ void FUN_0801694c(void) {
 
 void FUN_08016a44(const u16 *palette) {
     u16 output[256];
-    int colour;
+    u16 colour;
     s16 red;
     s16 green;
     s16 blue;
