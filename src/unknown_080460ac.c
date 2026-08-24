@@ -116,7 +116,7 @@ extern void FUN_080405a8(u8 first, u8 second);
 extern void FUN_080405f4(u8 first, u8 second);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern void FUN_08047fe4(struct UnknownState460ac *state);
-extern s32 FUN_08020978(u16 first, u16 second, s16 third, u8 fourth);
+extern s32 FUN_08020978(u16 first, u16 second, s32 third, u8 fourth);
 extern void FUN_0801f618(u16 value);
 extern s16 *gUnknown_03000274;
 extern s32 FUN_080406d4(s32 value, s8 *destination, s32 width);
@@ -531,7 +531,8 @@ void FUN_08046af8(struct UnknownState460ac *state) {
         gUnknown_0300028c.second = 1;
     }
     gUnknown_0300028c.first = value;
-    state->field8 += FUN_08020978(state->field8, state->field12.half.low, value, state->field37);
+    state->field8 +=
+        FUN_08020978(state->field8, state->field12.half.low, (s16)value, state->field37);
     FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
     if (state->field38 != 0) {
         if (gUnknown_0300028c.second == 0) {
@@ -569,17 +570,23 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         }
         state->field26++;
         if (state->field26 >= state->field38) {
-            int parsing = 1;
+            u8 done;
+            u8 *field36 = &state->field36;
 
             state->field26 = 0;
-            while (parsing) {
+            do {
                 u16 command = *state->field28.script++;
+                u16 emptyCommand = 0x338;
+                const u16 *soundTable = gUnknown_08edda44;
+
+                done = 1;
 
                 switch (command) {
                 case 0xfffb:
                     state->field37 = *state->field28.script++;
+                    done = 0;
                     break;
-                case 0xfffc:
+                case 0xfffd:
                     state->field8 = 8;
                     state->field12.half.low += 0x10;
                     state->field39++;
@@ -593,17 +600,17 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                         } else {
                             state->field27 = 3;
                         }
-                        parsing = 0;
+                    } else {
+                        done = 0;
                     }
                     break;
-                case 0xfffd:
+                case 0xfffe:
                     state->field27 = 0xff;
                     if (state->field40 != 0) {
                         state->field40 = 0xf;
                     }
-                    parsing = 0;
                     break;
-                case 0xfffe: {
+                case 0xfff9: {
                     u16 index = *state->field28.script++;
 
                     gUnknown_03000285 =
@@ -613,13 +620,12 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     }
                     FUN_08046af8(state);
                     state->field27 = gUnknown_03000285 > 4 ? 1 : 4;
-                    parsing = 0;
                     break;
                 }
                 default:
                     gUnknown_0300028c.second = 0;
-                    if ((command == 0 || command == 0x338) &&
-                        (gUnknown_0300028c.first == 0 || gUnknown_0300028c.first == 0x338)) {
+                    if ((command == 0 || command == emptyCommand) &&
+                        (gUnknown_0300028c.first == 0 || gUnknown_0300028c.first == emptyCommand)) {
                         gUnknown_0300028c.second = 1;
                     }
                     gUnknown_0300028c.first = command;
@@ -628,16 +634,15 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                     FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
                     if (state->field38 != 0) {
                         if (gUnknown_0300028c.second == 0) {
-                            FUN_0801f618(gUnknown_08edda44[state->field36]);
+                            FUN_0801f618(soundTable[*field36]);
                         }
                     } else if ((state->field28.half.low & 2) != 0 &&
                                gUnknown_0300028c.second == 0) {
-                        FUN_0801f618(gUnknown_08edda44[state->field36]);
+                        FUN_0801f618(soundTable[*field36]);
                     }
-                    parsing = 0;
                     break;
                 }
-            }
+            } while (done == 0);
         }
         break;
     case 2:
@@ -727,9 +732,9 @@ void FUN_08046f00(struct UnknownState460ac *state) {
 
     FUN_080403c0(gUnknown_081a8770, (void *)0x06009bc2, 0x1c, 4, 0x50);
     {
-        u16 fill[1] = {0x1111};
+        volatile u16 fill[1] = {0x1111};
 
-        gUnknown_030000d4.source = fill;
+        gUnknown_030000d4.source = (const void *)fill;
         gUnknown_030000d4.destination = (void *)0x02000600;
         gUnknown_030000d4.size = 0x81000700;
         (void)gUnknown_030000d4.size;
