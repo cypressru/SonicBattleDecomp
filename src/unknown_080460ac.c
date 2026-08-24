@@ -52,7 +52,13 @@ struct UnknownGraphicsRecord460ac {
 
 struct UnknownGlobalState460ac {
     const void *callback;
-    u32 field4;
+    union {
+        u32 word;
+        struct {
+            u16 low;
+            u16 high;
+        } half;
+    } field4;
     u16 field8;
     u8 filler10[18];
     u8 field28;
@@ -98,7 +104,7 @@ extern struct UnknownPair460ac {
     u16 second;
 } gUnknown_0300028c;
 extern struct UnknownPoolNode460ac *gUnknown_0300547c;
-extern const u16 gUnknown_081a7f04[];
+extern const u16 gUnknown_081a7f04[][3];
 extern const u8 gUnknown_081a7f38[];
 extern void FUN_0804a5b8(const void *source, void *destination);
 extern void FUN_0804033c(const void *source, void *destination, u32 size);
@@ -110,7 +116,7 @@ extern void FUN_080405a8(u8 first, u8 second);
 extern void FUN_080405f4(u8 first, u8 second);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern void FUN_08047fe4(struct UnknownState460ac *state);
-extern s16 FUN_08020978(u16 first, u16 second, s16 third, u8 fourth);
+extern s32 FUN_08020978(u16 first, u16 second, s16 third, u8 fourth);
 extern void FUN_0801f618(u16 value);
 extern s16 *gUnknown_03000274;
 extern s32 FUN_080406d4(s32 value, s8 *destination, s32 width);
@@ -134,8 +140,17 @@ void FUN_08046998(struct UnknownState460ac *state);
 void FUN_08046a18(struct UnknownState460ac *state);
 
 static void (*const gUnknown_08edda24[])(struct UnknownState460ac *) = {
-    FUN_080461b4, FUN_080462c8, FUN_080463f4, FUN_08046538,
-    FUN_08048014, FUN_08048074, FUN_08046998, FUN_08046a18,
+    FUN_080461b4,
+    FUN_080462c8,
+    FUN_080463f4,
+    FUN_08046538,
+};
+
+static void (*const gUnknown_08edda34[])(struct UnknownState460ac *) = {
+    FUN_08048014,
+    FUN_08048074,
+    FUN_08046998,
+    FUN_08046a18,
 };
 
 static const u16 gUnknown_08edda44[] = {
@@ -160,7 +175,7 @@ void FUN_080460ac(struct UnknownState460ac *state) {
     state->field24 = (state->field38 + 13) * 16 | 8;
     gUnknown_030000d4.source = gUnknown_081b94c8[state->field36 - 1].first;
     gUnknown_030000d4.destination = (u8 *)gUnknown_03005478 + (state->field38 * 0x20 + 0x3a0);
-    gUnknown_030000d4.size = 0x08000010;
+    gUnknown_030000d4.size = 0x80000010;
     (void)gUnknown_030000d4.size;
     FUN_0804a5b8(gUnknown_081b94c8[state->field36 - 1].variants[state->field37],
                  (void *)(0x02016a00 + state->field38 * 0x3600));
@@ -186,7 +201,7 @@ void FUN_080461b4(struct UnknownState460ac *state) {
                 break;
             }
         }
-        state->field28.half.high = gUnknown_081a7f04[(gUnknown_03000278.count - 1) * 3 + (u8)index];
+        state->field28.half.high = gUnknown_081a7f04[gUnknown_03000278.count - 1][(u8)index];
         state->field27++;
         /* fallthrough */
     }
@@ -224,8 +239,7 @@ void FUN_080462c8(struct UnknownState460ac *state) {
                 break;
             }
         }
-        state->field28.half.high =
-            gUnknown_081a7f04[(gUnknown_03000278.count - 1) * 3 + (u8)index] + 1;
+        state->field28.half.high = gUnknown_081a7f04[gUnknown_03000278.count - 1][(u8)index] + 1;
         state->field27++;
         /* fallthrough */
     }
@@ -261,12 +275,12 @@ void FUN_080463f4(struct UnknownState460ac *state) {
                 break;
             }
         }
-        state->field10 = gUnknown_081a7f04[(gUnknown_03000278.count - 1) * 3 + (u8)index];
+        state->field10 = gUnknown_081a7f04[gUnknown_03000278.count - 1][(u8)index];
         state->field27++;
         break;
     }
     case 1:
-        if ((gUnknown_03005440.field4 & 1) != 0) {
+        if ((gUnknown_03005440.field4.word & 1) != 0) {
             if ((gUnknown_03005440.field8 & 8) == 0) {
                 state->field26--;
                 FUN_0803fe98((state->field38 * 0x100000 + 0x1d00000) >> 16, 0x10, state->field26);
@@ -288,6 +302,7 @@ void FUN_08046538(struct UnknownState460ac *state) {
     case 0: {
         s16 index;
         u8 id;
+        u8 column;
 
         if ((gUnknown_03005440.field8 & 8) == 0) {
             FUN_0803fe98((state->field38 * 0x100000 + 0x1d00000) >> 16, 0x10, 0);
@@ -303,12 +318,13 @@ void FUN_08046538(struct UnknownState460ac *state) {
                 break;
             }
         }
-        state->field10 = gUnknown_081a7f04[(gUnknown_03000278.count - 1) * 3 + (u8)index];
+        column = index;
+        state->field10 = gUnknown_081a7f04[gUnknown_03000278.count - 1][column];
         state->field27++;
         break;
     }
     case 1:
-        if ((gUnknown_03005440.field4 & 1) != 0) {
+        if ((gUnknown_03005440.field4.word & 1) != 0) {
             state->field26--;
             FUN_0801fba0(0x52, (state->field26 << 8) | (0x10 - state->field26));
             if (state->field26 == 0) {
@@ -325,12 +341,15 @@ void FUN_08046538(struct UnknownState460ac *state) {
 void FUN_0804666c(struct UnknownState460ac *state) {
     switch (state->field27) {
     case 0: {
-        u16 values[6];
-        s16 sourceIndex = state->field20;
+        s16 values[6];
+        s16 copyIndex;
         s16 pairIndex;
+        s16 sourceIndex;
 
-        for (pairIndex = 0; pairIndex < 6; pairIndex++) {
-            values[pairIndex] = gUnknown_03000274[sourceIndex++];
+        copyIndex = 0;
+        sourceIndex = state->field20;
+        for (; copyIndex < 6; copyIndex++, sourceIndex++) {
+            values[copyIndex] = gUnknown_03000274[sourceIndex];
         }
         if (values[4] == values[2]) {
             values[4] = 0;
@@ -354,21 +373,24 @@ void FUN_0804666c(struct UnknownState460ac *state) {
             }
             if (poolIndex < gUnknown_03000278.count) {
                 u16 mode = values[pairIndex + 1];
-                struct UnknownPoolNode460ac *node;
 
                 if (mode > 3) {
                     mode = 2;
                 }
-                node = &gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]];
-                node->callback = gUnknown_08edda24[mode + 4];
-                ((u8 *)node)[27] = 0;
+                gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].callback =
+                    gUnknown_08edda34[mode];
+                ((u8 *)&gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]])[27] = 0;
                 gUnknown_0300027c.count++;
             }
         }
-        if (gUnknown_0300027c.count != 0) {
-            gUnknown_0300027c.count = gUnknown_03000278.count - gUnknown_0300027c.count;
-            state->field27++;
-            break;
+        {
+            u8 completedCount = gUnknown_0300027c.count;
+
+            if (completedCount != 0) {
+                gUnknown_0300027c.count = gUnknown_03000278.count - completedCount;
+                state->field27++;
+                break;
+            }
         }
         gUnknown_03005440.field8 &= 0xfffb;
         FUN_0804051c(state);
@@ -378,7 +400,10 @@ void FUN_0804666c(struct UnknownState460ac *state) {
         if (gUnknown_03000278.count != gUnknown_0300027c.count) {
             break;
         }
-        if (gUnknown_03000278.count != 0) {
+        if (gUnknown_03000278.count == 0) {
+            gUnknown_03005440.field8 &= 0xfffb;
+            FUN_0804051c(state);
+        } else {
             s16 outer;
             s16 index;
 
@@ -434,7 +459,7 @@ void FUN_08046998(struct UnknownState460ac *state) {
         state->field27++;
         /* fallthrough */
     case 1:
-        if ((gUnknown_03005440.field4 & 1) == 0) {
+        if ((gUnknown_03005440.field4.word & 1) == 0) {
             break;
         }
         if ((gUnknown_03005440.field8 & 8) == 0) {
@@ -466,7 +491,7 @@ void FUN_08046a18(struct UnknownState460ac *state) {
         state->field27++;
         break;
     case 1:
-        if ((gUnknown_03005440.field4 & 1) == 0) {
+        if ((gUnknown_03005440.field4.word & 1) == 0) {
             break;
         }
         state->field26++;
@@ -488,7 +513,7 @@ void FUN_08046aa4(struct UnknownState460ac *state) {
         state->field27++;
     }
     state->field20 = gUnknown_08edda62[state->field27 & 3] + 0x10;
-    if ((gUnknown_03005440.field4 & 1) != 0) {
+    if ((gUnknown_03005440.field4.half.low & 1) != 0) {
         FUN_0804051c(state);
     } else {
         FUN_080405a8(state->field2, 0);
@@ -658,7 +683,6 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
 
 void FUN_08046f00(struct UnknownState460ac *state) {
     s16 poolIndex;
-    u16 fill;
 
     gUnknown_0300028c.second = 0;
     gUnknown_0300028c.first = 0;
@@ -678,10 +702,7 @@ void FUN_08046f00(struct UnknownState460ac *state) {
         state->field27 = 1;
         state->field8 = 8;
     } else {
-        struct UnknownPoolNode460ac *node;
-        struct UnknownPoolNode460ac *nodes;
-        u8 nodeIndex;
-        s16 basePosition;
+        u16 basePosition;
 
         gUnknown_03005440.field36++;
         if (gUnknown_03005440.field36 > 3) {
@@ -690,30 +711,30 @@ void FUN_08046f00(struct UnknownState460ac *state) {
         FUN_080403c0(gUnknown_081a81d0 + gUnknown_03005440.field36 * 0x168, (void *)0x06009b80,
                      0x1e, 6, 0);
         gUnknown_03005440.field46 = gUnknown_03005440.field36;
-        nodeIndex = gUnknown_03000278.indices[poolIndex];
-        nodes = gUnknown_0300547c;
-        node = &nodes[nodeIndex];
-        basePosition = node->field10;
+        basePosition = gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].field10;
         state->field10 = basePosition;
         state->field12.half.high = 0x68;
         state->graphics = gUnknown_081a7f58;
         state->field20 = 0;
-        if ((node->field3 & 4) == 0) {
-            state->field34 = basePosition - 0x18;
-        } else {
+        if ((gUnknown_0300547c[gUnknown_03000278.indices[poolIndex]].field3 & 4) != 0) {
             state->field23 = 0x10;
             state->field34 = basePosition + 0x18;
+        } else {
+            state->field34 = basePosition - 0x18;
         }
         FUN_08045a5c(state->field36);
     }
 
     FUN_080403c0(gUnknown_081a8770, (void *)0x06009bc2, 0x1c, 4, 0x50);
-    fill = 0x1111;
-    gUnknown_030000d4.source = &fill;
-    gUnknown_030000d4.destination = (void *)0x02000600;
-    gUnknown_030000d4.size = 0x81000700;
-    (void)gUnknown_030000d4.size;
-    FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
+    {
+        u16 fill[1] = {0x1111};
+
+        gUnknown_030000d4.source = fill;
+        gUnknown_030000d4.destination = (void *)0x02000600;
+        gUnknown_030000d4.size = 0x81000700;
+        (void)gUnknown_030000d4.size;
+        FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
+    }
     state->field28.fixed = gUnknown_08eeb228[gUnknown_03005440.field28][state->field28.half.low];
     state->field37 = 3;
     state->field38 = 5;
