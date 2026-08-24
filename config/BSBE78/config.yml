@@ -300,6 +300,8 @@ range_overrides:
     exclude_from_objdiff: true
   owned_unknown_0801f080_rodata:
     exclude_from_objdiff: true
+  owned_unknown_080470e4_rodata:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -5566,7 +5568,22 @@ units:
     category: game
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080470e4.c
+    complete: true
     cflags: [-O2, -mthumb-interwork]
+    target_sections:
+      - { name: .text, start: 0x0470E4, end: 0x04833C }
+      - { name: .rodata, start: 0xEDDA68, end: 0xEDDA88 }
+    owned_pointer_table:
+      start: 0xEDDA68
+      symbols:
+        - FUN_080471dc
+        - FUN_080482a8
+        - FUN_080482b4
+        - FUN_080482d0
+        - FUN_080482e8
+        - FUN_08048300
+        - FUN_08048300
+        - FUN_080482a8
     base_symbol_size_overrides:
       FUN_080470e4: 0xF2
       FUN_080471dc: 0x70
