@@ -713,6 +713,9 @@ units:
       # FUN_080176E4 branches around a two-word in-function literal island.
       - { offset: 0x16F40, mode: data }
       - { offset: 0x16F48, mode: thumb }
+      # FUN_080177B8 branches around a three-word in-function literal island.
+      - { offset: 0x17098, mode: data }
+      - { offset: 0x170A4, mode: thumb }
       # FUN_08015858 branches around two in-function literal islands.
       - { offset: 0x15076, mode: data }
       - { offset: 0x1507C, mode: thumb }
@@ -726,6 +729,9 @@ units:
       - { offset: 0x15D48, mode: thumb }
       - { offset: 0x15DCC, mode: data }
       - { offset: 0x15DD8, mode: thumb }
+      # FUN_080066D8 branches around its trailing literal island.
+      - { offset: 0x05F24, mode: data }
+      - { offset: 0x05F2C, mode: thumb }
       # FUN_0800673C branches around thirteen literal islands.
       - { offset: 0x05F78, mode: data }
       - { offset: 0x05F7C, mode: thumb }
@@ -792,6 +798,7 @@ units:
       FUN_08017a80: 0xDC
       FUN_08017b74: 0xC8
     relocations:
+      - { offset: 0x05F24, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x05F78, type: abs32, symbol: gUnknown_03001c40 }
       - { offset: 0x05FA4, type: abs32, symbol: gUnknown_03001374 }
       - { offset: 0x05FA8, type: abs32, symbol: gUnknown_03001b24 }
@@ -911,7 +918,11 @@ units:
       - { offset: 0x16148, type: abs32, symbol: gUnknown_03003140 }
       - { offset: 0x1623C, type: abs32, symbol: gUnknown_03003380 }
       - { offset: 0x16240, type: abs32, symbol: gUnknown_03003140 }
-      - { offset: 0x1630C, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x1630A, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x1569A, type: thumb_call, symbol: FUN_08018004 }
+      - { offset: 0x156C6, type: thumb_call, symbol: FUN_08018004 }
+      - { offset: 0x156F2, type: thumb_call, symbol: FUN_08018004 }
+      - { offset: 0x15726, type: thumb_call, symbol: FUN_08018004 }
       - { offset: 0x16328, type: abs32, symbol: gUnknown_030016b8 }
       - { offset: 0x1632C, type: abs32, symbol: gUnknown_030020fc }
       - { offset: 0x16330, type: abs32, symbol: gUnknown_03001b20 }
