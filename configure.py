@@ -24,6 +24,7 @@ def fail(message: str) -> None:
 
 def main() -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    configured_entries = {unit["name"]: unit for unit in config["units"]}
     rom = ROOT / config["rom"]
     if not rom.is_file():
         fail(f"place the verified ROM at {rom.relative_to(ROOT)}")
@@ -125,6 +126,18 @@ def main() -> None:
                 fail(f"invalid accepted function size for {row['name']}")
             row["size"] = size
         symbol_maps[unit["name"]] = rows
+        pointer_table = unit.get("owned_pointer_table")
+        if pointer_table:
+            addresses_by_name = {str(row["name"]): int(row["address"]) for row in rows}
+            table_start = int(pointer_table["start"])
+            expected = bytearray()
+            for name in pointer_table["symbols"]:
+                if name not in addresses_by_name:
+                    fail(f"owned pointer table for {unit['name']} references unknown symbol {name}")
+                expected.extend((addresses_by_name[name] + 0x08000001).to_bytes(4, "little"))
+            actual = data[table_start : table_start + len(expected)]
+            if actual != expected:
+                fail(f"owned pointer table for {unit['name']} does not match the reviewed symbol order")
     for unit in configured_units:
         target_path = build_dir / "target" / f"{unit['name']}.o"
         has_base = bool(unit.get("source") or unit.get("source_asm") or unit.get("archive_member"))
@@ -192,24 +205,38 @@ def main() -> None:
         "  command = python3 tools/compose_archive_target.py $archive $member $in $out $sections",
         "  description = COMPOSE $out",
         "",
+        "rule compose_source_target",
+        "  command = python3 tools/compose_source_target.py $base $in $out $sections",
+        "  description = COMPOSE $out",
+        "",
     ]
     for unit, target in zip(configured_units, ninja_targets):
+        entries = configured_entries.get(unit.get("config_entries_from"), unit)
+        offset_origin = int(unit.get("offset_origin", entries["start"]))
+        offset_adjustment = int(unit["start"]) - offset_origin
+        unit_size = int(unit["end"]) - int(unit["start"])
         symbol_specs = []
         for symbol in [*unit.get("symbols", []), *symbol_maps.get(unit["name"], [])]:
             spec = f"{symbol['name']}:{int(symbol['address'])}:{symbol.get('mode', 'thumb')}"
             if "size" in symbol:
                 spec += f":{int(symbol['size'])}"
             symbol_specs.append(spec)
-        for relocation in unit.get("relocations", []):
+        for relocation in entries.get("relocations", []):
+            relocation_offset = int(relocation["offset"]) - offset_adjustment
+            if not 0 <= relocation_offset < unit_size:
+                continue
             spec = (
-                f"@rel:{int(relocation['offset'])}:{relocation['type']}:"
+                f"@rel:{relocation_offset}:{relocation['type']}:"
                 f"{relocation['symbol']}"
             )
             if "addend" in relocation:
                 spec += f":{int(relocation['addend'])}"
             symbol_specs.append(spec)
-        for mapping in unit.get("mappings", []):
-            symbol_specs.append(f"@map:{int(mapping['offset'])}:{mapping['mode']}")
+        for mapping in entries.get("mappings", []):
+            mapping_offset = int(mapping["offset"]) - offset_adjustment
+            if not 0 <= mapping_offset < unit_size:
+                continue
+            symbol_specs.append(f"@map:{mapping_offset}:{mapping['mode']}")
         for section in unit.get("synthetic_sections", []):
             symbol_specs.append(f"@section:{section['name']}:{int(section['size'])}")
         for symbol_name in unit.get("local_symbols", []):
@@ -222,14 +249,23 @@ def main() -> None:
                 f"{section['name']}:{int(section['start'])}:{int(section['end'])}"
                 for section in unit["target_sections"]
             )
-            archive = unit.get("archive", "tools/agbcc/libgcc.a")
-            ninja.extend([
-                f"build {target}: compose_archive_target {config['rom']} | {archive} tools/compose_archive_target.py",
-                f"  archive = {archive}",
-                f"  member = {unit['archive_member']}",
-                f"  sections = {sections}",
-                "",
-            ])
+            if unit.get("source"):
+                base = build_dir / "base" / f"{unit['name']}.o"
+                ninja.extend([
+                    f"build {target}: compose_source_target {config['rom']} | {base.relative_to(ROOT)} tools/compose_source_target.py tools/compose_archive_target.py",
+                    f"  base = {base.relative_to(ROOT)}",
+                    f"  sections = {sections}",
+                    "",
+                ])
+            else:
+                archive = unit.get("archive", "tools/agbcc/libgcc.a")
+                ninja.extend([
+                    f"build {target}: compose_archive_target {config['rom']} | {archive} tools/compose_archive_target.py",
+                    f"  archive = {archive}",
+                    f"  member = {unit['archive_member']}",
+                    f"  sections = {sections}",
+                    "",
+                ])
         else:
             ninja.extend([
                 f"build {target}: slice_object {config['rom']} | tools/slice_object.py {function_size_map or ''}",
@@ -241,9 +277,11 @@ def main() -> None:
             ])
         if unit.get("source"):
             base = build_dir / "base" / f"{unit['name']}.o"
+            accepted_names = {str(row["name"]) for row in symbol_maps.get(unit["name"], [])}
             symbol_sizes = " ".join(
                 f"@symbol-size:{name}:{int(size)}"
-                for name, size in unit.get("base_symbol_size_overrides", {}).items()
+                for name, size in entries.get("base_symbol_size_overrides", {}).items()
+                if not accepted_names or name in accepted_names
             )
             ninja.extend(
                 [

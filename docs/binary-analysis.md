@@ -145,20 +145,33 @@ frame they never establish.
 ### Translation-unit inventory status
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
-the executable range is represented in objdiff, but the game TU inventory is not complete. Two
+the executable range is represented in objdiff, but the game TU inventory is not complete. Three
 explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
-| `main/unknown_080198B0` | `0x0198B0-0x04833C` | 915 | 171,344 | 15,076 |
+| `main/unknown_080198B0` | `0x0198B0-0x01F080` | 93 | 21,138 | 1,342 |
+| `main/unknown_0801F5EC` | `0x01F5EC-0x0470E4` | 806 | 148,878 | 13,674 |
 
-These objects are conservative coverage buckets, not claims that either range was one original
+These objects are conservative coverage buckets, not claims that any range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
 though its byte totals and progress denominators are complete. A placeholder is split only after
 function order, literal-pool ownership, private-data references, alignment, related-title linker
 order, or independently correlated metadata supports the boundary. Arbitrary visual subdivision
 would misrepresent guesses as original TUs.
+
+The range `0x0801F080-0x0801F5EC` is now separated as `main/unknown_0801F080`. Its sixteen
+functions form one closed condition-stream interpreter: the first fourteen are the exact entries,
+in retail order, of the 56-byte function-pointer table at `0x08ED8B04`; the final two are the
+table's only consumers. The preceding function owns the distinct lookup bytes ending at
+`0x08ED8B04`, while the function at `0x0801F5EC` switches to sound-system initialization after the
+interpreter's final return and alignment. A standalone agbcc compile independently places every
+function at the retail object-relative offset, ends its `.text` at exactly `0x56C`, and emits the
+pointer table as its sole `0x38`-byte `.rodata` section. Configure-time validation checks every
+retail table word against the reviewed Thumb symbol order. Objdiff verifies all 1,328 instruction
+bytes, 60 literal/alignment bytes, 56 table bytes, all relocations, and all sixteen functions at
+100% from ordinary C.
 
 Related-title linker order is supporting evidence, not a boundary by itself. The public
 [Sonic Advance 3 linker script](https://github.com/SAT-R/sa3/blob/master/ldscript.txt) places
