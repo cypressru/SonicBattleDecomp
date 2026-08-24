@@ -1503,17 +1503,16 @@ void FUN_0801ea6c(u8 value) {
 }
 
 void FUN_0801e3cc(u8 value) {
-    register struct UnknownEntity *entities asm("r5") = gUnknown_03003db0;
-    register u32 offset asm("r2") = value * 24;
-    register struct UnknownEntity *entity asm("r4") =
-        (struct UnknownEntity *)(offset + (u32)entities);
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    u32 offset = value * 24;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
 
     entity->callback = FUN_0801e41c;
     entity->field8 = 0;
     entity->field12 = 0;
     entity->field13 = 0;
     {
-        register const void *data asm("r1") = gUnknown_08ed898c;
+        const void *data = gUnknown_08ed898c;
 
         entities = (struct UnknownEntity *)((u32)entities + 4);
         *(const void **)(offset + (u32)entities) = data;
@@ -2318,9 +2317,9 @@ void FUN_0801e34c(u8 value) {
 }
 
 u8 FUN_0801ceec(u16 state, u8 required, u8 index) {
-    register struct UnknownEntityData *metadataBase asm("r3") = gUnknown_03001c40;
-    register u32 metadataOffset asm("r1") = index * 252;
-    register struct UnknownEntityData *metadata asm("r2") =
+    struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+    u32 metadataOffset = index * 252;
+    struct UnknownEntityData *metadata =
         (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
 
     if (metadata->field20 == state && metadata->field26 == 1) {
@@ -2333,11 +2332,11 @@ u8 FUN_0801ceec(u16 state, u8 required, u8 index) {
 }
 
 u8 FUN_0801cf34(u16 state, u8 required, u8 index) {
-    register struct UnknownEntityData *metadataBase asm("r4") = gUnknown_03001c40;
-    register u32 metadataOffset asm("r2") = index * 252;
-    register struct UnknownEntityData *metadata asm("r1") =
+    struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+    u32 metadataOffset = index * 252;
+    struct UnknownEntityData *metadata =
         (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
-    register u32 fieldAddress asm("r0");
+    u32 fieldAddress;
 
     if (metadata->field20 == state) {
         fieldAddress = (u32)metadataBase;
@@ -2354,9 +2353,9 @@ u8 FUN_0801cf34(u16 state, u8 required, u8 index) {
 }
 
 u8 FUN_0801cf80(u8 index) {
-    register u8 *state asm("r1") = &gUnknown_03001620;
-    register u32 offset asm("r0") = index * 2;
-    register u16 *field asm("r0");
+    u8 *state = &gUnknown_03001620;
+    u32 offset = index * 2;
+    u16 *field;
 
     state += 98;
     field = (u16 *)(offset + (u32)state);
@@ -2367,9 +2366,9 @@ u8 FUN_0801cf80(u8 index) {
 }
 
 u8 FUN_0801cfa4(u8 index) {
-    register u8 *state asm("r1");
-    register u32 offset asm("r0") = index;
-    register u8 *field asm("r0");
+    u8 *state;
+    u32 offset = index;
+    u8 *field;
 
     state = &gUnknown_03001620;
     state += 51;
@@ -3132,11 +3131,10 @@ u32 FUN_0801d200(u8 value) {
 }
 
 void FUN_0801d5d4(u8 value) {
-    register struct UnknownEntity *entities asm("r1") = gUnknown_03003db0;
-    register u32 offset asm("r0");
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    u32 offset;
     struct UnknownEntity *entity;
 
-    asm("" : "+r"(entities));
     offset = value * 3;
     offset <<= 3;
     entity = (struct UnknownEntity *)(offset + (u32)entities);
