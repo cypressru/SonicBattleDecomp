@@ -257,6 +257,11 @@ struct UnknownEntity {
     u8 filler21[3];
 };
 
+struct UnknownEntityFrame {
+    u16 duration;
+    u16 flags;
+};
+
 struct UnknownEntityData {
     u8 filler0[16];
     u8 field16;
@@ -3308,6 +3313,36 @@ u32 FUN_0801ce8c(u32 value, u8 threshold, u8 index) {
     }
 
     return gUnknown_03003d88 >= threshold;
+}
+
+u32 FUN_0801cfc8(u8 value) {
+    u32 offset = value * sizeof(struct UnknownEntity);
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(offset + (u32)entities);
+    const struct UnknownEntityFrame *frame = entity->data;
+    u8 counter = entity->field14;
+    struct UnknownEntity *savedEntities = entities;
+
+    while (counter >= frame->duration) {
+        if (frame->duration == 0) {
+            entity->field8 = 0;
+            return 0;
+        }
+        entity->field14 = 0;
+        frame++;
+        entity->data = frame;
+        counter = entity->field14;
+    }
+
+    entity->field8 = frame->flags & 0x3FF;
+    if ((frame->flags & 0x8000) != 0) {
+        entity->field8 = (entity->field8 & 0xFF0F) | FUN_0801e99c(value);
+    } else if (savedEntities[value].field16 == 0 && (entity->field8 & 0x30) != 0) {
+        entity->field8 ^= 0x30;
+    }
+
+    entity->field14++;
+    return 1;
 }
 
 void FUN_0801eacc(u8 value) {
