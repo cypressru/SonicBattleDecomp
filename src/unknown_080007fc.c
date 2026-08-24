@@ -1600,6 +1600,7 @@ u32 FUN_08017a80(struct UnknownParticipantState17a80 *state, u8 participantCount
 
 u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
     volatile u32 valid;
+    int one;
     u8 *acceptedCount;
     u8 i;
 
@@ -1611,17 +1612,18 @@ u32 FUN_08017b74(void *unused, u8 marker, u8 participantCount) {
         gUnknown_030016f0[i][0] = 0;
     }
     gUnknown_030013a4 = gUnknown_03001730;
+    one = 1;
     gUnknown_03001730 = FUN_08018730(gUnknown_030016f0[0]);
     FUN_08018c20();
     valid = 1;
     for (i = 0; i < participantCount; i++) {
-        if (gUnknown_03001730 & (1 << i)) {
+        if (gUnknown_03001730 & (one << i)) {
             acceptedCount = &gUnknown_030016a4;
             if (gUnknown_030016f0[i][1] == gUnknown_03001b10.second || i == gUnknown_03001380) {
                 (*acceptedCount)++;
             }
         }
-        valid &= ((u8 *)gUnknown_030016f0[i])[0];
+        valid = ((u8 *)gUnknown_030016f0[i])[0] & valid;
     }
     return valid;
 }
