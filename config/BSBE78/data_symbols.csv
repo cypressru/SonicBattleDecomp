@@ -539,6 +539,7 @@ address,name,mode,confidence
 0x08ED67A8,data_gap_after_libgcc_clz_tab,data,libgcc-table-size
 0x08ED8B04,owned_unknown_0801f080_rodata,data,function-pointer-table-owner
 0x08ED8B3C,data_gap_after_unknown_0801f080_rodata,data,function-pointer-table-size
+0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
 0x0847AA18,palette_emerl_sonic,data,public-sbhax-offset+retail-32-byte-record
