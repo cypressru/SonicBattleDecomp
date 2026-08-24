@@ -1464,6 +1464,7 @@ void FUN_080177b8(u8 participant) {
     volatile u32 participantSlot;
     u32 initialParticipant;
     u32 value;
+    struct UnknownState080180f0 *ring;
     u32 previous;
     u32 changed;
     u16 pressed;
@@ -1474,31 +1475,34 @@ void FUN_080177b8(u8 participant) {
     pressed = gUnknown_030048e0.second;
     released = gUnknown_030048e0.third;
     initialParticipant = participantSlot;
-    gUnknown_03001b30[initialParticipant].position++;
-    if (gUnknown_03001b30[initialParticipant].position > 9) {
-        gUnknown_03001b30[initialParticipant].position = 0;
+    previous = initialParticipant;
+    gUnknown_03001b30[previous].position++;
+    if (gUnknown_03001b30[previous].position > 9) {
+        gUnknown_03001b30[previous].position = 0;
     }
     gUnknown_03001b30[initialParticipant].flags[gUnknown_03001b30[initialParticipant].position] =
         pressed;
-    gUnknown_03001b30[initialParticipant].third[gUnknown_03001b30[initialParticipant].position] =
+    gUnknown_03001b30[previous].third[gUnknown_03001b30[initialParticipant].position] =
         released;
-    gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[initialParticipant].position] =
+    gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[previous].position] =
         value;
 
     for (i = 0; i <= 3; i++) {
         if (i != participantSlot) {
             value = gUnknown_03001c40[i].value;
             previous = gUnknown_03001b30[i].first[gUnknown_03001b30[i].position];
-            changed = value ^ previous;
-            pressed = value & changed;
+            changed = previous;
+            changed = value ^ changed;
+            pressed = changed & value;
+            ring = &gUnknown_03001b30[i];
             released = previous & changed;
             gUnknown_03001b30[i].position++;
             if (gUnknown_03001b30[i].position > 9) {
                 gUnknown_03001b30[i].position = 0;
             }
-            gUnknown_03001b30[i].flags[gUnknown_03001b30[i].position] = pressed;
+            gUnknown_03001b30[i].flags[ring->position] = pressed;
             gUnknown_03001b30[i].third[gUnknown_03001b30[i].position] = released;
-            gUnknown_03001b30[i].first[gUnknown_03001b30[i].position] = value;
+            gUnknown_03001b30[i].first[ring->position] = value;
         } else {
             gUnknown_03001c40[i].value = gUnknown_030048e0.first;
         }
