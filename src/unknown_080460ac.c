@@ -567,16 +567,20 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
             state->field26 = 0;
             field36 = &state->field36;
             do {
-                u16 command = *state->field28.script++;
+                const u16 *script = state->field28.script;
+                u16 command = script[0];
                 u16 emptyCommand = 0x338;
                 const u16 *soundTable = gUnknown_08edda44;
 
+                state->field28.script = script + 1;
                 done = 1;
 
                 switch (command) {
-                case 0xfffb:
-                    state->field37 = *state->field28.script++;
-                    done = 0;
+                case 0xfffe:
+                    state->field27 = 0xff;
+                    if (state->field40 != 0) {
+                        state->field40 = 0xf;
+                    }
                     break;
                 case 0xfffd:
                     state->field8 = 8;
@@ -596,24 +600,23 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                         done = 0;
                     }
                     break;
-                case 0xfffe:
-                    state->field27 = 0xff;
-                    if (state->field40 != 0) {
-                        state->field40 = 0xf;
-                    }
+                case 0xfffb:
+                    command = script[1];
+                    state->field28.script = script + 2;
+                    state->field37 = command;
+                    done = 0;
                     break;
-                case 0xfff9: {
-                    u16 index = *state->field28.script++;
-
+                case 0xfff9:
+                    command = script[1];
+                    state->field28.script = script + 2;
                     gUnknown_03000285 =
-                        FUN_080406d4(gUnknown_03000274[index], (s8 *)gUnknown_03000280, 5);
+                        FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
                     if (gUnknown_03000285 < 0) {
                         gUnknown_03000285 = 0;
                     }
                     FUN_08046af8(state);
                     state->field27 = gUnknown_03000285 > 4 ? 1 : 4;
                     break;
-                }
                 default:
                     gUnknown_0300028c.second = 0;
                     if ((command == 0 || command == emptyCommand) &&
