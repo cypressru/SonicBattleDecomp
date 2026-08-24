@@ -1051,23 +1051,19 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     }
 
     if ((s16)gUnknown_03003108[slot] < 0) {
-        gUnknown_03003108[slot]++;
-        return 1;
+        goto advance_frame;
     }
 
     while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
         gUnknown_03003110[slot]++;
         if (gUnknown_03003110[slot] > 0xfe) {
-            gUnknown_03003110[slot] = 0;
-            gUnknown_03003108[slot] = 1 - direction;
-            return 0xff;
+            goto invalid_stream;
         }
     }
 
     commandIndex = gUnknown_03003110[slot];
     if ((u16)commands[commandIndex] != (s16)gUnknown_03003108[slot]) {
-        gUnknown_03003108[slot]++;
-        return 1;
+        goto advance_frame;
     }
 
     gUnknown_03003110[slot] = commandIndex + 1;
@@ -1080,9 +1076,7 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
             gUnknown_03003118[slot] = command;
         } else if (opcode == 0x00f00000 || opcode == 0xfffe0000) {
             if ((s16)gUnknown_03003108[slot] == 0) {
-                gUnknown_03003110[slot] = 0;
-                gUnknown_03003108[slot] = 1 - direction;
-                return 0xff;
+                goto invalid_stream;
             }
             gUnknown_03003110[slot] = 0;
             gUnknown_03003108[slot] = 1 - direction;
@@ -1166,14 +1160,18 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
         }
         gUnknown_03003110[slot]++;
         if (gUnknown_03003110[slot] > 0xfe) {
-            gUnknown_03003110[slot] = 0;
-            gUnknown_03003108[slot] = 1 - direction;
-            return 0xff;
+            goto invalid_stream;
         }
     }
 
+advance_frame:
     gUnknown_03003108[slot]++;
     return 1;
+
+invalid_stream:
+    gUnknown_03003110[slot] = 0;
+    gUnknown_03003108[slot] = 1 - direction;
+    return 0xff;
 }
 
 /* Bubble-sorts the live part of the 0x030033E0 queue into descending order of
