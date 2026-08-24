@@ -536,11 +536,13 @@ void FUN_08046af8(struct UnknownState460ac *state) {
 void FUN_08046bc4(struct UnknownState460ac *state) {
     s32 destination;
     s32 delta;
+    u8 mode;
 
     if (state->field40 != 0) {
         state->field40--;
     }
-    if (state->field27 != 0xff && state->field27 != 2 && (gUnknown_030048e0.third & 1) != 0) {
+    mode = state->field27;
+    if (mode != 0xff && mode != 2 && (gUnknown_030048e0.third & 1) != 0) {
         state->field40 = 0xf;
     }
 
@@ -597,7 +599,7 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                         state->field12.half.low -= 0x10;
                         state->filler25 = 0;
                         if (state->field39 == 2) {
-                            FUN_0803ff98(FUN_08048284, state, 1);
+                            FUN_0803ff98((const void *)((u32)FUN_08048284 + 1), state, 1);
                             state->field39 = 0;
                             state->field27++;
                         } else {
@@ -657,7 +659,7 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
         break;
     case 2:
         if ((gUnknown_030048e0.third & 1) != 0) {
-            state->field27++;
+            state->field27 = mode + 1;
         }
         break;
     case 3:
@@ -681,15 +683,14 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
             }
         }
         break;
-    }
-
-    if (state->field27 > 4) {
+    default:
         if ((state->field40 == 0 && (gUnknown_030048e0.third & 1) != 0) ||
             (state->field3 & 0x80) != 0) {
             gUnknown_03005440.field8 &= 0xfffb;
             FUN_0804051c(state);
             return;
         }
+        break;
     }
     if (state->field36 != 0) {
         FUN_080405f4(state->field2, 0);
