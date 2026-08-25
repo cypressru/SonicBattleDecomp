@@ -2053,11 +2053,16 @@ void FUN_0801c28c(void) {
 
     FUN_08006e64();
     FUN_0800c728();
-    for (index = 0; index <= 3; index++) {
-        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
-            FUN_08007ec8(index);
-            FUN_0800597c(index);
-            FUN_080036dc(index);
+    index = 0;
+    {
+        u8 *metadataBase = (u8 *)gUnknown_03001c40;
+
+        for (; index <= 3; index++) {
+            if (metadataBase[index] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
         }
     }
     FUN_080066d8();
