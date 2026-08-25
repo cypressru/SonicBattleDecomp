@@ -351,6 +351,7 @@ struct UnknownPosition {
 
 extern const struct UnknownPosition gUnknown_08edc550[];
 extern const struct UnknownPosition gUnknown_08edc570[];
+extern const u16 gUnknown_08edc590[];
 
 struct UnknownListNode {
     const void *data;
@@ -9768,6 +9769,14 @@ void FUN_0803315c(struct UnknownListNode *node) {
         node->position->field14 = 0;
         node->data = (const void *)((u32)FUN_08033090 + 1);
     }
+}
+
+void FUN_08033104(struct UnknownListNode *node) {
+    node->position->tile = gUnknown_08edc590[node->position->field14 >> 5];
+    FUN_0801fed8(node->field6, 0);
+    gUnknown_03003e20[node->position->field13].position->x = node->position->x + 7;
+    gUnknown_03003e20[node->position->field13].position->y = node->position->y + 36;
+    node->position->field14 += 16;
 }
 
 void FUN_08033184(struct UnknownListNode *node) {
