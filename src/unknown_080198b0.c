@@ -3422,8 +3422,8 @@ void FUN_0801e62c(u8 value) {
 void FUN_0801e6a0(u8 value) {
     u32 index = value;
     struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 doubledIndex = index * 2;
-    u32 entityOffset = (doubledIndex + index) * 8;
+    u32 savedDoubled = index * 2;
+    u32 entityOffset = (savedDoubled + index) * 8;
     struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
     u32 linkedOffset = entity->field15 * 2;
     u32 metadataOffset = (index * 64 - index) * 4;
@@ -3458,20 +3458,27 @@ void FUN_0801e6a0(u8 value) {
         if ((s32)counter < (s32)(gUnknown_03001b28 - counter) / 2 &&
             ((u16)(linkedFirst + 0x1000) > 0x1fff || linkedSecond > 0x1000 ||
              linkedSecond < -0x1000)) {
+            u32 doubled = index * 2;
             struct UnknownEntity *thresholdEntity =
-                (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
+                (struct UnknownEntity *)(((doubled + index) * 8) + (u32)entities);
 
             thresholdEntity->field8 = (thresholdEntity->field8 & 0xff0f) | 0x200;
             thresholdEntity->field12 = 0;
             thresholdEntity->callback = (UnknownCallback)((u32)FUN_0801e4f4 + 1);
+            savedDoubled = doubled;
         }
 
-        entity = (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
-        if (entity->field18 == 0 || (u16)(gUnknown_03001c40[linked].field20 - 10) > 5 ||
-            (u16)(linkedFirst + 0x4ff) > 0x9fe || linkedSecond > 0x1ff || linkedSecond <= -0x200) {
-            struct UnknownEntityData *metadata = &gUnknown_03001c40[index];
-
-            if (metadata->field20 == 66) {
+        entity = (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+        if (entity->field18 != 0 && (u16)(gUnknown_03001c40[linked].field20 - 10) <= 5 &&
+            (u16)(linkedFirst + 0x4ff) <= 0x9fe && linkedSecond <= 0x1ff && linkedSecond > -0x200) {
+            entity->callback = (UnknownCallback)((u32)FUN_0801ebf4 + 1);
+            entity->data = (const struct UnknownEntityFrame *)gUnknown_08ed89e4;
+            entity->field14 = 0;
+            entity->field16 = gUnknown_03001c40[index].field16;
+            return;
+        }
+        {
+            if (gUnknown_03001c40[index].field20 == 66) {
                 if (FUN_08020160((s8)gUnknown_08071245[gUnknown_03003e10]) != 0)
                     FUN_0801e3cc(index);
                 else
@@ -3481,8 +3488,8 @@ void FUN_0801e6a0(u8 value) {
 
             {
                 struct UnknownEntity *combatEntity =
-                    (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
-                u8 linkedMask = metadata->field50;
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+                u8 linkedMask = gUnknown_03001c40[index].field50;
                 u8 entityMask = combatEntity->field20;
 
                 if ((linkedMask & entityMask) == 0) {
@@ -3495,33 +3502,28 @@ void FUN_0801e6a0(u8 value) {
             }
             {
                 struct UnknownEntity *combatEntity =
-                    (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
 
                 if ((combatEntity->field8 & 0x10) != 0 && (combatEntity->field20 & 0x11) == 0 &&
-                    (metadata->field50 & 0x11) != 0)
+                    (gUnknown_03001c40[index].field50 & 0x11) != 0)
                     combatEntity->field8 ^= 0x30;
             }
             {
                 struct UnknownEntity *combatEntity =
-                    (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
 
                 if ((combatEntity->field8 & 0x40) != 0 && (combatEntity->field20 & 0x88) == 0 &&
-                    (metadata->field50 & 0x88) != 0)
+                    (gUnknown_03001c40[index].field50 & 0x88) != 0)
                     combatEntity->field8 ^= 0xc0;
             }
             {
                 struct UnknownEntity *combatEntity =
-                    (struct UnknownEntity *)(((doubledIndex + index) * 8) + (u32)entities);
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
 
                 if ((combatEntity->field8 & 0x80) != 0 && (combatEntity->field20 & 0x44) == 0 &&
-                    (metadata->field50 & 0x44) != 0)
+                    (gUnknown_03001c40[index].field50 & 0x44) != 0)
                     combatEntity->field8 ^= 0xc0;
             }
-        } else {
-            entity->callback = (UnknownCallback)((u32)FUN_0801ebf4 + 1);
-            entity->data = (const struct UnknownEntityFrame *)gUnknown_08ed89e4;
-            entity->field14 = 0;
-            entity->field16 = gUnknown_03001c40[index].field16;
         }
     }
 }
