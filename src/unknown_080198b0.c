@@ -8340,55 +8340,55 @@ void FUN_08029cc8(u32 index, u32 selection) {
 }
 
 void FUN_08029cfc(u32 playerIndex) {
-    register u32 normalizedIndex asm("r0") = (u8)playerIndex;
-    register u8 *players asm("r2") = gUnknown_030013b0;
-    register u32 multiplier asm("r1") = 156;
+    register u32 normalizedIndex = (u8)playerIndex;
+    register u8 *players = gUnknown_030013b0;
+    register u32 multiplier = 156;
     register u32 playerOffset asm("r4") = normalizedIndex;
 
     asm volatile("" : "+r"(normalizedIndex));
     playerOffset *= multiplier;
     {
-        register u8 *player asm("r1") = (u8 *)(playerOffset + (u32)players);
-        register u8 *state asm("r3") = (u8 *)&gUnknown_03002110;
-        register u32 stateOffset asm("r5") = 800;
-        register u8 *stateValue asm("r0") = state + stateOffset;
-        register u32 value asm("r0") = *stateValue;
+        register u8 *player = (u8 *)(playerOffset + (u32)players);
+        register u8 *state = (u8 *)&gUnknown_03002110;
+        register u32 stateOffset = 800;
+        register u8 *stateValue = state + stateOffset;
+        register u32 value = *stateValue;
 
         player[150] = value;
 
         {
-            register u32 row asm("r5") = 0;
-            register u16 *sourceBase asm("r12") = (u16 *)(state + 0x322);
+            register u32 row = 0;
+            register u16 *sourceBase = (u16 *)(state + 0x322);
             u8 *destinationBase;
 
             players += 69;
             destinationBase = (u8 *)(playerOffset + (u32)players);
             {
-                register const u8(*records)[8] asm("r6") = (const u8(*)[8])gUnknown_0810b32c;
+                register const u8(*records)[8] = (const u8(*)[8])gUnknown_0810b32c;
 
                 do {
                     register u32 rowTimesSeven asm("r1") = (row << 3) - row;
                     register u32 destinationOffset asm("r0") = (rowTimesSeven << 2) - row;
-                    register u8 *destination asm("r4") = destinationBase + destinationOffset;
-                    register u16 *sources asm("r3");
+                    register u8 *destination = destinationBase + destinationOffset;
+                    register u16 *sources;
 
                     rowTimesSeven <<= 3;
                     sources = (u16 *)(rowTimesSeven + (u32)sourceBase);
                     {
-                        register u32 column asm("r2") = 0;
+                        register u32 column = 0;
 
                         row++;
                         do {
                             destination[column] = records[sources[column]][4];
                             {
-                                register u32 nextColumn asm("r0") = column + 1;
+                                register u32 nextColumn = column + 1;
 
                                 column = (u8)nextColumn;
                             }
                         } while (column <= 26);
                     }
                     {
-                        register u32 shiftedRow asm("r0") = row << 24;
+                        register u32 shiftedRow = row << 24;
 
                         row = shiftedRow >> 24;
                     }
