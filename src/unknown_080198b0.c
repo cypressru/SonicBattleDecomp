@@ -1449,7 +1449,7 @@ void FUN_080198b0(void) {
 
                     *(u16 *)(doubledIndex + (u32)field) = loopZero;
                     field += 31;
-                    field[index] = loopZero;
+                    *(u8 *)(index + (u32)field) = loopZero;
                 }
             }
             {
