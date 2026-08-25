@@ -1086,7 +1086,10 @@ void FUN_0800baac(u8 index) {
 void FUN_0800f9c0(void) {
     struct {
         struct UnknownQueueEntry08018004 entry;
-        u32 placementY;
+        union {
+            u32 word;
+            u16 half;
+        } placementY;
         u32 nextRecordIndex;
         u32 packedY;
     } frame;
@@ -1095,7 +1098,7 @@ void FUN_0800f9c0(void) {
 
 #define entry frame.entry
 #define nextRecordIndex frame.nextRecordIndex
-    frame.placementY = 0;
+    frame.placementY.word = 0;
     recordIndex = 0;
     do {
 #define record (&gUnknown_030017d0[recordIndex])
@@ -1119,31 +1122,31 @@ void FUN_0800f9c0(void) {
                 record->x -= 8;
                 oldY = record->y;
                 record->y = oldY - 8;
-                frame.placementY = oldY - 1;
+                frame.placementY.word = (u16)(oldY - 1);
                 break;
             case 1:
                 record->x -= 16;
                 oldY = record->y;
                 record->y = oldY - 8;
-                frame.placementY = oldY - 1;
+                frame.placementY.word = (u16)(oldY - 1);
                 break;
             case 2:
                 record->x -= 8;
                 oldY = record->y;
                 record->y = oldY - 16;
-                frame.placementY = oldY - 2;
+                frame.placementY.word = (u16)(oldY - 2);
                 break;
             case 3:
                 record->x -= 16;
                 oldY = record->y;
                 record->y = oldY - 16;
-                frame.placementY = oldY - 2;
+                frame.placementY.word = (u16)(oldY - 2);
                 break;
             case 4:
                 record->x -= 4;
                 oldY = record->y;
                 record->y = oldY - 4;
-                frame.placementY = oldY;
+                frame.placementY.word = (u16)oldY;
                 break;
             default:
                 break;
@@ -1201,7 +1204,7 @@ void FUN_0800f9c0(void) {
         entry.second = ((s32)frame.packedY >> 16) + record->twelfth[slotIndex];                    \
         entry.zero = record->eighteenth[2];                                                        \
         entry.third = 3;                                                                           \
-        entry.constant = frame.placementY;                                                         \
+        entry.constant = frame.placementY.half;                                                    \
         entry.ninth = record->second;                                                               \
         entry.sixth = 0;                                                                           \
         entry.fourth = record->slots[slotIndex] * 16 + 176;                                        \
