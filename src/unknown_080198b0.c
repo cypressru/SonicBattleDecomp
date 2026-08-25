@@ -1309,7 +1309,29 @@ void FUN_080198b0(void) {
         void *destination;
         u32 control;
     };
-    u8 *scene = &gUnknown_03001620;
+    struct SceneInitState {
+        u8 filler0[12];
+        u8 field12[4];
+        u8 field16[4];
+        u8 filler20[19];
+        u8 field39[4];
+        u8 field43[4];
+        u8 field47[4];
+        u8 field51[4];
+        u8 filler55[3];
+        u16 field58[4];
+        u16 field66[4];
+        u16 field74[4];
+        u16 field82[4];
+        u16 field90[4];
+        u16 field98[4];
+        u16 field106[4];
+        u8 filler114[23];
+        u8 field137[4];
+        u8 field141[4];
+        u8 field145[4];
+    };
+    u8 *scene;
     u8 *savedScene;
     u8 index;
     u32 wordZero;
@@ -1317,12 +1339,14 @@ void FUN_080198b0(void) {
 
     gUnknown_03003d98 = 0;
     gUnknown_03003d9c = 0;
+    index = 0;
+    scene = &gUnknown_03001620;
     {
         u8 *active = scene + 28;
         u8 *count = &gUnknown_03003d9c;
         u8 *participants = scene + 20;
 
-        for (index = 0; index <= 3; index++) {
+        for (; index <= 3; index++) {
             if (*(u8 *)(index + (u32)active) == 0 && *(u8 *)(index + (u32)participants) != 0xff) {
                 (*count)++;
             }
@@ -1331,38 +1355,42 @@ void FUN_080198b0(void) {
 
     scene[136] = 0xff;
     {
-        u8 loopZero = 0;
-        u8 limit = 100;
+        struct SceneInitState *state;
+        u8 loopZero;
+        u8 limit;
+        u8 *field145;
 
-        for (index = 0; index <= 3; index++) {
-            scene[index + 39] = loopZero;
-            scene[index + 43] = loopZero;
-            scene[index + 47] = loopZero;
+        index = 0;
+        state = (struct SceneInitState *)scene;
+        loopZero = 0;
+        limit = 100;
+        field145 = scene + 145;
+        for (; index <= 3; index++) {
+            state->field39[index] = loopZero;
+            state->field43[index] = loopZero;
+            state->field47[index] = loopZero;
+            state->field51[index] = loopZero;
+            state->field58[index] = loopZero;
+            state->field66[index] = loopZero;
+            state->field74[index] = loopZero;
+            state->field82[index] = loopZero;
+            state->field90[index] = loopZero;
+            state->field98[index] = loopZero;
             {
-                u8 *field = scene + 51;
+                u8 *field = (u8 *)state + 106;
 
+                *(u16 *)(index * 2 + (u32)field) = loopZero;
+                field += 31;
                 field[index] = loopZero;
             }
-            *(u16 *)(scene + index * 2 + 58) = loopZero;
-            *(u16 *)(scene + index * 2 + 66) = loopZero;
-            *(u16 *)(scene + index * 2 + 74) = loopZero;
-            *(u16 *)(scene + index * 2 + 82) = loopZero;
-            *(u16 *)(scene + index * 2 + 90) = loopZero;
-            *(u16 *)(scene + index * 2 + 98) = loopZero;
-            *(u16 *)(scene + index * 2 + 106) = loopZero;
-            {
-                u8 *field = scene + 137;
-
-                field[index] = loopZero;
+            if (state->field12[index] > 100) {
+                state->field12[index] = limit;
             }
-            if (scene[index + 12] > limit) {
-                scene[index + 12] = limit;
+            if (state->field16[index] > 100) {
+                state->field16[index] = limit;
             }
-            if (scene[index + 16] > limit) {
-                scene[index + 16] = limit;
-            }
-            scene[index + 141] = scene[index + 12];
-            scene[index + 145] = scene[index + 16];
+            state->field141[index] = state->field12[index];
+            field145[index] = state->field16[index];
         }
     }
 
