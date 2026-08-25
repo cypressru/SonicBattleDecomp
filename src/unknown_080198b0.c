@@ -10813,6 +10813,29 @@ void FUN_080309e0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_08030a08 + 1);
 }
 
+void FUN_08031164(void) {
+    u8 *state;
+    u8 *flag;
+    u32 zero;
+    u32 one;
+
+    FUN_0801fbfc((const u16 *)0x08130324, 16);
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+    state = &gUnknown_03001620;
+    flag = state + 125;
+    zero = 0;
+    one = 1;
+    *flag = one;
+    *state = zero;
+    FUN_080184c8();
+    FUN_08018c3c();
+    gUnknown_03002030 = FUN_0801c82c;
+}
+
 void FUN_080312a0(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08031164;
