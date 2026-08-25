@@ -7105,45 +7105,45 @@ void FUN_08028d30(struct UnknownListNode *node) {
         *(u16 *)((u8 *)destinationBase + *localIndex * 16) =
             *(const u16 *)((source = (const u8 *)&gUnknown_03002110) + 96);
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 2;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
             *(u16 *)destinationAddress = *(const u16 *)(source + 98);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 4;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
             *(u16 *)destinationAddress = *(const u16 *)(source + 100);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 6;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
             *(u16 *)destinationAddress = *(const u16 *)(source + 102);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 8;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
             *(u16 *)destinationAddress = *(const u16 *)(source + 104);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationAddress asm("r0");
-            register u32 sentinel asm("r1");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationAddress;
+            register u32 sentinel;
 
             destinationBase = (u16 *)((u8 *)destinationBase + 10);
             destinationAddress = (u8 *)(offset + (u32)destinationBase);
