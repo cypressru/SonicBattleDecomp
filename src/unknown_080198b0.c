@@ -9153,13 +9153,13 @@ void FUN_080299c0(void) {
 
     state = (u8 *)&gUnknown_03002110;
     {
-        register u32 counterOffset asm("r0") = 1138;
-        register u8 *counter asm("r2") = state + counterOffset;
-        register u32 value asm("r0") = *counter + 1;
+        register u32 counterOffset = 1138;
+        register u8 *counter = state + counterOffset;
+        register u32 value = *counter + 1;
         *counter = value;
         {
-            register u32 limitOffset asm("r3") = 1139;
-            register u8 *limit asm("r1") = state;
+            register u32 limitOffset = 1139;
+            register u8 *limit = state;
 
             limit += limitOffset;
             if ((u8)value >= *limit) {
