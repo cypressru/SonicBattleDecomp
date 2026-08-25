@@ -2032,7 +2032,7 @@ void FUN_0801e41c(u8 value) {
     if (type == 0) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = index * 24;
-        struct UnknownEntity *entity;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         entity->field8 = type;
         entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
@@ -2162,10 +2162,10 @@ void FUN_0801e4f4(u8 value) {
                 entity->field8 = mask;
             }
         }
-        savedDoubled = entityOffset / 8 - index;
+        savedDoubled = ((savedDoubled + index) * 8) / 8 - index;
     }
     {
-        u32 scaled = savedDoubled * 32;
+        u32 scaled = index << 6;
         u32 metadataOffset2 = (scaled - index) * 4;
         struct UnknownEntityData *metadata2 =
             (struct UnknownEntityData *)(metadataOffset2 + (u32)savedMetadataBase);
@@ -3009,6 +3009,10 @@ u8 FUN_0801d3ac(u8 value) {
 }
 
 u32 FUN_0801d068(u8 value) {
+    struct GroupState {
+        u8 filler0[32];
+        u8 groups[4];
+    };
     s32 *scores = (s32 *)&gUnknown_03001c40[value];
     s32 bestScore = 0x7fffffff;
     u8 *state;
@@ -3025,17 +3029,19 @@ u32 FUN_0801d068(u8 value) {
     bestIndex = 0;
     state = &gUnknown_03001620;
     if (state[8] != 0) {
-        u8 *groupBase = state + 32;
-        u8 group = groupBase[value];
-        u8 *entries = state + 20;
-        u8 *groups = state + 32;
-        s32 *score = scores;
-        struct UnknownEntityData *candidate =
-            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        struct GroupState *groupState = (struct GroupState *)state;
+        u8 group = groupState->groups[value];
+        u8 *entries;
+        s32 *score;
+        struct UnknownEntityData *candidate;
 
-        for (index = 0; index <= 3; candidate++, score++, index++) {
-            if (index != value && entries[index] != 0xff && groups[index] != group &&
-                bestScore > *score) {
+        index = 0;
+        entries = state + 20;
+        candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        score = scores;
+        for (; index <= 3; candidate++, score++, index++) {
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff &&
+                groupState->groups[index] != group && bestScore > *score) {
                 u16 type = candidate->field20;
 
                 if (type == 0xfc)
@@ -3051,13 +3057,16 @@ u32 FUN_0801d068(u8 value) {
             }
         }
     } else {
-        u8 *entries = state + 20;
-        s32 *score = scores;
-        struct UnknownEntityData *candidate =
-            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        u8 *entries;
+        s32 *score;
+        struct UnknownEntityData *candidate;
 
-        for (index = 0; index <= 3; candidate++, score++, index++) {
-            if (index != value && entries[index] != 0xff && bestScore > *score) {
+        index = 0;
+        entries = state + 20;
+        candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        score = scores;
+        for (; index <= 3; candidate++, score++, index++) {
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff && bestScore > *score) {
                 u16 type = candidate->field20;
 
                 if (type == 0xfc)
