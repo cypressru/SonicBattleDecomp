@@ -1307,6 +1307,7 @@ extern void FUN_08000e04(u8 index);
 extern void FUN_08007e9c(u8 index);
 extern void FUN_08007e24(void);
 extern u32 FUN_0804b03c(u32 value, u32 divisor);
+extern void FUN_0804b6c4(void *destination, u8 value, u32 size);
 extern void FUN_0800fdc8(u8 value);
 extern void FUN_0801103c(u8 value);
 extern void FUN_08000a2c(void);
@@ -1355,7 +1356,7 @@ void FUN_080198b0(void) {
         void *pointer;
         u32 address;
     };
-    u8 *scene;
+    u8 *scene = &gUnknown_03001620;
     u8 *savedScene;
     u8 index;
     u32 wordZero;
@@ -1364,7 +1365,6 @@ void FUN_080198b0(void) {
     gUnknown_03003d98 = 0;
     gUnknown_03003d9c = 0;
     index = 0;
-    scene = &gUnknown_03001620;
     {
         u8 *active = scene + 28;
         u8 *count = &gUnknown_03003d9c;
@@ -1808,6 +1808,192 @@ assign_metadata:
         FUN_08000cf4(3, scene[23], 0);
     }
     FUN_08007e24();
+}
+
+u8 FUN_0801a228(u8 mode) {
+    u8 failed[4];
+    u8 groupWins[2];
+    u8 *scene = &gUnknown_03001620;
+    u8 result = 0;
+
+    FUN_0804b6c4(failed, 0, 4);
+    FUN_0804b6c4(groupWins, 0, 2);
+    scene[55] = 0;
+    scene[56] = 0;
+
+    if (scene[8] == 0) {
+        if (mode == 0) {
+            u8 threshold = scene[5];
+
+            if (threshold <= scene[39]) {
+                failed[0] = 1;
+            }
+            if (threshold <= scene[40]) {
+                failed[1] = 1;
+            }
+            if (threshold <= scene[41]) {
+                failed[2] = 1;
+            }
+            if (threshold <= scene[42]) {
+                failed[3] = 1;
+            }
+            if (failed[0] != 0) {
+                return 0;
+            }
+            if (failed[1] != 0) {
+                return 1;
+            }
+            if (failed[2] != 0) {
+                return 2;
+            }
+            if (failed[3] != 0) {
+                return 3;
+            }
+        } else if (mode == 1) {
+            u8 index;
+
+            if (*(u16 *)(scene + 126) < *(u16 *)(scene + 114)) {
+                result = 0;
+                for (index = 0; index <= 2; index++) {
+                    u8 next = index + 1;
+
+                    if (scene[result + 39] < scene[next + 39]) {
+                        result = next;
+                    }
+                }
+                return result;
+            }
+        } else if (mode == 2) {
+            u32 total;
+
+            if (scene[51] < scene[6]) {
+                if (scene[20] != 0xff) {
+                    (*(u16 *)(scene + 106))++;
+                }
+            } else {
+                failed[0] = 1;
+            }
+            if (scene[52] < scene[6]) {
+                if (scene[21] != 0xff) {
+                    (*(u16 *)(scene + 108))++;
+                }
+            } else {
+                failed[1] = 1;
+            }
+            if (scene[53] < scene[6]) {
+                if (scene[22] != 0xff) {
+                    (*(u16 *)(scene + 110))++;
+                }
+            } else {
+                failed[2] = 1;
+            }
+            if (scene[54] < scene[6]) {
+                if (scene[23] != 0xff) {
+                    (*(u16 *)(scene + 112))++;
+                }
+            } else {
+                failed[3] = 1;
+            }
+            total = failed[0] + failed[1] + failed[2] + failed[3];
+            if ((s32)(scene[36] - 1) <= (s32)total) {
+                if (failed[0] == 0 && scene[20] != 0xff) {
+                    return 0;
+                }
+                if (failed[1] == 0 && scene[21] != 0xff) {
+                    return 1;
+                }
+                if (failed[2] == 0 && scene[22] != 0xff) {
+                    return 2;
+                }
+                if (failed[3] == 0 && scene[23] != 0xff) {
+                    return 3;
+                }
+                return 9;
+            }
+        }
+    } else {
+        scene[scene[32] + 55] += scene[39];
+        scene[scene[33] + 55] += scene[40];
+        scene[scene[34] + 55] += scene[41];
+        scene[scene[35] + 55] += scene[42];
+
+        if (mode == 0) {
+            u8 threshold = scene[5];
+
+            if (threshold <= scene[55]) {
+                failed[0] = 1;
+            }
+            if (threshold <= scene[56]) {
+                failed[1] = 1;
+            }
+            if (failed[0] != 0) {
+                return 0;
+            }
+            if (failed[1] != 0) {
+                return 1;
+            }
+        } else if (mode == 1) {
+            if (*(u16 *)(scene + 126) < *(u16 *)(scene + 114)) {
+                if (scene[55] > scene[56]) {
+                    return 0;
+                }
+                if (scene[55] < scene[56]) {
+                    return 1;
+                }
+                return 9;
+            }
+        } else if (mode == 2) {
+            if (scene[51] < scene[6] && scene[20] != 0xff) {
+                (*(u16 *)(scene + 106))++;
+            } else {
+                failed[0] = 1;
+            }
+            if (scene[52] < scene[6] && scene[21] != 0xff) {
+                (*(u16 *)(scene + 108))++;
+            } else {
+                failed[1] = 1;
+            }
+            if (scene[53] < scene[6] && scene[22] != 0xff) {
+                (*(u16 *)(scene + 110))++;
+            } else {
+                failed[2] = 1;
+            }
+            if (scene[54] < scene[6] && scene[23] != 0xff) {
+                (*(u16 *)(scene + 112))++;
+            } else {
+                failed[3] = 1;
+            }
+            if (failed[0] == 0) {
+                groupWins[scene[32]]++;
+            }
+            if (failed[1] == 0) {
+                groupWins[scene[33]]++;
+            }
+            if (failed[2] == 0) {
+                groupWins[scene[34]]++;
+            }
+            if (failed[3] == 0) {
+                groupWins[scene[35]]++;
+            }
+            if (groupWins[0] == 0 || groupWins[1] == 0) {
+                if (failed[0] == 0) {
+                    return scene[32];
+                }
+                if (failed[1] == 0) {
+                    return scene[33];
+                }
+                if (failed[2] == 0) {
+                    return scene[34];
+                }
+                if (failed[3] == 0) {
+                    return scene[35];
+                }
+                return 9;
+            }
+        }
+    }
+
+    return 0xff;
 }
 
 void FUN_0801a61c(u8 mode) {
