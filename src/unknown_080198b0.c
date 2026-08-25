@@ -1303,6 +1303,10 @@ extern void FUN_08017964(u32 value);
 extern void FUN_0801ce70(void);
 extern void FUN_0800186c(void);
 extern void FUN_08000cf4(u8 index, u8 first, u8 second);
+extern void FUN_08000e04(u8 index);
+extern void FUN_08007e9c(u8 index);
+extern void FUN_08007e24(void);
+extern u32 FUN_0804b03c(u32 value, u32 divisor);
 extern void FUN_0800fdc8(u8 value);
 extern void FUN_0801103c(u8 value);
 extern void FUN_08000a2c(void);
@@ -1590,6 +1594,220 @@ void FUN_080198b0(void) {
         metadata[663] = finalZero;
         metadata[915] = finalZero;
     }
+}
+
+void FUN_08019b5c(void) {
+    u8 *scene = &gUnknown_03001620;
+    u8 index;
+
+    if ((u8)(scene[125] - 2) <= 1) {
+        u8 *base;
+        u8 *groups;
+        u8 zero = 0;
+        u8 *flags16;
+
+        index = 0;
+        base = scene;
+        groups = base + 32;
+        flags16 = base + 16;
+        do {
+            u8 *entries = base + 20;
+
+            if (*(u8 *)(index + (u32)entries) == 9 || index == gUnknown_03001380 ||
+                (base[8] == 1 &&
+                 *(u8 *)(gUnknown_03001380 + (u32)groups) == *(u8 *)(index + (u32)groups))) {
+                u8 *flags12 = base + 12;
+
+                *(u8 *)(index + (u32)flags12) = zero;
+                *(u8 *)(index + (u32)flags16) = zero;
+            }
+            index++;
+        } while (index <= 3);
+    } else if (gUnknown_03002600[7] == 0) {
+        u8 *flags12 = scene + 12;
+        u8 *flags16 = scene + 16;
+        u8 *field141 = scene + 141;
+        u8 *field145 = scene + 145;
+        u8 zero = 0;
+
+        for (index = 0; index <= 3; index++) {
+            *(u8 *)(index + (u32)flags12) = zero;
+            *(u8 *)(index + (u32)flags16) = zero;
+            *(u8 *)(index + (u32)field141) = zero;
+            *(u8 *)(index + (u32)field145) = zero;
+        }
+    }
+
+    if ((&gUnknown_03001620)[20] == 9) {
+        FUN_08000e04(0);
+    } else {
+        FUN_08007e9c(0);
+    }
+    if ((&gUnknown_03001620)[21] == 9) {
+        FUN_08000e04(1);
+    } else {
+        FUN_08007e9c(1);
+    }
+    if ((&gUnknown_03001620)[22] == 9) {
+        FUN_08000e04(2);
+    } else {
+        FUN_08007e9c(2);
+    }
+    if ((&gUnknown_03001620)[23] == 9) {
+        FUN_08000e04(3);
+    } else {
+        FUN_08007e9c(3);
+    }
+
+    scene = &gUnknown_03001620;
+    if ((u8)(scene[125] - 2) > 1) {
+        u8 other;
+
+        scene[24] = 0;
+        scene[25] = 0;
+        scene[26] = 0;
+        scene[27] = 0;
+        {
+            u8 *outerChoices = scene + 20;
+
+            for (index = 0; index <= 2; index++) {
+                if (*(u8 *)(index + (u32)outerChoices) <= 8) {
+                    u8 *choices = &gUnknown_03001620 + 20;
+                    u8 *flags = choices + 4;
+                    u8 *currentChoice = (u8 *)(index + (u32)choices);
+                    u8 *currentFlag = (u8 *)(index + (u32)flags);
+
+                    for (other = index + 1; other <= 3; other++) {
+                        if (*currentChoice == *(u8 *)(other + (u32)choices)) {
+                            if (other == gUnknown_03001380) {
+                                *currentFlag = 1;
+                            } else {
+                                *(u8 *)(other + (u32)flags) = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ((u8)(scene[125] - 2) > 1) {
+            goto assign_metadata;
+        }
+    }
+
+    {
+        u8 *flags = &gUnknown_03001620 + 24;
+
+        for (index = 0; index <= 3; index++) {
+            u8 *flag = (u8 *)(index + (u32)flags);
+
+            if (*flag == 1) {
+                *flag = 2;
+                gUnknown_03003d94 = 21;
+            }
+        }
+    }
+    for (index = 0; index <= 2; index++) {
+        u8 other;
+
+        if (scene[index + 20] <= 8) {
+            for (other = index + 1; other <= 3; other++) {
+                if (scene[index + 20] == scene[other + 20] && scene[index + 24] != 2 &&
+                    scene[other + 24] != 2) {
+                    if (other == gUnknown_03001380) {
+                        scene[index + 24] = 1;
+                    } else {
+                        scene[other + 24] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+assign_metadata:
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 28] != 0) {
+            u32 selection = FUN_0804b03c((gUnknown_03001378 + 4) * (gUnknown_03001378 + 7), 6);
+
+            switch (selection) {
+            case 0: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 27;
+                break;
+            }
+            case 1: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 30;
+                break;
+            }
+            case 2: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 39;
+                break;
+            }
+            case 3: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 45;
+                break;
+            }
+            case 4: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 54;
+                break;
+            }
+            case 5: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 57;
+                break;
+            }
+            }
+        }
+    }
+
+    FUN_0800186c();
+    scene = &gUnknown_03001620;
+    if (scene[20] != 0xff) {
+        FUN_08000cf4(0, scene[20], 0);
+    }
+    if (scene[21] != 0xff) {
+        FUN_08000cf4(1, scene[21], 0);
+    }
+    if (scene[22] != 0xff) {
+        FUN_08000cf4(2, scene[22], 0);
+    }
+    if (scene[23] != 0xff) {
+        FUN_08000cf4(3, scene[23], 0);
+    }
+    FUN_08007e24();
 }
 
 void FUN_0801a61c(u8 mode) {
