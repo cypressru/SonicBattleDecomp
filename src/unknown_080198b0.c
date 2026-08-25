@@ -11928,7 +11928,6 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
         {
             register u32 heldDirection asm("r5") = keys & 0xf0;
 
-            asm volatile("" : "+r"(heldDirection));
             if (heldDirection == 0) {
                 s16 targetX = 120 - state->relativeX;
                 s16 targetY = 104 - state->relativeY;
