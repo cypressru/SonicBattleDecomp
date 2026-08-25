@@ -9888,6 +9888,19 @@ void FUN_080333dc(struct UnknownListNode *node) {
     gUnknown_03003e20[node->position->field13].position->x = node->position->x;
 }
 
+void FUN_08033390(struct UnknownListNode *node) {
+    struct UnknownPosition *position = node->position;
+
+    position->x += 6;
+    if (position->x > 59) {
+        node->position->x = 60;
+        node->position->field14 = 0;
+        node->data = (const void *)((u32)FUN_080333dc + 1);
+    }
+    FUN_0801fed8(node->field6, 0);
+    gUnknown_03003e20[node->position->field13].position->x = node->position->x;
+}
+
 void FUN_08033404(struct UnknownListNode *node) {
     struct UnknownPosition *position = node->position;
 
