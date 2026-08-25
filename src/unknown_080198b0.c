@@ -1175,7 +1175,8 @@ extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
 extern void FUN_08021e70(u16 value);
 
-extern void FUN_0801d618(void);
+void FUN_0801d618(u8 value);
+void FUN_0801d9e0(u8 value);
 extern void FUN_0801d8f4(u8 value);
 extern void FUN_0801daec(u8 value);
 extern void FUN_0801dbd0(u8 value);
@@ -1193,6 +1194,10 @@ void FUN_0801ec10(u8 value);
 void FUN_0801ec64(u8 value);
 void FUN_0801ecb8(u8 value);
 void FUN_0801ed0c(u8 value);
+void FUN_0801e0c4(u8 value);
+void FUN_0801ed6c(u8 value);
+void FUN_0801eddc(u8 value);
+void FUN_0801de5c(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
 extern u32 FUN_0801f578(u32 value, u32 linked, const void *table);
 extern u32 FUN_08020160(u32 value);
@@ -3096,6 +3101,120 @@ void FUN_0801d8f4(u8 value) {
             }
         }
     }
+}
+
+void FUN_0801d618(u8 value) {
+    u32 index = value;
+    u32 doubled = index * 2;
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    u32 entityOffset = (doubled + index) * 8;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+    u32 action;
+
+    if (gUnknown_03001c40[index].field196 != 19) {
+        action = FUN_0801f578(index, entity->field15, gUnknown_08ed8b3c);
+    } else {
+        action = FUN_0801f578(index, entity->field15, gUnknown_08ed8b64);
+    }
+
+    switch (action) {
+    case 2:
+        ((void (*)(u32))FUN_0801e3cc)(index);
+        return;
+    case 3:
+        ((void (*)(u32))FUN_0801de5c)(index);
+        return;
+    case 4:
+        ((void (*)(u32))FUN_0801eb50)(index);
+        return;
+    case 5:
+        ((void (*)(u32))FUN_0801ebb0)(index);
+        return;
+    case 6:
+    case 7:
+    case 8: {
+        u32 linked = entity->field15;
+
+        if (linked != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = linked * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    valid = 0;
+                }
+            } else if (metadataBase[index].field16 == 0) {
+                valid = 1;
+            } else {
+                valid = 0;
+            }
+            if (valid == 0) {
+                goto fallback;
+            }
+        }
+        if (action == 6) {
+            ((void (*)(u32))FUN_0801ec10)(index);
+        } else if (action == 7) {
+            ((void (*)(u32))FUN_0801ec64)(index);
+        } else {
+            ((void (*)(u32))FUN_0801ecb8)(index);
+        }
+        return;
+    }
+    case 9:
+        ((void (*)(u32))FUN_0801e0c4)(index);
+        return;
+    case 10:
+        ((void (*)(u32))FUN_0801ed6c)(index);
+        return;
+    case 11:
+        ((void (*)(u32))FUN_0801eddc)(index);
+        return;
+    case 12:
+        FUN_0801db4c(index);
+        return;
+    case 13:
+        FUN_0801d9e0(index);
+        return;
+    case 14: {
+        u32 linked = FUN_0801d068(index);
+
+        entity->field15 = linked;
+        linked = (u8)linked;
+        if (linked == index) {
+            return;
+        }
+        {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = linked * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                valid = metadataBase[index].field16 != 0;
+            } else {
+                valid = metadataBase[index].field16 == 0;
+            }
+            if (valid != 0) {
+                return;
+            }
+        }
+        goto fallback;
+    }
+    default:
+        return;
+    }
+
+fallback:
+    ((void (*)(u32))FUN_0801ed0c)(index);
 }
 
 void FUN_0801d9e0(u8 value) {
