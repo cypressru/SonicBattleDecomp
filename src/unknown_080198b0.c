@@ -2310,7 +2310,7 @@ void FUN_0801c28c(void) {
         u8 *metadataBase = (u8 *)gUnknown_03001c40;
 
         for (; index <= 3; index++) {
-            if (metadataBase[index] != 0xff) {
+            if (*(u8 *)(index + (u32)metadataBase) != 0xff) {
                 FUN_08007ec8(index);
                 FUN_0800597c(index);
                 FUN_080036dc(index);
@@ -2340,12 +2340,7 @@ void FUN_0801c28c(void) {
         flags = *(u16 *)(stateOffset + (u32)stateBase);
 
         if ((flags & 8) != 0) {
-            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 metadataOffset = (scaled - current) * 4;
-            struct UnknownEntityData *metadata =
-                (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
-
-            if (metadata->field191 != 0) {
+            if (gUnknown_03001c40[current].field191 != 0) {
                 FUN_080207ec(32);
                 gUnknown_03002030 = FUN_0801bd90;
             }
