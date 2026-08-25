@@ -1451,6 +1451,7 @@ animation_ready:
         goto command_done;
 
     sprite_command:
+        command = (u16)command;
         switch (character) {
         case 0:
             resource = ACTIVE_SLOT || remapped == 1 ? 0x08787d18 : 0x0847afd8;
@@ -1496,7 +1497,8 @@ animation_ready:
             break;
         }
 
-        if (character == 1) {
+        switch (character) {
+        case 1:
             if (animation == 19) {
                 gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
                 gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
@@ -1504,8 +1506,12 @@ animation_ready:
                 gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
                 gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
             }
-        } else if (character == 2 && animation == 21) {
-            gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+            break;
+        case 2:
+            if (animation == 21) {
+                gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+            }
+            break;
         }
         FUN_08020440(resource, sound, command);
         goto command_done;
