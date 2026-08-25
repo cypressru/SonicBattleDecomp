@@ -3009,6 +3009,10 @@ u8 FUN_0801d3ac(u8 value) {
 }
 
 u32 FUN_0801d068(u8 value) {
+    struct GroupState {
+        u8 filler0[32];
+        u8 groups[4];
+    };
     s32 *scores = (s32 *)&gUnknown_03001c40[value];
     s32 bestScore = 0x7fffffff;
     u8 *state;
@@ -3025,16 +3029,18 @@ u32 FUN_0801d068(u8 value) {
     bestIndex = 0;
     state = &gUnknown_03001620;
     if (state[8] != 0) {
-        u8 *groupBase = state + 32;
-        u8 group = groupBase[value];
-        u8 *entries = state + 20;
-        u8 *groups = state + 32;
-        s32 *score = scores;
-        struct UnknownEntityData *candidate =
-            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        struct GroupState *groupState = (struct GroupState *)state;
+        u8 group = groupState->groups[value];
+        u8 *entries;
+        s32 *score;
+        struct UnknownEntityData *candidate;
 
-        for (index = 0; index <= 3; candidate++, score++, index++) {
-            if (index != value && entries[index] != 0xff && groups[index] != group &&
+        index = 0;
+        entries = state + 20;
+        candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        score = scores;
+        for (; index <= 3; candidate++, score++, index++) {
+            if (index != value && entries[index] != 0xff && groupState->groups[index] != group &&
                 bestScore > *score) {
                 u16 type = candidate->field20;
 
@@ -3051,12 +3057,15 @@ u32 FUN_0801d068(u8 value) {
             }
         }
     } else {
-        u8 *entries = state + 20;
-        s32 *score = scores;
-        struct UnknownEntityData *candidate =
-            (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        u8 *entries;
+        s32 *score;
+        struct UnknownEntityData *candidate;
 
-        for (index = 0; index <= 3; candidate++, score++, index++) {
+        index = 0;
+        entries = state + 20;
+        candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
+        score = scores;
+        for (; index <= 3; candidate++, score++, index++) {
             if (index != value && entries[index] != 0xff && bestScore > *score) {
                 u16 type = candidate->field20;
 
