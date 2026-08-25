@@ -11708,7 +11708,7 @@ void FUN_0804224c(u8 value) {
             second = *secondAddress;
             difference -= second;
             {
-                register u32 total asm("r0") = global->field40 + difference;
+                register u32 total = global->field40 + difference;
 
                 *destination = total;
             }
