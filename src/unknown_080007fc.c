@@ -1106,17 +1106,35 @@ animation_ready:
         command = commands[gUnknown_03003110[slot]];
         opcode = command & 0xffff0000;
         if (opcode == 0x11000000) {
-            gUnknown_03003100[slot] = command;
-        } else if (opcode > 0x11000000) {
-            if (opcode == 0x12000000) {
-                gUnknown_03003118[slot] = command;
-            } else if (opcode == 0xfffe0000) {
+            goto opcode_110;
+        }
+        if (opcode <= 0x11000000) {
+            if (opcode == 0x00f00000) {
                 goto loop_command;
             }
-        } else if (opcode == 0x00f00000) {
+            if (opcode == 0x10000000) {
+                goto sprite_command;
+            }
+            goto command_done;
+        }
+        if (opcode == 0x12000000) {
+            goto opcode_120;
+        }
+        if (opcode == 0xfffe0000) {
             goto loop_command;
-        } else if (opcode == 0x10000000) {
-            switch (character) {
+        }
+        goto command_done;
+
+    opcode_110:
+        gUnknown_03003100[slot] = command;
+        goto command_done;
+
+    opcode_120:
+        gUnknown_03003118[slot] = command;
+        goto command_done;
+
+    sprite_command:
+        switch (character) {
             case 0:
                 resource = !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8
                                                                                      : 0x08787d18;
@@ -1182,7 +1200,6 @@ animation_ready:
                 gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
             }
             FUN_08020440(resource, sound, command);
-        }
         goto command_done;
 
     loop_command:
