@@ -8405,7 +8405,7 @@ void FUN_08029250(void) {
             u8 group;
 
             {
-                register u32 recordOffset asm("r4");
+                register u32 recordOffset;
 
                 recordOffset = recordIndex * 156;
                 recordAddress = &record[recordOffset];
@@ -8448,7 +8448,7 @@ void FUN_08029250(void) {
                     register u32 destinationOffset asm("r0");
                     register u8 *destination asm("r3");
                     register const u16 *entries asm("r6");
-                    register u8 *entryBase asm("r0");
+                    register u8 *entryBase;
 
                     scaledGroup <<= 3;
                     scaledGroup -= group;
