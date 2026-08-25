@@ -10912,19 +10912,21 @@ void FUN_08036560(void) {
     LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
     LZ77UnCompVram((const void *)0x08156F08, (void *)0x06010000);
     {
-        register s32 variant asm("r0") = gUnknown_03002110.field119;
+        register s32 variant = gUnknown_03002110.field119;
 
-        asm volatile("" : "+r"(variant));
         if (variant == 0) {
             LZ77UnCompVram((const void *)0x0815711C, (void *)0x06010C00);
         } else {
-            asm volatile("cmp r0, #0\n\tblt .L08036560_variant_done");
+            if (variant < 0) {
+                goto variant_done;
+            }
             if (variant <= 5) {
                 LZ77UnCompVram((const void *)0x08157934, (void *)0x06010C00);
                 gUnknown_03005384 = 200;
             }
-            asm volatile(".L08036560_variant_done:");
         }
+    variant_done:
+        ;
     }
 
     zeroF800 = 0;
