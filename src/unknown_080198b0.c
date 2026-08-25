@@ -8771,11 +8771,11 @@ void FUN_08029250(void) {
             mode = *modeAddress;
         }
         if (mode != 0) {
-            register u8 *scene asm("r0") = &gUnknown_03001620;
+            register u8 *scene = &gUnknown_03001620;
 
             scene += 36;
             {
-                register u32 four asm("r1") = 4;
+                register u32 four = 4;
 
                 *scene = four;
             }
@@ -8802,12 +8802,12 @@ void FUN_08029250(void) {
     LZ77UnCompVram(gUnknown_0810dbcc, (void *)0x06000000);
     LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
     {
-        register u32 count asm("r5");
+        register u32 count;
 
         fills[1] = 0;
         {
-            register void *destination asm("r1") = (void *)0x0600F800;
-            register const void *source asm("r0");
+            register void *destination = (void *)0x0600F800;
+            register const void *source;
 
             count = 0x01000200;
             source = fillAddresses[0];
@@ -8815,8 +8815,8 @@ void FUN_08029250(void) {
         }
         fills[2] = 0;
         {
-            register void *destination asm("r1") = (void *)0x0600F000;
-            register const void *source asm("r0");
+            register void *destination = (void *)0x0600F000;
+            register const void *source;
 
             source = fillAddresses[1];
             CpuFastSet(source, destination, count);
