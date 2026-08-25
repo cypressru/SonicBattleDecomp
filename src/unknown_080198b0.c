@@ -842,8 +842,14 @@ extern struct UnknownGraphicsRecord47258 gUnknown_03000290[];
 extern const u8 gUnknown_081a7f38[];
 extern const void *gUnknown_081b94c8[];
 extern void FUN_0804a5b8(const void *source, void *destination);
+extern void FUN_0804a5b4(const void *source, void *destination);
 extern s16 *gUnknown_03000274;
 extern const void *gUnknown_08edda68[];
+extern const void *gUnknown_08edbd1c[];
+extern const void *gUnknown_08edbd48[];
+extern u8 gUnknown_030052d0[];
+extern const u8 gUnknown_081201ec[][32];
+extern void FUN_0802dd18(struct UnknownListNode *node);
 extern const void *gUnknown_08edda6c[];
 extern const struct UnknownGraphicsBundle47d1c gUnknown_081bbbe8[];
 extern const u8 gUnknown_081a7f78[];
@@ -9828,6 +9834,17 @@ void FUN_0802df40(struct UnknownListNode *node) {
     state->field2 = 0;
     state->field3 = 0;
     node->data = (const void *)((u32)FUN_0802ded4 + 1);
+}
+
+void FUN_0802ded4(struct UnknownListNode *node) {
+    u8 *allocation = node->allocation;
+    u8 index = allocation[6];
+
+    FUN_0804a5b4(gUnknown_08edbd1c[gUnknown_030052d0[index]], (void *)0x06008000);
+    FUN_0804a5b4(gUnknown_08edbd48[gUnknown_030052d0[index]], (void *)0x0600f080);
+    FUN_0804a594(gUnknown_081201ec[gUnknown_030052d0[index]], (void *)0x05000020, 8);
+    allocation[7] = 0;
+    node->data = (const void *)((u32)FUN_0802dd18 + 1);
 }
 
 void FUN_08034f10(struct UnknownListNode *node) {
