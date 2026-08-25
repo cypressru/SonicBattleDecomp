@@ -1653,7 +1653,8 @@ void FUN_0801c28c(void) {
             u8 *state = (u8 *)(scaled + (u32)stateBase);
             u32 stateOffset = state[60] * 2;
 
-            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase + 20);
+            stateBase += 20;
+            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
             if ((flags & 0x200) != 0) {
                 switch (metadata->field159) {
                 case 0:
