@@ -1550,6 +1550,52 @@ void FUN_0800f3c4(void) {
 #undef records
 }
 
+void FUN_0800f5bc(u8 owner) {
+    u8 recordIndex = 0;
+
+#define REPLACE_RESOURCE(nextResource)                                                             \
+    do {                                                                                           \
+        u8 mode = record->nineteenth;                                                              \
+        s16 x = record->eighteenth[0];                                                             \
+        s16 y = record->eighteenth[1];                                                             \
+        s16 height = record->eighteenth[2];                                                        \
+        u8 field149 = record->twentieth;                                                           \
+        FUN_0800baac(recordIndex);                                                                 \
+        FUN_0800c1c8((nextResource), mode, x, y, height, 0, 0, 0, 0, owner, field149);             \
+    } while (0)
+
+    do {
+        struct UnknownRecord030017d0 *record = &gUnknown_030017d0[recordIndex];
+
+        if (record->sixteenth == owner) {
+            u16 resource = record->seventeenth;
+
+            if (resource == 0x28 || resource == 0x2d) {
+                REPLACE_RESOURCE(0x29);
+            } else if ((u16)(resource - 0x3c) < 2) {
+                REPLACE_RESOURCE(0x3e);
+            } else if ((u16)(resource - 0x50) < 2) {
+                REPLACE_RESOURCE(0x52);
+            } else if ((u16)(resource - 0x64) < 2) {
+                REPLACE_RESOURCE(0x66);
+            } else if ((u16)(resource - 0x78) < 2) {
+                REPLACE_RESOURCE(0x7a);
+            } else if ((u16)(resource - 0x8c) < 2) {
+                REPLACE_RESOURCE(0x8e);
+            } else if ((u16)(resource - 0xa1) < 2) {
+                REPLACE_RESOURCE(0xa5);
+            } else if ((u16)(resource - 0xa3) < 2) {
+                REPLACE_RESOURCE(0xa6);
+            } else if (resource == 0xc8) {
+                REPLACE_RESOURCE(0xc9);
+            }
+        }
+        recordIndex = (u8)(recordIndex + 1);
+    } while (recordIndex < 12);
+
+#undef REPLACE_RESOURCE
+}
+
 void FUN_0800f9c0(void) {
     struct {
         struct UnknownQueueEntry08018004 entry;
