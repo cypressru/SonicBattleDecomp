@@ -1040,6 +1040,7 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
         goto not_remapped;
     }
     remapped = 1;
+    commandTable = (const u8 *)gUnknown_030013b0;
     character = gUnknown_030013b0[slot].first[FUN_0800b098(animation)];
     goto animation_ready;
 
@@ -1050,13 +1051,13 @@ invalid_stream:
 
 not_remapped:
     remapped = 0;
+    commandTable = (const u8 *)0x0868eda8;
 
 animation_ready:
 
-    commandTable = (const u8 *)0x0868eda8;
     animationIndex = FUN_0800b098(animation);
     commands =
-        *(const u32 *const *)(commandTable + (character * 0x118 + animationIndex * 4));
+        *(const u32 *const *)(character * 0x118 + animationIndex * 4 + (u32)commandTable);
 
     if (gUnknown_030030f8[slot] != animation || gUnknown_03003120[slot] != character ||
         (s16)gUnknown_03003108[slot] == 0) {
