@@ -2386,8 +2386,9 @@ void FUN_0801c4bc(void) {
 
     FUN_08006e64();
     FUN_0800c728();
+    scene += 20;
     for (index = 0; index <= 3; index++) {
-        if (scene[index + 20] != 0xff) {
+        if (scene[index] != 0xff) {
             FUN_08007ec8(index);
             FUN_0800597c(index);
             FUN_080036dc(index);
@@ -2458,7 +2459,7 @@ void FUN_0801c4bc(void) {
             u32 selection;
 
             FUN_080007fc(index);
-            selection = ((gUnknown_03001378 + 7) * (gUnknown_03001378 + 4)) % 6;
+            selection = ((gUnknown_03001378 + 4) * (gUnknown_03001378 + 7)) % 6;
             switch (selection) {
             case 0: {
                 u8 *base = (u8 *)gUnknown_03001c40;
