@@ -3959,14 +3959,16 @@ u16 FUN_0801d408(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = *((u8 *)entities + entityOffset + 15) * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
             u8 *coordinateBase = (u8 *)metadataBase;
             s16 *coordinate;
             u32 valid;
 
+            coordinateOffset = linkedOffset + metadataOffset;
             coordinateBase += 54;
-            coordinate = (s16 *)(linkedOffset + metadataOffset + (u32)coordinateBase);
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
 
             if (*coordinate < 0) {
                 if (metadataBase[index].field16 != 0)
@@ -3993,14 +3995,16 @@ u16 FUN_0801d408(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = *((u8 *)entities + entityOffset + 15) * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
             u8 *coordinateBase = (u8 *)metadataBase;
             s16 *coordinate;
             u32 valid;
 
+            coordinateOffset = linkedOffset + metadataOffset;
             coordinateBase += 54;
-            coordinate = (s16 *)(linkedOffset + metadataOffset + (u32)coordinateBase);
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
 
             if (*coordinate < 0) {
                 if (metadataBase[index].field16 != 0)
@@ -4027,14 +4031,16 @@ u16 FUN_0801d408(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = *((u8 *)entities + entityOffset + 15) * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
             u8 *coordinateBase = (u8 *)metadataBase;
             s16 *coordinate;
             u32 valid;
 
+            coordinateOffset = linkedOffset + metadataOffset;
             coordinateBase += 54;
-            coordinate = (s16 *)(linkedOffset + metadataOffset + (u32)coordinateBase);
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
 
             if (*coordinate < 0) {
                 if (metadataBase[index].field16 != 0)
@@ -4051,14 +4057,19 @@ u16 FUN_0801d408(u8 value) {
             if (valid == 0)
                 goto fallback;
         }
-        ((void (*)(u32))FUN_0801ecb8)(index);
-        break;
+        goto success7;
     }
     }
-    return action;
+    goto done;
 
 fallback:
     ((void (*)(u32))FUN_0801ed0c)(index);
+    goto done;
+
+success7:
+    ((void (*)(u32))FUN_0801ecb8)(index);
+
+done:
     return action;
 }
 
