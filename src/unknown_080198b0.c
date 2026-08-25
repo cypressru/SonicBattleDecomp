@@ -3040,8 +3040,8 @@ u32 FUN_0801d068(u8 value) {
         candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
         score = scores;
         for (; index <= 3; candidate++, score++, index++) {
-            if (index != value && entries[index] != 0xff && groupState->groups[index] != group &&
-                bestScore > *score) {
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff &&
+                groupState->groups[index] != group && bestScore > *score) {
                 u16 type = candidate->field20;
 
                 if (type == 0xfc)
@@ -3066,7 +3066,7 @@ u32 FUN_0801d068(u8 value) {
         candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
         score = scores;
         for (; index <= 3; candidate++, score++, index++) {
-            if (index != value && entries[index] != 0xff && bestScore > *score) {
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff && bestScore > *score) {
                 u16 type = candidate->field20;
 
                 if (type == 0xfc)
