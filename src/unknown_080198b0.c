@@ -1661,11 +1661,29 @@ void FUN_0801c28c(void) {
                     break;
                 }
 
-                ((u8 *)gUnknown_03001c40)[18] = ((u8 *)gUnknown_03001c40)[16] ^ 1;
-                ((u8 *)gUnknown_03001c40)[270] = ((u8 *)gUnknown_03001c40)[268] ^ 1;
-                ((u8 *)gUnknown_03001c40)[522] = ((u8 *)gUnknown_03001c40)[520] ^ 1;
-                ((u8 *)gUnknown_03001c40)[774] = ((u8 *)gUnknown_03001c40)[772] ^ 1;
-                metadata->field36 = 0;
+                {
+                    u8 *base = (u8 *)gUnknown_03001c40;
+                    u32 one = 1;
+                    u32 zero = 0;
+                    u32 sourceOffset;
+                    u32 destinationOffset;
+
+                    base[18] = base[16] ^ one;
+                    sourceOffset = 0x86;
+                    sourceOffset <<= 1;
+                    destinationOffset = 0x87;
+                    destinationOffset <<= 1;
+                    base[destinationOffset] = base[sourceOffset] ^ one;
+                    sourceOffset = 0x82;
+                    sourceOffset <<= 2;
+                    destinationOffset += 0xfc;
+                    base[destinationOffset] = base[sourceOffset] ^ one;
+                    sourceOffset = 0xc1;
+                    sourceOffset <<= 2;
+                    destinationOffset = 0x306;
+                    base[destinationOffset] = base[sourceOffset] ^ one;
+                    metadata->field36 = zero;
+                }
             }
         } else {
             *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
