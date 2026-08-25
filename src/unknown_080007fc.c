@@ -332,7 +332,7 @@ void FUN_080007fc(u8 index) {
     u32 offset = (wideIndex - index) << 2;
     u8 *record = (u8 *)table + offset;
     u8 *activeRecord;
-    u8 *mode;
+    u8 *mode = &gUnknown_0300138c;
     u8 byteZero = 0;
     u32 wordZero = 0;
 
@@ -395,18 +395,16 @@ void FUN_080007fc(u8 index) {
     record[156] = byteZero;
     record[157] = byteZero;
     record[158] = byteZero;
-    mode = &gUnknown_0300138c;
-    record = (u8 *)table;
 
     {
         u8 i;
 
         for (i = 0; i <= 9; i++) {
-            record[offset + 128 + i] = 0;
+            ((u8 *)table)[offset + 128 + i] = 0;
         }
     }
 
-    activeRecord = record + offset;
+    activeRecord = (u8 *)&table[index];
     *(u16 *)(activeRecord + 54) = 0;
     *(u16 *)(activeRecord + 62) = 0;
     *(u32 *)(activeRecord + 72) = 0;
@@ -441,7 +439,7 @@ void FUN_080007fc(u8 index) {
     {
         if (*mode == 0 || index == gUnknown_03001380 ||
             (index == gUnknown_03001380 + 2 && gUnknown_03001620.activeSlots[index + 8] != 0)) {
-            ((u8 *)table)[offset + 199] = 12;
+            ((u8 *)&table[index])[199] = 12;
         }
     }
 }
