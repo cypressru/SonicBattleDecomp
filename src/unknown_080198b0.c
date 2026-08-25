@@ -8457,9 +8457,9 @@ void FUN_08029d74(struct UnknownListNode *node) {
 
         {
             register struct UnknownAllocation29d74 *firstAddress asm("r1") = data;
-            register u32 first asm("r0") = firstAddress->firstSelection;
+            register u32 first = firstAddress->firstSelection;
             register struct UnknownAllocation29d74 *secondAddress asm("r2");
-            register u32 flags asm("r1");
+            register u32 flags;
 
             first++;
             first &= mask;
@@ -8474,7 +8474,7 @@ void FUN_08029d74(struct UnknownListNode *node) {
 
             if (secondAddress->firstSelection != 0xFF) {
                 register u8 selection asm("r3");
-                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+                register u8 *flagAddress = (u8 *)data + 16;
 
                 selection = secondAddress->firstSelection;
                 flagAddress += selection;
@@ -8489,7 +8489,7 @@ void FUN_08029d74(struct UnknownListNode *node) {
                     displayState[3] = flags | bit;
                 }
                 {
-                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
+                    register u8 *flagAddress = (u8 *)data + 12;
                     register struct UnknownAllocation29d74 *selectionAddress asm("r1") = data;
                     register u32 selection asm("r1") = selectionAddress->firstSelection;
 
