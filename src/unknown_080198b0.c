@@ -8539,7 +8539,7 @@ void FUN_08029250(void) {
                             u8 column;
                             register u32 scaledGroup asm("r1") = firstGroup;
                             register u32 scratch;
-                            register u8 *destination asm("r6");
+                            register u8 *destination;
                             register u8 *destinationAddress asm("r2");
                             register const u16 *entries asm("r5");
 
@@ -8595,7 +8595,7 @@ void FUN_08029250(void) {
                             u8 column;
                             register u32 scaledGroup asm("r1") = secondGroup;
                             register u32 scratch;
-                            register u8 *destination asm("r6");
+                            register u8 *destination;
                             register u8 *destinationAddress asm("r2");
                             register const u16 *entries asm("r5");
 
@@ -8651,7 +8651,7 @@ void FUN_08029250(void) {
                             u8 column;
                             register u32 scaledGroup asm("r1") = thirdGroup;
                             register u32 scratch;
-                            register u8 *destination asm("r6");
+                            register u8 *destination;
                             register u8 *destinationAddress asm("r2");
                             register const u16 *entries asm("r5");
 
@@ -8712,7 +8712,7 @@ void FUN_08029250(void) {
                             u8 column;
                             register u32 scaledGroup asm("r1") = fourthGroup;
                             register u32 scratch;
-                            register u8 *destination asm("r6");
+                            register u8 *destination;
                             register const u16 *entries asm("r5");
 
                             scaledGroup <<= 3;
