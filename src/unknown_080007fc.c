@@ -1463,7 +1463,7 @@ void FUN_080177b8(u8 participant) {
     u8 i;
     volatile u32 participantSlot;
     u32 initialParticipant;
-    u32 value;
+    u16 value;
     struct UnknownState080180f0 *ring;
     u32 previous;
     u32 changed;
