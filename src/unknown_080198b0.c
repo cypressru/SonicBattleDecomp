@@ -8476,15 +8476,15 @@ void FUN_08029250(void) {
                 u8 initialMetadata;
 
                 {
-                    register u32 metadataOffset asm("r1") = 200;
-                    register u8 *metadataAddress asm("r0");
+                    register u32 metadataOffset = 200;
+                    register u8 *metadataAddress;
 
                     metadataOffset <<= 2;
                     metadataAddress = initialState + metadataOffset;
                     initialMetadata = *metadataAddress;
                 }
                 {
-                    register u8 *recordAddress asm("r1");
+                    register u8 *recordAddress;
                     register u32 metadataValue asm("r0") = initialMetadata;
 
                     recordAddress = record;
@@ -8493,7 +8493,7 @@ void FUN_08029250(void) {
                 }
             }
             {
-                register u32 firstGroup asm("r4") = 0;
+                register u32 firstGroup = 0;
 
                 state = initialState;
                 {
