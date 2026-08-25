@@ -626,6 +626,11 @@ struct UnknownAllocation25a98 {
     u8 childIds[7];
 };
 
+struct UnknownAllocation24fcc {
+    u8 filler0[20];
+    struct UnknownListNode *children[3];
+};
+
 struct UnknownAllocation27db8 {
     u8 filler0[16];
     u16 field16;
@@ -6091,6 +6096,24 @@ u16 FUN_0802528c(u16 value) {
         } while (index < limit);
     }
     return 0xffff;
+}
+
+void FUN_08024fcc(struct UnknownListNode *node) {
+    struct UnknownAllocation24fcc *allocation = node->allocation;
+    struct UnknownState03004dbc *state;
+    struct UnknownPosition *position;
+
+    position = node->position;
+    state = gUnknown_03004dbc;
+    position->x = state->field12 + 212;
+    if (state->field3 != 0) {
+        FUN_0801f8c0(allocation->children[0]);
+        FUN_0801f8c0(allocation->children[1]);
+        FUN_0801f8c0(allocation->children[2]);
+        FUN_0801f8c0(node);
+    } else {
+        FUN_0801fed8(node->field6, 0);
+    }
 }
 
 void FUN_080278b4(struct UnknownListNode *node) {
