@@ -26,6 +26,7 @@ void FUN_08019b5c(void);
 void FUN_0801aadc(void);
 void FUN_0801a898(void);
 void FUN_0801ad38(void);
+u8 FUN_0801c968(u8 condition, u8 index);
 void FUN_0801c28c(void);
 extern u8 gUnknown_0300138c;
 extern u8 gUnknown_03003d98;
@@ -36,6 +37,7 @@ extern u8 gUnknown_030030d0[];
 extern u8 FUN_08015858(void);
 extern void FUN_080074a8(u8 value);
 extern void FUN_0801c8a4(void);
+void FUN_0801c8f0(void);
 extern void FUN_080402a0(void);
 extern void FUN_0802b980(void);
 extern void FUN_0803ae04(void);
@@ -1284,6 +1286,10 @@ extern struct CameraTarget gUnknown_03002040;
 extern u8 gUnknown_03002034;
 extern void FUN_080006d0(void);
 extern u16 gUnknown_03001378;
+extern s16 gUnknown_03002b70;
+extern s16 gUnknown_03002b74;
+extern s16 gUnknown_03002b80;
+extern s16 gUnknown_03002bd0;
 extern void FUN_080177b8(u8 participant);
 extern u8 FUN_080153e0(void);
 extern u8 FUN_0801584c(void);
@@ -2636,6 +2642,347 @@ void FUN_0801afc4(void) {
         FUN_08017c5c();
     }
     (*(u16 *)(&gUnknown_03001620 + 114))++;
+}
+
+void FUN_0801b394(void) {
+    u8 *scene = &gUnknown_03001620;
+    u8 index;
+    u8 mode;
+
+    if (gUnknown_0300138c == 0) {
+        if ((u8)(scene[28] - 1) <= 0xfd) {
+            FUN_0801d5d4(0);
+        }
+        if ((u8)(scene[29] - 1) <= 0xfd) {
+            FUN_0801d5d4(1);
+        }
+        if ((u8)(scene[30] - 1) <= 0xfd) {
+            FUN_0801d5d4(2);
+        }
+        if ((u8)(scene[31] - 1) <= 0xfd) {
+            FUN_0801d5d4(3);
+        }
+    } else {
+        u32 current = gUnknown_03001380;
+
+        if (current <= 1 && scene[current + 30] != 0) {
+            current += 2;
+        }
+        FUN_0801d5d4(current);
+        FUN_080074a8(current);
+    }
+
+    FUN_080177b8(gUnknown_03001380);
+    {
+        u32 current = gUnknown_03001380;
+        struct UnknownEntityData *entity = &gUnknown_03001c40[current];
+        u32 scaled = current << 6;
+        u8 *state = gUnknown_03001b30 + scaled;
+        u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+        if (entity->field20 == 55) {
+            if ((flags & 0x20) != 0) {
+                gUnknown_03002040.base -= 128;
+            } else if ((flags & 0x10) != 0) {
+                gUnknown_03002040.base += 128;
+            } else {
+                gUnknown_03002040.base = 0;
+            }
+        } else if (entity->field20 == 53) {
+            if ((flags & 0x200) != 0) {
+                switch (entity->field159) {
+                case 0:
+                    entity->field159 = 1;
+                    break;
+                case 1:
+                    entity->field159 = 0;
+                    break;
+                case 2:
+                    entity->field159 = 3;
+                    break;
+                case 3:
+                    entity->field159 = 2;
+                    break;
+                }
+                gUnknown_03001c40[0].field18 = gUnknown_03001c40[0].field16 ^ 1;
+                gUnknown_03001c40[1].field18 = gUnknown_03001c40[1].field16 ^ 1;
+                gUnknown_03001c40[2].field18 = gUnknown_03001c40[2].field16 ^ 1;
+                gUnknown_03001c40[3].field18 = gUnknown_03001c40[3].field16 ^ 1;
+                entity->field36 = 0;
+            }
+        } else if (scene[136] == 0xff) {
+            gUnknown_03002040.base = 0;
+        }
+    }
+
+    FUN_08006e64();
+    FUN_0800c728();
+    if (gUnknown_0300138c == 0) {
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        FUN_080066d8();
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
+        }
+    } else {
+        u32 current = gUnknown_03001380;
+
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        FUN_080066d8();
+        FUN_08006134(current);
+        FUN_08005310(current);
+        FUN_0800486c(current);
+        if (current <= 1 && scene[current + 30] != 0) {
+            FUN_08006134(current + 2);
+            FUN_08005310(current + 2);
+            FUN_0800486c(current + 2);
+        }
+    }
+    FUN_080006d0();
+
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+    }
+    {
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u8 *state = gUnknown_03001b30 + scaled;
+        u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+        if (gUnknown_0300138c == 0 && (flags & 8) != 0 && FUN_0801584c() == 30 &&
+            gUnknown_03001c40[current].field191 == 0 && scene[116] == 0) {
+            gUnknown_03002030 = FUN_0801c8f0;
+            FUN_080182ac();
+            FUN_08016684();
+            FUN_08017ed0();
+            FUN_08013214(0x45);
+            FUN_08017f6c();
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+            FUN_08011c7c();
+            FUN_080175d4();
+            FUN_08017d58();
+            FUN_08017c5c();
+            return;
+        }
+    }
+
+    if (scene[37] != 0) {
+        u8 condition = FUN_0801c968(scene[37], gUnknown_03001380);
+        u8 previous = scene[116];
+
+        scene[116] = previous | condition;
+        if ((previous != 0 || condition != 0) &&
+            (gUnknown_03001c40[gUnknown_03001380].field180 & 0x200000) != 0) {
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 47] > 2) {
+            u8 command = gUnknown_03001c40[index].field196;
+
+            switch (command) {
+            case 0:
+                FUN_0801f618(0x145);
+                break;
+            case 1:
+                FUN_0801f618(0x146);
+                break;
+            case 2:
+                FUN_0801f618(0x147);
+                break;
+            case 3:
+                FUN_0801f618(0x148);
+                break;
+            case 4:
+                FUN_0801f618(0x149);
+                break;
+            case 5:
+                FUN_0801f618(0x14a);
+                break;
+            case 6:
+                FUN_0801f618(0x14b);
+                break;
+            case 7:
+                FUN_0801f618(0x14c);
+                break;
+            }
+            scene[index + 47] = 0;
+        }
+    }
+
+    if (gUnknown_0300138c != 0) {
+        if (scene[132] == gUnknown_03003d9c) {
+            scene[133] = 0;
+        } else {
+            scene[133]++;
+        }
+        if (scene[133] > 60) {
+            scene[125] = 5;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+
+    if (scene[116] == 0) {
+        gUnknown_03003da0 = FUN_0801a228(scene[4]);
+    } else {
+        gUnknown_03003da0 = 0xff;
+    }
+    if (gUnknown_03003da0 != 0xff) {
+        FUN_08012b98(40);
+        gUnknown_03002030 = FUN_0801afc4;
+        scene[135] = 1;
+        FUN_08020944();
+        FUN_0801f618(47);
+        FUN_08017964(gUnknown_03001380);
+    } else if (scene[4] != 2 || scene[gUnknown_03001380 + 51] < scene[6]) {
+        if (*(u16 *)(scene + 128) < *(u16 *)(scene + 130) && scene[10] != 0) {
+            struct UnknownEntityData *entity = &gUnknown_03001c40[gUnknown_03001380];
+
+            *(u16 *)(scene + 130) = 0;
+            if (entity->field20 == 0xfe) {
+                entity->field141 = entity->filler142[0];
+            }
+            FUN_080007fc(gUnknown_03001380);
+            FUN_08012b98(30);
+            FUN_08017964(gUnknown_03001380);
+        } else {
+            struct UnknownEntityData *entity = &gUnknown_03001c40[gUnknown_03001380];
+
+            if (entity->field20 == 0xfe) {
+                (*(u16 *)(scene + 130))++;
+                if ((entity->field180 & 0x200000) != 0) {
+                    FUN_08012b98(11);
+                }
+                if (FUN_08015498() != 0) {
+                    FUN_08012b98(12);
+                    FUN_08001b0c(gUnknown_03001380, 0xff);
+                }
+            } else if (entity->field20 == 0xff) {
+                u32 scaled = gUnknown_03001380 << 6;
+                u8 *state = gUnknown_03001b30 + scaled;
+                u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+                (*(u16 *)(scene + 130))++;
+                if ((flags & 1) != 0) {
+                    FUN_080007fc(gUnknown_03001380);
+                    FUN_08012b98(30);
+                    FUN_08017964(gUnknown_03001380);
+                    *(u16 *)(scene + 130) = 0;
+                }
+            }
+        }
+    } else {
+        if ((u8)(scene[125] - 2) <= 1) {
+            scene[117] = 0xff;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+        if ((s32)((u32) * (u16 *)(scene + 114) -
+                  (u32) * (u16 *)(scene + 106 + gUnknown_03001380 * 2)) >= 91) {
+            if (scene[136] == 0xff) {
+                scene[136] = 0;
+            } else {
+                u32 current = gUnknown_03001380;
+                u32 scaled = current << 6;
+                u8 *state = gUnknown_03001b30 + scaled;
+                u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+                if ((flags & 1) == 0) {
+                    if ((flags & 0x20) != 0) {
+                        gUnknown_03002040.base -= 32;
+                    } else if ((flags & 0x10) != 0) {
+                        gUnknown_03002040.base += 32;
+                    }
+                } else {
+                    scene[136]++;
+                    gUnknown_03002040.base = 0;
+                }
+            }
+
+            for (index = 0; index <= 3; index++) {
+                u32 candidate = scene[136];
+
+                if (candidate < 4 && scene[candidate + 51] < scene[6] &&
+                    scene[candidate + 20] != 0xff) {
+                    break;
+                }
+                scene[136]++;
+                if (scene[136] > 3) {
+                    scene[136] = 0;
+                }
+            }
+        }
+    }
+
+    if (scene[136] == 0xff) {
+        FUN_0801a04c(gUnknown_03001380);
+    } else {
+        FUN_0801a04c(scene[136]);
+    }
+    mode = FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(mode);
+    FUN_08017f6c();
+    if (mode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+
+    for (index = 0; index <= 3; index++) {
+        struct UnknownEntityData *entity = &gUnknown_03001c40[index];
+
+        if (scene[index + 28] != 0 && entity->field20 == 0xfe &&
+            (scene[4] != 2 || scene[index + 51] < scene[6]) && entity->field26 > 64) {
+            s16 *position = (s16 *)entity;
+            u32 random;
+
+            FUN_080007fc(index);
+            random = FUN_08020144();
+            position[0] += (random & 0xfff) - 0x800;
+            random = FUN_08020144();
+            position[1] += (random & 0xfff) - 0x800;
+            if (position[0] >= gUnknown_03002b74) {
+                position[0] = gUnknown_03002b74 - 16;
+            } else if (position[0] <= gUnknown_03002bd0) {
+                position[0] = gUnknown_03002bd0 + 16;
+            }
+            if (position[1] >= gUnknown_03002b80) {
+                position[1] = gUnknown_03002b80 - 16;
+            } else if (position[1] <= gUnknown_03002b70) {
+                position[1] = gUnknown_03002b70 + 16;
+            }
+            FUN_0801a6a8(index);
+        }
+    }
+    (*(u16 *)(scene + 114))++;
+    if ((*(u16 *)(scene + 114) & 0xf) == 0) {
+        FUN_08007e24();
+    }
 }
 
 void FUN_0801bcac(void) {
