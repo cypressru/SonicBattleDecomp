@@ -269,7 +269,9 @@ struct UnknownEntityFrame {
 struct UnknownEntityData {
     u8 filler0[16];
     u8 field16;
-    u8 filler17[3];
+    u8 filler17;
+    u8 field18;
+    u8 filler19;
     u16 field20;
     u8 filler22[4];
     s16 field26;
@@ -891,6 +893,13 @@ struct Unknown16ByteRecord {
     u8 filler1[15];
 };
 
+struct CameraTarget {
+    u8 filler0[8];
+    s16 x;
+    s16 y;
+    u16 base;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern struct UnknownCallbackState03005330 gUnknown_03005330;
 extern u8 gUnknown_03001620;
@@ -1247,7 +1256,7 @@ extern u16 gUnknown_03001398[];
 extern const u16 gUnknown_08071222[];
 extern const u16 gUnknown_0807122a[];
 extern const u16 gUnknown_0807121a[];
-extern u8 gUnknown_03002040;
+extern struct CameraTarget gUnknown_03002040;
 extern void FUN_080006d0(void);
 extern u16 gUnknown_03001378;
 extern void FUN_080177b8(u8 participant);
@@ -1633,11 +1642,11 @@ void FUN_0801c28c(void) {
 
             flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
             if ((flags & 0x20) != 0) {
-                *(u16 *)((u8 *)&gUnknown_03002040 + 12) -= 128;
+                gUnknown_03002040.base -= 128;
             } else if ((flags & 0x10) != 0) {
-                *(u16 *)((u8 *)&gUnknown_03002040 + 12) += 128;
+                gUnknown_03002040.base += 128;
             } else {
-                *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
+                gUnknown_03002040.base = 0;
             }
         } else if (metadata->field20 == 53) {
             u8 *stateBase = gUnknown_03001b30;
@@ -1662,31 +1671,19 @@ void FUN_0801c28c(void) {
                 }
 
                 {
-                    u8 *base = (u8 *)gUnknown_03001c40;
+                    struct UnknownEntityData *base = gUnknown_03001c40;
                     u32 one = 1;
                     u32 zero = 0;
-                    u32 sourceOffset;
-                    u32 destinationOffset;
 
-                    base[18] = base[16] ^ one;
-                    sourceOffset = 0x86;
-                    sourceOffset <<= 1;
-                    destinationOffset = 0x87;
-                    destinationOffset <<= 1;
-                    base[destinationOffset] = base[sourceOffset] ^ one;
-                    sourceOffset = 0x82;
-                    sourceOffset <<= 2;
-                    destinationOffset += 0xfc;
-                    base[destinationOffset] = base[sourceOffset] ^ one;
-                    sourceOffset = 0xc1;
-                    sourceOffset <<= 2;
-                    destinationOffset = 0x306;
-                    base[destinationOffset] = base[sourceOffset] ^ one;
-                    metadata->field36 = zero;
+                    base[0].field18 = base[0].field16 ^ one;
+                    base[1].field18 = base[1].field16 ^ one;
+                    base[2].field18 = base[2].field16 ^ one;
+                    base[3].field18 = base[3].field16 ^ one;
+                    gUnknown_03001c40[gUnknown_03001380].field36 = zero;
                 }
             }
         } else {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
+            gUnknown_03002040.base = 0;
         }
     }
 
@@ -1825,16 +1822,9 @@ void FUN_08019ed8(void) {
 }
 
 void FUN_0801a04c(u32 value) {
-    struct CameraTarget {
-        u8 filler0[8];
-        s16 x;
-        s16 y;
-        u16 base;
-    };
-
     FUN_0800673c(value);
     if ((s32)value <= 3) {
-        struct CameraTarget *camera = (struct CameraTarget *)&gUnknown_03002040;
+        struct CameraTarget *camera = &gUnknown_03002040;
         s16 *baseX = &gUnknown_03001374;
         const u16 *offsetsX = gUnknown_08071222;
         struct UnknownEntityData *metadataBase = gUnknown_03001c40;
