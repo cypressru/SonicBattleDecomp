@@ -3953,6 +3953,22 @@ void FUN_0803e74c(void) {
     }
 }
 
+void FUN_0803e6e8(void) {
+    u16 *palette = (u16 *)0x05000000;
+    u32 zero;
+    u32 fill;
+
+    if ((u8)FUN_0802067c(palette, 256) != 0) {
+        zero = 0;
+        FUN_080183d0(0, 0, 0, 0, zero, zero);
+        fill = zero;
+        CpuFastSet(&fill, palette, 0x01000100);
+        gUnknown_03002030 = (void *)((u32)FUN_08036560 + 1);
+        gUnknown_03005380 = zero;
+        FUN_0801fba0(0, 8000);
+    }
+}
+
 void FUN_0803f7cc(void) {
     u32 zero;
 
