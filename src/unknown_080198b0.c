@@ -1310,6 +1310,7 @@ void FUN_080198b0(void) {
         u32 control;
     };
     u8 *scene = &gUnknown_03001620;
+    u8 *savedScene;
     u8 index;
     u32 wordZero;
     u8 finalZero;
@@ -1337,7 +1338,11 @@ void FUN_080198b0(void) {
             scene[index + 39] = loopZero;
             scene[index + 43] = loopZero;
             scene[index + 47] = loopZero;
-            scene[index + 51] = loopZero;
+            {
+                u8 *field = scene + 51;
+
+                field[index] = loopZero;
+            }
             *(u16 *)(scene + index * 2 + 58) = loopZero;
             *(u16 *)(scene + index * 2 + 66) = loopZero;
             *(u16 *)(scene + index * 2 + 74) = loopZero;
@@ -1345,7 +1350,11 @@ void FUN_080198b0(void) {
             *(u16 *)(scene + index * 2 + 90) = loopZero;
             *(u16 *)(scene + index * 2 + 98) = loopZero;
             *(u16 *)(scene + index * 2 + 106) = loopZero;
-            scene[index + 137] = loopZero;
+            {
+                u8 *field = scene + 137;
+
+                field[index] = loopZero;
+            }
             if (scene[index + 12] > limit) {
                 scene[index + 12] = limit;
             }
@@ -1357,10 +1366,11 @@ void FUN_080198b0(void) {
         }
     }
 
+    savedScene = scene;
     wordZero = 0;
     finalZero = 0;
     {
-        u8 *cursor = scene + 55;
+        u8 *cursor = savedScene + 55;
 
         *cursor = wordZero;
         cursor++;
@@ -1380,8 +1390,8 @@ void FUN_080198b0(void) {
         cursor++;
         *cursor = finalZero;
     }
-    *(u16 *)(scene + 126) = scene[7] * 1800;
-    *(u16 *)(scene + 128) = scene[10] * 30;
+    *(u16 *)(savedScene + 126) = savedScene[7] * 1800;
+    *(u16 *)(savedScene + 128) = savedScene[10] * 30;
 
     FUN_08015f6c();
     gUnknown_03002040.base = wordZero;
@@ -1397,21 +1407,21 @@ void FUN_080198b0(void) {
     gUnknown_03002034 = 1;
     FUN_0800186c();
 
-    if (scene[20] != 0xff) {
-        FUN_08000cf4(0, scene[20], 0);
+    if (savedScene[20] != 0xff) {
+        FUN_08000cf4(0, savedScene[20], 0);
     }
-    if (scene[21] != 0xff) {
-        FUN_08000cf4(1, scene[21], 0);
+    if (savedScene[21] != 0xff) {
+        FUN_08000cf4(1, savedScene[21], 0);
     }
-    if (scene[22] != 0xff) {
-        FUN_08000cf4(2, scene[22], 0);
+    if (savedScene[22] != 0xff) {
+        FUN_08000cf4(2, savedScene[22], 0);
     }
-    if (scene[23] != 0xff) {
-        FUN_08000cf4(3, scene[23], 0);
+    if (savedScene[23] != 0xff) {
+        FUN_08000cf4(3, savedScene[23], 0);
     }
 
-    FUN_0800fdc8(scene[scene[1] + 3]);
-    FUN_0801103c(scene[scene[1] + 3]);
+    FUN_0800fdc8(savedScene[savedScene[1] + 3]);
+    FUN_0801103c(savedScene[savedScene[1] + 3]);
     FUN_08000a2c();
     FUN_0800fd8c();
 
@@ -1441,7 +1451,7 @@ void FUN_080198b0(void) {
     }
 
     FUN_08017f58(0, 160);
-    FUN_0801f024(scene[11]);
+    FUN_0801f024(savedScene[11]);
     FUN_0801e9ec(0);
     FUN_0801e9ec(1);
     FUN_0801e9ec(2);
