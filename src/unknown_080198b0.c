@@ -2370,8 +2370,11 @@ void FUN_0801c28c(void) {
 
 void FUN_0801c4bc(void) {
     u8 index;
+    u8 metadataIndex;
+    u8 entityIndex;
     u8 *scene;
     u8 mode;
+    u32 renderMode;
 
     FUN_080178d0();
     scene = &gUnknown_03001620;
@@ -2386,8 +2389,7 @@ void FUN_0801c4bc(void) {
 
     FUN_08006e64();
     FUN_0800c728();
-    scene += 20;
-    for (index = 0; index <= 3; index++) {
+    for (index = 0, scene += 20; index <= 3; index++) {
         if (scene[index] != 0xff) {
             FUN_08007ec8(index);
             FUN_0800597c(index);
@@ -2395,11 +2397,11 @@ void FUN_0801c4bc(void) {
         }
     }
     FUN_080066d8();
-    for (index = 0; index <= 3; index++) {
-        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
-            FUN_08006134(index);
-            FUN_08005310(index);
-            FUN_0800486c(index);
+    for (metadataIndex = 0, scene = (u8 *)gUnknown_03001c40; metadataIndex <= 3; metadataIndex++) {
+        if (scene[metadataIndex] != 0xff) {
+            FUN_08006134(metadataIndex);
+            FUN_08005310(metadataIndex);
+            FUN_0800486c(metadataIndex);
         }
     }
     FUN_080006d0();
@@ -2426,7 +2428,7 @@ void FUN_0801c4bc(void) {
     }
 
     gUnknown_03002040.base += 16;
-    if ((s16)gUnknown_03002040.base > 2048) {
+    if ((s16)gUnknown_03002040.base > 8192) {
         gUnknown_03002040.base = 0;
     }
     FUN_0800673c(0);
@@ -2434,13 +2436,13 @@ void FUN_0801c4bc(void) {
     FUN_080176e4(gUnknown_03002040.base);
     FUN_08018300((s16)(gUnknown_03002100 + 512));
     FUN_080182e4(512);
-    mode = FUN_0801584c();
+    renderMode = (u8)FUN_0801584c();
     FUN_080182ac();
     FUN_08016684();
     FUN_08017ed0();
-    FUN_08013214(mode);
+    FUN_08013214(renderMode);
     FUN_08017f6c();
-    if (mode != 10) {
+    if (renderMode != 10) {
         FUN_08006ff4(4);
         FUN_0800f9c0();
     }
@@ -2449,21 +2451,21 @@ void FUN_0801c4bc(void) {
     FUN_08017d58();
     FUN_08017c5c();
 
-    for (index = 0; index <= 3; index++) {
-        u32 scaled = index << 6;
-        u32 metadataOffset = (scaled - index) * 4;
+    for (entityIndex = 0; entityIndex <= 3; entityIndex++) {
+        u32 scaled = entityIndex << 6;
+        u32 metadataOffset = (scaled - entityIndex) * 4;
         struct UnknownEntityData *metadata =
             (struct UnknownEntityData *)(metadataOffset + (u32)gUnknown_03001c40);
 
         if (metadata->field20 == 0xfe && metadata->field26 > 64) {
             u32 selection;
 
-            FUN_080007fc(index);
+            FUN_080007fc(entityIndex);
             selection = ((gUnknown_03001378 + 4) * (gUnknown_03001378 + 7)) % 6;
             switch (selection) {
             case 0: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
@@ -2472,7 +2474,7 @@ void FUN_0801c4bc(void) {
             }
             case 1: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
@@ -2481,7 +2483,7 @@ void FUN_0801c4bc(void) {
             }
             case 2: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
@@ -2490,7 +2492,7 @@ void FUN_0801c4bc(void) {
             }
             case 3: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
@@ -2499,7 +2501,7 @@ void FUN_0801c4bc(void) {
             }
             case 4: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
@@ -2508,7 +2510,7 @@ void FUN_0801c4bc(void) {
             }
             case 5: {
                 u8 *base = (u8 *)gUnknown_03001c40;
-                u32 offset = (scaled - index) * 4;
+                u32 offset = (scaled - entityIndex) * 4;
                 u8 *destination = base + offset;
 
                 destination += 141;
