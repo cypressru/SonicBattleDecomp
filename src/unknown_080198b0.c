@@ -9768,10 +9768,10 @@ void FUN_08040624(void) {
 }
 
 s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
-    register s32 current asm("r3") = value;
-    register s32 adjustedWidth asm("r2");
-    register s8 *cursor asm("r4") = destination;
-    register u8 remaining asm("r5");
+    register s32 current = value;
+    register s32 adjustedWidth;
+    register s8 *cursor = destination;
+    register u8 remaining;
 
     adjustedWidth = (s8)width;
     asm volatile("" : "+r"(adjustedWidth));
@@ -9786,9 +9786,9 @@ s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
     goto check_current;
 
 digit_loop: {
-    register s32 quotient asm("r0") = FUN_0804a59c(current, 10);
+    register s32 quotient = FUN_0804a59c(current, 10);
     register s32 remainder asm("r1");
-    register u32 shifted asm("r0");
+    register u32 shifted;
     register u32 decrement asm("r1");
 
     asm volatile("" : "=r"(remainder));
@@ -9810,8 +9810,8 @@ check_current:
     *--cursor = current;
 
 digits_done: {
-    register u32 originalShift asm("r2") = remaining << 24;
-    register s32 signedRemaining asm("r0");
+    register u32 originalShift = remaining << 24;
+    register s32 signedRemaining;
 
     signedRemaining = (s32)originalShift >> 24;
     if (signedRemaining > 0) {
