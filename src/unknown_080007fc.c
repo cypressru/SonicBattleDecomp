@@ -318,7 +318,7 @@ extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
-extern void FUN_0800baac(u8 index);
+extern void FUN_0800baac(u32 index);
 extern u8 FUN_0800b098(u16 animation);
 extern void FUN_0800964c(void);
 extern void FUN_08020440(u32 first, u16 second, u16 third);
@@ -1311,10 +1311,12 @@ u8 FUN_0800b098(u16 animation) {
     }
 }
 
-void FUN_0800baac(u8 index) {
+void FUN_0800baac(u32 index) {
     struct UnknownRecord030017d0 *record;
     struct UnknownRecord030017d0 *table;
 
+    index <<= 24;
+    index >>= 24;
     table = gUnknown_030017d0;
     record = table + index;
     if (record->slots[0] != 255) {
@@ -1552,7 +1554,12 @@ void FUN_0800f3c4(void) {
 
 void FUN_0800f5bc(u8 owner) {
     struct UnknownRecord030017d0 snapshot;
-    volatile u32 recordIndex = 0;
+    struct UnknownRecord030017d0 *table;
+    struct UnknownRecord030017d0 *record;
+    u8 *recordOwner;
+    u8 *savedRecordOwner;
+    u16 currentResource;
+    u32 recordIndex = 0;
 
 #define REPLACE_RESOURCE(nextResource)                                                             \
     do {                                                                                           \
@@ -1561,7 +1568,7 @@ void FUN_0800f5bc(u8 owner) {
         snapshot.eighteenth[1] = record->eighteenth[1];                                            \
         snapshot.eighteenth[2] = record->eighteenth[2];                                            \
         snapshot.fourteenth = record->fourteenth;                                                  \
-        snapshot.sixteenth = record->sixteenth;                                                    \
+        snapshot.sixteenth = *savedRecordOwner;                                                    \
         snapshot.twentieth = record->twentieth;                                                    \
         FUN_0800baac(recordIndex);                                                                 \
         FUN_0800c1c8((nextResource), snapshot.nineteenth, snapshot.eighteenth[0],                  \
@@ -1570,28 +1577,31 @@ void FUN_0800f5bc(u8 owner) {
     } while (0)
 
     do {
-        struct UnknownRecord030017d0 *record = &gUnknown_030017d0[recordIndex];
+        table = gUnknown_030017d0;
+        record = (struct UnknownRecord030017d0 *)((u8 *)table + recordIndex * 68);
+        recordOwner = &record->sixteenth;
+        savedRecordOwner = recordOwner;
 
-        if (record->sixteenth == owner) {
-            u16 resource = record->seventeenth;
+        if (*recordOwner == owner) {
+            currentResource = record->seventeenth;
 
-            if (resource == 0x28 || resource == 0x2d) {
+            if (currentResource == 0x28 || currentResource == 0x2d) {
                 REPLACE_RESOURCE(0x29);
-            } else if ((u16)(resource - 0x3c) < 2) {
+            } else if ((u16)(currentResource - 0x3c) < 2) {
                 REPLACE_RESOURCE(0x3e);
-            } else if ((u16)(resource - 0x50) < 2) {
+            } else if ((u16)(currentResource - 0x50) < 2) {
                 REPLACE_RESOURCE(0x52);
-            } else if ((u16)(resource - 0x64) < 2) {
+            } else if ((u16)(currentResource - 0x64) < 2) {
                 REPLACE_RESOURCE(0x66);
-            } else if ((u16)(resource - 0x78) < 2) {
+            } else if ((u16)(currentResource - 0x78) < 2) {
                 REPLACE_RESOURCE(0x7a);
-            } else if ((u16)(resource - 0x8c) < 2) {
+            } else if ((u16)(currentResource - 0x8c) < 2) {
                 REPLACE_RESOURCE(0x8e);
-            } else if ((u16)(resource - 0xa1) < 2) {
+            } else if ((u16)(currentResource - 0xa1) < 2) {
                 REPLACE_RESOURCE(0xa5);
-            } else if ((u16)(resource - 0xa3) < 2) {
+            } else if ((u16)(currentResource - 0xa3) < 2) {
                 REPLACE_RESOURCE(0xa6);
-            } else if (resource == 0xc8) {
+            } else if (currentResource == 0xc8) {
                 REPLACE_RESOURCE(0xc9);
             }
         }
