@@ -377,7 +377,7 @@ void FUN_080007fc(u8 index) {
     record[110] = byteZero;
     record[113] = byteZero;
     record[124] = 0xff;
-    record[125] = -1;
+    *(s8 *)(record + 125) = -1;
     record[126] = byteZero;
     record[185] = byteZero;
     record[186] = byteZero;
@@ -437,8 +437,10 @@ void FUN_080007fc(u8 index) {
     *(u32 *)(activeRecord + 180) &= 0xffbfffff;
 
     {
+        volatile u8 *state = (volatile u8 *)&gUnknown_03001620;
+
         if (*mode == 0 || index == gUnknown_03001380 ||
-            (index == gUnknown_03001380 + 2 && gUnknown_03001620.activeSlots[index + 8] != 0)) {
+            (index == gUnknown_03001380 + 2 && state[index + 28] != 0)) {
             ((u8 *)&table[index])[199] = 12;
         }
     }
