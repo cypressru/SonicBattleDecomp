@@ -1349,6 +1349,9 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     u16 commandIndex;
     u8 animationIndex;
     u32 remapped;
+    u8 *activeSlot;
+
+#define ACTIVE_SLOT (activeSlot = (u8 *)&gUnknown_03001620, activeSlot += 24, activeSlot[slot])
 
     resource = 0;
     if (character != 9) {
@@ -1450,8 +1453,7 @@ animation_ready:
     sprite_command:
         switch (character) {
         case 0:
-            resource =
-                !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8 : 0x08787d18;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08787d18 : 0x0847afd8;
             break;
         case 1:
         case 10:
@@ -1461,42 +1463,34 @@ animation_ready:
             break;
         case 2:
         case 22:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158 : 0x08528418;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08835158 : 0x08528418;
             break;
         case 3:
         case 23:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38 : 0x084cadf8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x087d7b38 : 0x084cadf8;
             break;
         case 4:
         case 24:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578 : 0x0858d838;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x0889a578 : 0x0858d838;
             break;
         case 5:
         case 25:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98 : 0x085f3e58;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08900b98 : 0x085f3e58;
             break;
         case 6:
         case 26:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8 : 0x08636478;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x089431b8 : 0x08636478;
             break;
         case 7:
         case 27:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8 : 0x086f6ab8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08a037f8 : 0x086f6ab8;
             break;
         case 8:
         case 28:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8 : 0x08681a98;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x0898e7d8 : 0x08681a98;
             break;
         case 9:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418 : 0x087336d8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08a40418 : 0x087336d8;
             break;
         default:
             break;
@@ -1533,6 +1527,7 @@ animation_ready:
 
 advance_frame:
     gUnknown_03003108[slot]++;
+#undef ACTIVE_SLOT
     return 1;
 }
 
