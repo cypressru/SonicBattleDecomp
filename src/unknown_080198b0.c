@@ -3699,13 +3699,13 @@ void FUN_0803bb08(struct UnknownListNode *node);
 
 void FUN_0803bef0(struct UnknownListNode *node) {
     u8 *allocation = node->allocation;
-    struct UnknownPosition *graphics = (struct UnknownPosition *)(allocation + 16);
     u16 tile;
     u8 graphicsOffset;
     struct UnknownPosition *position;
     u32 zero;
 
-    *graphics = *(const struct UnknownPosition *)gUnknown_0816faf4;
+    *(struct UnknownPosition *)(allocation + 16) =
+        *(const struct UnknownPosition *)gUnknown_0816faf4;
     graphicsOffset = -(gUnknown_030052e8[gUnknown_030052e0] + 12);
     tile = 0;
     allocation[21] = graphicsOffset;
