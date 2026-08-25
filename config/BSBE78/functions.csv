@@ -44,7 +44,6 @@ address,name,mode,confidence
 0x0800ABB2,FUN_0800abb2,thumb,rom-pointer
 0x0800B084,FUN_0800b084,thumb,direct-call
 0x0800B098,FUN_0800b098,thumb,direct-call
-0x0800BAA4,FUN_0800baa4,thumb,direct-call
 0x0800BAAC,FUN_0800baac,thumb,direct-call+exact-body
 0x0800BB88,FUN_0800bb88,thumb,direct-call
 0x0800C036,FUN_0800c036,thumb,rom-pointer
@@ -58,11 +57,8 @@ address,name,mode,confidence
 0x0800F024,FUN_0800f024,thumb,direct-call
 0x0800F0AC,FUN_0800f0ac,thumb,direct-call
 0x0800F3C4,FUN_0800f3c4,thumb,direct-call
-0x0800F4E4,FUN_0800f4e4,thumb,rom-pointer
-0x0800F512,FUN_0800f512,thumb,recursive-disassembly
 0x0800F5BC,FUN_0800f5bc,thumb,direct-call
 0x0800F9C0,FUN_0800f9c0,thumb,direct-call
-0x0800FA68,FUN_0800fa68,thumb,rom-pointer
 0x0800FD8C,FUN_0800fd8c,thumb,direct-call+exact-body
 0x0800FDC8,FUN_0800fdc8,thumb,direct-call
 0x0800FDEA,FUN_0800fdea,thumb,rom-pointer
@@ -80,7 +76,7 @@ address,name,mode,confidence
 0x08011E22,FUN_08011e22,thumb,rom-pointer
 0x080120C8,FUN_080120c8,thumb,recursive-disassembly
 0x080122DC,FUN_080122dc,thumb,rom-pointer
-0x08012468,FUN_08012468,thumb,recursive-disassembly
+0x08012468,FUN_08012468,thumb,internal-control-flow-fragment
 0x080125DC,FUN_080125dc,thumb,direct-call
 0x080127D0,FUN_080127d0,thumb,direct-call
 0x08012B60,FUN_08012b60,thumb,recursive-disassembly+exact-body

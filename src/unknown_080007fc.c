@@ -59,14 +59,19 @@ extern s16 gUnknown_03001b2c;
 extern s16 gUnknown_03001384;
 extern s16 FUN_08018390(void);
 extern void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY);
-extern void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY);
+extern void FUN_08018204(s16 *outputX, s16 *outputY, s16 factorX, s16 factorY);
 extern void FUN_08017f00(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_080069ac(void);
+extern void FUN_0800f3c4(void);
 extern void FUN_0800c1c8(u16 active, u8 mode, s16 x, s16 y, s16 height, u32 sixth, u32 seventh,
                          u32 eighth, u8 field172, u8 index, u8 field149);
 extern u16 gUnknown_03003380[][16];
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
+extern u32 gUnknown_03003150[];
+extern u32 gUnknown_030032a0[];
+extern u32 gUnknown_03007ffc;
+extern u32 gUnknown_03002110[];
 
 union UnknownQueueEntry08017f00 {
     u32 words[4];
@@ -136,7 +141,9 @@ struct UnknownRecord030017d0 {
     u16 fourth[4];
     u8 fifth;
     u8 sixth;
-    u16 seventh[3];
+    s16 x;
+    s16 y;
+    s16 height;
     u8 eighth;
     u8 padding25;
     u16 ninth;
@@ -149,7 +156,7 @@ struct UnknownRecord030017d0 {
     u8 sixteenth;
     u8 padding54[2];
     u16 seventeenth;
-    u16 eighteenth[3];
+    s16 eighteenth[3];
     u8 nineteenth;
     u8 twentieth;
     u8 twentyfirst;
@@ -254,13 +261,14 @@ extern union UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern union UnknownQueueRecord030033e0 gUnknown_030033e0[];
 extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
 extern struct UnknownState030030d0 gUnknown_030030d0;
-extern volatile struct UnknownState080180d4 gUnknown_030048e0;
+extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
 extern const u16 gUnknown_0806b2fc[][8];
+extern const u8 gUnknown_0806b414[];
 extern const u16 gUnknown_0847aa18[];
 extern const u16 gUnknown_08055800[];
 extern const u16 gUnknown_0805587e[];
@@ -310,9 +318,12 @@ extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
 extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
-extern void FUN_0800baac(u8 index);
+extern void FUN_0800baac(u32 index);
 extern u8 FUN_0800b098(u16 animation);
+extern void FUN_0800964c(void);
 extern void FUN_08020440(u32 first, u16 second, u16 third);
+extern void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth);
+extern void FUN_08020134(u32 value);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
@@ -332,79 +343,79 @@ void FUN_080007fc(u8 index) {
     u32 offset = (wideIndex - index) << 2;
     u8 *record = (u8 *)table + offset;
     u8 *activeRecord;
-    u8 *mode;
+    u8 *mode = &gUnknown_0300138c;
+    u8 byteZero = 0;
+    u32 wordZero = 0;
 
     *(u16 *)(record + 20) = 6;
-    *(u16 *)(record + 32) = 0;
-    *(u16 *)(record + 34) = 0;
-    record[36] = 0;
+    *(u16 *)(record + 32) = wordZero;
+    *(u16 *)(record + 34) = wordZero;
+    record[36] = byteZero;
     record[37] = 4;
-    record[16] = 0;
-    record[17] = 0;
-    record[18] = 0;
-    *(u16 *)(record + 38) = 0;
-    *(u16 *)(record + 40) = 0;
-    *(u16 *)(record + 42) = 0;
-    *(u16 *)(record + 44) = 0;
-    *(u16 *)(record + 46) = 0;
-    *(u16 *)(record + 48) = 0;
+    record[16] = byteZero;
+    record[17] = byteZero;
+    record[18] = byteZero;
+    *(u16 *)(record + 38) = wordZero;
+    *(u16 *)(record + 40) = wordZero;
+    *(u16 *)(record + 42) = wordZero;
+    *(u16 *)(record + 44) = wordZero;
+    *(u16 *)(record + 46) = wordZero;
+    *(u16 *)(record + 48) = wordZero;
     *(u16 *)(record + 4) = 80;
     *(u16 *)(record + 10) = 80;
-    record[50] = 0;
-    *(u16 *)(record + 52) = 0;
-    *(u32 *)(record + 180) = 0;
+    record[50] = byteZero;
+    *(u16 *)(record + 52) = wordZero;
+    *(u32 *)(record + 180) = wordZero;
     record[184] = 2;
-    record[143] = 0;
-    record[142] = 0;
-    record[145] = 0;
-    record[146] = 0;
-    record[159] = 0;
-    *(u16 *)(record + 160) = 0;
-    *(u16 *)(record + 162) = 0;
+    record[143] = byteZero;
+    record[142] = byteZero;
+    record[145] = byteZero;
+    record[146] = byteZero;
+    record[159] = byteZero;
+    *(u16 *)(record + 160) = wordZero;
+    *(u16 *)(record + 162) = wordZero;
     *(u16 *)(record + 164) = 0x0fff;
-    *(u16 *)(record + 96) = 0;
-    *(u16 *)(record + 98) = 0;
-    *(u16 *)(record + 100) = 0;
-    record[102] = 0;
-    *(u16 *)(record + 104) = 0;
-    record[107] = 0;
-    record[106] = 0;
-    record[108] = 0;
-    record[112] = 0;
-    record[109] = 0;
-    record[110] = 0;
-    record[113] = 0;
+    *(u16 *)(record + 96) = wordZero;
+    *(u16 *)(record + 98) = wordZero;
+    *(u16 *)(record + 100) = wordZero;
+    record[102] = byteZero;
+    *(u16 *)(record + 104) = wordZero;
+    record[107] = byteZero;
+    record[106] = byteZero;
+    record[108] = byteZero;
+    record[112] = byteZero;
+    record[109] = byteZero;
+    record[110] = byteZero;
+    record[113] = byteZero;
     record[124] = 0xff;
-    record[125] = -1;
-    record[126] = 0;
-    record[185] = 0;
-    record[186] = 0;
-    record[187] = 0;
+    *(s8 *)(record + 125) = -1;
+    record[126] = byteZero;
+    record[185] = byteZero;
+    record[186] = byteZero;
+    record[187] = byteZero;
     record[191] = gUnknown_03001b28;
-    record[192] = 0;
-    *(u16 *)(record + 194) = 0;
-    *(u16 *)(record + 24) = 0;
-    *(u16 *)(record + 26) = 0;
-    record[28] = 0;
-    record[29] = 0;
-    record[30] = 0;
+    record[192] = byteZero;
+    *(u16 *)(record + 194) = wordZero;
+    *(u16 *)(record + 24) = wordZero;
+    *(u16 *)(record + 26) = wordZero;
+    record[28] = byteZero;
+    record[29] = byteZero;
+    record[30] = byteZero;
     record[23] = record[196];
-    record[199] = 0;
-    record[156] = 0;
-    record[157] = 0;
-    record[158] = 0;
-    mode = &gUnknown_0300138c;
-    record = (u8 *)table;
+    record[199] = byteZero;
+    record[156] = byteZero;
+    record[157] = byteZero;
+    record[158] = byteZero;
 
     {
         u8 i;
 
         for (i = 0; i <= 9; i++) {
-            record[offset + 128 + i] = 0;
+            ((u8 *)table)[offset + 128 + i] = 0;
         }
     }
 
-    activeRecord = record + offset;
+    activeRecord = (u8 *)&table[index];
     *(u16 *)(activeRecord + 54) = 0;
     *(u16 *)(activeRecord + 62) = 0;
     *(u32 *)(activeRecord + 72) = 0;
@@ -437,11 +448,51 @@ void FUN_080007fc(u8 index) {
     *(u32 *)(activeRecord + 180) &= 0xffbfffff;
 
     {
+        volatile u8 *state = (volatile u8 *)&gUnknown_03001620;
+
         if (*mode == 0 || index == gUnknown_03001380 ||
-            (index == gUnknown_03001380 + 2 && gUnknown_03001620.activeSlots[index + 8] != 0)) {
-            ((u8 *)table)[offset + 199] = 12;
+            (index == gUnknown_03001380 + 2 && (state += 28, state[index] != 0))) {
+            ((u8 *)&table[index])[199] = 12;
         }
     }
+}
+
+void FUN_08007ec8(u8 participant) {
+    struct UnknownRecord03001c40 *records = gUnknown_03001c40;
+    u32 scaled = participant << 6;
+    u32 offset = (scaled - participant) << 2;
+    u8 *record = (u8 *)records + offset;
+    u8 pending = record[29];
+
+    if (pending != 0) {
+        record[30] = 1;
+        record[28] = pending;
+        record[29] = 0;
+    }
+    if (record[28] != 0 && record[30] != 1) {
+        return;
+    }
+    if (record[30] == 1) {
+        record[30] = 0;
+    }
+    {
+        u32 *flags = (u32 *)((u8 *)records + offset + 180);
+
+        if (*flags & 0x00200000) {
+            *(u16 *)(record + 24) = 0;
+            *(u16 *)(record + 26) = 0;
+            *(u16 *)(record + 160) = 0;
+            *(u16 *)(record + 162) = 0;
+            *flags &= ~0x00200000;
+        }
+    }
+    if (record[199] == 9) {
+        FUN_0800964c();
+    }
+    if (*(u16 *)(record + 20) > 0x235) {
+        return;
+    }
+    ((void (**)(void))0x08007f60)[*(u16 *)(record + 20)]();
 }
 
 void FUN_08000a2c(void) {
@@ -557,6 +608,104 @@ void FUN_080016c4(u8 index) {
     buffer[12] = gUnknown_0847aa18[PALETTE(2) * 16 + 12];
     buffer[13] = gUnknown_0847aa18[PALETTE(2) * 16 + 13];
     CpuSet(buffer, gUnknown_03001d0c[index], 16);
+}
+
+void FUN_0800186c(void) {
+    u8 participant;
+
+    for (participant = 0; participant <= 3; participant++) {
+        u8 *state = (u8 *)&gUnknown_03001620;
+        u8 type = state[20 + participant];
+
+        if (type <= 10 || type == 19) {
+            u8 mode = state[24 + participant];
+
+            if (mode == 0) {
+                const void *source;
+
+                switch (state[20 + participant]) {
+                case 0:
+                    source = (const void *)0x0847afb8;
+                    break;
+                case 1:
+                    source = (const void *)0x085283f8;
+                    break;
+                case 2:
+                    source = (const void *)0x084cadd8;
+                    break;
+                case 3:
+                    source = (const void *)0x0858d818;
+                    break;
+                case 4:
+                    source = (const void *)0x085f3e38;
+                    break;
+                case 5:
+                    source = (const void *)0x08636458;
+                    break;
+                case 6:
+                    source = (const void *)0x086f6a98;
+                    break;
+                case 7:
+                    source = (const void *)0x08681a78;
+                    break;
+                case 8:
+                    source = (const void *)0x087336b8;
+                    break;
+                case 9:
+                case 19:
+                    source = (const void *)0x087822d8;
+                    break;
+                case 10:
+                default:
+                    goto palette_check;
+                }
+                CpuSet(source, gUnknown_03001d0c[participant], 16);
+            palette_check:
+                if ((u8)(state[20 + participant] - 9) <= 1) {
+                    CpuSet((const void *)0x08787cf8, gUnknown_03001d0c[participant], 16);
+                    {
+                        u8 *participantData = (u8 *)gUnknown_030013b0 + participant * 156;
+
+                        gUnknown_03001d0c[participant][14] =
+                            gUnknown_0847aa18[participantData[89 + participantData[150] * 27] * 16 +
+                                              14];
+                        gUnknown_03001d0c[participant][15] =
+                            gUnknown_0847aa18[participantData[89 + participantData[150] * 27] * 16 +
+                                              15];
+                    }
+                    FUN_080016c4(participant);
+                }
+                continue;
+            }
+            if (mode == 1) {
+                CpuSet((const void *)0x08787cf8, gUnknown_03001d0c[participant], 16);
+                switch (participant) {
+                case 0:
+                    gUnknown_03001d0c[0][14] = gUnknown_0847aa18[14];
+                    gUnknown_03001d0c[0][15] = gUnknown_0847aa18[15];
+                    break;
+                case 1:
+                    gUnknown_03001d0c[1][14] = gUnknown_0847aa18[30];
+                    gUnknown_03001d0c[1][15] = gUnknown_0847aa18[31];
+                    break;
+                case 2:
+                    gUnknown_03001d0c[2][14] = gUnknown_0847aa18[46];
+                    gUnknown_03001d0c[2][15] = gUnknown_0847aa18[47];
+                    break;
+                case 3:
+                    gUnknown_03001d0c[3][14] = gUnknown_0847aa18[62];
+                    gUnknown_03001d0c[3][15] = gUnknown_0847aa18[63];
+                    break;
+                }
+                continue;
+            }
+            CpuSet((const void *)0x0847ab78, gUnknown_03001d0c[participant], 16);
+        } else if ((u8)(type - 12) <= 4) {
+            CpuSet((const void *)0x0847ab78, gUnknown_03001d0c[participant], 16);
+        } else if ((u8)(type - 17) <= 1) {
+            CpuSet((const void *)0x0847ab58, gUnknown_03001d0c[participant], 16);
+        }
+    }
 }
 
 /* Uploads participant `index`'s 16-colour palette. Normally the stored palette
@@ -871,8 +1020,6 @@ void FUN_08006ff4(u8 count) {
             (record->stateType != 2 || identifier != 0x116 || index == gUnknown_03001380) &&
             (record->stateType != 3 || identifier != 0x115 || index == gUnknown_03001380) &&
             gUnknown_03001620.activeSlots[index] != 0xFF) {
-            s16 adjustedY;
-
             FUN_0801816c(&x, &y, record->x, record->y);
             FUN_08018204(&x, &y, x, y);
             entry.fields.yMinus6 = y - 6;
@@ -881,20 +1028,19 @@ void FUN_08006ff4(u8 count) {
 
             switch (record->directionMode) {
             case 0:
-                x -= record->offsetX + 24;
-                y += record->offsetY - 40;
+                x = x - (record->offsetX + 24);
+                y = (record->offsetY - 40) + y;
                 break;
             case 1:
-                x += record->offsetX - 24;
-                y += record->offsetY - 40;
+                x = x + (record->offsetX - 24);
+                y = (record->offsetY - 40) + y;
                 break;
             }
 
             record->screenX = x;
-            adjustedY = y - record->height;
-            record->screenY = adjustedY;
-            if ((u16)(x + 64) <= 304 && adjustedY <= *(s16 *)&gUnknown_030017c0 &&
-                adjustedY >= *(s16 *)&gUnknown_030016d0 - 64) {
+            record->screenY = y - record->height;
+            if ((u16)(x + 64) <= 304 && (s16)record->screenY <= gUnknown_030017c0 &&
+                (s16)record->screenY >= gUnknown_030016d0 - 64) {
                 u16 tile = (u16)index * 36;
 
                 entry.fields.index = index;
@@ -917,23 +1063,26 @@ void FUN_08006ff4(u8 count) {
                 }
             }
 
-            if ((u16)(x + 64) <= 304 && (s16)y <= *(s16 *)&gUnknown_030017c0 &&
-                (s16)y >= *(s16 *)&gUnknown_030016d0 - 64 && record->first != 255) {
+            if ((u16)(x + 64) <= 304 && (s16)y <= gUnknown_030017c0 &&
+                (s16)y >= gUnknown_030016d0 - 64 && record->first != 255) {
                 s16 indicator;
 
-                if (record->height < record->anchorHeight + 20) {
+                if ((s16)record->height < record->anchorHeight + 20) {
                     indicator = 0;
-                } else if (record->height < record->anchorHeight + 40) {
+                } else if ((s16)record->height < record->anchorHeight + 40) {
                     indicator = 1;
-                } else if (record->height < record->anchorHeight + 60) {
+                } else if ((s16)record->height < record->anchorHeight + 60) {
                     indicator = 2;
                 } else {
                     indicator = 3;
                 }
+                entry.fields.x = originalX;
+                entry.fields.y = originalY;
                 entry.fields.height = record->anchorHeight;
                 entry.fields.index = 4;
+                entry.fields.tile = indicator * 8 + 0x90;
                 entry.fields.type = 0x14;
-                SUBMIT_QUEUE(originalX, originalY, indicator * 8 + 0x90, 0x14);
+                FUN_08017f00(entry.words[0], entry.words[1], entry.words[2], entry.words[3]);
             }
         }
 
@@ -941,32 +1090,37 @@ void FUN_08006ff4(u8 count) {
         record->directionMode = record->requestedDirection;
         if (record->first != 0x37 || gUnknown_0300138c == 0 || index == gUnknown_03001380 ||
             (index == gUnknown_03001380 + 2 && gUnknown_0300163c[index] != 0)) {
-            if (gUnknown_03001370 == 1) {
-                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
-                    record->requestedDirection = 1;
-                } else if (record->renderMode == 6 || record->renderMode == 9 ||
-                           record->renderMode == 3) {
-                    record->requestedDirection = 0;
-                }
-            } else if (gUnknown_03001370 == 0) {
+            switch (gUnknown_03001370) {
+            case 0:
                 if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
                     record->requestedDirection = 0;
                 } else if (record->renderMode == 6 || record->renderMode == 9 ||
                            record->renderMode == 3) {
                     record->requestedDirection = 1;
                 }
-            } else if (gUnknown_03001370 == 2) {
+                break;
+            case 1:
+                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
+                    record->requestedDirection = 1;
+                } else if (record->renderMode == 6 || record->renderMode == 9 ||
+                           record->renderMode == 3) {
+                    record->requestedDirection = 0;
+                }
+                break;
+            case 2:
                 if ((u8)(record->renderMode - 1) < 3) {
                     record->requestedDirection = 0;
                 } else if ((u8)(record->renderMode - 7) < 3) {
                     record->requestedDirection = 1;
                 }
-            } else if (gUnknown_03001370 == 3) {
+                break;
+            case 3:
                 if ((u8)(record->renderMode - 1) < 3) {
                     record->requestedDirection = 1;
                 } else if ((u8)(record->renderMode - 7) < 3) {
                     record->requestedDirection = 0;
                 }
+                break;
             }
         }
         index++;
@@ -1012,10 +1166,157 @@ void FUN_08007e9c(u8 index) {
     }
 }
 
-void FUN_0800baac(u8 index) {
+u8 FUN_0800b098(u16 animation) {
+    switch (animation) {
+    case 0:
+        return 0;
+    case 1:
+        return 1;
+    case 2:
+        return 2;
+    case 3:
+        return 3;
+    case 4:
+        return 4;
+    case 5:
+        return 5;
+    case 261:
+        return 6;
+    case 6:
+        return 7;
+    case 7:
+        return 8;
+    case 8:
+        return 9;
+    case 9:
+        return 10;
+    case 10:
+        return 11;
+    case 11:
+        return 12;
+    case 12:
+        return 13;
+    case 13:
+        return 14;
+    case 14:
+        return 15;
+    case 15:
+        return 16;
+    case 16:
+        return 17;
+    case 17:
+        return 18;
+    case 273:
+        return 19;
+    case 18:
+        return 20;
+    case 19:
+        return 21;
+    case 275:
+        return 22;
+    case 531:
+        return 23;
+    case 20:
+        return 24;
+    case 276:
+        return 25;
+    case 532:
+        return 26;
+    case 21:
+        return 27;
+    case 277:
+        return 28;
+    case 533:
+        return 29;
+    case 22:
+        return 30;
+    case 278:
+        return 31;
+    case 534:
+        return 32;
+    case 23:
+        return 33;
+    case 279:
+        return 34;
+    case 535:
+        return 35;
+    case 24:
+        return 36;
+    case 280:
+        return 37;
+    case 536:
+        return 38;
+    case 65:
+        return 39;
+    case 66:
+        return 40;
+    case 69:
+        return 41;
+    case 325:
+        return 42;
+    case 67:
+        return 43;
+    case 323:
+        return 44;
+    case 71:
+        return 45;
+    case 327:
+        return 46;
+    case 68:
+        return 47;
+    case 70:
+        return 48;
+    case 80:
+        return 49;
+    case 81:
+        return 50;
+    case 82:
+        return 51;
+    case 83:
+        return 52;
+    case 84:
+        return 53;
+    case 85:
+        return 54;
+    case 336:
+        return 55;
+    case 52:
+        return 56;
+    case 53:
+        return 57;
+    case 309:
+        return 58;
+    case 565:
+        return 59;
+    case 54:
+        return 60;
+    case 311:
+        return 61;
+    case 55:
+        return 62;
+    case 56:
+        return 63;
+    case 96:
+        return 64;
+    case 252:
+        return 65;
+    case 253:
+        return 66;
+    case 254:
+        return 67;
+    case 255:
+        return 68;
+    default:
+        return 0;
+    }
+}
+
+void FUN_0800baac(u32 index) {
     struct UnknownRecord030017d0 *record;
     struct UnknownRecord030017d0 *table;
 
+    index <<= 24;
+    index >>= 24;
     table = gUnknown_030017d0;
     record = table + index;
     if (record->slots[0] != 255) {
@@ -1048,9 +1349,9 @@ void FUN_0800baac(u8 index) {
     record->eighteenth[2] = 0;
     record->fifth = 0;
     record->sixth = 0;
-    record->seventh[0] = 0;
-    record->seventh[1] = 0;
-    record->seventh[2] = 0;
+    record->x = 0;
+    record->y = 0;
+    record->height = 0;
     record->eighth = 0;
     record->ninth = 0xffff;
     record->tenth[0] = -1;
@@ -1070,6 +1371,407 @@ void FUN_0800baac(u8 index) {
     record->thirteenth = 1;
     record->twentieth = 0;
     record->twentyfirst = 0;
+}
+
+void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 strength, u8 hitType,
+                  u32 hitFlags, u8 markHit, u32 unused, u8 minimumState, u8 maximumState) {
+    s16 heightAdjustment;
+    u8 participant;
+
+#define actor (&gUnknown_030017d0[actorIndex])
+    (void)unused;
+    if (gUnknown_0300138c != 0) {
+        u8 target = gUnknown_030017d0[actorIndex].sixteenth;
+
+        if (target != gUnknown_03001380) {
+            if (target != gUnknown_03001380 + 2 || ((u8 *)&gUnknown_03001620)[28 + target] == 0) {
+                return;
+            }
+        }
+    }
+
+    heightAdjustment = 0;
+    if (actor->seventeenth == 0xc2) {
+        heightAdjustment = -64;
+    }
+    if (actor->eighth < minimumState || actor->eighth > maximumState) {
+        return;
+    }
+    if (strength > 0x3e) {
+        strength = 0x3e;
+    }
+
+    for (participant = 0; participant <= 3; participant++) {
+        u8 *battleState;
+        u8 *metadata;
+        u8 target = actor->sixteenth;
+        s32 deltaX;
+        s32 deltaY;
+        s32 collisionRadius;
+        s32 deltaHeight;
+
+        if (participant == target) {
+            continue;
+        }
+        metadata = (u8 *)&gUnknown_03001c40[participant];
+        if (metadata[187] == 0) {
+            continue;
+        }
+        if (metadata[28] != 0) {
+            continue;
+        }
+        battleState = (u8 *)&gUnknown_03001620;
+        if (battleState[20 + participant] == 0xff) {
+            continue;
+        }
+        if (battleState[8] != 0 && battleState[9] != 1 &&
+            battleState[32 + target] == battleState[32 + participant]) {
+            continue;
+        }
+
+        deltaX = actor->eighteenth[0] - *(s16 *)(metadata + 0);
+        deltaY = actor->eighteenth[1] - *(s16 *)(metadata + 2);
+        collisionRadius = (s16)horizontalRadius + metadata[187];
+        deltaHeight = actor->eighteenth[2] + heightAdjustment - *(s16 *)(metadata + 4);
+        if (deltaHeight < 0) {
+            deltaHeight = -deltaHeight;
+        }
+        if (deltaHeight >= (s16)verticalRadius + metadata[186] ||
+            deltaX * deltaX + deltaY * deltaY >= collisionRadius * collisionRadius ||
+            ((actor->padding54[1] >> participant) & 1) != 0) {
+            continue;
+        }
+
+        {
+            u8 *targetMetadata = (u8 *)&gUnknown_03001c40[target];
+            u16 *action = (u16 *)(targetMetadata + 174);
+
+            if (*action == 0) {
+                if ((actor->twentieth & 1) != 0 && hitFlags > 0x27f) {
+                    *action = ((participant & 3) << 11) | hitFlags | 0xe000 | 0x3f;
+                } else {
+                    *action =
+                        ((hitType & 0xf) << 13) | ((participant & 3) << 11) | hitFlags | strength;
+                }
+            }
+
+            *((u16 *)0x0300167a + target) += strength;
+            if (*action != 0) {
+                *(u16 *)(targetMetadata + 176) = *action;
+                *(u32 *)(targetMetadata + 120) = 0;
+            }
+            if (markHit == 0) {
+                actor->padding54[1] |= 1 << participant;
+            }
+            actor->padding54[0] = hitType;
+            if (actor->seventeenth == 0x5e || actor->seventeenth == 0xae ||
+                actor->seventeenth == 0xbf || actor->seventeenth == 0xc2) {
+                targetMetadata[28] = hitType;
+            }
+        }
+        (*(u16 *)((u8 *)0x03001662 + target * 2))++;
+        if (actor->twentyfirst == 0) {
+            actor->twentyfirst = 1;
+            (*(u16 *)(battleState + 74 + target * 2))++;
+        }
+    }
+#undef actor
+}
+
+void FUN_0800f3c4(void) {
+    u8 recordIndex = 0;
+
+#define records ((u8 *)gUnknown_030017d0)
+
+    do {
+        u32 recordOffset = recordIndex * 68;
+
+        if (*(u16 *)(records + recordOffset + 56) != 0) {
+            u8 slot;
+
+            for (slot = 0; slot < gUnknown_0806b414[*(u16 *)(records + recordOffset + 56)];
+                 slot++) {
+                u16 *value = (u16 *)(records + recordOffset + 26 + slot * 2);
+
+                if (*value != 0xffff) {
+                    const u8 *state = (const u8 *)&gUnknown_03001620;
+
+                    if ((u8)(state[20 + records[recordOffset + 53]] - 9) < 8 ||
+                        state[24 + records[recordOffset + 53]] != 0) {
+                        const u8 *resource = (const u8 *)0x08b40858;
+
+                        switch (records[recordOffset + 52]) {
+                        case 0:
+                            FUN_080204b8((u32)resource, 0x100, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 1:
+                        case 2:
+                            FUN_080204b8((u32)resource, 0x200, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 3:
+                            FUN_080204b8((u32)resource, 0x400, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 4:
+                            FUN_080204b8((u32)resource, 0x40, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        }
+                    } else {
+                        const u8 *resource = (const u8 *)0x08a8f038;
+
+                        switch (records[recordOffset + 52]) {
+                        case 0:
+                            FUN_080204b8((u32)resource, 0x100, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 1:
+                        case 2:
+                            FUN_080204b8((u32)resource, 0x200, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 3:
+                            FUN_080204b8((u32)resource, 0x400, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 4:
+                            FUN_080204b8((u32)resource, 0x40, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        }
+                    }
+
+                    *value = 0xffff;
+                }
+            }
+        }
+        recordIndex = (u8)(recordIndex + 1);
+    } while (recordIndex < 12);
+#undef records
+}
+
+void FUN_0800f5bc(u8 owner) {
+    struct UnknownRecord030017d0 snapshot;
+    struct UnknownRecord030017d0 *table;
+    struct UnknownRecord030017d0 *record;
+    u8 *recordOwner;
+    u8 *savedRecordOwner;
+    u16 currentResource;
+    u32 recordIndex = 0;
+
+#define REPLACE_RESOURCE(nextResource)                                                             \
+    do {                                                                                           \
+        snapshot.nineteenth = record->nineteenth;                                                  \
+        snapshot.eighteenth[0] = record->eighteenth[0];                                            \
+        snapshot.eighteenth[1] = record->eighteenth[1];                                            \
+        snapshot.eighteenth[2] = record->eighteenth[2];                                            \
+        snapshot.fourteenth = record->fourteenth;                                                  \
+        snapshot.sixteenth = *savedRecordOwner;                                                    \
+        snapshot.twentieth = record->twentieth;                                                    \
+        FUN_0800baac(recordIndex);                                                                 \
+        FUN_0800c1c8((nextResource), snapshot.nineteenth, snapshot.eighteenth[0],                  \
+                     snapshot.eighteenth[1], snapshot.eighteenth[2], 0, 0, 0, 0, owner,            \
+                     snapshot.twentieth);                                                          \
+    } while (0)
+
+    do {
+        table = gUnknown_030017d0;
+        record = (struct UnknownRecord030017d0 *)((u8 *)table + recordIndex * 68);
+        recordOwner = &record->sixteenth;
+        savedRecordOwner = recordOwner;
+
+        if (*recordOwner == owner) {
+            currentResource = record->seventeenth;
+
+            if (currentResource == 0x28 || currentResource == 0x2d) {
+                REPLACE_RESOURCE(0x29);
+            } else if ((u16)(currentResource - 0x3c) < 2) {
+                REPLACE_RESOURCE(0x3e);
+            } else if ((u16)(currentResource - 0x50) < 2) {
+                REPLACE_RESOURCE(0x52);
+            } else if ((u16)(currentResource - 0x64) < 2) {
+                REPLACE_RESOURCE(0x66);
+            } else if ((u16)(currentResource - 0x78) < 2) {
+                REPLACE_RESOURCE(0x7a);
+            } else if ((u16)(currentResource - 0x8c) < 2) {
+                REPLACE_RESOURCE(0x8e);
+            } else if ((u16)(currentResource - 0xa1) < 2) {
+                REPLACE_RESOURCE(0xa5);
+            } else if ((u16)(currentResource - 0xa3) < 2) {
+                REPLACE_RESOURCE(0xa6);
+            } else if (currentResource == 0xc8) {
+                REPLACE_RESOURCE(0xc9);
+            }
+        }
+        recordIndex = (u8)(recordIndex + 1);
+    } while (recordIndex < 12);
+
+#undef REPLACE_RESOURCE
+}
+
+void FUN_0800f9c0(void) {
+    struct {
+        struct UnknownQueueEntry08018004 entry;
+        union {
+            u32 word;
+            u16 half;
+        } placementY;
+    } frame;
+    u32 nextRecordIndex;
+    u32 packedFrame;
+    u8 recordIndex;
+    u8 slotIndex;
+
+#define entry frame.entry
+    frame.placementY.word = 0;
+    recordIndex = 0;
+    do {
+#define record (&gUnknown_030017d0[recordIndex])
+        u16 active = record->seventeenth;
+
+        nextRecordIndex = recordIndex + 1;
+        if (active != 0) {
+            u32 packedY;
+            u16 adjustedX;
+            u16 adjustedY;
+            u16 oldY;
+            s16 height;
+            s32 screenY;
+
+            FUN_0801816c((s16 *)&record->x, (s16 *)&record->y, record->eighteenth[0],
+                         record->eighteenth[1]);
+            FUN_08018204((s16 *)&record->x, (s16 *)&record->y, record->x, record->y);
+
+            switch (record->fifteenth) {
+            case 0: {
+                u16 caseY;
+
+                record->x -= 8;
+                caseY = record->y;
+                record->y = caseY - 8;
+                frame.placementY.word = (u16)(caseY - 1);
+                break;
+            }
+            case 1: {
+                u16 caseY;
+
+                record->x -= 16;
+                caseY = record->y;
+                record->y = caseY - 8;
+                frame.placementY.word = (u16)(caseY - 1);
+                break;
+            }
+            case 2:
+                record->x -= 8;
+                oldY = record->y;
+                record->y = oldY - 16;
+                frame.placementY.word = (u16)(oldY - 2);
+                break;
+            case 3:
+                record->x -= 16;
+                oldY = record->y;
+                record->y = oldY - 16;
+                frame.placementY.word = (u16)(oldY - 2);
+                break;
+            case 4:
+                record->x -= 4;
+                oldY = record->y;
+                record->y = oldY - 4;
+                frame.placementY.word = (u16)oldY;
+                break;
+            default:
+                break;
+            }
+
+            adjustedY = record->y;
+            adjustedX = record->x;
+            if ((u16)((s16)adjustedX + 64) <= 304) {
+                packedY = adjustedY << 16;
+                height = record->eighteenth[2];
+                screenY = ((s32)packedY >> 16) - height;
+                packedFrame = packedY;
+                if (screenY <= gUnknown_030017c0 && screenY >= gUnknown_030016d0 - 64) {
+                    switch (gUnknown_03001370) {
+                    case 0:
+                        if (record->nineteenth == 4 || record->nineteenth == 7 ||
+                            record->nineteenth == 1) {
+                            record->second = record->third;
+                        } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
+                                   record->nineteenth == 3) {
+                            record->second = record->third ^ 1;
+                        }
+                        break;
+                    case 1:
+                        if (record->nineteenth == 4 || record->nineteenth == 7 ||
+                            record->nineteenth == 1) {
+                            record->second = record->third ^ 1;
+                        } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
+                                   record->nineteenth == 3) {
+                            record->second = record->third;
+                        }
+                        break;
+                    case 2:
+                        if ((u8)(record->nineteenth - 1) <= 2) {
+                            record->second = record->third;
+                        } else if ((u8)(record->nineteenth - 7) <= 2) {
+                            record->second = record->third ^ 1;
+                        }
+                        break;
+                    case 3:
+                        if ((u8)(record->nineteenth - 1) <= 2) {
+                            record->second = record->third ^ 1;
+                        } else if ((u8)(record->nineteenth - 7) <= 2) {
+                            record->second = record->third;
+                        }
+                        break;
+                    }
+
+                    slotIndex = 0;
+                    while (slotIndex < gUnknown_0806b414[record->seventeenth]) {
+                        if (record->slots[slotIndex] <= 26 && slotIndex <= 3) {
+#define FILL_ENTRY(entryX)                                                                         \
+    do {                                                                                           \
+        entry.first = (entryX);                                                                    \
+        entry.second = ((s32)packedFrame >> 16) + record->twelfth[slotIndex];                      \
+        entry.zero = record->eighteenth[2];                                                        \
+        entry.third = 3;                                                                           \
+        entry.constant = frame.placementY.half;                                                    \
+        entry.ninth = record->second;                                                              \
+        entry.sixth = 0;                                                                           \
+        entry.fourth = record->slots[slotIndex] * 16 + 176;                                        \
+        if (record->first == 255) {                                                                \
+            entry.fifth = record->sixteenth;                                                       \
+        } else if (record->first == 254) {                                                         \
+            entry.fifth = 4;                                                                       \
+        } else {                                                                                   \
+            entry.fifth = record->first + 5;                                                       \
+        }                                                                                          \
+        entry.seventh = record->fifteenth + 30;                                                    \
+        entry.eighth = 0;                                                                          \
+    } while (0)
+                            if (record->second == 0) {
+                                FILL_ENTRY(record->eleventh[slotIndex] + (s16)adjustedX);
+                            } else {
+                                FILL_ENTRY((s16)adjustedX - record->eleventh[slotIndex]);
+                            }
+#undef FILL_ENTRY
+                        }
+                        FUN_08017f00(*(u32 *)&entry, *((u32 *)&entry + 1), *((u32 *)&entry + 2),
+                                     *((u32 *)&entry + 3));
+                        slotIndex++;
+                    }
+                }
+            }
+        }
+        recordIndex = nextRecordIndex;
+#undef record
+    } while (recordIndex <= 11);
+
+    gUnknown_03002684 = 0;
+    FUN_0800f3c4();
+#undef entry
 }
 
 void FUN_0800fd8c(void) {
@@ -1209,6 +1911,138 @@ u8 FUN_080153e0(void) {
     return 255;
 }
 
+void FUN_08016078(u32 mode) {
+    volatile u16 *oam;
+    u8 selectedMode;
+    volatile u16 zero;
+    u32 hidden;
+    u32 affine;
+    u32 value;
+    s32 counter;
+
+    selectedMode = mode;
+    zero = 0;
+    {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = (u32)&zero;
+        dma[1] = 0x06000000;
+        dma[2] = 0x8100c000;
+        dma[2];
+    }
+    CpuSet((const void *)0x05000000, (void *)0x05000200, 0x1ff);
+
+    oam = (volatile u16 *)0x07000000;
+    value = 0x200;
+    hidden = value;
+    value = 0;
+    counter = 0x100;
+    affine = counter;
+    counter = 31;
+    do {
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = affine;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = affine;
+        counter--;
+    } while (counter >= 0);
+
+    gUnknown_03003140 = 0;
+    gUnknown_030013a0 = 0;
+    gUnknown_0300138c = 0;
+
+    switch (selectedMode) {
+    case 5: {
+        gUnknown_03003150[0] = 0x08018665;
+        gUnknown_03003150[1] = 0x08018669;
+        gUnknown_03003150[2] = 0x08018665;
+        gUnknown_03003150[3] = 0x08018665;
+        gUnknown_03003150[4] = 0x08018665;
+        {
+            volatile u32 *dma = (volatile u32 *)0x040000d4;
+            dma[0] = 0x08000104;
+            dma[1] = (u32)gUnknown_030032a0;
+            dma[2] = 0x80000070;
+            dma[2];
+        }
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_03001380 = 0;
+        break;
+    }
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 40: {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = 0x08071184;
+        dma[1] = (u32)gUnknown_03003150;
+        dma[2] = 0x8000000a;
+        dma[2];
+        dma[0] = 0x08000104;
+        dma[1] = (u32)gUnknown_030032a0;
+        dma[2] = 0x80000070;
+        dma[2];
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        FUN_08020134(0);
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_03001380 = 0;
+        break;
+    }
+    case 6: {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = 0x08071170;
+        dma[1] = (u32)gUnknown_03003150;
+        dma[2] = 0x8000000a;
+        dma[2];
+        dma[0] = 0x08000104;
+        dma[1] = (u32)gUnknown_030032a0;
+        dma[2] = 0x80000070;
+        dma[2];
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        *(volatile u16 *)0x04000000 = 0x1c62;
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_030016c4 = 0xa0;
+        break;
+    }
+    }
+
+    gUnknown_030017cc = 0;
+    gUnknown_030017c8 = 0;
+    gUnknown_03001388 = 0;
+    gUnknown_030033cc = 0;
+    gUnknown_03003170 = 0;
+    gUnknown_03001b04 = 0x100;
+    gUnknown_030016c8 = 0x200;
+    gUnknown_03001b2c = 0;
+    gUnknown_030016c0 = 0;
+    gUnknown_03001b08 = 0;
+    FUN_08020134(gUnknown_03002110[1] + (u32)gUnknown_03002610);
+    {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        while (dma[2] & 0x80000000) {
+        }
+    }
+}
+
 void FUN_080163c0(u8 layer) {
     u8 index;
     volatile u16 value;
@@ -1342,6 +2176,9 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     u16 commandIndex;
     u8 animationIndex;
     u32 remapped;
+    u8 *activeSlot;
+
+#define ACTIVE_SLOT (activeSlot = (u8 *)&gUnknown_03001620, activeSlot += 24, activeSlot[slot])
 
     resource = 0;
     if (character != 9) {
@@ -1441,10 +2278,10 @@ animation_ready:
         goto command_done;
 
     sprite_command:
+        command = (u16)command;
         switch (character) {
         case 0:
-            resource =
-                !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8 : 0x08787d18;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08787d18 : 0x0847afd8;
             break;
         case 1:
         case 10:
@@ -1454,48 +2291,41 @@ animation_ready:
             break;
         case 2:
         case 22:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158 : 0x08528418;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08835158 : 0x08528418;
             break;
         case 3:
         case 23:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38 : 0x084cadf8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x087d7b38 : 0x084cadf8;
             break;
         case 4:
         case 24:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578 : 0x0858d838;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x0889a578 : 0x0858d838;
             break;
         case 5:
         case 25:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98 : 0x085f3e58;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08900b98 : 0x085f3e58;
             break;
         case 6:
         case 26:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8 : 0x08636478;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x089431b8 : 0x08636478;
             break;
         case 7:
         case 27:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8 : 0x086f6ab8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08a037f8 : 0x086f6ab8;
             break;
         case 8:
         case 28:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8 : 0x08681a98;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x0898e7d8 : 0x08681a98;
             break;
         case 9:
-            resource =
-                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418 : 0x087336d8;
+            resource = ACTIVE_SLOT || remapped == 1 ? 0x08a40418 : 0x087336d8;
             break;
         default:
             break;
         }
 
-        if (character == 1) {
+        switch (character) {
+        case 1:
             if (animation == 19) {
                 gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
                 gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
@@ -1503,8 +2333,12 @@ animation_ready:
                 gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
                 gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
             }
-        } else if (character == 2 && animation == 21) {
-            gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+            break;
+        case 2:
+            if (animation == 21) {
+                gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+            }
+            break;
         }
         FUN_08020440(resource, sound, command);
         goto command_done;
@@ -1526,6 +2360,7 @@ animation_ready:
 
 advance_frame:
     gUnknown_03003108[slot]++;
+#undef ACTIVE_SLOT
     return 1;
 }
 
