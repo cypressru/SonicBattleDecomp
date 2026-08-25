@@ -8223,7 +8223,7 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
     FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, destination, 10, 2, 0);
     if (variant <= 3) {
         u16 *entries = gUnknown_03005200[index];
-        register s32 y asm("r6") = 30;
+        register s32 y = 30;
         register u32 stop asm("r1");
         u32 secondStop;
         u32 i = 0;
