@@ -2734,7 +2734,26 @@ units:
       - { offset: 0xEBCC, mode: data }
       - { offset: 0xEBD0, mode: thumb }
       - { offset: 0xEC00, mode: data }
-      - { offset: 0xEC04, mode: thumb }
+      - { offset: 0xEC0C, mode: thumb }
+      - { offset: 0xEC64, mode: data }
+      - { offset: 0xEC84, mode: thumb }
+      - { offset: 0xEC8C, mode: data }
+      - { offset: 0xEC90, mode: thumb }
+      - { offset: 0xEC98, mode: data }
+      - { offset: 0xEC9C, mode: thumb }
+      - { offset: 0xECA0, mode: data }
+      - { offset: 0xECA4, mode: thumb }
+      - { offset: 0xECC4, mode: data }
+      - { offset: 0xECD0, mode: thumb }
+      - { offset: 0xECE0, mode: data }
+      - { offset: 0xECF8, mode: thumb }
+      - { offset: 0xED00, mode: data }
+      - { offset: 0xED04, mode: thumb }
+      - { offset: 0xED0C, mode: data }
+      - { offset: 0xED10, mode: thumb }
+      - { offset: 0xED38, mode: data }
+      - { offset: 0xED40, mode: thumb }
+      - { offset: 0xEDB0, mode: data }
       - { offset: 0xEEBE, mode: data }
       - { offset: 0xEEC0, mode: thumb }
       - { offset: 0xEF3C, mode: data }
@@ -5756,7 +5775,28 @@ units:
       - { offset: 0xEBCC, type: abs32, symbol: gUnknown_08edba4c }
       - { offset: 0xEBDC, type: thumb_call, symbol: FUN_08020ad0 }
       - { offset: 0xEBF4, type: thumb_call, symbol: FUN_08020b74 }
-      - { offset: 0xEC00, type: abs32, symbol: gUnknown_08edb9cc }
+      - { offset: 0xEC00, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0xEC04, type: abs32, symbol: gUnknown_0806b414 }
+      - { offset: 0xEC68, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0xEC6C, type: abs32, symbol: .text, addend: 0xEC70 }
+      - { offset: 0xEC70, type: abs32, symbol: .text, addend: 0xEC84 }
+      - { offset: 0xEC74, type: abs32, symbol: .text, addend: 0xEC90 }
+      - { offset: 0xEC78, type: abs32, symbol: .text, addend: 0xEC90 }
+      - { offset: 0xEC7C, type: abs32, symbol: .text, addend: 0xEC9C }
+      - { offset: 0xEC80, type: abs32, symbol: .text, addend: 0xECA4 }
+      - { offset: 0xECC8, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0xECE0, type: abs32, symbol: .text, addend: 0xECE4 }
+      - { offset: 0xECE4, type: abs32, symbol: .text, addend: 0xECF8 }
+      - { offset: 0xECE8, type: abs32, symbol: .text, addend: 0xED04 }
+      - { offset: 0xECEC, type: abs32, symbol: .text, addend: 0xED04 }
+      - { offset: 0xECF0, type: abs32, symbol: .text, addend: 0xED10 }
+      - { offset: 0xECF4, type: abs32, symbol: .text, addend: 0xED40 }
+      - { offset: 0xED3C, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0xEDB4, type: abs32, symbol: gUnknown_030017d0 }
+      - { offset: 0xEDBC, type: abs32, symbol: gUnknown_0806b414 }
+      - { offset: 0xECBC, type: thumb_call, symbol: FUN_080204b8 }
+      - { offset: 0xED32, type: thumb_call, symbol: FUN_080204b8 }
+      - { offset: 0xED5A, type: thumb_call, symbol: FUN_080204b8 }
       - { offset: 0xEEB2, type: thumb_call, symbol: FUN_0801f89c }
       - { offset: 0xEEB6, type: thumb_call, symbol: FUN_0801fda0 }
       - { offset: 0xEEDC, type: thumb_call, symbol: FUN_0801f7d0 }

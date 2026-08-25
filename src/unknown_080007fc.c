@@ -322,6 +322,7 @@ extern void FUN_0800baac(u8 index);
 extern u8 FUN_0800b098(u16 animation);
 extern void FUN_0800964c(void);
 extern void FUN_08020440(u32 first, u16 second, u16 third);
+extern void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth);
 extern void FUN_08020134(u32 value);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
@@ -1473,6 +1474,58 @@ void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 s
         }
     }
 #undef actor
+}
+
+void FUN_0800f3c4(void) {
+    u8 recordIndex;
+
+    for (recordIndex = 0; recordIndex < 12; recordIndex++) {
+        struct UnknownRecord030017d0 *record = &gUnknown_030017d0[recordIndex];
+
+        if (record->seventeenth != 0) {
+            const u8 *count = &gUnknown_0806b414[record->seventeenth];
+            u8 slot;
+
+            for (slot = 0; slot < *count; slot++) {
+                u16 *value = (u16 *)((u8 *)record + 26 + slot * 2);
+
+                if (*value != 0xffff) {
+                    const u8 *state = (const u8 *)&gUnknown_03001620;
+                    const u8 *resource;
+                    u16 scale;
+
+                    if ((u8)(state[20 + record->sixteenth] - 9) < 8 ||
+                        state[24 + record->sixteenth] != 0) {
+                        resource = (const u8 *)0x08b40858;
+                    } else {
+                        resource = (const u8 *)0x08a8f038;
+                    }
+
+                    switch (record->fifteenth) {
+                    case 0:
+                        scale = 0x100;
+                        break;
+                    case 1:
+                    case 2:
+                        scale = 0x200;
+                        break;
+                    case 3:
+                        scale = 0x400;
+                        break;
+                    case 4:
+                        scale = 0x40;
+                        break;
+                    default:
+                        *value = 0xffff;
+                        continue;
+                    }
+
+                    FUN_080204b8((u32)resource, scale, resource[recordIndex * 68 + slot], *value);
+                    *value = 0xffff;
+                }
+            }
+        }
+    }
 }
 
 void FUN_0800f9c0(void) {

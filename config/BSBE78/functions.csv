@@ -57,8 +57,6 @@ address,name,mode,confidence
 0x0800F024,FUN_0800f024,thumb,direct-call
 0x0800F0AC,FUN_0800f0ac,thumb,direct-call
 0x0800F3C4,FUN_0800f3c4,thumb,direct-call
-0x0800F4E4,FUN_0800f4e4,thumb,rom-pointer
-0x0800F512,FUN_0800f512,thumb,recursive-disassembly
 0x0800F5BC,FUN_0800f5bc,thumb,direct-call
 0x0800F9C0,FUN_0800f9c0,thumb,direct-call
 0x0800FD8C,FUN_0800fd8c,thumb,direct-call+exact-body
