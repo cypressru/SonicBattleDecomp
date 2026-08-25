@@ -1287,6 +1287,7 @@ extern u16 gUnknown_03001378;
 extern void FUN_080177b8(u8 participant);
 extern u8 FUN_080153e0(void);
 extern u8 FUN_0801584c(void);
+extern u8 FUN_080158c0(void);
 extern u32 FUN_08006894(void);
 extern const u8 gUnknown_08071232[];
 extern void FUN_08006e64(void);
@@ -2423,6 +2424,218 @@ participants_done:
     FUN_080175d4();
     FUN_08017d58();
     FUN_08017c5c();
+}
+
+void FUN_0801afc4(void) {
+    FUN_08017964(0);
+    FUN_08017964(1);
+    FUN_08017964(2);
+    FUN_08017964(3);
+
+    if (gUnknown_0300138c != 0) {
+        u32 current = gUnknown_03001380;
+
+        if (current <= 1) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[current + 30] != 0) {
+                current += 2;
+            }
+        }
+        FUN_080074a8(current);
+    }
+
+    if (FUN_080158c0() == 1) {
+        u8 *scene;
+        u8 winner;
+
+        FUN_080207ec(32);
+        gUnknown_03002030 = FUN_0801bd90;
+        scene = &gUnknown_03001620;
+        winner = FUN_0801a228(scene[4]);
+        gUnknown_03003da0 = winner;
+
+        if (scene[8] == 0) {
+            if (scene[23] != 10) {
+                u8 command = gUnknown_03001c40[winner].field196;
+
+                switch (command) {
+                case 0:
+                    FUN_0801f618(0xfa);
+                    break;
+                case 1:
+                    FUN_0801f618(0xfb);
+                    break;
+                case 2:
+                    FUN_0801f618(0xfc);
+                    break;
+                case 3:
+                    FUN_0801f618(0xfd);
+                    break;
+                case 4:
+                    FUN_0801f618(0xff);
+                    break;
+                case 5:
+                    FUN_0801f618(0xfe);
+                    break;
+                case 6:
+                    FUN_0801f618(0x100);
+                    break;
+                case 7:
+                    FUN_0801f618(0x101);
+                    break;
+                case 8:
+                    FUN_0801f618(0xd0);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    break;
+                }
+            }
+        } else {
+            u32 current = gUnknown_03001380;
+
+            if (scene[current + 32] == winner) {
+                u8 command = gUnknown_03001c40[current].field196;
+
+                switch (command) {
+                case 0:
+                    FUN_0801f618(0x103);
+                    break;
+                case 1:
+                    FUN_0801f618(0x104);
+                    break;
+                case 2:
+                    FUN_0801f618(0x105);
+                    break;
+                case 3:
+                    FUN_0801f618(0x106);
+                    break;
+                case 4:
+                    FUN_0801f618(0x108);
+                    break;
+                case 5:
+                    FUN_0801f618(0x107);
+                    break;
+                case 6:
+                    FUN_0801f618(0x109);
+                    break;
+                case 7:
+                    FUN_0801f618(0x10a);
+                    break;
+                case 8:
+                    FUN_0801f618(0x10b);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    break;
+                }
+            }
+        }
+        FUN_0801a61c(scene[4]);
+    }
+
+    FUN_08006e64();
+    FUN_0800c728();
+    {
+        u8 *scene = &gUnknown_03001620;
+
+        if (gUnknown_0300138c == 0) {
+            u8 index;
+
+            for (index = 0; index <= 3; index++) {
+                if (scene[index + 20] != 0xff) {
+                    FUN_08007ec8(index);
+                    FUN_0800597c(index);
+                    FUN_08006134(index);
+                    FUN_08005310(index);
+                    FUN_0800486c(index);
+                }
+            }
+        } else {
+            u8 index;
+            u32 current;
+
+            for (index = 0; index <= 3; index++) {
+                if (scene[index + 20] != 0xff) {
+                    FUN_08007ec8(index);
+                    FUN_0800597c(index);
+                }
+            }
+            current = gUnknown_03001380;
+            FUN_08006134(current);
+            FUN_08005310(current);
+            FUN_0800486c(current);
+            if (current <= 1 && scene[current + 30] != 0) {
+                FUN_08006134(current + 2);
+                FUN_08005310(current + 2);
+                FUN_0800486c(current + 2);
+            }
+        }
+    }
+
+    FUN_080006d0();
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+        if (gUnknown_0300138c != 0) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == gUnknown_03003d9c) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = FUN_0801bd90;
+            }
+        }
+    }
+
+    {
+        u8 *scene = &gUnknown_03001620;
+        u8 mode;
+
+        if (scene[136] == 0xff) {
+            FUN_0801a04c(gUnknown_03001380);
+        } else {
+            FUN_0801a04c(scene[136]);
+        }
+        mode = FUN_0801584c();
+        FUN_080182ac();
+        FUN_08016684();
+        FUN_08017ed0();
+        FUN_08013214(mode);
+        FUN_08017f6c();
+        if (mode != 10) {
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+        }
+        FUN_08011c7c();
+        FUN_080175d4();
+        FUN_08017d58();
+        FUN_08017c5c();
+    }
+    (*(u16 *)(&gUnknown_03001620 + 114))++;
 }
 
 void FUN_0801bcac(void) {
