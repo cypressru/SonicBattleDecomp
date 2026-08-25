@@ -9824,10 +9824,10 @@ digits_done: {
         signedRemaining >>= 24;
         minusOne = -1;
         if (signedRemaining != minusOne) {
-            register s32 padding asm("r3") = minusOne;
+            register s32 padding = minusOne;
 
             do {
-                register u32 shifted asm("r0");
+                register u32 shifted;
                 register u32 decrement asm("r5");
 
                 *--cursor = padding;
