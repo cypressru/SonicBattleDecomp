@@ -1311,58 +1311,84 @@ void FUN_080198b0(void) {
     };
     u8 *scene = &gUnknown_03001620;
     u8 index;
-    u8 zero = 0;
+    u32 wordZero;
+    u8 finalZero;
 
     gUnknown_03003d98 = 0;
     gUnknown_03003d9c = 0;
-    for (index = 0; index <= 3; index++) {
-        if (scene[index + 28] == 0 && scene[index + 20] != 0xff) {
-            gUnknown_03003d9c++;
+    {
+        u8 *active = scene + 28;
+        u8 *count = &gUnknown_03003d9c;
+        u8 *participants = scene + 20;
+
+        for (index = 0; index <= 3; index++) {
+            if (*(u8 *)(index + (u32)active) == 0 && *(u8 *)(index + (u32)participants) != 0xff) {
+                (*count)++;
+            }
         }
     }
 
     scene[136] = 0xff;
-    for (index = 0; index <= 3; index++) {
-        scene[index + 39] = zero;
-        scene[index + 43] = zero;
-        scene[index + 47] = zero;
-        scene[index + 51] = zero;
-        *(u16 *)(scene + index * 2 + 58) = zero;
-        *(u16 *)(scene + index * 2 + 66) = zero;
-        *(u16 *)(scene + index * 2 + 74) = zero;
-        *(u16 *)(scene + index * 2 + 82) = zero;
-        *(u16 *)(scene + index * 2 + 90) = zero;
-        *(u16 *)(scene + index * 2 + 98) = zero;
-        *(u16 *)(scene + index * 2 + 106) = zero;
-        scene[index + 137] = zero;
-        if (scene[index + 12] > 100) {
-            scene[index + 12] = 100;
+    {
+        u8 loopZero = 0;
+        u8 limit = 100;
+
+        for (index = 0; index <= 3; index++) {
+            scene[index + 39] = loopZero;
+            scene[index + 43] = loopZero;
+            scene[index + 47] = loopZero;
+            scene[index + 51] = loopZero;
+            *(u16 *)(scene + index * 2 + 58) = loopZero;
+            *(u16 *)(scene + index * 2 + 66) = loopZero;
+            *(u16 *)(scene + index * 2 + 74) = loopZero;
+            *(u16 *)(scene + index * 2 + 82) = loopZero;
+            *(u16 *)(scene + index * 2 + 90) = loopZero;
+            *(u16 *)(scene + index * 2 + 98) = loopZero;
+            *(u16 *)(scene + index * 2 + 106) = loopZero;
+            scene[index + 137] = loopZero;
+            if (scene[index + 12] > limit) {
+                scene[index + 12] = limit;
+            }
+            if (scene[index + 16] > limit) {
+                scene[index + 16] = limit;
+            }
+            scene[index + 141] = scene[index + 12];
+            scene[index + 145] = scene[index + 16];
         }
-        if (scene[index + 16] > 100) {
-            scene[index + 16] = 100;
-        }
-        scene[index + 141] = scene[index + 12];
-        scene[index + 145] = scene[index + 16];
     }
 
-    scene[55] = zero;
-    scene[56] = zero;
-    *(u16 *)(scene + 114) = zero;
-    scene[116] = zero;
-    *(u16 *)(scene + 130) = zero;
-    scene[117] = zero;
-    scene[133] = zero;
-    scene[134] = zero;
-    scene[135] = zero;
+    wordZero = 0;
+    finalZero = 0;
+    {
+        u8 *cursor = scene + 55;
+
+        *cursor = wordZero;
+        cursor++;
+        *cursor = wordZero;
+        cursor += 58;
+        *(u16 *)cursor = wordZero;
+        cursor += 2;
+        *cursor = finalZero;
+        cursor += 14;
+        *(u16 *)cursor = wordZero;
+        cursor -= 13;
+        *cursor = finalZero;
+        cursor += 16;
+        *cursor = finalZero;
+        cursor++;
+        *cursor = finalZero;
+        cursor++;
+        *cursor = finalZero;
+    }
     *(u16 *)(scene + 126) = scene[7] * 1800;
     *(u16 *)(scene + 128) = scene[10] * 30;
 
     FUN_08015f6c();
-    gUnknown_03002040.base = zero;
-    gUnknown_03002040.x = zero;
-    gUnknown_03002040.y = zero;
-    gUnknown_03001374 = zero;
-    gUnknown_03001b24 = zero;
+    gUnknown_03002040.base = wordZero;
+    gUnknown_03002040.x = wordZero;
+    gUnknown_03002040.y = wordZero;
+    gUnknown_03001374 = wordZero;
+    gUnknown_03001b24 = wordZero;
     FUN_08017964(0);
     FUN_08017964(1);
     FUN_08017964(2);
@@ -1371,18 +1397,21 @@ void FUN_080198b0(void) {
     gUnknown_03002034 = 1;
     FUN_0800186c();
 
-    for (index = 0; index <= 3; index++) {
-        if (scene[index + 20] != 0xff) {
-            FUN_08000cf4(index, scene[index + 20], 0);
-        }
+    if (scene[20] != 0xff) {
+        FUN_08000cf4(0, scene[20], 0);
+    }
+    if (scene[21] != 0xff) {
+        FUN_08000cf4(1, scene[21], 0);
+    }
+    if (scene[22] != 0xff) {
+        FUN_08000cf4(2, scene[22], 0);
+    }
+    if (scene[23] != 0xff) {
+        FUN_08000cf4(3, scene[23], 0);
     }
 
-    {
-        u8 selected = scene[scene[1] + 3];
-
-        FUN_0800fdc8(selected);
-        FUN_0801103c(selected);
-    }
+    FUN_0800fdc8(scene[scene[1] + 3]);
+    FUN_0801103c(scene[scene[1] + 3]);
     FUN_08000a2c();
     FUN_0800fd8c();
 
@@ -1418,8 +1447,13 @@ void FUN_080198b0(void) {
     FUN_0801e9ec(2);
     FUN_0801e9ec(3);
 
-    for (index = 0; index <= 3; index++) {
-        *((u8 *)gUnknown_03001c40 + index * 252 + 159) = zero;
+    {
+        u8 *metadata = (u8 *)gUnknown_03001c40;
+
+        metadata[159] = finalZero;
+        metadata[411] = finalZero;
+        metadata[663] = finalZero;
+        metadata[915] = finalZero;
     }
 }
 
