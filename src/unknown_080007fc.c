@@ -320,6 +320,7 @@ extern s32 DivArm(s32 denominator, s32 numerator);
 extern s32 __divsi3(s32 numerator, s32 denominator);
 extern void FUN_0800baac(u8 index);
 extern u8 FUN_0800b098(u16 animation);
+extern void FUN_0800964c(void);
 extern void FUN_08020440(u32 first, u16 second, u16 third);
 extern void FUN_08020134(u32 value);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
@@ -453,6 +454,44 @@ void FUN_080007fc(u8 index) {
             ((u8 *)&table[index])[199] = 12;
         }
     }
+}
+
+void FUN_08007ec8(u8 participant) {
+    struct UnknownRecord03001c40 *records = gUnknown_03001c40;
+    u32 scaled = participant << 6;
+    u32 offset = (scaled - participant) << 2;
+    u8 *record = (u8 *)records + offset;
+    u8 pending = record[29];
+
+    if (pending != 0) {
+        record[30] = 1;
+        record[28] = pending;
+        record[29] = 0;
+    }
+    if (record[28] != 0 && record[30] != 1) {
+        return;
+    }
+    if (record[30] == 1) {
+        record[30] = 0;
+    }
+    {
+        u32 *flags = (u32 *)((u8 *)records + offset + 180);
+
+        if (*flags & 0x00200000) {
+            *(u16 *)(record + 24) = 0;
+            *(u16 *)(record + 26) = 0;
+            *(u16 *)(record + 160) = 0;
+            *(u16 *)(record + 162) = 0;
+            *flags &= ~0x00200000;
+        }
+    }
+    if (record[199] == 9) {
+        FUN_0800964c();
+    }
+    if (*(u16 *)(record + 20) > 0x235) {
+        return;
+    }
+    ((void (**)(void))0x08007f60)[*(u16 *)(record + 20)]();
 }
 
 void FUN_08000a2c(void) {
