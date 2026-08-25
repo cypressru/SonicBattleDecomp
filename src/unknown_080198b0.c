@@ -4170,8 +4170,10 @@ u16 FUN_0801d408(u8 value) {
                     goto valid5;
                 goto fallback;
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
+                if (field != 0)
                     goto test5;
             }
         valid5:
@@ -4206,8 +4208,10 @@ u16 FUN_0801d408(u8 value) {
                     goto valid6;
                 goto fallback;
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
+                if (field != 0)
                     goto test6;
             }
         valid6:
@@ -4242,8 +4246,10 @@ u16 FUN_0801d408(u8 value) {
                     goto valid7;
                 goto fallback;
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
+                if (field != 0)
                     goto test7;
             }
         valid7:
