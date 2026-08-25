@@ -1331,6 +1331,10 @@ void FUN_080198b0(void) {
         u8 field141[4];
         u8 field145[4];
     };
+    union AddressView {
+        void *pointer;
+        u32 address;
+    };
     u8 *scene;
     u8 *savedScene;
     u8 index;
@@ -1366,16 +1370,66 @@ void FUN_080198b0(void) {
         limit = 100;
         field145 = scene + 145;
         for (; index <= 3; index++) {
-            state->field39[index] = loopZero;
-            state->field43[index] = loopZero;
-            state->field47[index] = loopZero;
-            state->field51[index] = loopZero;
-            state->field58[index] = loopZero;
-            state->field66[index] = loopZero;
-            state->field74[index] = loopZero;
-            state->field82[index] = loopZero;
-            state->field90[index] = loopZero;
-            state->field98[index] = loopZero;
+            {
+                union AddressView field;
+
+                field.pointer = state->field39;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field43;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field47;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field51;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field58;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field66;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field74;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field82;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field90;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field98;
+                *(u16 *)(index * 2 + field.address) = loopZero;
+            }
             {
                 u8 *field = (u8 *)state + 106;
 
@@ -1383,14 +1437,27 @@ void FUN_080198b0(void) {
                 field += 31;
                 field[index] = loopZero;
             }
-            if (state->field12[index] > 100) {
-                state->field12[index] = limit;
+            {
+                union AddressView address12;
+                union AddressView address16;
+                union AddressView address141;
+                u8 *field12;
+                u8 *field16;
+
+                address12.pointer = state->field12;
+                field12 = (u8 *)(index + address12.address);
+                if (*field12 > 100) {
+                    *field12 = limit;
+                }
+                address16.pointer = state->field16;
+                field16 = (u8 *)(index + address16.address);
+                if (*field16 > 100) {
+                    *field16 = limit;
+                }
+                address141.pointer = state->field141;
+                *(u8 *)(index + address141.address) = *field12;
+                *(u8 *)(index + (u32)field145) = *field16;
             }
-            if (state->field16[index] > 100) {
-                state->field16[index] = limit;
-            }
-            state->field141[index] = state->field12[index];
-            field145[index] = state->field16[index];
         }
     }
 
