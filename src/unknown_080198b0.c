@@ -8236,6 +8236,7 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
         u16 *entries = gUnknown_03005200[index];
         register s32 y asm("r6") = 30;
         register u32 stop asm("r1");
+        u32 secondStop;
         u32 i = 0;
 
         if (entries[0] != (stop = 0xFFFE)) {
@@ -8251,9 +8252,8 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
                 }
             } while (entry[0] != scanStop);
         }
-        asm volatile("" : : : "memory");
-        if (entries[0] != (stop = 0xFFFE)) {
-            register u32 sentinel asm("r7") = stop;
+        if (entries[0] != (secondStop = 0xFFFE)) {
+            register u32 sentinel asm("r7") = secondStop;
 
             do {
                 register s32 width asm("r0") = (s16)FUN_08020fac(entries[0]);
