@@ -260,6 +260,7 @@ extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
+extern const u16 gUnknown_0806b2fc[][8];
 extern const u16 gUnknown_0847aa18[];
 extern const u16 gUnknown_08055800[];
 extern const u16 gUnknown_0805587e[];
@@ -282,6 +283,8 @@ extern u32 gUnknown_03001730;
 extern u8 gUnknown_030017c4;
 extern u32 FUN_08018730(s16 *slots);
 extern void FUN_08018c20(void);
+extern void FUN_08017964(u8 group);
+extern u8 gUnknown_03002cb0;
 
 extern u8 gUnknown_0300138c;
 extern u16 gUnknown_03001378;
@@ -439,6 +442,99 @@ void FUN_080007fc(u8 index) {
             ((u8 *)table)[offset + 199] = 12;
         }
     }
+}
+
+void FUN_08000a2c(void) {
+    u8 *records;
+    const u16 *values;
+    u8 i;
+
+    FUN_08017964(0);
+    FUN_08017964(1);
+    FUN_08017964(2);
+    FUN_08017964(3);
+    gUnknown_03001b28 = 100;
+    for (i = 0; i <= 3; i++) {
+        FUN_080007fc(i);
+    }
+
+    records = (u8 *)gUnknown_03001c40;
+    records[147] = 0;
+    records[399] = 0;
+    records[651] = 0;
+    records[903] = 0;
+    records[149] = 0;
+    records[401] = 0;
+    records[653] = 0;
+    records[905] = 0;
+    records[150] = 0;
+    records[402] = 0;
+    records[654] = 0;
+    records[906] = 0;
+    records[144] = 0;
+    records[396] = 0;
+    records[648] = 0;
+    records[900] = 0;
+
+    values = gUnknown_0806b2fc[gUnknown_03002cb0];
+    *(u16 *)(records + 0) = values[0];
+    *(u16 *)(records + 6) = values[0];
+    *(u16 *)(records + 2) = values[1];
+    *(u16 *)(records + 252) = values[2];
+    *(u16 *)(records + 254) = values[3];
+    *(u16 *)(records + 504) = values[4];
+    *(u16 *)(records + 506) = values[5];
+    *(u16 *)(records + 756) = values[6];
+    *(u16 *)(records + 758) = values[7];
+    *(u16 *)(records + 8) = values[1];
+    *(u16 *)(records + 258) = values[2];
+    *(u16 *)(records + 260) = values[3];
+    *(u16 *)(records + 510) = values[4];
+    *(u16 *)(records + 512) = values[5];
+    *(u16 *)(records + 762) = values[6];
+    *(u16 *)(records + 764) = values[7];
+
+    *(u16 *)(records + 152) = 0;
+    *(u16 *)(records + 404) = 0;
+    *(u16 *)(records + 656) = 0;
+    *(u16 *)(records + 908) = 0;
+    records[154] = 0;
+    records[406] = 0;
+    records[658] = 0;
+    records[910] = 0;
+    records[155] = 0;
+    records[407] = 0;
+    records[659] = 0;
+    records[911] = 0;
+    records[141] = 0;
+    records[393] = 0;
+    records[645] = 0;
+    records[897] = 0;
+    records[236] = 0;
+    records[488] = 0;
+    records[740] = 0;
+    records[992] = 0;
+    *(u16 *)(records + 238) = 0;
+    *(u16 *)(records + 490) = 0;
+    *(u16 *)(records + 742) = 0;
+    *(u16 *)(records + 994) = 0;
+
+    records[36] = 6;
+    records[288] = 4;
+    records[540] = 6;
+    records[792] = 4;
+    records[37] = 6;
+    records[289] = 4;
+    records[541] = 6;
+    records[793] = 4;
+    records[16] = 1;
+    records[268] = 0;
+    records[520] = 1;
+    records[772] = 0;
+    records[18] = 1;
+    records[270] = 0;
+    records[522] = 1;
+    records[774] = 0;
 }
 
 /* Rebuilds participant `index`'s palette entries 3..13 from the colour table

@@ -811,6 +811,15 @@ units:
       - { offset: 0x00220, type: abs32, symbol: gUnknown_0300138c }
       - { offset: 0x00228, type: abs32, symbol: gUnknown_03001380 }
       - { offset: 0x0022C, type: abs32, symbol: gUnknown_03001620 }
+      - { offset: 0x0023C, type: thumb_call, symbol: FUN_08017964 }
+      - { offset: 0x00242, type: thumb_call, symbol: FUN_08017964 }
+      - { offset: 0x00248, type: thumb_call, symbol: FUN_08017964 }
+      - { offset: 0x0024E, type: thumb_call, symbol: FUN_08017964 }
+      - { offset: 0x0025C, type: thumb_call, symbol: FUN_080007fc }
+      - { offset: 0x004B4, type: abs32, symbol: gUnknown_03001b28 }
+      - { offset: 0x004B8, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x004C8, type: abs32, symbol: gUnknown_0806b2fc }
+      - { offset: 0x004CC, type: abs32, symbol: gUnknown_03002cb0 }
       - { offset: 0x11F1C, type: abs32, symbol: gUnknown_03002b84 }
       - { offset: 0x11F20, type: abs32, symbol: gUnknown_03002b90 }
       - { offset: 0x11F5C, type: abs32, symbol: gUnknown_03002b84 }
