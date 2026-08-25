@@ -152,7 +152,7 @@ struct UnknownRecord030017d0 {
     u8 sixteenth;
     u8 padding54[2];
     u16 seventeenth;
-    u16 eighteenth[3];
+    s16 eighteenth[3];
     u8 nineteenth;
     u8 twentieth;
     u8 twentyfirst;
@@ -1084,24 +1084,34 @@ void FUN_0800baac(u8 index) {
 }
 
 void FUN_0800f9c0(void) {
-    struct UnknownQueueEntry08018004 entry;
-    u16 constant;
+    struct {
+        struct UnknownQueueEntry08018004 entry;
+        u32 placementY;
+        u32 nextRecordIndex;
+        u32 packedY;
+    } frame;
     u8 recordIndex;
     u8 slotIndex;
 
-    constant = 0;
+#define entry frame.entry
+#define nextRecordIndex frame.nextRecordIndex
+    frame.placementY = 0;
     recordIndex = 0;
     do {
 #define record (&gUnknown_030017d0[recordIndex])
-        u32 nextRecordIndex = recordIndex + 1;
+        u16 active = record->seventeenth;
 
-        if (record->seventeenth != 0) {
+        nextRecordIndex = recordIndex + 1;
+        if (active != 0) {
             u32 packedY;
             u16 adjustedX;
+            u16 adjustedY;
             u16 oldY;
+            s16 height;
+            s32 screenY;
 
             FUN_0801816c(&record->x, &record->y,
-                         (s16)record->eighteenth[0], (s16)record->eighteenth[1]);
+                         record->eighteenth[0], record->eighteenth[1]);
             FUN_08018204(&record->x, &record->y, record->x, record->y);
 
             switch (record->fifteenth) {
@@ -1109,60 +1119,61 @@ void FUN_0800f9c0(void) {
                 record->x -= 8;
                 oldY = record->y;
                 record->y = oldY - 8;
-                constant = oldY - 1;
+                frame.placementY = oldY - 1;
                 break;
             case 1:
                 record->x -= 16;
                 oldY = record->y;
                 record->y = oldY - 8;
-                constant = oldY - 1;
+                frame.placementY = oldY - 1;
                 break;
             case 2:
                 record->x -= 8;
                 oldY = record->y;
                 record->y = oldY - 16;
-                constant = oldY - 2;
+                frame.placementY = oldY - 2;
                 break;
             case 3:
                 record->x -= 16;
                 oldY = record->y;
                 record->y = oldY - 16;
-                constant = oldY - 2;
+                frame.placementY = oldY - 2;
                 break;
             case 4:
                 record->x -= 4;
                 oldY = record->y;
                 record->y = oldY - 4;
-                constant = oldY;
+                frame.placementY = oldY;
                 break;
             default:
                 break;
             }
 
+            adjustedY = record->y;
             adjustedX = record->x;
-            packedY = (u16)record->y << 16;
-            if ((u16)((s16)adjustedX + 64) <= 304 &&
-                (s16)(packedY >> 16) - (s16)record->eighteenth[2] <=
-                    gUnknown_030017c0 &&
-                (s16)(packedY >> 16) - (s16)record->eighteenth[2] >=
-                    gUnknown_030016d0 - 64) {
+            if ((u16)((s16)adjustedX + 64) <= 304) {
+                packedY = adjustedY << 16;
+                height = record->eighteenth[2];
+                screenY = ((s32)packedY >> 16) - height;
+                frame.packedY = packedY;
+                if (screenY <= gUnknown_030017c0 && screenY >= gUnknown_030016d0 - 64) {
                 switch (gUnknown_03001370) {
                 case 0:
                     if (record->nineteenth == 4 || record->nineteenth == 7 ||
                         record->nineteenth == 1) {
-                        record->second = record->third ^ 1;
+                        record->second = record->third;
                     } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
                                record->nineteenth == 3) {
-                        record->second = record->third;
+                        record->second = record->third ^ 1;
                     }
                     break;
                 case 1:
                     if (record->nineteenth == 4 || record->nineteenth == 7 ||
                         record->nineteenth == 1) {
-                        record->second = record->third;
+                        record->second = record->third ^ 1;
                     } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
                                record->nineteenth == 3) {
-                        record->second = record->third ^ 1;
+                        record->second = record->third;
                     }
                     break;
                 case 2:
@@ -1187,10 +1198,10 @@ void FUN_0800f9c0(void) {
 #define FILL_ENTRY(entryX)                                                                        \
     do {                                                                                           \
         entry.first = (entryX);                                                                    \
-        entry.second = (s16)(packedY >> 16) + record->twelfth[slotIndex];                          \
+        entry.second = ((s32)frame.packedY >> 16) + record->twelfth[slotIndex];                    \
         entry.zero = record->eighteenth[2];                                                        \
         entry.third = 3;                                                                           \
-        entry.constant = constant;                                                                 \
+        entry.constant = frame.placementY;                                                         \
         entry.ninth = record->second;                                                               \
         entry.sixth = 0;                                                                           \
         entry.fourth = record->slots[slotIndex] * 16 + 176;                                        \
@@ -1216,6 +1227,7 @@ void FUN_0800f9c0(void) {
                     slotIndex++;
                 }
             }
+            }
         }
         recordIndex = nextRecordIndex;
 #undef record
@@ -1223,6 +1235,8 @@ void FUN_0800f9c0(void) {
 
     gUnknown_03002684 = 0;
     FUN_0800f3c4();
+#undef nextRecordIndex
+#undef entry
 }
 
 void FUN_0800fd8c(void) {

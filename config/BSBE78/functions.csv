@@ -62,7 +62,6 @@ address,name,mode,confidence
 0x0800F512,FUN_0800f512,thumb,recursive-disassembly
 0x0800F5BC,FUN_0800f5bc,thumb,direct-call
 0x0800F9C0,FUN_0800f9c0,thumb,direct-call
-0x0800FA68,FUN_0800fa68,thumb,internal-control-flow-fragment
 0x0800FD8C,FUN_0800fd8c,thumb,direct-call+exact-body
 0x0800FDC8,FUN_0800fdc8,thumb,direct-call
 0x0800FDEA,FUN_0800fdea,thumb,rom-pointer
