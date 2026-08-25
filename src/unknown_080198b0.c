@@ -3481,8 +3481,9 @@ void FUN_0801d618(u8 value) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
             u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
-            s16 *coordinate =
-                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
             u32 valid;
 
             if (*coordinate < 0) {
@@ -3492,8 +3493,10 @@ void FUN_0801d618(u8 value) {
                     goto fallback;
                 }
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
+                if (field == 0)
                     valid = 1;
             }
             if (valid == 0) {
@@ -3512,8 +3515,9 @@ void FUN_0801d618(u8 value) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
             u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
-            s16 *coordinate =
-                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
             u32 valid;
 
             if (*coordinate < 0) {
@@ -3523,8 +3527,10 @@ void FUN_0801d618(u8 value) {
                     goto fallback;
                 }
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
+                if (field == 0)
                     valid = 1;
             }
             if (valid == 0) {
@@ -3543,8 +3549,9 @@ void FUN_0801d618(u8 value) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
             u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
-            s16 *coordinate =
-                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
             u32 valid;
 
             if (*coordinate < 0) {
@@ -3554,8 +3561,10 @@ void FUN_0801d618(u8 value) {
                     goto fallback;
                 }
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
+                if (field == 0)
                     valid = 1;
             }
             if (valid == 0) {
@@ -3595,8 +3604,9 @@ void FUN_0801d618(u8 value) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
             u32 linkedOffset = entity->field15 * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
-            s16 *coordinate =
-                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
             u32 valid;
 
             if (*coordinate < 0) {
@@ -3606,8 +3616,10 @@ void FUN_0801d618(u8 value) {
                     goto fallback;
                 }
             } else {
+                u32 field = metadataBase[index].field16;
+
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
+                if (field == 0)
                     valid = 1;
             }
             if (valid != 0) {
