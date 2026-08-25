@@ -8506,26 +8506,26 @@ void FUN_08029d74(struct UnknownListNode *node) {
 
             if (selectionAddress->secondSelection != 0xFF) {
                 register u8 selection asm("r4");
-                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+                register u8 *flagAddress = (u8 *)data + 16;
 
                 selection = selectionAddress->secondSelection;
                 flagAddress += selection;
                 if (*flagAddress != 0) {
-                    register u32 current asm("r1") = displayState[3];
-                    register u32 bit asm("r0") = 1;
+                    register u32 current = displayState[3];
+                    register u32 bit = 1;
 
                     bit |= current;
                     displayState[3] = bit;
                 }
                 {
-                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
+                    register u8 *flagAddress = (u8 *)data + 12;
                     register struct UnknownAllocation29d74 *secondAddress asm("r1") = data;
                     register u32 selection asm("r1") = secondAddress->secondSelection;
 
                     flagAddress += selection;
                     if (*flagAddress != 0) {
-                        register u32 current asm("r1") = displayState[3];
-                        register u32 bits asm("r0") = 15;
+                        register u32 current = displayState[3];
+                        register u32 bits = 15;
 
                         bits |= current;
                         displayState[3] = bits;
