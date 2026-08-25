@@ -3464,11 +3464,16 @@ void FUN_0801c28c(void) {
         }
     }
     FUN_080066d8();
-    for (index = 0; index <= 3; index++) {
-        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
-            FUN_08006134(index);
-            FUN_08005310(index);
-            FUN_0800486c(index);
+    index = 0;
+    {
+        u8 *metadataBase = (u8 *)gUnknown_03001c40;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)(index + (u32)metadataBase) != 0xff) {
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
         }
     }
     FUN_080006d0();
@@ -3480,13 +3485,18 @@ void FUN_0801c28c(void) {
         u8 *state = (u8 *)(scaled + (u32)stateBase);
         u32 stateOffset = state[60] * 2;
         u16 flags;
+        u32 mask;
 
         stateOffset += scaled;
         stateBase += 20;
         flags = *(u16 *)(stateOffset + (u32)stateBase);
+        mask = 8;
+        mask &= flags;
 
-        if ((flags & 8) != 0) {
-            if (gUnknown_03001c40[current].field191 != 0) {
+        if ((u16)mask != 0) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+
+            if (metadataBase[current].field191 != 0) {
                 FUN_080207ec(32);
                 gUnknown_03002030 = FUN_0801bd90;
             }
