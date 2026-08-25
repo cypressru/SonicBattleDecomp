@@ -7944,10 +7944,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
         register u16 *destination asm("r4") = destinationBase;
         u32 sentinel = 0xFFFE;
 
-        asm volatile("" : : "r"(count));
-        asm volatile("" : : "r"(destination));
-        asm volatile("" : : "r"(sentinel));
-
         do {
             if (i != *localIndex) {
                 register u32 offset asm("r2") = i * 16;
