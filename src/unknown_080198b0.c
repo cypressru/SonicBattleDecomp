@@ -209,6 +209,7 @@ extern void FUN_08024304(struct UnknownListNode *node);
 extern void FUN_08024170(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033bb4(struct UnknownListNode *node);
+extern void FUN_08033c74(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
 extern const u8 gUnknown_0814d910[];
@@ -356,6 +357,7 @@ struct UnknownPosition {
 
 extern const struct UnknownPosition gUnknown_08edc550[];
 extern const struct UnknownPosition gUnknown_08edc570[];
+extern struct UnknownPosition gUnknown_08edc738[];
 extern const u16 gUnknown_08edc590[];
 extern const u16 gUnknown_08edcef4[];
 
@@ -10897,6 +10899,29 @@ void FUN_08033bf8(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08000210;
     }
+}
+
+void FUN_08033c20(struct UnknownListNode *node) {
+    struct UnknownAllocation33c20 {
+        u8 filler0[12];
+        u8 childIds[15];
+    } *allocation = node->allocation;
+    u8 index = 0;
+
+    do {
+        struct UnknownListNode *child = FUN_0801f7d0(
+            (void (*)(struct UnknownListNode *))((u32)FUN_0801f9d8 + 1), 16, gUnknown_03003e20, 0);
+        const struct UnknownPosition *source;
+        struct UnknownPosition *destination;
+
+        allocation->childIds[index] = child->field6;
+        source = &gUnknown_08edc738[index];
+        destination = child->position;
+        *destination = *source;
+        index++;
+    } while (index <= 14);
+
+    node->data = (const void *)((u32)FUN_08033c74 + 1);
 }
 
 void FUN_08033b60(struct UnknownListNode *node) {
