@@ -11704,10 +11704,8 @@ void FUN_0804224c(u8 value) {
             register u32 difference asm("r1");
             register u32 second asm("r0");
 
-            asm volatile("" : "+r"(firstAddress), "+r"(secondAddress));
             difference = *firstAddress;
             second = *secondAddress;
-            asm volatile("" : "+r"(difference), "+r"(second));
             difference -= second;
             {
                 register u32 total asm("r0") = global->field40 + difference;
@@ -11742,7 +11740,6 @@ void FUN_0804224c(u8 value) {
                     register s32 shift asm("r1") = column;
                     register u32 bits asm("r0") = one;
 
-                    asm volatile("" : "+r"(shift), "+r"(bits));
                     bits <<= shift;
                     bits |= mask;
                     mask = bits;
