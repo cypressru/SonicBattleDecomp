@@ -196,6 +196,8 @@ extern u16 gUnknown_030052f4;
 extern void FUN_08030a08(struct UnknownListNode *node);
 extern void FUN_08033090(struct UnknownListNode *node);
 extern void FUN_08033228(struct UnknownListNode *node);
+extern void FUN_080333dc(struct UnknownListNode *node);
+extern void FUN_08033390(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
@@ -341,6 +343,7 @@ struct UnknownPosition {
 };
 
 extern const struct UnknownPosition gUnknown_08edc550[];
+extern const struct UnknownPosition gUnknown_08edc570[];
 
 struct UnknownListNode {
     const void *data;
@@ -933,6 +936,7 @@ extern const u8 gUnknown_08ed8ad4[];
 extern const u8 gUnknown_08ed8af4[];
 extern const s16 gUnknown_08edc4a4[];
 extern const u16 gUnknown_08edc544[];
+extern const u16 gUnknown_08edc5c8[];
 extern const struct UnknownSoundIndex gUnknown_08bf7244[];
 extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 extern u8 gUnknown_03000008[100];
@@ -9689,6 +9693,16 @@ void FUN_08033184(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_0803315c + 1);
 }
 
+void FUN_080331d0(struct UnknownListNode *node) {
+    if (++node->position->field14 > 14) {
+        node->position->field14 = 15;
+        node->data = (const void *)((u32)FUN_080333dc + 1);
+    }
+    node->position->x = gUnknown_08edc5c8[node->position->field14];
+    FUN_0801fed8(node->field6, 0);
+    gUnknown_03003e20[node->position->field13].position->x = node->position->x;
+}
+
 void FUN_080333dc(struct UnknownListNode *node) {
     FUN_0801fed8(node->field6, 0);
     gUnknown_03003e20[node->position->field13].position->x = node->position->x;
@@ -9702,6 +9716,16 @@ void FUN_08033404(struct UnknownListNode *node) {
         node->position->field14 = 0;
         node->data = (const void *)((u32)FUN_08033228 + 1);
     }
+}
+
+void FUN_0803342c(struct UnknownListNode *node) {
+    struct UnknownListNode *child;
+
+    *node->position = gUnknown_08edc570[0];
+    child = FUN_0801f7d0(FUN_0801f9d8, 16, node, 0);
+    node->position->field13 = child->field6;
+    *child->position = gUnknown_08edc570[1];
+    node->data = (const void *)((u32)FUN_08033390 + 1);
 }
 
 void FUN_080335dc(struct UnknownListNode *node) {
