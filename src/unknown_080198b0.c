@@ -7765,42 +7765,30 @@ update_child:
             nodesAddress = gUnknown_03003e20;
             validationAddress = (u8 *)allocation;
             selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
-            asm volatile("" : "+r"(selectionValue));
             nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-            asm volatile("" : "+r"(nodesAddress));
             selectionValue += (u32)nodesAddress;
-            asm volatile("" : "+r"(selectionValue));
             (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
         } else {
             nodesAddress = gUnknown_03003e20;
             selectionRead = allocation;
             selectionValue = selectionRead->field5 * 16;
-            asm volatile("" : "+r"(selectionValue));
             nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-            asm volatile("" : "+r"(nodesAddress));
             selectionValue += (u32)nodesAddress;
-            asm volatile("" : "+r"(selectionValue));
             (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
         }
     } else if (gUnknown_030017c4 != 0 && gUnknown_03001380 != 0) {
         nodesAddress = gUnknown_03003e20;
         selectionWrite = allocation;
         selectionValue = selectionWrite->field5 * 16;
-        asm volatile("" : "+r"(selectionValue));
         nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-        asm volatile("" : "+r"(nodesAddress));
         selectionValue += (u32)nodesAddress;
-        asm volatile("" : "+r"(selectionValue));
         (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
     } else {
         nodesAddress = gUnknown_03003e20;
         validationAddress = (u8 *)allocation;
         selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
-        asm volatile("" : "+r"(selectionValue));
         nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-        asm volatile("" : "+r"(nodesAddress));
         selectionValue += (u32)nodesAddress;
-        asm volatile("" : "+r"(selectionValue));
         (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
     }
 
