@@ -32,6 +32,9 @@ extern u8 gUnknown_03003d98;
 extern u8 gUnknown_03003d9c;
 extern u8 FUN_08017b74(u8 participant, u8 status, u8 expected);
 extern u8 gUnknown_03003d94;
+extern u8 gUnknown_030030d0[];
+extern u8 FUN_08015858(void);
+extern void FUN_080074a8(u8 value);
 extern void FUN_0801c8a4(void);
 extern void FUN_080402a0(void);
 extern void FUN_0802392c(struct UnknownListNode *node);
@@ -1866,6 +1869,144 @@ void FUN_0801aadc(void) {
     FUN_080182e4(256);
     FUN_08018318(0, 0);
     FUN_08018300(768);
+}
+
+void FUN_0801ad38(void) {
+    u8 index;
+    u8 mode;
+
+    if (*(u16 *)(gUnknown_030030d0 + 4) <= 2) {
+        u8 *metadata;
+
+        FUN_08017964(0);
+        FUN_08017964(1);
+        FUN_08017964(2);
+        FUN_08017964(3);
+
+        metadata = (u8 *)gUnknown_03001c40;
+        metadata[36] = 6;
+        metadata[288] = 4;
+        metadata[540] = 6;
+        metadata[792] = 4;
+        metadata[37] = 6;
+        metadata[289] = 4;
+        metadata[541] = 6;
+        metadata[793] = 4;
+        metadata[16] = 1;
+        metadata[268] = 0;
+        metadata[520] = 1;
+        metadata[772] = 0;
+        metadata[18] = 1;
+        metadata[270] = 0;
+        metadata[522] = 1;
+        metadata[774] = 0;
+    }
+
+    if ((u8)FUN_08015858() != 0) {
+        FUN_08012b98(30);
+        gUnknown_03002030 = (void (*)(void))((u32)FUN_0801b394 + 1);
+    }
+
+    if (gUnknown_0300138c != 0) {
+        u32 current = gUnknown_03001380;
+        u8 *scene = &gUnknown_03001620;
+
+        if (current <= 1) {
+            u32 other = current + 2;
+
+            if (scene[other + 28] != 0) {
+                FUN_080074a8(other);
+            } else {
+                FUN_080074a8(current);
+            }
+        } else {
+            FUN_080074a8(current);
+        }
+    }
+
+    if (gUnknown_0300138c != 0) {
+        u8 *participants = &gUnknown_03001620;
+
+        participants += 20;
+
+        for (index = 0; index <= 3; index++) {
+            if (participants[index] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        {
+            u32 current = gUnknown_03001380;
+
+            FUN_08006134(current);
+            FUN_08005310(current);
+            FUN_0800486c(current);
+            if (current <= 1) {
+                u8 *scene = &gUnknown_03001620;
+
+                if (scene[current + 30] != 0) {
+                    u8 other = current + 2;
+
+                    FUN_08006134(other);
+                    FUN_08005310(other);
+                    FUN_0800486c(other);
+                }
+            }
+        }
+        goto participants_done;
+    }
+
+    {
+        u8 *scene = &gUnknown_03001620;
+
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
+        }
+    }
+
+participants_done:
+    FUN_080006d0();
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+        if (gUnknown_0300138c != 0) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == gUnknown_03003d9c) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801bd90 + 1);
+            }
+        }
+    }
+
+    FUN_0801a04c(gUnknown_03001380);
+    mode = FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(mode);
+    FUN_08017f6c();
+    if (mode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
 }
 
 void FUN_0801bcac(void) {
