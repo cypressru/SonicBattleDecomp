@@ -4675,9 +4675,9 @@ void FUN_0803bd0c(void) {
         FUN_0802188c();
         FUN_080215a8();
         {
-            register u32 *state asm("r2") = &gUnknown_03002610;
-            register u32 one asm("r0") = 1;
-            register u32 zero asm("r1") = 0;
+            register u32 *state = &gUnknown_03002610;
+            register u32 one = 1;
+            register u32 zero = 0;
 
             state[0] = one;
             state[1] = zero;
