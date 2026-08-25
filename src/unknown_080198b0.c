@@ -353,6 +353,7 @@ struct UnknownPosition {
 extern const struct UnknownPosition gUnknown_08edc550[];
 extern const struct UnknownPosition gUnknown_08edc570[];
 extern const u16 gUnknown_08edc590[];
+extern const u16 gUnknown_08edcef4[];
 
 struct UnknownListNode {
     const void *data;
@@ -9518,6 +9519,29 @@ void FUN_08030e1c(struct UnknownListNode *node) {
     node->position->x = gUnknown_030052f8 + 199;
     node->position->y = gUnknown_030052e0 * 16 + 28 - gUnknown_030052f8 + gUnknown_030052e4;
     FUN_0801fed8(node->field6, 0);
+}
+
+void FUN_08038a20(struct UnknownListNode *node) {
+    u8 *values;
+    u8 *selection;
+    u8 *allocation;
+    struct UnknownPosition *position;
+    u32 y;
+
+    allocation = node->allocation;
+    values = gUnknown_030052e8;
+    selection = &gUnknown_030052e0;
+    allocation[21] = -(values[*selection] + 12);
+    node->position->x = gUnknown_030052f8 + 199;
+    position = node->position;
+    y = gUnknown_08edcef4[*selection];
+    y += 8;
+    y -= gUnknown_030052f8;
+    y -= gUnknown_030052e4;
+    position->y = y;
+    if (*selection != 3) {
+        FUN_0801fed8(node->field6, 0);
+    }
 }
 
 void FUN_0803876c(struct UnknownListNode *node);
