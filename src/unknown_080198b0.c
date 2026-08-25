@@ -8089,14 +8089,14 @@ void FUN_08028f80(struct UnknownListNode *node) {
 }
 
 void FUN_08028f98(struct UnknownListNode *node) {
-    register struct UnknownListNode *owner asm("r4") = node;
-    register struct UnknownPosition *position asm("r2") = owner->position;
-    register s32 index asm("r3");
+    register struct UnknownListNode *owner = node;
+    register struct UnknownPosition *position = owner->position;
+    register s32 index;
 
     position->field0 = gUnknown_08edb97c;
     if (gUnknown_0300525c >= (index = position->field13) + 1) {
-        register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
-        register u32 offset asm("r3") = index * 8;
+        register const u8 *table = (const u8 *)gUnknown_08edb98c;
+        register u32 offset = index * 8;
         register u32 zero;
         register const s16 *xAddress asm("r0") = (const s16 *)(table + 4);
         register const s16 *yAddress asm("r3");
