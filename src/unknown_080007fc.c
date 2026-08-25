@@ -565,6 +565,104 @@ void FUN_080016c4(u8 index) {
     CpuSet(buffer, gUnknown_03001d0c[index], 16);
 }
 
+void FUN_0800186c(void) {
+    u8 participant;
+
+    for (participant = 0; participant <= 3; participant++) {
+        u8 *state = (u8 *)&gUnknown_03001620;
+        u8 type = state[20 + participant];
+
+        if (type <= 10 || type == 19) {
+            u8 mode = state[24 + participant];
+
+            if (mode == 0) {
+                const void *source;
+
+                switch (state[20 + participant]) {
+                case 0:
+                    source = (const void *)0x0847afb8;
+                    break;
+                case 1:
+                    source = (const void *)0x085283f8;
+                    break;
+                case 2:
+                    source = (const void *)0x084cadd8;
+                    break;
+                case 3:
+                    source = (const void *)0x0858d818;
+                    break;
+                case 4:
+                    source = (const void *)0x085f3e38;
+                    break;
+                case 5:
+                    source = (const void *)0x08636458;
+                    break;
+                case 6:
+                    source = (const void *)0x086f6a98;
+                    break;
+                case 7:
+                    source = (const void *)0x08681a78;
+                    break;
+                case 8:
+                    source = (const void *)0x087336b8;
+                    break;
+                case 9:
+                case 19:
+                    source = (const void *)0x087822d8;
+                    break;
+                case 10:
+                default:
+                    goto palette_check;
+                }
+                CpuSet(source, gUnknown_03001d0c[participant], 16);
+            palette_check:
+                if ((u8)(state[20 + participant] - 9) <= 1) {
+                    CpuSet((const void *)0x08787cf8, gUnknown_03001d0c[participant], 16);
+                    {
+                        u8 *participantData = (u8 *)gUnknown_030013b0 + participant * 156;
+
+                        gUnknown_03001d0c[participant][14] =
+                            gUnknown_0847aa18[participantData[89 + participantData[150] * 27] * 16 +
+                                              14];
+                        gUnknown_03001d0c[participant][15] =
+                            gUnknown_0847aa18[participantData[89 + participantData[150] * 27] * 16 +
+                                              15];
+                    }
+                    FUN_080016c4(participant);
+                }
+                continue;
+            }
+            if (mode == 1) {
+                CpuSet((const void *)0x08787cf8, gUnknown_03001d0c[participant], 16);
+                switch (participant) {
+                case 0:
+                    gUnknown_03001d0c[0][14] = gUnknown_0847aa18[14];
+                    gUnknown_03001d0c[0][15] = gUnknown_0847aa18[15];
+                    break;
+                case 1:
+                    gUnknown_03001d0c[1][14] = gUnknown_0847aa18[30];
+                    gUnknown_03001d0c[1][15] = gUnknown_0847aa18[31];
+                    break;
+                case 2:
+                    gUnknown_03001d0c[2][14] = gUnknown_0847aa18[46];
+                    gUnknown_03001d0c[2][15] = gUnknown_0847aa18[47];
+                    break;
+                case 3:
+                    gUnknown_03001d0c[3][14] = gUnknown_0847aa18[62];
+                    gUnknown_03001d0c[3][15] = gUnknown_0847aa18[63];
+                    break;
+                }
+                continue;
+            }
+            CpuSet((const void *)0x0847ab78, gUnknown_03001d0c[participant], 16);
+        } else if ((u8)(type - 12) <= 4) {
+            CpuSet((const void *)0x0847ab78, gUnknown_03001d0c[participant], 16);
+        } else if ((u8)(type - 17) <= 1) {
+            CpuSet((const void *)0x0847ab58, gUnknown_03001d0c[participant], 16);
+        }
+    }
+}
+
 /* Uploads participant `index`'s 16-colour palette. Normally the stored palette
    is DMAed straight to 0x05000200; when the caller asks for the highlight and
    the effect is enabled, each entry is brightened first - blue and green
