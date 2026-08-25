@@ -3372,10 +3372,15 @@ void FUN_0801c28c(void) {
             flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
             if ((flags & 0x20) != 0) {
                 gUnknown_03002040.base -= 128;
-            } else if ((flags & 0x10) != 0) {
-                gUnknown_03002040.base += 128;
             } else {
-                gUnknown_03002040.base = 0;
+                u32 mask = 0x10;
+
+                mask &= flags;
+                if ((u16)mask != 0) {
+                    gUnknown_03002040.base += 128;
+                } else {
+                    gUnknown_03002040.base = 0;
+                }
             }
         } else if (metadata->field20 == 53) {
             u8 *stateBase = gUnknown_03001b30;
