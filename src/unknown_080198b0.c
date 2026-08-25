@@ -3748,11 +3748,11 @@ void FUN_0803bea8(void) {
     const u8 *targets = gUnknown_08edd54c;
     const u8 *indexPointer = &gUnknown_030052e0;
     const u8 *targetPointer = (const u8 *)(u32)*indexPointer;
-    u8 current;
+    u32 current;
     u8 comparison;
     u8 target;
     u8 *savedState;
-    u8 result;
+    u32 result;
 
     targetPointer += (u32)targets;
     current = *state;
