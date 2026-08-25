@@ -8248,7 +8248,6 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
                 register s32 width asm("r0") = (s16)FUN_08020fac(entries[0]);
                 register s32 x asm("r4");
 
-                asm volatile("" : "+r"(width));
                 x = 12 - width;
                 x += (u32)x >> 31;
                 x = (s32)((u32)x << 15) >> 16;
