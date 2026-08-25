@@ -7014,10 +7014,10 @@ void FUN_08028c80(struct UnknownListNode *node) {
 
 void FUN_08028d30(struct UnknownListNode *node) {
     struct UnknownListNode *volatile owner[1];
-    register u16 *command asm("r1");
-    register u32 zero asm("r0");
-    register u32 commandCode asm("r4");
-    register const u8 *state asm("r2");
+    register u16 *command;
+    register u32 zero;
+    register u32 commandCode;
+    register const u8 *state;
     register u32 failed asm("r6");
     register u32 i asm("r5");
     register const void *next asm("r0");
@@ -7050,9 +7050,9 @@ void FUN_08028d30(struct UnknownListNode *node) {
 
         do {
             if (i != *localIndex) {
-                register u32 offset asm("r2") = i * 16;
+                register u32 offset = i * 16;
                 register const u8 *address asm("r0") = records + 2;
-                register u32 addressZero asm("r1") = 0;
+                register u32 addressZero = 0;
 
                 address = (const u8 *)(offset + (u32)address);
                 if (*(const s16 *)((u32)address + addressZero) == expected) {
