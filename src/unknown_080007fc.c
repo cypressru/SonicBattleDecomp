@@ -47,6 +47,7 @@ extern s16 gUnknown_030016c8;
 extern u8 gUnknown_030016c4;
 extern s16 gUnknown_03001b04;
 extern s16 gUnknown_03001b08;
+extern u16 gUnknown_03001b28;
 extern u8 gUnknown_03001390;
 extern u8 gUnknown_03001370;
 extern s16 gUnknown_03001374;
@@ -321,6 +322,124 @@ extern void FUN_0801ff30(void);
 
 /* One byte of participant `index`'s selected palette record. */
 #define PALETTE(part) (gUnknown_030013b0[index].palettes[gUnknown_030013b0[index].slot][part])
+
+void FUN_080007fc(u8 index) {
+    struct UnknownRecord03001c40 *table = gUnknown_03001c40;
+    u32 wideIndex = index << 6;
+    u32 offset = (wideIndex - index) << 2;
+    u8 *record = (u8 *)table + offset;
+    u8 *activeRecord;
+    u8 *mode;
+
+    *(u16 *)(record + 20) = 6;
+    *(u16 *)(record + 32) = 0;
+    *(u16 *)(record + 34) = 0;
+    record[36] = 0;
+    record[37] = 4;
+    record[16] = 0;
+    record[17] = 0;
+    record[18] = 0;
+    *(u16 *)(record + 38) = 0;
+    *(u16 *)(record + 40) = 0;
+    *(u16 *)(record + 42) = 0;
+    *(u16 *)(record + 44) = 0;
+    *(u16 *)(record + 46) = 0;
+    *(u16 *)(record + 48) = 0;
+    *(u16 *)(record + 4) = 80;
+    *(u16 *)(record + 10) = 80;
+    record[50] = 0;
+    *(u16 *)(record + 52) = 0;
+    *(u32 *)(record + 180) = 0;
+    record[184] = 2;
+    record[143] = 0;
+    record[142] = 0;
+    record[145] = 0;
+    record[146] = 0;
+    record[159] = 0;
+    *(u16 *)(record + 160) = 0;
+    *(u16 *)(record + 162) = 0;
+    *(u16 *)(record + 164) = 0x0fff;
+    *(u16 *)(record + 96) = 0;
+    *(u16 *)(record + 98) = 0;
+    *(u16 *)(record + 100) = 0;
+    record[102] = 0;
+    *(u16 *)(record + 104) = 0;
+    record[107] = 0;
+    record[106] = 0;
+    record[108] = 0;
+    record[112] = 0;
+    record[109] = 0;
+    record[110] = 0;
+    record[113] = 0;
+    record[124] = 0xff;
+    record[125] = -1;
+    record[126] = 0;
+    record[185] = 0;
+    record[186] = 0;
+    record[187] = 0;
+    record[191] = gUnknown_03001b28;
+    record[192] = 0;
+    *(u16 *)(record + 194) = 0;
+    *(u16 *)(record + 24) = 0;
+    *(u16 *)(record + 26) = 0;
+    record[28] = 0;
+    record[29] = 0;
+    record[30] = 0;
+    record[23] = record[196];
+    record[199] = 0;
+    record[156] = 0;
+    record[157] = 0;
+    record[158] = 0;
+    mode = &gUnknown_0300138c;
+    record = (u8 *)table;
+
+    {
+        u8 i;
+
+        for (i = 0; i <= 9; i++) {
+            record[offset + 128 + i] = 0;
+        }
+    }
+
+    activeRecord = record + offset;
+    *(u16 *)(activeRecord + 54) = 0;
+    *(u16 *)(activeRecord + 62) = 0;
+    *(u32 *)(activeRecord + 72) = 0;
+    *(u16 *)(activeRecord + 56) = 0;
+    *(u16 *)(activeRecord + 64) = 0;
+    *(u32 *)(activeRecord + 76) = 0;
+    *(u16 *)(activeRecord + 58) = 0;
+    *(u16 *)(activeRecord + 66) = 0;
+    *(u32 *)(activeRecord + 80) = 0;
+    *(u16 *)(activeRecord + 60) = 0;
+    *(u16 *)(activeRecord + 68) = 0;
+    *(u32 *)(activeRecord + 84) = 0;
+    activeRecord[138] = 0;
+    activeRecord[127] = 15;
+    activeRecord[188] = 0;
+    activeRecord[190] = 0;
+    *(u16 *)(activeRecord + 166) = 0;
+    *(u16 *)(activeRecord + 168) = 0;
+    *(u16 *)(activeRecord + 170) = 0;
+    activeRecord[172] = 0;
+    *(u32 *)(activeRecord + 116) = 0;
+    *(u32 *)(activeRecord + 120) = 0;
+    *(u16 *)(activeRecord + 174) = 0;
+    *(u16 *)(activeRecord + 176) = 0;
+    activeRecord[198] = 0;
+    *(u16 *)(activeRecord + 240) = 0;
+    *(u16 *)(activeRecord + 242) = 0;
+    activeRecord[149] = 0;
+    activeRecord[244] = 0;
+    *(u32 *)(activeRecord + 180) &= 0xffbfffff;
+
+    {
+        if (*mode == 0 || index == gUnknown_03001380 ||
+            (index == gUnknown_03001380 + 2 && gUnknown_03001620.activeSlots[index + 8] != 0)) {
+            ((u8 *)table)[offset + 199] = 12;
+        }
+    }
+}
 
 /* Rebuilds participant `index`'s palette entries 3..13 from the colour table
    at 0x0847AA18, leaving the rest of the stored palette alone. Entries 3-6,

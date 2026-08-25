@@ -806,6 +806,11 @@ units:
       FUN_08017a80: 0xDC
       FUN_08017b74: 0xC8
     relocations:
+      - { offset: 0x00214, type: abs32, symbol: gUnknown_03001c40 }
+      - { offset: 0x0021C, type: abs32, symbol: gUnknown_03001b28 }
+      - { offset: 0x00220, type: abs32, symbol: gUnknown_0300138c }
+      - { offset: 0x00228, type: abs32, symbol: gUnknown_03001380 }
+      - { offset: 0x0022C, type: abs32, symbol: gUnknown_03001620 }
       - { offset: 0x11F1C, type: abs32, symbol: gUnknown_03002b84 }
       - { offset: 0x11F20, type: abs32, symbol: gUnknown_03002b90 }
       - { offset: 0x11F5C, type: abs32, symbol: gUnknown_03002b84 }
