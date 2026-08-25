@@ -49,6 +49,7 @@ u32 FUN_0801d200(u8 value);
 extern void FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
+void FUN_080200f8(void);
 extern void FUN_0801de5c_wide(u32 value) asm("FUN_0801de5c");
 extern void FUN_0801debc_wide(u32 value) asm("FUN_0801debc");
 extern void FUN_0801df1c_wide(u32 value) asm("FUN_0801df1c");
@@ -929,6 +930,7 @@ extern const struct UnknownSoundIndex gUnknown_08bf7244[];
 extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 extern u8 gUnknown_03000008[100];
 extern u8 gUnknown_0300006c;
+extern u8 gUnknown_0300006d;
 extern struct UnknownListNode gUnknown_03003e20[100];
 extern u8 gUnknown_030000c0;
 extern u16 gUnknown_03000070[20][2];
@@ -4312,6 +4314,23 @@ void FUN_0801f744(u16 value, u16 other) {
 }
 
 void FUN_0801f770(u16 value) { FUN_080490b4(value); }
+
+void FUN_0801f780(void) {
+    s16 i = 0;
+
+    do {
+        gUnknown_03000008[i] = i + 1;
+        i++;
+    } while (i <= 99);
+
+    gUnknown_0300006d = 0;
+    gUnknown_0300006c = 0;
+    gUnknown_03003e20[0].data = (const void *)((u32)FUN_080200f8 + 1);
+    gUnknown_03003e20[0].next = 0;
+    gUnknown_03003e20[0].field6 = 0;
+    gUnknown_03003e20[0].previous = 0;
+    gUnknown_03003e20[0].allocation = 0;
+}
 
 void FUN_0801f89c(void) {
     u8 index = 0;
