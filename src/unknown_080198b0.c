@@ -3471,8 +3471,12 @@ void FUN_0801e6a0(u8 value) {
         entity = (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
         if (entity->field18 != 0 && (u16)(gUnknown_03001c40[linked].field20 - 10) <= 5 &&
             (u16)(linkedFirst + 0x4ff) <= 0x9fe && linkedSecond <= 0x1ff && linkedSecond > -0x200) {
+            u32 dataBase = (u32)gUnknown_03003db0;
+
             entity->callback = (UnknownCallback)((u32)FUN_0801ebf4 + 1);
-            entity->data = (const struct UnknownEntityFrame *)gUnknown_08ed89e4;
+            dataBase += 4;
+            *(const struct UnknownEntityFrame **)(entityOffset + dataBase) =
+                (const struct UnknownEntityFrame *)gUnknown_08ed89e4;
             entity->field14 = 0;
             entity->field16 = gUnknown_03001c40[index].field16;
             return;
@@ -3492,10 +3496,8 @@ void FUN_0801e6a0(u8 value) {
                 u8 linkedMask = gUnknown_03001c40[index].field50;
                 u8 entityMask = combatEntity->field20;
 
-                if ((linkedMask & entityMask) == 0) {
-                    FUN_0801d870(index);
-                    return;
-                }
+                if ((linkedMask & entityMask) == 0)
+                    goto combat_fallback;
                 if ((combatEntity->field8 & 0x20) != 0 && (entityMask & 0x22) == 0 &&
                     (linkedMask & 0x22) != 0)
                     combatEntity->field8 ^= 0x30;
@@ -3524,6 +3526,10 @@ void FUN_0801e6a0(u8 value) {
                     (gUnknown_03001c40[index].field50 & 0x44) != 0)
                     combatEntity->field8 ^= 0xc0;
             }
+            return;
+
+        combat_fallback:
+            FUN_0801d870(index);
         }
     }
 }
