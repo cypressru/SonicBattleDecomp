@@ -941,6 +941,24 @@ zero-padding bytes; mapping symbols prevent that padding from inflating the func
 
 ## Original source language
 
+The labels at `0x0802F1EA`, `0x0802F2DE`, and `0x0802F31A` are not function starts. The real owner,
+`FUN_0802ea64`, saves `r4-r6`, allocates a 12-byte stack frame, and dispatches through its inline
+jump table to case entries from `0x0802EAC0` through `0x0802F234`. Those cases cross inline literal
+pools at the first two alleged starts and converge on `0x0802F31A`, whose `add sp, #12`, matching
+pops, and `bx r0` restore the still-live owner frame. The corrected function therefore spans
+`0x0802EA64-0x0802F322`, before alignment padding and the next real function at `0x0802F328`.
+
+The alleged function at `0x0803013A` instead lands inside the trailing literal pool after
+`FUN_0802fdf8` returns at `0x08030118`. Its 48-byte claimed extent contains address and constant
+words consumed by the preceding owner, including EWRAM, VRAM, and ROM pointers; it has no prologue,
+call edge, or coherent independent control flow. Those bytes remain represented as data.
+
+The former `0x08030C6E` entry similarly begins ten bytes too early in `FUN_08030c08`'s trailing
+literal pool. The pool itself contains `0x08030C79`, establishing the Thumb callback at
+`0x08030C78`; that address begins with a normal prologue and has coherent control flow through the
+return at `0x08030C9E`. The corrected 40-byte function excludes both the preceding pool bytes and
+its own trailing literals at `0x08030CA0`.
+
 The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
 at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
 function. It initializes six halfwords in each of four 16-byte link records, exchanges those

@@ -687,9 +687,6 @@ address,name,mode,confidence
 0x0802DF40,FUN_0802df40,thumb,rom-pointer+exact-body
 0x0802DF68,FUN_0802df68,thumb,direct-call+exact-body
 0x0802EA64,FUN_0802ea64,thumb,direct-call+exact-body
-0x0802F1EA,FUN_0802f1ea,thumb,rom-pointer+exact-body
-0x0802F2DE,FUN_0802f2de,thumb,rom-pointer+exact-body
-0x0802F31A,FUN_0802f31a,thumb,direct-call+exact-body
 0x0802F328,FUN_0802f328,thumb,direct-call+exact-body
 0x0802F428,FUN_0802f428,thumb,direct-call+exact-body
 0x0802F488,FUN_0802f488,thumb,direct-call+exact-body
@@ -699,7 +696,6 @@ address,name,mode,confidence
 0x0802FB58,FUN_0802fb58,thumb,direct-call+exact-body
 0x0802FCB4,FUN_0802fcb4,thumb,direct-call+exact-body
 0x0802FDF8,FUN_0802fdf8,thumb,rom-pointer-corrected-entry+exact-body
-0x0803013A,FUN_0803013a,thumb,rom-pointer+exact-body
 0x080301F4,FUN_080301f4,thumb,rom-pointer+exact-body
 0x080302A0,FUN_080302a0,thumb,rom-pointer+exact-body
 0x0803035C,FUN_0803035c,thumb,direct-call+exact-body
@@ -720,7 +716,7 @@ address,name,mode,confidence
 0x08030B68,FUN_08030b68,thumb,rom-pointer+exact-body
 0x08030BD8,FUN_08030bd8,thumb,rom-pointer+exact-body
 0x08030C08,FUN_08030c08,thumb,rom-pointer+exact-body
-0x08030C6E,FUN_08030c6e,thumb,rom-pointer+exact-body
+0x08030C78,FUN_08030c78,thumb,rom-pointer+exact-body
 0x08030CA8,FUN_08030ca8,thumb,rom-pointer+exact-body
 0x08030D20,FUN_08030d20,thumb,rom-pointer+exact-body
 0x08030D3C,FUN_08030d3c,thumb,rom-pointer+exact-body
