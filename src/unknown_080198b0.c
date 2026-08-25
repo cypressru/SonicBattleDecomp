@@ -10944,8 +10944,8 @@ void FUN_08036560(void) {
         zeroE800Address = &zeroE800;
 
         do {
-            register u32 inner asm("r4") = 0;
-            register u16 *destination asm("r2") = base;
+            register u32 inner = 0;
+            register u16 *destination = base;
 
             do {
                 u16 current = tile;
