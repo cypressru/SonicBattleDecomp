@@ -3922,20 +3922,21 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid5;
+                goto entity_fallback;
             } else {
                 u32 field = metadataBase[index].field16;
 
                 valid = 0;
-                if (field == 0)
-                    valid = 1;
+                if (field != 0)
+                    goto test5;
             }
+        valid5:
+            valid = 1;
+        test5:
             if (valid == 0) {
-                goto fallback;
+                goto entity_fallback;
             }
         }
         ((void (*)(u32))FUN_0801ec10)(index);
@@ -3956,20 +3957,21 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid6;
+                goto entity_fallback;
             } else {
                 u32 field = metadataBase[index].field16;
 
                 valid = 0;
-                if (field == 0)
-                    valid = 1;
+                if (field != 0)
+                    goto test6;
             }
+        valid6:
+            valid = 1;
+        test6:
             if (valid == 0) {
-                goto fallback;
+                goto entity_fallback;
             }
         }
         ((void (*)(u32))FUN_0801ec64)(index);
@@ -3990,20 +3992,23 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid7;
+                goto entity_fallback;
             } else {
                 u32 field = metadataBase[index].field16;
 
                 valid = 0;
-                if (field == 0)
-                    valid = 1;
+                if (field != 0)
+                    goto test7;
             }
+        valid7:
+            valid = 1;
+        test7:
             if (valid == 0) {
-                goto fallback;
+            entity_fallback:
+                FUN_0801ed0c(index);
+                return;
             }
         }
         ((void (*)(u32))FUN_0801ecb8)(index);
@@ -4045,29 +4050,30 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid13;
+                goto fallback13;
             } else {
                 u32 field = metadataBase[index].field16;
 
                 valid = 0;
-                if (field == 0)
-                    valid = 1;
+                if (field != 0)
+                    goto test13;
             }
+        valid13:
+            valid = 1;
+        test13:
             if (valid != 0) {
                 return;
             }
         }
-        goto fallback;
+        goto fallback13;
     }
     default:
         return;
     }
 
-fallback:
+fallback13:
     ((void (*)(u32))FUN_0801ed0c)(index);
 }
 
