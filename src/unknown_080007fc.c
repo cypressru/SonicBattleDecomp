@@ -1551,17 +1551,22 @@ void FUN_0800f3c4(void) {
 }
 
 void FUN_0800f5bc(u8 owner) {
-    u8 recordIndex = 0;
+    struct UnknownRecord030017d0 snapshot;
+    volatile u32 recordIndex = 0;
 
 #define REPLACE_RESOURCE(nextResource)                                                             \
     do {                                                                                           \
-        u8 mode = record->nineteenth;                                                              \
-        s16 x = record->eighteenth[0];                                                             \
-        s16 y = record->eighteenth[1];                                                             \
-        s16 height = record->eighteenth[2];                                                        \
-        u8 field149 = record->twentieth;                                                           \
+        snapshot.nineteenth = record->nineteenth;                                                  \
+        snapshot.eighteenth[0] = record->eighteenth[0];                                            \
+        snapshot.eighteenth[1] = record->eighteenth[1];                                            \
+        snapshot.eighteenth[2] = record->eighteenth[2];                                            \
+        snapshot.fourteenth = record->fourteenth;                                                  \
+        snapshot.sixteenth = record->sixteenth;                                                    \
+        snapshot.twentieth = record->twentieth;                                                    \
         FUN_0800baac(recordIndex);                                                                 \
-        FUN_0800c1c8((nextResource), mode, x, y, height, 0, 0, 0, 0, owner, field149);             \
+        FUN_0800c1c8((nextResource), snapshot.nineteenth, snapshot.eighteenth[0],                  \
+                     snapshot.eighteenth[1], snapshot.eighteenth[2], 0, 0, 0, 0, owner,            \
+                     snapshot.twentieth);                                                          \
     } while (0)
 
     do {
