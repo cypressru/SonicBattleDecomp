@@ -8133,15 +8133,23 @@ void FUN_08029014(struct UnknownListNode *node) {
     halfwordZero = 0;
     position->tile = halfwordZero;
     {
-        struct UnknownPosition *selected = node->position;
-        const u8 *table = (const u8 *)gUnknown_08edb98c;
-        u32 offset = selected->field13 * 8;
+        const u8 *table;
 
-        selected->x = *(const u16 *)(offset + (u32)table);
-        selected = node->position;
-        offset = selected->field13 * 8;
-        table += 2;
-        selected->y = *(const u16 *)(offset + (u32)table);
+        {
+            struct UnknownPosition *selected = node->position;
+            u32 offset;
+
+            table = (const u8 *)gUnknown_08edb98c;
+            offset = selected->field13 * 8;
+            selected->x = *(const u16 *)(offset + (u32)table);
+        }
+        {
+            struct UnknownPosition *selected = node->position;
+            u32 offset = selected->field13 * 8;
+
+            table += 2;
+            selected->y = *(const u16 *)(offset + (u32)table);
+        }
     }
     node->position->field10 = zero;
     node->position->field11 = zero;
