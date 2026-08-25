@@ -2032,7 +2032,7 @@ void FUN_0801e41c(u8 value) {
     if (type == 0) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = index * 24;
-        struct UnknownEntity *entity;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         entity->field8 = type;
         entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
