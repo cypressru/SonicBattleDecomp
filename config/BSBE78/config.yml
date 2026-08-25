@@ -1572,6 +1572,7 @@ units:
       FUN_08038a20: 0x4E
       FUN_0802528c: 0x3E
       FUN_080238d0: 0x4A
+      FUN_0802392c: 0x4A
       FUN_08024fcc: 0x46
       FUN_08033390: 0x44
       FUN_0802c800: 0x4A
@@ -2221,6 +2222,8 @@ units:
       - { offset: 0x9788, mode: thumb }
       - { offset: 0xA014, mode: data }
       - { offset: 0xA020, mode: thumb }
+      - { offset: 0xA092, mode: data }
+      - { offset: 0xA098, mode: thumb }
       - { offset: 0x238E8, mode: data }
       - { offset: 0x238F0, mode: thumb }
       - { offset: 0x2239A, mode: data }
@@ -4765,6 +4768,10 @@ units:
       - { offset: 0xA032, type: thumb_call, symbol: CpuFastSet }
       - { offset: 0xA048, type: thumb_call, symbol: FUN_08020978 }
       - { offset: 0xA054, type: thumb_call, symbol: FUN_08020978 }
+      - { offset: 0xA08C, type: thumb_call, symbol: FUN_0801f8c0 }
+      - { offset: 0xA094, type: abs32, symbol: gUnknown_03004dbc }
+      - { offset: 0xA0B0, type: thumb_call, symbol: FUN_0804afa4 }
+      - { offset: 0xA0BC, type: thumb_call, symbol: FUN_0801fed8 }
       - { offset: 0xB736, type: thumb_call, symbol: FUN_0801f8c0 }
       - { offset: 0xB73C, type: thumb_call, symbol: FUN_0801f8c0 }
       - { offset: 0xB742, type: thumb_call, symbol: FUN_0801f8c0 }

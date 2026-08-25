@@ -3632,6 +3632,21 @@ void FUN_080238d0(u16 *entries) {
     }
 }
 
+void FUN_0802392c(struct UnknownListNode *node) {
+    struct UnknownState03004dbc *state = gUnknown_03004dbc;
+    struct UnknownPosition *position;
+
+    if (state->field3 != 0) {
+        FUN_0801f8c0(node);
+        return;
+    }
+
+    node->position->x = state->field12 + 223;
+    position = node->position;
+    position->y = FUN_0804afa4(state->field14 * 99, 306) + 30;
+    FUN_0801fed8(node->field6, 0);
+}
+
 void FUN_0803d168(struct UnknownListNode *node) {
     node->position->field0 = gUnknown_081a1d10;
     node->position->x = 14;
