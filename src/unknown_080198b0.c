@@ -126,6 +126,7 @@ extern void FUN_0803b588(void);
 extern void FUN_080375d8(u8 value);
 extern void FUN_0803b69c(u8 value);
 extern void FUN_0803a9dc(u8 value);
+extern void FUN_0803a3b8(struct UnknownListNode *node);
 extern void FUN_08038360(u8 value);
 extern void FUN_080309e0(struct UnknownListNode *node);
 extern void FUN_0803878c(struct UnknownListNode *node);
@@ -9470,6 +9471,23 @@ void FUN_08038850(void) {
         }
         gUnknown_030025f0 = 15;
         FUN_080217d0(0);
+    }
+}
+
+void FUN_0803a478(struct UnknownListNode *node) {
+    if (node->position->field14 != 0) {
+        u32 fade;
+        u32 shiftedFade;
+        u16 inverseFade;
+
+        node->position->field14--;
+        fade = node->position->field14;
+        shiftedFade = fade << 8;
+        inverseFade = 0x1000 - shiftedFade;
+        FUN_0801fba0(0x52, fade | inverseFade);
+    } else {
+        FUN_0801fba0(0x52, 0x1000);
+        node->data = (const void *)((u32)FUN_0803a3b8 + 1);
     }
 }
 
