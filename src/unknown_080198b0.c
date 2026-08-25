@@ -55,14 +55,13 @@ u16 FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
 void FUN_080200f8(void);
-extern void FUN_0801de5c_wide(u32 value) asm("FUN_0801de5c");
-extern void FUN_0801debc_wide(u32 value) asm("FUN_0801debc");
-extern void FUN_0801df1c_wide(u32 value) asm("FUN_0801df1c");
-extern void FUN_0801df7c_wide(u32 value) asm("FUN_0801df7c");
+void FUN_0801de5c(u8 value);
+void FUN_0801debc(u8 value);
+void FUN_0801df1c(u8 value);
+void FUN_0801df7c(u8 value);
 void FUN_0801eacc(u8 value);
 void FUN_0801eaf8(u8 value);
 void FUN_0801eb24(u8 value);
-extern u32 FUN_0801d188_wide(u8 value) asm("FUN_0801d188");
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08015924(u8 first, u16 second, u8 third, u16 fourth, u8 fifth);
 extern s16 FUN_08015f40(u8 index);
@@ -795,8 +794,8 @@ extern void FUN_080405a8(u8 first, u8 second);
 extern s16 FUN_08040698(u8 value);
 extern s16 FUN_08040684(u8 value);
 extern u32 FUN_080406b4(void);
-extern s16 FUN_08040684_wide(u32 value) asm("FUN_08040684");
-extern s16 FUN_08040698_wide(u32 value) asm("FUN_08040698");
+s16 FUN_08040684(u8 index);
+s16 FUN_08040698(u8 index);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern const u8 gUnknown_081a7f88[];
 extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
@@ -2830,16 +2829,16 @@ void FUN_0801e174(u8 value) {
 
             switch (result) {
             case 0:
-                FUN_0801de5c_wide(index);
+                ((void (*)(u32))FUN_0801de5c)(index);
                 break;
             case 0x10:
-                FUN_0801debc_wide(index);
+                ((void (*)(u32))FUN_0801debc)(index);
                 break;
             case 0x20:
-                FUN_0801df1c_wide(index);
+                ((void (*)(u32))FUN_0801df1c)(index);
                 break;
             case 0x30:
-                FUN_0801df7c_wide(index);
+                ((void (*)(u32))FUN_0801df7c)(index);
                 break;
             }
             return;
@@ -4053,7 +4052,7 @@ u32 FUN_0801d068(u8 value) {
         return FUN_0801d200(value);
     }
     if (FUN_08020160(20) != 0) {
-        return FUN_0801d188_wide(value);
+        return ((u32(*)(u8))FUN_0801d188)(value);
     }
 
     bestIndex = 0;
@@ -4244,7 +4243,7 @@ u32 FUN_0801d200(u8 value) {
         attempt++;
     } while (attempt <= 5);
 
-    return FUN_0801d188_wide(value);
+    return ((u32(*)(u8))FUN_0801d188)(value);
 }
 
 u16 FUN_0801d408(u8 value) {
@@ -12037,8 +12036,8 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                         distance = 15;
                     }
                     distance = (distance >> 1) + 1;
-                    gUnknown_0300023c -= FUN_08040698_wide(angle) * distance;
-                    gUnknown_03000240 -= FUN_08040684_wide(angle) * distance;
+                    gUnknown_0300023c -= ((s16(*)(u32))FUN_08040698)(angle) * distance;
+                    gUnknown_03000240 -= ((s16(*)(u32))FUN_08040684)(angle) * distance;
                     if ((s32)gUnknown_0300023c < 0) {
                         gUnknown_0300023c = 0;
                     } else {
