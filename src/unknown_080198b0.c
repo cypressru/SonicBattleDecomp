@@ -1397,49 +1397,49 @@ void FUN_080198b0(void) {
             {
                 u32 doubledIndex = index * 2;
 
-            {
-                union AddressView field;
+                {
+                    union AddressView field;
 
-                field.pointer = state->field58;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                union AddressView field;
+                    field.pointer = state->field58;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
 
-                field.pointer = state->field66;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                union AddressView field;
+                    field.pointer = state->field66;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
 
-                field.pointer = state->field74;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                union AddressView field;
+                    field.pointer = state->field74;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
 
-                field.pointer = state->field82;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                union AddressView field;
+                    field.pointer = state->field82;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
 
-                field.pointer = state->field90;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                union AddressView field;
+                    field.pointer = state->field90;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
 
-                field.pointer = state->field98;
-                *(u16 *)(doubledIndex + field.address) = loopZero;
-            }
-            {
-                u8 *field = (u8 *)state + 106;
+                    field.pointer = state->field98;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    u8 *field = (u8 *)state + 106;
 
-                *(u16 *)(doubledIndex + (u32)field) = loopZero;
-                field += 31;
-                field[index] = loopZero;
-            }
+                    *(u16 *)(doubledIndex + (u32)field) = loopZero;
+                    field += 31;
+                    field[index] = loopZero;
+                }
             }
             {
                 union AddressView address12;
