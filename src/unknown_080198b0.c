@@ -995,6 +995,7 @@ extern u32 gUnknown_020000e0;
 extern const void *gUnknown_03004d94;
 extern u32 gUnknown_03004d8c;
 extern void SoftResetExram(u32 flags);
+extern void RegisterRamReset(u32 flags);
 extern void LZ77UnCompWram(const void *source, void *destination);
 extern void LZ77UnCompVram(const void *source, void *destination);
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
@@ -10827,6 +10828,14 @@ void FUN_0803256c(void) {
 void FUN_080325f0(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_080284b4;
+    }
+}
+
+void FUN_08032ff8(void) {
+    if ((u8)FUN_080206ec((u16 *)0x05000000, 512) != 0) {
+        LZ77UnCompVram((const void *)(0x0203B000 - gUnknown_03004d8c), (void *)0x02000100);
+        RegisterRamReset(0xC2);
+        ((void (*)(void))0x02000100)();
     }
 }
 
