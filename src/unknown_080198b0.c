@@ -8584,10 +8584,8 @@ void FUN_08029250(void) {
                     register u8 *secondDestinationBase asm("r10");
                     register u32 secondBaseAddress asm("r5") = 225;
 
-                    asm volatile("" : "+r"(secondGroup));
                     asm volatile("" : "+r"(secondBaseAddress));
                     secondBaseAddress += (u32)record;
-                    asm volatile("" : "+r"(secondBaseAddress));
                     secondDestinationBase = (u8 *)secondBaseAddress;
                     {
                         register const struct UnknownLookupRecord29250 *secondLookupTable asm(
@@ -8642,10 +8640,8 @@ void FUN_08029250(void) {
                     register u8 *thirdDestinationBase asm("r10");
                     register u32 thirdBaseAddress asm("r5") = 381;
 
-                    asm volatile("" : "+r"(thirdGroup));
                     asm volatile("" : "+r"(thirdBaseAddress));
                     thirdBaseAddress += (u32)record;
-                    asm volatile("" : "+r"(thirdBaseAddress));
                     thirdDestinationBase = (u8 *)thirdBaseAddress;
                     {
                         register const struct UnknownLookupRecord29250 *thirdLookupTable asm("r7") =
@@ -8706,10 +8702,8 @@ void FUN_08029250(void) {
                     register u8 *fourthDestinationBase asm("r7");
                     register u32 fourthBaseAddress asm("r5") = 537;
 
-                    asm volatile("" : "+r"(fourthGroup));
                     asm volatile("" : "+r"(fourthBaseAddress));
                     fourthDestinationBase = record + fourthBaseAddress;
-                    asm volatile("" : "+r"(fourthDestinationBase));
                     {
                         register const struct UnknownLookupRecord29250 *fourthLookupTable asm(
                             "r3") = (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
