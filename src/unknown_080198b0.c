@@ -933,7 +933,9 @@ extern u8 gUnknown_0300006c;
 extern u8 gUnknown_0300006d;
 extern struct UnknownListNode gUnknown_03003e20[100];
 extern u8 gUnknown_030000c0;
+extern u8 gUnknown_030000d0[];
 extern u16 gUnknown_03000070[20][2];
+extern u8 gUnknown_0300019a;
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
 extern struct UnknownQueuedSoundCommand gUnknown_03004480[];
@@ -4468,6 +4470,23 @@ u32 FUN_0801fcd8(u16 songId, u16 parameter) {
         return 1;
     }
     return 0;
+}
+
+void FUN_0801fed8(u8 value, u32 unused) {
+    struct UnknownPosition *position = gUnknown_03003e20[value].position;
+
+    if (position != 0) {
+        u32 group = (position->field12 & 12) >> 2;
+        u8 *destination = gUnknown_030000d0;
+        u8 *count = &gUnknown_0300019a;
+        u32 offset;
+
+        destination[*count * 2] = gUnknown_030000c8[group];
+        offset = *count * 2;
+        destination++;
+        destination[offset] = value;
+        gUnknown_030000c8[group] = (*count)++;
+    }
 }
 
 void FUN_0801ffa4(u8 force) {
