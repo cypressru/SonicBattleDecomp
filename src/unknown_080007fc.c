@@ -895,8 +895,8 @@ void FUN_08006ff4(u8 count) {
             record->screenX = x;
             adjustedY = y - record->height;
             record->screenY = adjustedY;
-            if ((u16)(x + 64) <= 304 && adjustedY <= *(s16 *)&gUnknown_030017c0 &&
-                adjustedY >= *(s16 *)&gUnknown_030016d0 - 64) {
+            if ((u16)(x + 64) <= 304 && adjustedY <= gUnknown_030017c0 &&
+                adjustedY >= gUnknown_030016d0 - 64) {
                 u16 tile = (u16)index * 36;
 
                 entry.fields.index = index;
@@ -919,8 +919,8 @@ void FUN_08006ff4(u8 count) {
                 }
             }
 
-            if ((u16)(x + 64) <= 304 && (s16)y <= *(s16 *)&gUnknown_030017c0 &&
-                (s16)y >= *(s16 *)&gUnknown_030016d0 - 64 && record->first != 255) {
+            if ((u16)(x + 64) <= 304 && (s16)y <= gUnknown_030017c0 &&
+                (s16)y >= gUnknown_030016d0 - 64 && record->first != 255) {
                 s16 indicator;
 
                 if (record->height < record->anchorHeight + 20) {
