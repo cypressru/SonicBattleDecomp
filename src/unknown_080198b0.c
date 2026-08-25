@@ -8838,11 +8838,11 @@ void FUN_08029250(void) {
 
     LZ77UnCompVram(gUnknown_0810df04, (void *)0x06010000);
     {
-        register u32 selected asm("r1") = gUnknown_03005250;
-        register u32 selectedCopy asm("r0") = selected;
+        register u32 selected = gUnknown_03005250;
+        register u32 selectedCopy = selected;
 
         if (selected <= 4) {
-            register u32 source asm("r1");
+            register u32 source;
 
             selected += 2;
             selected <<= 9;
@@ -8851,7 +8851,7 @@ void FUN_08029250(void) {
             source = (u32)gUnknown_08117368;
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selected <= 9) {
-            register u32 source asm("r1");
+            register u32 source;
 
             selected -= 4;
             selected <<= 9;
@@ -8860,7 +8860,7 @@ void FUN_08029250(void) {
             source = (u32)gUnknown_08117b68;
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selectedCopy <= 14) {
-            register u32 source asm("r1") = selectedCopy;
+            register u32 source = selectedCopy;
 
             source -= 10;
             source <<= 9;
@@ -8873,14 +8873,14 @@ void FUN_08029250(void) {
 
 #define LOAD_PLAYER_GRAPHICS(index, destination)                                                   \
     do {                                                                                           \
-        register u32 value asm("r0") = gUnknown_0300524c[index];                                   \
+        register u32 value = gUnknown_0300524c[index];                                             \
         if (value > 9) {                                                                           \
             value = 10;                                                                            \
         } else if (value > 8) {                                                                    \
             value = 9;                                                                             \
         }                                                                                          \
         {                                                                                          \
-            register u32 source asm("r1") = (u32)gUnknown_08edbadc[value];                         \
+            register u32 source = (u32)gUnknown_08edbadc[value];                                   \
             FUN_08020408((destination), source);                                                   \
         }                                                                                          \
     } while (0)
@@ -8892,7 +8892,7 @@ void FUN_08029250(void) {
 #undef LOAD_PLAYER_GRAPHICS
 
     {
-        register u8 *variants asm("r5") = gUnknown_03005268;
+        register u8 *variants = gUnknown_03005268;
 
         FUN_080290e8(0, variants[0], 0);
         FUN_080290e8(1, variants[1], 1);
