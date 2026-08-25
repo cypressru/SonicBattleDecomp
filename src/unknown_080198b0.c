@@ -3124,7 +3124,7 @@ void FUN_0801d9e0(u8 value) {
         struct UnknownEntity *entity;
         u32 mask;
 
-        doubled = value * 2;
+        doubled = index * 2;
         offset = doubled + index;
         offset *= 8;
         entity = (struct UnknownEntity *)(offset + (u32)entities);
@@ -3141,7 +3141,7 @@ void FUN_0801d9e0(u8 value) {
         struct UnknownEntity *entity;
         u32 mask;
 
-        doubled = value * 2;
+        doubled = index * 2;
         offset = doubled + index;
         offset *= 8;
         entity = (struct UnknownEntity *)(offset + (u32)entities);
