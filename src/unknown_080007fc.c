@@ -1468,20 +1468,21 @@ void FUN_080177b8(u8 participant) {
     u32 previous;
     u32 changed;
     u16 pressed;
+    struct UnknownState080180f0 *rings;
     u16 released;
 
     participantSlot = participant;
     value = gUnknown_030048e0.first;
     pressed = gUnknown_030048e0.second;
     released = gUnknown_030048e0.third;
+    rings = gUnknown_03001b30;
     initialParticipant = participantSlot;
     previous = initialParticipant;
     gUnknown_03001b30[previous].position++;
     if (gUnknown_03001b30[previous].position > 9) {
         gUnknown_03001b30[previous].position = 0;
     }
-    gUnknown_03001b30[initialParticipant].flags[gUnknown_03001b30[initialParticipant].position] =
-        pressed;
+    gUnknown_03001b30[initialParticipant].flags[rings[initialParticipant].position] = pressed;
     gUnknown_03001b30[previous].third[gUnknown_03001b30[initialParticipant].position] =
         released;
     gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[previous].position] =
