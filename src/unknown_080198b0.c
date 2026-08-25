@@ -4489,6 +4489,32 @@ void FUN_0801fed8(u8 value, u32 unused) {
     }
 }
 
+void FUN_0801ff30(void) {
+    u16 *destination = (u16 *)gUnknown_030044d0;
+    u16 i = 0;
+
+    do {
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x100;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x100;
+        i++;
+    } while (i <= 31);
+    gUnknown_030048d0 = 1;
+}
+
 void FUN_0801ffa4(u8 force) {
     if (gUnknown_030048d0 != 0 || force != 0) {
         FUN_0804a594(gUnknown_030044d0, (void *)0x07000000, 0x100);
