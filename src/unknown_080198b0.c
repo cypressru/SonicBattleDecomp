@@ -7023,7 +7023,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
     register const void *next asm("r0");
 
     owner[0] = node;
-    asm volatile("" : : : "memory");
     command = gUnknown_03001b10;
     zero = 0;
     commandCode = 0x2346;
