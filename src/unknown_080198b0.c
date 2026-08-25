@@ -566,7 +566,10 @@ struct UnknownState08021484 {
 };
 
 struct UnknownState03002110 {
-    u8 filler0[119];
+    u8 filler0[108];
+    u8 field108[4];
+    u8 field112[4];
+    u8 field116[3];
     u8 field119;
     u8 filler120;
     u8 field121;
@@ -7578,43 +7581,18 @@ void FUN_080291a8(void) {
 }
 
 void FUN_08029200(void) {
-    u8 *destination = (u8 *)&gUnknown_03002110;
+    struct UnknownState03002110 *destination = &gUnknown_03002110;
     const u8 *source = gUnknown_03002600;
-    u8 value2;
-    u8 value0;
-    u8 *address0;
-    u8 *cursor;
 
-    value2 = source[0];
-    address0 = destination + 108;
-    *address0 = value2;
-    value0 = source[1];
-    cursor = destination + 109;
-    *cursor = value0;
-    value0 = source[2];
-    cursor++;
-    *cursor = value0;
-    value0 = source[3];
-    cursor++;
-    *cursor = value0;
-    value2 = source[4];
-    address0 = destination + 112;
-    *address0 = value2;
-    value0 = source[5];
-    cursor = destination + 113;
-    *cursor = value0;
-    value0 = source[6];
-    cursor++;
-    *cursor = value0;
-    value0 = source[7];
-    cursor++;
-    *cursor = value0;
-    {
-        u8 value1 = source[8];
-
-        address0 = destination + 116;
-        *address0 = value1;
-    }
+    destination->field108[0] = source[0];
+    destination->field108[1] = source[1];
+    destination->field108[2] = source[2];
+    destination->field108[3] = source[3];
+    destination->field112[0] = source[4];
+    destination->field112[1] = source[5];
+    destination->field112[2] = source[6];
+    destination->field112[3] = source[7];
+    destination->field116[0] = source[8];
 }
 
 void FUN_08029250(void) {
