@@ -7616,13 +7616,13 @@ void FUN_080288b4(struct UnknownListNode *node) {
     register u32 one asm("r9");
     register u32 oneAgain asm("r10");
     register u32 secondOne asm("r2");
-    register u32 keyMask asm("r5");
+    register u32 keyMask;
     register u32 zero asm("r4");
     register u8 *countAddress;
     register u8 *selectionAddress;
     register u8 *validationAddress asm("r3");
     register u32 selectionValue asm("r0");
-    register u32 secondMask asm("r0");
+    register u32 secondMask;
     register struct UnknownAllocation28770 *selectionRead asm("r4");
     register struct UnknownAllocation28770 *selectionWrite asm("r5");
     register u16 *resetWords;
@@ -7738,7 +7738,6 @@ void FUN_080288b4(struct UnknownListNode *node) {
         FUN_0801f618(404);
     } else {
         secondMask = 2;
-        asm volatile("" : "+r"(secondMask));
         secondMask &= keys;
         if (secondMask == 0) {
             goto update_child;
