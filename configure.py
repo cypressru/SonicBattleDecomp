@@ -221,7 +221,33 @@ def main() -> None:
             if "size" in symbol:
                 spec += f":{int(symbol['size'])}"
             symbol_specs.append(spec)
-        for relocation in entries.get("relocations", []):
+        relocations = list(entries.get("relocations", []))
+        for table in entries.get("relocation_tables", []):
+            table_start = int(table["start"])
+            table_end = int(table["end"])
+            stride = int(table.get("stride", 4))
+            if stride <= 0 or table_end <= table_start or (table_end - table_start) % stride:
+                fail(f"invalid relocation table in {unit['name']} at 0x{table_start:X}")
+            pointer_base = int(table["pointer_base"])
+            entries_start = int(entries["start"])
+            for relocation_offset in range(table_start, table_end, stride):
+                rom_offset = entries_start + relocation_offset
+                raw_pointer = int.from_bytes(data[rom_offset : rom_offset + 4], "little")
+                addend = raw_pointer - pointer_base
+                if not 0 <= addend < int(entries["end"]) - entries_start:
+                    fail(
+                        f"relocation-table pointer 0x{raw_pointer:08X} in {unit['name']} "
+                        "is outside its target section"
+                    )
+                relocations.append(
+                    {
+                        "offset": relocation_offset,
+                        "type": table.get("type", "abs32"),
+                        "symbol": table["symbol"],
+                        "addend": addend,
+                    }
+                )
+        for relocation in relocations:
             relocation_offset = int(relocation["offset"]) - offset_adjustment
             if not 0 <= relocation_offset < unit_size:
                 continue

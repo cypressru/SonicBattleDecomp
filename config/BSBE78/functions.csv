@@ -44,7 +44,6 @@ address,name,mode,confidence
 0x0800ABB2,FUN_0800abb2,thumb,rom-pointer
 0x0800B084,FUN_0800b084,thumb,direct-call
 0x0800B098,FUN_0800b098,thumb,direct-call
-0x0800BAA4,FUN_0800baa4,thumb,direct-call
 0x0800BAAC,FUN_0800baac,thumb,direct-call+exact-body
 0x0800BB88,FUN_0800bb88,thumb,direct-call
 0x0800C036,FUN_0800c036,thumb,rom-pointer
