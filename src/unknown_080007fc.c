@@ -1073,10 +1073,18 @@ animation_ready:
         goto advance_frame;
     }
 
-    while ((commands[gUnknown_03003110[slot]] & 0xffff0000) != 0xfff00000) {
-        gUnknown_03003110[slot]++;
-        if (gUnknown_03003110[slot] > 0xfe) {
-            goto invalid_stream;
+    {
+        u16 *scanIndex = &gUnknown_03003110[slot];
+
+        if ((commands[*scanIndex] & 0xffff0000) != 0xfff00000) {
+            u16 *cursor = scanIndex;
+
+            do {
+                (*cursor)++;
+                if (*cursor > 0xfe) {
+                    goto invalid_stream;
+                }
+            } while ((commands[*cursor] & 0xffff0000) != 0xfff00000);
         }
     }
 
