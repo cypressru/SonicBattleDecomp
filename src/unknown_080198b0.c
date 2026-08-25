@@ -1464,9 +1464,9 @@ void FUN_0801a898(void) {
             gUnknown_03002030 = (void (*)(void))((u32)FUN_0801ad38 + 1);
 
             if (scene[23] != 10) {
+                u32 *current = &gUnknown_03001380;
                 u8 *commandBase = scene + 20;
-                u32 current = gUnknown_03001380;
-                u8 command = *(u8 *)(current + (u32)commandBase);
+                u8 command = commandBase[*current];
 
                 if (command <= 19) {
                     switch (command) {
