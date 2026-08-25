@@ -3088,7 +3088,7 @@ void FUN_0801d9e0(u8 value) {
         struct UnknownEntity *entity;
         u32 mask;
 
-        doubled = index * 2;
+        doubled = value * 2;
         offset = doubled + index;
         offset *= 8;
         entity = (struct UnknownEntity *)(offset + (u32)entities);
@@ -3105,7 +3105,7 @@ void FUN_0801d9e0(u8 value) {
         struct UnknownEntity *entity;
         u32 mask;
 
-        doubled = index * 2;
+        doubled = value * 2;
         offset = doubled + index;
         offset *= 8;
         entity = (struct UnknownEntity *)(offset + (u32)entities);
@@ -3536,10 +3536,8 @@ u32 FUN_0801d200(u8 value) {
 }
 
 u16 FUN_0801d408(u8 value) {
-    u32 doubled;
-    u32 index = value;
-    const void *table;
-    u8 linked;
+    register u32 doubled;
+    register u8 index = value;
     u32 action;
 
     if (gUnknown_03001c40[index].field196 != 19) {
@@ -3548,18 +3546,19 @@ u16 FUN_0801d408(u8 value) {
 
         doubled = index * 2;
         entityOffset = (doubled + index) * 8;
-        linked = ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15;
-        table = gUnknown_08ed8b3c;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b3c);
     } else {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset;
 
         doubled = index * 2;
         entityOffset = (doubled + index) * 8;
-        linked = ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15;
-        table = gUnknown_08ed8b64;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b64);
     }
-    action = FUN_0801f578(index, linked, table);
 
     switch (action) {
     case 15:
@@ -3588,16 +3587,17 @@ u16 FUN_0801d408(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid5;
+                goto fallback;
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
-                    valid = 1;
+                if (metadataBase[index].field16 != 0)
+                    goto test5;
             }
+        valid5:
+            valid = 1;
+        test5:
             if (valid == 0)
                 goto fallback;
         }
@@ -3618,16 +3618,17 @@ u16 FUN_0801d408(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid6;
+                goto fallback;
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
-                    valid = 1;
+                if (metadataBase[index].field16 != 0)
+                    goto test6;
             }
+        valid6:
+            valid = 1;
+        test6:
             if (valid == 0)
                 goto fallback;
         }
@@ -3648,16 +3649,17 @@ u16 FUN_0801d408(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    goto fallback;
-                }
+                if (metadataBase[index].field16 != 0)
+                    goto valid7;
+                goto fallback;
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 == 0)
-                    valid = 1;
+                if (metadataBase[index].field16 != 0)
+                    goto test7;
             }
+        valid7:
+            valid = 1;
+        test7:
             if (valid != 0) {
                 ((void (*)(u32))FUN_0801ecb8)(index);
                 break;
