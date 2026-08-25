@@ -8337,11 +8337,11 @@ void FUN_08029250(void) {
         state = (u8 *)&gUnknown_03002110;
         stateOffset = 0x473;
         {
-            register u8 *checkAddress asm("r0") = state + stateOffset;
+            register u8 *checkAddress = state + stateOffset;
 
             if (*checkAddress != 0) {
                 register u32 selectorOffset asm("r5") = 0x472;
-                register u32 selector asm("r0");
+                register u32 selector;
                 register u8 *selectorAddress asm("r0");
 
                 asm volatile("" : "+r"(selectorOffset));
