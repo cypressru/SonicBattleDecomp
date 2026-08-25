@@ -10811,9 +10811,9 @@ void FUN_0804224c(u8 value) {
         asm volatile("" : "+r"(offset));
         {
             register u32 *destination asm("r5") = (u32 *)(state + 0x48c);
-            register const u32 *firstAddress asm("r0") = &gUnknown_03002610;
-            register const u32 *secondAddress asm("r2") = &gUnknown_03005488;
-            register u32 difference asm("r1");
+            register const u32 *firstAddress = &gUnknown_03002610;
+            register const u32 *secondAddress = &gUnknown_03005488;
+            register u32 difference;
             register u32 second asm("r0");
 
             difference = *firstAddress;
