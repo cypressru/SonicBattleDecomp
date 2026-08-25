@@ -1390,8 +1390,18 @@ void FUN_080198b0(void) {
         cursor++;
         *cursor = finalZero;
     }
-    *(u16 *)(savedScene + 126) = savedScene[7] * 1800;
-    *(u16 *)(savedScene + 128) = savedScene[10] * 30;
+    {
+        u32 timer = savedScene[7] * 1800;
+        u16 *destination = (u16 *)(savedScene + 126);
+
+        *destination = timer;
+    }
+    {
+        u32 timer = savedScene[10] * 30;
+        u16 *destination = (u16 *)(savedScene + 128);
+
+        *destination = timer;
+    }
 
     FUN_08015f6c();
     gUnknown_03002040.base = wordZero;
