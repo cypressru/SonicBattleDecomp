@@ -7618,17 +7618,17 @@ void FUN_080288b4(struct UnknownListNode *node) {
     register u32 secondOne asm("r2");
     register u32 keyMask asm("r5");
     register u32 zero asm("r4");
-    register u8 *countAddress asm("r6");
-    register u8 *selectionAddress asm("r2");
+    register u8 *countAddress;
+    register u8 *selectionAddress;
     register u8 *validationAddress asm("r3");
     register u32 selectionValue asm("r0");
     register u32 secondMask asm("r0");
     register struct UnknownAllocation28770 *selectionRead asm("r4");
     register struct UnknownAllocation28770 *selectionWrite asm("r5");
-    register u16 *resetWords asm("r0");
-    register u32 *resetFlagAddress asm("r0");
-    register u8 *resetCountAddress asm("r0");
-    register struct UnknownListNode *nodesAddress asm("r1");
+    register u16 *resetWords;
+    register u32 *resetFlagAddress;
+    register u8 *resetCountAddress;
+    register struct UnknownListNode *nodesAddress;
     register s32 recordType asm("r1");
     u8 limitedSelection;
 
