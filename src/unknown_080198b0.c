@@ -9845,6 +9845,21 @@ void FUN_0802caac(struct UnknownListNode *node) {
     FUN_0801fed8(node->field6, 0);
 }
 
+void FUN_0802cadc(struct UnknownListNode *node) {
+    const u8 *table = gUnknown_0804df7c;
+    struct UnknownPosition *position;
+    s32 value;
+
+    value = (s8)(*(const u16 *)(table + node->position->field14 * 64) >> 8);
+    node->position->field10 = 1;
+    position = node->position;
+    position->field11 &= 0xC1;
+    value += 256;
+    node->position->field11 |= FUN_0801fd18(value, 0) * 2;
+    FUN_0801fed8(node->field6, 0);
+    node->position->field14 += 4;
+}
+
 void FUN_0802df40(struct UnknownListNode *node) {
     struct UnknownBlendState2df40 *state = node->allocation;
 
