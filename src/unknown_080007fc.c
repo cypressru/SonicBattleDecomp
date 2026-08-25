@@ -1102,6 +1102,7 @@ void FUN_0800f9c0(void) {
     recordIndex = 0;
     do {
 #define record (&gUnknown_030017d0[recordIndex])
+        u8 *table = (u8 *)gUnknown_030017d0;
         u16 active = record->seventeenth;
 
         nextRecordIndex = recordIndex + 1;
@@ -1113,9 +1114,11 @@ void FUN_0800f9c0(void) {
             s16 height;
             s32 screenY;
 
-            FUN_0801816c(&record->x, &record->y,
+            FUN_0801816c((s16 *)(table + recordIndex * 68 + 18),
+                         (s16 *)(table + recordIndex * 68 + 20),
                          record->eighteenth[0], record->eighteenth[1]);
-            FUN_08018204(&record->x, &record->y, record->x, record->y);
+            FUN_08018204((s16 *)(table + recordIndex * 68 + 18),
+                         (s16 *)(table + recordIndex * 68 + 20), record->x, record->y);
 
             switch (record->fifteenth) {
             case 0: {
