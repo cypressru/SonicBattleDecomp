@@ -7151,6 +7151,7 @@ void FUN_0801f770(u16 value) { FUN_080490b4(value); }
 
 void FUN_0801f780(void) {
     s16 i = 0;
+    u8 *count = &gUnknown_0300006c;
 
     do {
         gUnknown_03000008[i] = i + 1;
@@ -7158,7 +7159,7 @@ void FUN_0801f780(void) {
     } while (i <= 99);
 
     gUnknown_0300006d = 0;
-    gUnknown_0300006c = 0;
+    *count = 0;
     gUnknown_03003e20[0].data = (const void *)((u32)FUN_080200f8 + 1);
     gUnknown_03003e20[0].next = 0;
     gUnknown_03003e20[0].field6 = 0;
