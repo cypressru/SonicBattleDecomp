@@ -7953,17 +7953,14 @@ void FUN_08029250(void) {
         register u32 selected asm("r1") = gUnknown_03005250;
         register u32 selectedCopy asm("r0") = selected;
 
-        asm volatile("" : "+r"(selected), "+r"(selectedCopy));
         if (selected <= 4) {
             register u32 source asm("r1");
 
             selected += 2;
             selected <<= 9;
             selected += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(selected));
             FUN_0802036c(0x06016000, selected, 512);
             source = (u32)gUnknown_08117368;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selected <= 9) {
             register u32 source asm("r1");
@@ -7971,10 +7968,8 @@ void FUN_08029250(void) {
             selected -= 4;
             selected <<= 9;
             selected += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(selected));
             FUN_0802036c(0x06016000, selected, 512);
             source = (u32)gUnknown_08117b68;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selectedCopy <= 14) {
             register u32 source asm("r1") = selectedCopy;
@@ -7982,10 +7977,8 @@ void FUN_08029250(void) {
             source -= 10;
             source <<= 9;
             source += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016000, source, 512);
             source = (u32)gUnknown_08118368;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         }
     }
