@@ -2092,75 +2092,106 @@ void FUN_0801bd90(void) {
     }
 
     if ((u8)FUN_080205d0() != 0) {
-        u8 *scene = &gUnknown_03001620;
+        {
+            u8 *scene = &gUnknown_03001620;
 
-        switch (scene[125]) {
-        case 0:
-            gUnknown_03002030 = FUN_0802b980;
-            break;
-        case 1:
-            gUnknown_03002030 = FUN_0802b980;
-            break;
-        case 2:
-            gUnknown_03002030 = FUN_080402a0;
-            break;
-        case 3:
-            gUnknown_03002030 = FUN_080402b0;
-            break;
-        case 4:
-            gUnknown_03002030 = FUN_0803ae04;
-            break;
-        case 5:
-            FUN_080184c8();
-            gUnknown_03002030 = FUN_0803d1a0;
-            break;
-        }
-
-        scene = &gUnknown_03001620;
-        if (scene[125] == 0 && scene[117] == 0) {
-            u32 *statistics = (u32 *)&gUnknown_03002110;
-            u32 selected;
-
-            statistics[2] += (u16)FUN_0804b4e4(*(u16 *)(scene + 114), 30);
-            statistics[3]++;
-            if (scene[4] == 0) {
-                statistics[4]++;
-            } else if (scene[4] == 1) {
-                statistics[5]++;
-            } else if (scene[4] == 2) {
-                statistics[6]++;
-            }
-
-            selected = gUnknown_03001380;
-            statistics[7] += scene[selected + 39];
-            statistics[8] += scene[selected + 43];
-            statistics[9] += scene[selected + 51];
-            if (scene[8] == 0) {
-                if (gUnknown_03003da0 == selected || gUnknown_03003d90 == selected) {
-                    statistics[10]++;
-                } else {
-                    statistics[11]++;
-                }
-            } else if (gUnknown_03003da0 == scene[selected + 32]) {
-                statistics[10]++;
-            } else {
-                statistics[11]++;
-            }
-
-            statistics[12] += *(u16 *)(scene + selected * 2 + 90);
-            statistics[13] += *(u16 *)(scene + selected * 2 + 98);
-            if (scene[selected + 20] <= 8) {
-                statistics[15 + scene[selected + 20]]++;
+            switch (scene[125]) {
+            case 0:
+                gUnknown_03002030 = FUN_0802b980;
+                break;
+            case 1:
+                gUnknown_03002030 = FUN_0802b980;
+                break;
+            case 2:
+                gUnknown_03002030 = FUN_080402a0;
+                break;
+            case 3:
+                gUnknown_03002030 = FUN_080402b0;
+                break;
+            case 4:
+                gUnknown_03002030 = FUN_0803ae04;
+                break;
+            case 5:
+                FUN_080184c8();
+                gUnknown_03002030 = FUN_0803d1a0;
+                break;
             }
         }
 
         {
             u8 *scene = &gUnknown_03001620;
+            u8 *savedScene = scene;
+
+            if (scene[125] == 0 && scene[117] == 0) {
+                u32 *statistics = (u32 *)&gUnknown_03002110;
+
+                statistics[2] += (u16)FUN_0804b4e4(*(u16 *)(savedScene + 114), 30);
+                statistics[3]++;
+                if (savedScene[4] == 0) {
+                    statistics[4]++;
+                } else if (savedScene[4] == 1) {
+                    statistics[5]++;
+                } else if (savedScene[4] == 2) {
+                    statistics[6]++;
+                }
+
+                {
+                    u8 *field = savedScene + 39;
+                    u32 *selectedAddress = &gUnknown_03001380;
+                    u32 selected = *selectedAddress;
+
+                    statistics[7] += *(u8 *)(selected + (u32)field);
+                    field = savedScene + 43;
+                    statistics[8] += *(u8 *)(selected + (u32)field);
+                    field = savedScene + 51;
+                    statistics[9] += *(u8 *)(selected + (u32)field);
+                    if (savedScene[8] == 0) {
+                        if (gUnknown_03003da0 == selected || gUnknown_03003d90 == selected) {
+                            statistics[10]++;
+                        } else {
+                            statistics[11]++;
+                        }
+                    } else {
+                        field = savedScene + 32;
+                        if (gUnknown_03003da0 == *(u8 *)(selected + (u32)field)) {
+                            statistics[10]++;
+                        } else {
+                            statistics[11]++;
+                        }
+                    }
+
+                    selected = *selectedAddress;
+                    {
+                        u32 doubled = selected * 2;
+                        u8 *field = savedScene + 90;
+
+                        statistics[12] += *(u16 *)(doubled + (u32)field);
+                        field = savedScene + 98;
+                        statistics[13] += *(u16 *)(doubled + (u32)field);
+                    }
+                    {
+                        u8 *stateAddress = savedScene + 20;
+                        u8 state = *(u8 *)(selected + (u32)stateAddress);
+                        u32 *counts = statistics + 15;
+
+                        if (state <= 8) {
+                            counts[state]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        {
+            u8 *scene = &gUnknown_03001620;
+            u8 *firstSource = scene + 129;
+            u8 *secondSource = scene + 133;
+            u8 *secondDestination = scene + 4;
             u8 index = 0;
 
             do {
-                scene[index] = scene[index + 129];
-                scene[index + 4] = scene[index + 133];
+                scene[index] = firstSource[index];
+                secondDestination[index] = secondSource[index];
                 index++;
             } while (index <= 3);
         }
@@ -2176,42 +2207,50 @@ void FUN_0801bd90(void) {
         FUN_0804a594(&otherZero, (void *)0x05000200, 0x01000100);
         FUN_08020944();
     } else {
-        u8 *scene = &gUnknown_03001620;
         u8 mode;
 
-        if (scene[136] == 0xff) {
-            FUN_0801a04c(gUnknown_03001380);
-        } else {
-            FUN_0801a04c(scene[136]);
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[136] == 0xff) {
+                FUN_0801a04c(gUnknown_03001380);
+            } else {
+                FUN_0801a04c(scene[136]);
+            }
         }
 
-        if (scene[125] == 4) {
-            FUN_080182ac();
-            FUN_08016684();
-            FUN_08017ed0();
-            FUN_08013214(0);
-            FUN_08017f6c();
-            FUN_08006ff4(4);
-            FUN_0800f9c0();
-            FUN_08011c7c();
-            FUN_080175d4();
-            FUN_08017d58();
-            FUN_08017c5c();
-        } else {
-            mode = FUN_0801584c();
-            FUN_080182ac();
-            FUN_08016684();
-            FUN_08017ed0();
-            FUN_08013214(mode);
-            FUN_08017f6c();
-            if (mode != 10) {
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            scene += 125;
+            if (*scene == 4) {
+                FUN_080182ac();
+                FUN_08016684();
+                FUN_08017ed0();
+                FUN_08013214(0);
+                FUN_08017f6c();
                 FUN_08006ff4(4);
                 FUN_0800f9c0();
+                FUN_08011c7c();
+                FUN_080175d4();
+                FUN_08017d58();
+                FUN_08017c5c();
+            } else {
+                mode = FUN_0801584c();
+                FUN_080182ac();
+                FUN_08016684();
+                FUN_08017ed0();
+                FUN_08013214(mode);
+                FUN_08017f6c();
+                if (mode != 10) {
+                    FUN_08006ff4(4);
+                    FUN_0800f9c0();
+                }
+                FUN_08011c7c();
+                FUN_080175d4();
+                FUN_08017d58();
+                FUN_08017c5c();
             }
-            FUN_08011c7c();
-            FUN_080175d4();
-            FUN_08017d58();
-            FUN_08017c5c();
         }
     }
 }
