@@ -1165,7 +1165,7 @@ extern const struct UnknownCoordinatePairs28f98 gUnknown_08edb98c[];
 extern const u8 gUnknown_0804df7c[];
 extern u16 gUnknown_03005200[][8];
 extern void FUN_08028d30(struct UnknownListNode *node);
-extern void FUN_08020978(s32 x, u32 y, u16 tile, u32 attributes);
+extern u32 FUN_08020978(s32 x, u32 y, u16 tile, u32 attributes);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
 extern u32 FUN_0801fab0(u16 value);
@@ -3598,6 +3598,22 @@ void FUN_08023898(struct UnknownListNode *node) {
     node->position->field11 = 0;
     node->position->field12 = 8;
     node->data = FUN_0802392c;
+}
+
+void FUN_080238d0(u16 *entries) {
+    u32 x = 0;
+    u32 fill = 0x88888888;
+
+    CpuFastSet(&fill, (void *)0x0600b000, 0x01000340);
+    if (*entries != 0xfffe) {
+        u16 sentinel = 0xfffe;
+
+        do {
+            FUN_08020978(x + 1, 1, *entries, 1);
+            x += FUN_08020978(x, 0, *entries, 15);
+            entries++;
+        } while (*entries != sentinel);
+    }
 }
 
 void FUN_0803d168(struct UnknownListNode *node) {
