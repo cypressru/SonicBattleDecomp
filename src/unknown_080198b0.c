@@ -9309,7 +9309,7 @@ void FUN_08029d74(struct UnknownListNode *node) {
             value &= index;
             value <<= 12;
             {
-                register const u8 *firstTable asm("r0") = gUnknown_0300524c;
+                register const u8 *firstTable = gUnknown_0300524c;
                 register struct UnknownAllocation29d74 *indexAddress asm("r4") = data;
 
                 tableIndex = indexAddress->index;
@@ -9324,8 +9324,8 @@ void FUN_08029d74(struct UnknownListNode *node) {
                 value |= index;
             }
             {
-                register const u8 *secondTable asm("r0") = gUnknown_03005268;
-                register u32 tableAddress asm("r3") = tableIndex + (u32)secondTable;
+                register const u8 *secondTable = gUnknown_03005268;
+                register u32 tableAddress = tableIndex + (u32)secondTable;
 
                 tableIndex = *(const u8 *)tableAddress;
                 index = lowMask;
@@ -9334,7 +9334,7 @@ void FUN_08029d74(struct UnknownListNode *node) {
                 value |= index;
             }
             {
-                register u8 *scene asm("r0") = &gUnknown_03001620;
+                register u8 *scene = &gUnknown_03001620;
 
                 index = scene[3];
             }
