@@ -440,7 +440,7 @@ void FUN_080007fc(u8 index) {
         volatile u8 *state = (volatile u8 *)&gUnknown_03001620;
 
         if (*mode == 0 || index == gUnknown_03001380 ||
-            (index == gUnknown_03001380 + 2 && state[index + 28] != 0)) {
+            (index == gUnknown_03001380 + 2 && (state += 28, state[index] != 0))) {
             ((u8 *)&table[index])[199] = 12;
         }
     }
