@@ -25,10 +25,22 @@ void FUN_080198b0(void);
 void FUN_08019b5c(void);
 void FUN_0801aadc(void);
 void FUN_0801a898(void);
+void FUN_0801ad38(void);
+u8 FUN_0801c968(u8 condition, u8 index);
+void FUN_0801c28c(void);
 extern u8 gUnknown_0300138c;
+extern u8 gUnknown_03003d98;
+extern u8 gUnknown_03003d9c;
+extern u8 FUN_08017b74(u8 participant, u8 status, u8 expected);
 extern u8 gUnknown_03003d94;
+extern u8 gUnknown_030030d0[];
+extern u8 FUN_08015858(void);
+extern void FUN_080074a8(u8 value);
 extern void FUN_0801c8a4(void);
+void FUN_0801c8f0(void);
 extern void FUN_080402a0(void);
+extern void FUN_0802b980(void);
+extern void FUN_0803ae04(void);
 extern void FUN_0802392c(struct UnknownListNode *node);
 extern void FUN_0803cfac(struct UnknownListNode *node);
 extern void FUN_0802cc78(void);
@@ -46,18 +58,17 @@ extern u32 FUN_0801cfc8(u8 value);
 u32 FUN_0801d068(u8 value);
 u8 FUN_0801d188(u8 value);
 u32 FUN_0801d200(u8 value);
-extern void FUN_0801d408(u8 value);
+u16 FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
 void FUN_080200f8(void);
-extern void FUN_0801de5c_wide(u32 value) asm("FUN_0801de5c");
-extern void FUN_0801debc_wide(u32 value) asm("FUN_0801debc");
-extern void FUN_0801df1c_wide(u32 value) asm("FUN_0801df1c");
-extern void FUN_0801df7c_wide(u32 value) asm("FUN_0801df7c");
+void FUN_0801de5c(u8 value);
+void FUN_0801debc(u8 value);
+void FUN_0801df1c(u8 value);
+void FUN_0801df7c(u8 value);
 void FUN_0801eacc(u8 value);
 void FUN_0801eaf8(u8 value);
 void FUN_0801eb24(u8 value);
-extern u32 FUN_0801d188_wide(u8 value) asm("FUN_0801d188");
 extern void FUN_0801fed8(u8 value, u32 other);
 extern void FUN_08015924(u8 first, u16 second, u8 third, u16 fourth, u8 fifth);
 extern s16 FUN_08015f40(u8 index);
@@ -269,7 +280,9 @@ struct UnknownEntityFrame {
 struct UnknownEntityData {
     u8 filler0[16];
     u8 field16;
-    u8 filler17[3];
+    u8 filler17;
+    u8 field18;
+    u8 filler19;
     u16 field20;
     u8 filler22[4];
     s16 field26;
@@ -788,8 +801,8 @@ extern void FUN_080405a8(u8 first, u8 second);
 extern s16 FUN_08040698(u8 value);
 extern s16 FUN_08040684(u8 value);
 extern u32 FUN_080406b4(void);
-extern s16 FUN_08040684_wide(u32 value) asm("FUN_08040684");
-extern s16 FUN_08040698_wide(u32 value) asm("FUN_08040698");
+s16 FUN_08040684(u8 index);
+s16 FUN_08040698(u8 index);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
 extern const u8 gUnknown_081a7f88[];
 extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
@@ -891,6 +904,13 @@ struct Unknown16ByteRecord {
     u8 filler1[15];
 };
 
+struct CameraTarget {
+    u8 filler0[8];
+    s16 x;
+    s16 y;
+    u16 base;
+};
+
 extern void (*gUnknown_03002030)(void);
 extern struct UnknownCallbackState03005330 gUnknown_03005330;
 extern u8 gUnknown_03001620;
@@ -906,6 +926,9 @@ extern u16 gUnknown_03001b28;
 extern u16 gUnknown_08071264[];
 extern const u8 gUnknown_08ed89d0[];
 extern const u8 gUnknown_08ed898c[];
+extern const u8 gUnknown_08ed8a58[];
+extern const u8 gUnknown_08ed8a64[];
+extern u8 gUnknown_030013f5[];
 extern const u8 gUnknown_08ed8990[];
 extern const u8 gUnknown_08ed89a0[];
 extern const u8 gUnknown_08ed89b0[];
@@ -1166,7 +1189,8 @@ extern void FUN_0801fda0(void);
 extern void FUN_08021b0c(void);
 extern void FUN_08021e70(u16 value);
 
-extern void FUN_0801d618(void);
+void FUN_0801d618(u8 value);
+void FUN_0801d9e0(u8 value);
 extern void FUN_0801d8f4(u8 value);
 extern void FUN_0801daec(u8 value);
 extern void FUN_0801dbd0(u8 value);
@@ -1176,8 +1200,20 @@ void FUN_0801e174(u8 value);
 void FUN_0801e258(u8 value);
 void FUN_0801e2c8(u32 value);
 extern void FUN_0801e4f4(u8 value);
-extern void FUN_0801e6a0(void);
+void FUN_0801e6a0(u8 value);
+void FUN_0801e3cc(u8 value);
+void FUN_0801eb50(u8 value);
+void FUN_0801ebb0(u8 value);
+void FUN_0801ec10(u8 value);
+void FUN_0801ec64(u8 value);
+void FUN_0801ecb8(u8 value);
+void FUN_0801ed0c(u8 value);
+void FUN_0801e0c4(u8 value);
+void FUN_0801ed6c(u8 value);
+void FUN_0801eddc(u8 value);
+void FUN_0801de5c(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
+extern u32 FUN_0801f578(u32 value, u32 linked, const void *table);
 extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
 extern const u8 gUnknown_08071237[];
@@ -1188,6 +1224,8 @@ extern u16 gUnknown_08071250[];
 extern u16 gUnknown_0807125a[];
 extern u8 gUnknown_08071240[];
 extern u8 gUnknown_08071245[];
+extern const u8 gUnknown_08ed8b3c[];
+extern const u8 gUnknown_08ed8b64[];
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -1224,7 +1262,14 @@ void FUN_08025f5c(struct UnknownListNode *node);
 void FUN_08025fd4(struct UnknownListNode *node);
 extern void FUN_08018444(void);
 extern void FUN_080184c8(void);
+extern u16 FUN_0804b4e4(u16 value, u16 divisor);
 extern void FUN_08018530(void);
+extern void FUN_080178d0(void);
+extern u8 FUN_08015384(void);
+extern void FUN_080007fc(u8 index);
+extern void FUN_08034748(void);
+extern void FUN_0801d5d4(u8 value);
+extern void FUN_0801f718(u16 value, u16 other);
 extern void FUN_080176e4(s16 target);
 extern void FUN_080182e4(s16 target);
 extern void FUN_08018300(s16 target);
@@ -1237,12 +1282,18 @@ extern u16 gUnknown_03001398[];
 extern const u16 gUnknown_08071222[];
 extern const u16 gUnknown_0807122a[];
 extern const u16 gUnknown_0807121a[];
-extern u8 gUnknown_03002040;
+extern struct CameraTarget gUnknown_03002040;
+extern u8 gUnknown_03002034;
 extern void FUN_080006d0(void);
 extern u16 gUnknown_03001378;
+extern s16 gUnknown_03002b70;
+extern s16 gUnknown_03002b74;
+extern s16 gUnknown_03002b80;
+extern s16 gUnknown_03002bd0;
 extern void FUN_080177b8(u8 participant);
 extern u8 FUN_080153e0(void);
 extern u8 FUN_0801584c(void);
+extern u8 FUN_080158c0(void);
 extern u32 FUN_08006894(void);
 extern const u8 gUnknown_08071232[];
 extern void FUN_08006e64(void);
@@ -1254,12 +1305,704 @@ extern void FUN_080066d8(void);
 extern void FUN_08006134(u8 value);
 extern void FUN_08005310(u8 value);
 extern void FUN_0800486c(u8 value);
+extern void FUN_08015f6c(void);
+extern void FUN_08017964(u32 value);
+extern void FUN_0801ce70(void);
+extern void FUN_0800186c(void);
+extern void FUN_08000cf4(u8 index, u8 first, u8 second);
+extern void FUN_08000e04(u8 index);
+extern void FUN_08007e9c(u8 index);
+extern void FUN_08007e24(void);
+extern u32 FUN_0804b03c(u32 value, u32 divisor);
+extern void FUN_0804b6c4(void *destination, u8 value, u32 size);
+extern void FUN_0800fdc8(u8 value);
+extern void FUN_0801103c(u8 value);
+extern void FUN_08000a2c(void);
+extern void FUN_0800fd8c(void);
+extern void FUN_08017f58(u8 first, u8 second);
+extern void FUN_0801f024(u8 value);
+extern void FUN_0801e9ec(u8 value);
 extern void FUN_08020944(void);
+extern u8 gUnknown_03003da0;
+extern u8 gUnknown_03003d90;
 extern u8 gUnknown_03001b30[];
 void FUN_080207ec(u16 value);
 void FUN_0801bd90(void);
 void FUN_0801c910(void);
 void FUN_0801a04c(u32 value);
+
+void FUN_080198b0(void) {
+    struct DmaTransfer {
+        const void *source;
+        void *destination;
+        u32 control;
+    };
+    struct SceneInitState {
+        u8 filler0[12];
+        u8 field12[4];
+        u8 field16[4];
+        u8 filler20[19];
+        u8 field39[4];
+        u8 field43[4];
+        u8 field47[4];
+        u8 field51[4];
+        u8 filler55[3];
+        u16 field58[4];
+        u16 field66[4];
+        u16 field74[4];
+        u16 field82[4];
+        u16 field90[4];
+        u16 field98[4];
+        u16 field106[4];
+        u8 filler114[23];
+        u8 field137[4];
+        u8 field141[4];
+        u8 field145[4];
+    };
+    union AddressView {
+        void *pointer;
+        u32 address;
+    };
+    u8 *scene;
+    u8 *savedScene;
+    u8 index;
+    u32 wordZero;
+    u8 finalZero;
+
+    gUnknown_03003d98 = 0;
+    gUnknown_03003d9c = 0;
+    index = 0;
+    scene = &gUnknown_03001620;
+    {
+        u8 *active = scene + 28;
+        u8 *count = &gUnknown_03003d9c;
+        u8 *participants = scene + 20;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)(index + (u32)active) == 0 && *(u8 *)(index + (u32)participants) != 0xff) {
+                (*count)++;
+            }
+        }
+    }
+
+    scene[136] = 0xff;
+    {
+        struct SceneInitState *state;
+        u8 loopZero;
+        u8 limit;
+        u8 *field145;
+
+        index = 0;
+        state = (struct SceneInitState *)scene;
+        loopZero = 0;
+        limit = 100;
+        field145 = scene + 145;
+        for (; index <= 3; index++) {
+            {
+                union AddressView field;
+
+                field.pointer = state->field39;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field43;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field47;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                union AddressView field;
+
+                field.pointer = state->field51;
+                *(u8 *)(index + field.address) = loopZero;
+            }
+            {
+                u32 doubledIndex = index * 2;
+
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field58;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field66;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field74;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field82;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field90;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    union AddressView field;
+
+                    field.pointer = state->field98;
+                    *(u16 *)(doubledIndex + field.address) = loopZero;
+                }
+                {
+                    u8 *field = (u8 *)state + 106;
+
+                    *(u16 *)(doubledIndex + (u32)field) = loopZero;
+                    field += 31;
+                    *(u8 *)(index + (u32)field) = loopZero;
+                }
+            }
+            {
+                union AddressView address12;
+                union AddressView address16;
+                union AddressView address141;
+                u8 *field12;
+                u8 *field16;
+
+                address12.pointer = state->field12;
+                field12 = (u8 *)(index + address12.address);
+                if (*field12 > 100) {
+                    *field12 = limit;
+                }
+                address16.pointer = state->field16;
+                field16 = (u8 *)(index + address16.address);
+                if (*field16 > 100) {
+                    *field16 = limit;
+                }
+                address141.pointer = state->field141;
+                *(u8 *)(index + address141.address) = *field12;
+                *(u8 *)(index + (u32)field145) = *field16;
+            }
+        }
+    }
+
+    savedScene = scene;
+    {
+        u8 *cursor = savedScene + 55;
+
+        wordZero = 0;
+        *cursor = wordZero;
+        cursor++;
+        *cursor = wordZero;
+        cursor += 58;
+        finalZero = 0;
+        *(u16 *)cursor = wordZero;
+        cursor += 2;
+        *cursor = finalZero;
+        cursor += 14;
+        *(u16 *)cursor = wordZero;
+        cursor -= 13;
+        *cursor = finalZero;
+        cursor += 16;
+        *cursor = finalZero;
+        cursor++;
+        *cursor = finalZero;
+        cursor++;
+        *cursor = finalZero;
+    }
+    {
+        u32 timer = savedScene[7] * 1800;
+        u16 *destination = (u16 *)(savedScene + 126);
+
+        *destination = timer;
+    }
+    {
+        u32 timer = savedScene[10] * 30;
+        u16 *destination = (u16 *)(savedScene + 128);
+
+        *destination = timer;
+    }
+
+    FUN_08015f6c();
+    gUnknown_03002040.base = wordZero;
+    gUnknown_03002040.x = wordZero;
+    gUnknown_03002040.y = wordZero;
+    gUnknown_03001374 = wordZero;
+    gUnknown_03001b24 = wordZero;
+    FUN_08017964(0);
+    FUN_08017964(1);
+    FUN_08017964(2);
+    FUN_08017964(3);
+    FUN_0801ce70();
+    gUnknown_03002034 = 1;
+    FUN_0800186c();
+
+    if (savedScene[20] != 0xff) {
+        FUN_08000cf4(0, savedScene[20], 0);
+    }
+    if (savedScene[21] != 0xff) {
+        FUN_08000cf4(1, savedScene[21], 0);
+    }
+    if (savedScene[22] != 0xff) {
+        FUN_08000cf4(2, savedScene[22], 0);
+    }
+    if (savedScene[23] != 0xff) {
+        FUN_08000cf4(3, savedScene[23], 0);
+    }
+
+    FUN_0800fdc8(scene[scene[1] + 3]);
+    FUN_0801103c(scene[scene[1] + 3]);
+    FUN_08000a2c();
+    FUN_0800fd8c();
+
+    {
+        volatile struct DmaTransfer *dma = (volatile struct DmaTransfer *)0x040000d4;
+
+        dma->source = (const void *)0x08bf2058;
+        dma->destination = (void *)0x050002a0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf2078;
+        dma->destination = (void *)0x050002c0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf2098;
+        dma->destination = (void *)0x050002e0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf20b8;
+        dma->destination = (void *)0x05000300;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf20d8;
+        dma->destination = (void *)0x05000320;
+        dma->control = 0x08000010;
+        (void)dma->control;
+    }
+
+    FUN_08017f58(0, 160);
+    FUN_0801f024(savedScene[11]);
+    FUN_0801e9ec(0);
+    FUN_0801e9ec(1);
+    FUN_0801e9ec(2);
+    FUN_0801e9ec(3);
+
+    {
+        u8 *metadata = (u8 *)gUnknown_03001c40;
+
+        metadata[159] = finalZero;
+        metadata[411] = finalZero;
+        metadata[663] = finalZero;
+        metadata[915] = finalZero;
+    }
+}
+
+void FUN_08019b5c(void) {
+    u8 *scene = &gUnknown_03001620;
+    u8 index;
+
+    if ((u8)(scene[125] - 2) <= 1) {
+        u8 *base;
+        u8 *groups;
+        u8 zero = 0;
+        u8 *flags16;
+
+        index = 0;
+        base = scene;
+        groups = base + 32;
+        flags16 = base + 16;
+        do {
+            u8 *entries = base + 20;
+
+            if (*(u8 *)(index + (u32)entries) == 9 || index == gUnknown_03001380 ||
+                (base[8] == 1 &&
+                 *(u8 *)(gUnknown_03001380 + (u32)groups) == *(u8 *)(index + (u32)groups))) {
+                u8 *flags12 = base + 12;
+
+                *(u8 *)(index + (u32)flags12) = zero;
+                *(u8 *)(index + (u32)flags16) = zero;
+            }
+            index++;
+        } while (index <= 3);
+    } else if (gUnknown_03002600[7] == 0) {
+        u8 *flags12 = scene + 12;
+        u8 *flags16 = scene + 16;
+        u8 *field141 = scene + 141;
+        u8 *field145 = scene + 145;
+        u8 zero = 0;
+
+        for (index = 0; index <= 3; index++) {
+            *(u8 *)(index + (u32)flags12) = zero;
+            *(u8 *)(index + (u32)flags16) = zero;
+            *(u8 *)(index + (u32)field141) = zero;
+            *(u8 *)(index + (u32)field145) = zero;
+        }
+    }
+
+    if ((&gUnknown_03001620)[20] == 9) {
+        FUN_08000e04(0);
+    } else {
+        FUN_08007e9c(0);
+    }
+    if ((&gUnknown_03001620)[21] == 9) {
+        FUN_08000e04(1);
+    } else {
+        FUN_08007e9c(1);
+    }
+    if ((&gUnknown_03001620)[22] == 9) {
+        FUN_08000e04(2);
+    } else {
+        FUN_08007e9c(2);
+    }
+    if ((&gUnknown_03001620)[23] == 9) {
+        FUN_08000e04(3);
+    } else {
+        FUN_08007e9c(3);
+    }
+
+    scene = &gUnknown_03001620;
+    if ((u8)(scene[125] - 2) > 1) {
+        u8 other;
+
+        scene[24] = 0;
+        scene[25] = 0;
+        scene[26] = 0;
+        scene[27] = 0;
+        {
+            u8 *outerChoices = scene + 20;
+
+            for (index = 0; index <= 2; index++) {
+                if (*(u8 *)(index + (u32)outerChoices) <= 8) {
+                    u8 *choices = &gUnknown_03001620 + 20;
+                    u8 *flags = choices + 4;
+                    u8 *currentChoice = (u8 *)(index + (u32)choices);
+                    u8 *currentFlag = (u8 *)(index + (u32)flags);
+
+                    for (other = index + 1; other <= 3; other++) {
+                        if (*currentChoice == *(u8 *)(other + (u32)choices)) {
+                            if (other == gUnknown_03001380) {
+                                *currentFlag = 1;
+                            } else {
+                                *(u8 *)(other + (u32)flags) = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ((u8)(scene[125] - 2) > 1) {
+            goto assign_metadata;
+        }
+    }
+
+    {
+        u8 *flags = &gUnknown_03001620 + 24;
+
+        for (index = 0; index <= 3; index++) {
+            u8 *flag = (u8 *)(index + (u32)flags);
+
+            if (*flag == 1) {
+                *flag = 2;
+                gUnknown_03003d94 = 21;
+            }
+        }
+    }
+    for (index = 0; index <= 2; index++) {
+        u8 other;
+
+        if (scene[index + 20] <= 8) {
+            for (other = index + 1; other <= 3; other++) {
+                if (scene[index + 20] == scene[other + 20] && scene[index + 24] != 2 &&
+                    scene[other + 24] != 2) {
+                    if (other == gUnknown_03001380) {
+                        scene[index + 24] = 1;
+                    } else {
+                        scene[other + 24] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+assign_metadata:
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 28] != 0) {
+            u32 selection = FUN_0804b03c((gUnknown_03001378 + 4) * (gUnknown_03001378 + 7), 6);
+
+            switch (selection) {
+            case 0: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 27;
+                break;
+            }
+            case 1: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 30;
+                break;
+            }
+            case 2: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 39;
+                break;
+            }
+            case 3: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 45;
+                break;
+            }
+            case 4: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 54;
+                break;
+            }
+            case 5: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 scaled = index << 6;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 57;
+                break;
+            }
+            }
+        }
+    }
+
+    FUN_0800186c();
+    scene = &gUnknown_03001620;
+    if (scene[20] != 0xff) {
+        FUN_08000cf4(0, scene[20], 0);
+    }
+    if (scene[21] != 0xff) {
+        FUN_08000cf4(1, scene[21], 0);
+    }
+    if (scene[22] != 0xff) {
+        FUN_08000cf4(2, scene[22], 0);
+    }
+    if (scene[23] != 0xff) {
+        FUN_08000cf4(3, scene[23], 0);
+    }
+    FUN_08007e24();
+}
+
+u8 FUN_0801a228(u8 mode) {
+    u8 failed[4];
+    u8 groupWins[2];
+    u8 *scene = &gUnknown_03001620;
+    u8 result = 0;
+
+    FUN_0804b6c4(failed, 0, 4);
+    FUN_0804b6c4(groupWins, 0, 2);
+    scene[55] = 0;
+    scene[56] = 0;
+
+    if (scene[8] == 0) {
+        if (mode == 0) {
+            u8 threshold = scene[5];
+
+            if (threshold <= scene[39]) {
+                failed[0] = 1;
+            }
+            if (threshold <= scene[40]) {
+                failed[1] = 1;
+            }
+            if (threshold <= scene[41]) {
+                failed[2] = 1;
+            }
+            if (threshold <= scene[42]) {
+                failed[3] = 1;
+            }
+            if (failed[0] != 0) {
+                return 0;
+            }
+            if (failed[1] != 0) {
+                return 1;
+            }
+            if (failed[2] != 0) {
+                return 2;
+            }
+            if (failed[3] != 0) {
+                return 3;
+            }
+        } else if (mode == 1) {
+            u8 index;
+
+            if (*(u16 *)(scene + 126) < *(u16 *)(scene + 114)) {
+                result = 0;
+                for (index = 0; index <= 2; index++) {
+                    u8 next = index + 1;
+
+                    if (scene[result + 39] < scene[next + 39]) {
+                        result = next;
+                    }
+                }
+                return result;
+            }
+        } else if (mode == 2) {
+            u32 total;
+
+            if (scene[51] < scene[6]) {
+                if (scene[20] != 0xff) {
+                    (*(u16 *)(scene + 106))++;
+                }
+            } else {
+                failed[0] = 1;
+            }
+            if (scene[52] < scene[6]) {
+                if (scene[21] != 0xff) {
+                    (*(u16 *)(scene + 108))++;
+                }
+            } else {
+                failed[1] = 1;
+            }
+            if (scene[53] < scene[6]) {
+                if (scene[22] != 0xff) {
+                    (*(u16 *)(scene + 110))++;
+                }
+            } else {
+                failed[2] = 1;
+            }
+            if (scene[54] < scene[6]) {
+                if (scene[23] != 0xff) {
+                    (*(u16 *)(scene + 112))++;
+                }
+            } else {
+                failed[3] = 1;
+            }
+            total = failed[0] + failed[1] + failed[2] + failed[3];
+            if ((s32)(scene[36] - 1) <= (s32)total) {
+                if (failed[0] == 0 && scene[20] != 0xff) {
+                    return 0;
+                }
+                if (failed[1] == 0 && scene[21] != 0xff) {
+                    return 1;
+                }
+                if (failed[2] == 0 && scene[22] != 0xff) {
+                    return 2;
+                }
+                if (failed[3] == 0 && scene[23] != 0xff) {
+                    return 3;
+                }
+                return 9;
+            }
+        }
+    } else {
+        scene[scene[32] + 55] += scene[39];
+        scene[scene[33] + 55] += scene[40];
+        scene[scene[34] + 55] += scene[41];
+        scene[scene[35] + 55] += scene[42];
+
+        if (mode == 0) {
+            u8 threshold = scene[5];
+
+            if (threshold <= scene[55]) {
+                failed[0] = 1;
+            }
+            if (threshold <= scene[56]) {
+                failed[1] = 1;
+            }
+            if (failed[0] != 0) {
+                return 0;
+            }
+            if (failed[1] != 0) {
+                return 1;
+            }
+        } else if (mode == 1) {
+            if (*(u16 *)(scene + 126) < *(u16 *)(scene + 114)) {
+                if (scene[55] > scene[56]) {
+                    return 0;
+                }
+                if (scene[55] < scene[56]) {
+                    return 1;
+                }
+                return 9;
+            }
+        } else if (mode == 2) {
+            if (scene[51] < scene[6] && scene[20] != 0xff) {
+                (*(u16 *)(scene + 106))++;
+            } else {
+                failed[0] = 1;
+            }
+            if (scene[52] < scene[6] && scene[21] != 0xff) {
+                (*(u16 *)(scene + 108))++;
+            } else {
+                failed[1] = 1;
+            }
+            if (scene[53] < scene[6] && scene[22] != 0xff) {
+                (*(u16 *)(scene + 110))++;
+            } else {
+                failed[2] = 1;
+            }
+            if (scene[54] < scene[6] && scene[23] != 0xff) {
+                (*(u16 *)(scene + 112))++;
+            } else {
+                failed[3] = 1;
+            }
+            if (failed[0] == 0) {
+                groupWins[scene[32]]++;
+            }
+            if (failed[1] == 0) {
+                groupWins[scene[33]]++;
+            }
+            if (failed[2] == 0) {
+                groupWins[scene[34]]++;
+            }
+            if (failed[3] == 0) {
+                groupWins[scene[35]]++;
+            }
+            if (groupWins[0] == 0 || groupWins[1] == 0) {
+                if (failed[0] == 0) {
+                    return scene[32];
+                }
+                if (failed[1] == 0) {
+                    return scene[33];
+                }
+                if (failed[2] == 0) {
+                    return scene[34];
+                }
+                if (failed[3] == 0) {
+                    return scene[35];
+                }
+                return 9;
+            }
+        }
+    }
+
+    return 0xff;
+}
 
 void FUN_0801a61c(u8 mode) {
     u8 *selection;
@@ -1376,6 +2119,145 @@ void FUN_0801a6a8(u8 value) {
     }
 }
 
+void FUN_0801a898(void) {
+    u8 status;
+
+    if ((u8)FUN_080205d0() != 0) {
+        FUN_080177b8(gUnknown_03001380);
+        FUN_08020944();
+    }
+
+    status = FUN_08015498();
+    if (gUnknown_0300138c != 0) {
+        u8 participant = gUnknown_03001380;
+        u8 *expected = &gUnknown_03003d9c;
+        u8 expectedValue = *expected;
+
+        status = FUN_08017b74(participant, status, expectedValue);
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == *expected) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
+        }
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801bd90 + 1);
+                status = 0;
+            }
+        }
+    }
+
+    {
+        u8 *phase = &gUnknown_03003d98;
+
+        if (*phase > 8) {
+            u8 *scene;
+
+            *phase = 0;
+            FUN_08017964(0);
+            FUN_08017964(1);
+            FUN_08017964(2);
+            FUN_08017964(3);
+            scene = &gUnknown_03001620;
+            if (scene[125] == 4) {
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801c28c + 1);
+                goto finish;
+            }
+            if (gUnknown_0300138c != 0) {
+                FUN_08018530();
+            }
+            FUN_08012b98(20);
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_0801ad38 + 1);
+
+            if (scene[23] != 10) {
+                u32 *current = &gUnknown_03001380;
+                u8 *commandBase = scene + 20;
+                u8 command = commandBase[*current];
+
+                if (command <= 19) {
+                    switch (command) {
+                    case 0:
+                        FUN_0801f618(0xfa);
+                        break;
+                    case 1:
+                        FUN_0801f618(0xfb);
+                        break;
+                    case 2:
+                        FUN_0801f618(0xfc);
+                        break;
+                    case 3:
+                        FUN_0801f618(0xfd);
+                        break;
+                    case 4:
+                        FUN_0801f618(0xff);
+                        break;
+                    case 5:
+                        FUN_0801f618(0xfe);
+                        break;
+                    case 7:
+                        FUN_0801f618(0x101);
+                        break;
+                    case 6:
+                        FUN_0801f618(0x100);
+                        break;
+                    case 8:
+                        FUN_0801f618(0xd0);
+                        break;
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                        break;
+                    }
+                }
+            }
+        } else if (*phase != 0) {
+            (*phase)++;
+        } else if (status != 0) {
+            *phase = 1;
+        }
+    }
+
+finish:
+    FUN_080006d0();
+    FUN_08018318(0, 0);
+    FUN_080176e4((s16)(gUnknown_03001378 << 3));
+    FUN_080182e4(256);
+    FUN_08018300(768);
+    {
+        u8 mode = FUN_0801584c();
+
+        FUN_080182ac();
+        FUN_08016684();
+        FUN_08017ed0();
+        FUN_08013214(mode);
+        FUN_08017f6c();
+        if (mode != 10) {
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+        }
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+}
+
 void FUN_0801aadc(void) {
     u8 random = FUN_0801f9e8(0x1593);
     u8 *state = (u8 *)0x03003d98;
@@ -1407,6 +2289,701 @@ void FUN_0801aadc(void) {
     FUN_080182e4(256);
     FUN_08018318(0, 0);
     FUN_08018300(768);
+}
+
+void FUN_0801ad38(void) {
+    u8 index;
+    u8 mode;
+
+    if (*(u16 *)(gUnknown_030030d0 + 4) <= 2) {
+        u8 *metadata;
+        u32 zero;
+        u32 one;
+
+        FUN_08017964(0);
+        FUN_08017964(1);
+        FUN_08017964(2);
+        FUN_08017964(3);
+
+        metadata = (u8 *)gUnknown_03001c40;
+        zero = 0;
+        metadata[36] = 6;
+        metadata[288] = 4;
+        metadata[540] = 6;
+        metadata[792] = 4;
+        metadata[37] = 6;
+        metadata[289] = 4;
+        metadata[541] = 6;
+        metadata[793] = 4;
+        one = 1;
+        metadata[16] = one;
+        metadata[268] = zero;
+        metadata[520] = one;
+        metadata[772] = zero;
+        metadata[18] = one;
+        metadata[270] = zero;
+        metadata[522] = one;
+        metadata[774] = zero;
+    }
+
+    if ((u8)FUN_08015858() != 0) {
+        FUN_08012b98(30);
+        gUnknown_03002030 = (void (*)(void))((u32)FUN_0801b394 + 1);
+    }
+
+    if (gUnknown_0300138c != 0) {
+        u32 current = gUnknown_03001380;
+        u8 *scene = &gUnknown_03001620;
+
+        if (current <= 1) {
+            u32 other = current + 2;
+
+            if (scene[other + 28] != 0) {
+                FUN_080074a8(other);
+            } else {
+                FUN_080074a8(current);
+            }
+        } else {
+            FUN_080074a8(current);
+        }
+    }
+
+    if (gUnknown_0300138c != 0) {
+        u8 *participants = &gUnknown_03001620;
+
+        participants += 20;
+
+        for (index = 0; index <= 3; index++) {
+            if (participants[index] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        {
+            u32 *currentAddress = &gUnknown_03001380;
+            u8 current = *(u8 *)currentAddress;
+
+            FUN_08006134(current);
+            FUN_08005310(current);
+            FUN_0800486c(current);
+            if (*currentAddress <= 1) {
+                u8 *scene = &gUnknown_03001620;
+                u32 other = *currentAddress + 2;
+
+                if (scene[other + 28] != 0) {
+                    FUN_08006134(other);
+                    FUN_08005310((u8)(*currentAddress + 2));
+                    FUN_0800486c((u8)(*currentAddress + 2));
+                }
+            }
+        }
+        goto participants_done;
+    }
+
+    {
+        u8 *scene = &gUnknown_03001620;
+
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
+        }
+    }
+
+participants_done:
+    FUN_080006d0();
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+        if (gUnknown_0300138c != 0) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == gUnknown_03003d9c) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801bd90 + 1);
+            }
+        }
+    }
+
+    FUN_0801a04c(gUnknown_03001380);
+    mode = FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(mode);
+    FUN_08017f6c();
+    if (mode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+}
+
+void FUN_0801afc4(void) {
+    FUN_08017964(0);
+    FUN_08017964(1);
+    FUN_08017964(2);
+    FUN_08017964(3);
+
+    if (gUnknown_0300138c != 0) {
+        u32 current = gUnknown_03001380;
+
+        if (current <= 1) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[current + 30] != 0) {
+                current += 2;
+            }
+        }
+        FUN_080074a8(current);
+    }
+
+    if (FUN_080158c0() == 1) {
+        u8 *scene;
+        u8 winner;
+
+        FUN_080207ec(32);
+        gUnknown_03002030 = FUN_0801bd90;
+        scene = &gUnknown_03001620;
+        winner = FUN_0801a228(scene[4]);
+        gUnknown_03003da0 = winner;
+
+        if (scene[8] == 0) {
+            if (scene[23] != 10) {
+                u8 command = gUnknown_03001c40[winner].field196;
+
+                switch (command) {
+                case 0:
+                    FUN_0801f618(0xfa);
+                    break;
+                case 1:
+                    FUN_0801f618(0xfb);
+                    break;
+                case 2:
+                    FUN_0801f618(0xfc);
+                    break;
+                case 3:
+                    FUN_0801f618(0xfd);
+                    break;
+                case 4:
+                    FUN_0801f618(0xff);
+                    break;
+                case 5:
+                    FUN_0801f618(0xfe);
+                    break;
+                case 6:
+                    FUN_0801f618(0x100);
+                    break;
+                case 7:
+                    FUN_0801f618(0x101);
+                    break;
+                case 8:
+                    FUN_0801f618(0xd0);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    break;
+                }
+            }
+        } else {
+            u32 current = gUnknown_03001380;
+
+            if (scene[current + 32] == winner) {
+                u8 command = gUnknown_03001c40[current].field196;
+
+                switch (command) {
+                case 0:
+                    FUN_0801f618(0x103);
+                    break;
+                case 1:
+                    FUN_0801f618(0x104);
+                    break;
+                case 2:
+                    FUN_0801f618(0x105);
+                    break;
+                case 3:
+                    FUN_0801f618(0x106);
+                    break;
+                case 4:
+                    FUN_0801f618(0x108);
+                    break;
+                case 5:
+                    FUN_0801f618(0x107);
+                    break;
+                case 6:
+                    FUN_0801f618(0x109);
+                    break;
+                case 7:
+                    FUN_0801f618(0x10a);
+                    break;
+                case 8:
+                    FUN_0801f618(0x10b);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    break;
+                }
+            }
+        }
+        FUN_0801a61c(scene[4]);
+    }
+
+    FUN_08006e64();
+    FUN_0800c728();
+    {
+        u8 *scene = &gUnknown_03001620;
+
+        if (gUnknown_0300138c == 0) {
+            u8 index;
+
+            for (index = 0; index <= 3; index++) {
+                if (scene[index + 20] != 0xff) {
+                    FUN_08007ec8(index);
+                    FUN_0800597c(index);
+                    FUN_08006134(index);
+                    FUN_08005310(index);
+                    FUN_0800486c(index);
+                }
+            }
+        } else {
+            u8 index;
+            u32 current;
+
+            for (index = 0; index <= 3; index++) {
+                if (scene[index + 20] != 0xff) {
+                    FUN_08007ec8(index);
+                    FUN_0800597c(index);
+                }
+            }
+            current = gUnknown_03001380;
+            FUN_08006134(current);
+            FUN_08005310(current);
+            FUN_0800486c(current);
+            if (current <= 1 && scene[current + 30] != 0) {
+                FUN_08006134(current + 2);
+                FUN_08005310(current + 2);
+                FUN_0800486c(current + 2);
+            }
+        }
+    }
+
+    FUN_080006d0();
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+        if (gUnknown_0300138c != 0) {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == gUnknown_03003d9c) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = FUN_0801bd90;
+            }
+        }
+    }
+
+    {
+        u8 *scene = &gUnknown_03001620;
+        u8 mode;
+
+        if (scene[136] == 0xff) {
+            FUN_0801a04c(gUnknown_03001380);
+        } else {
+            FUN_0801a04c(scene[136]);
+        }
+        mode = FUN_0801584c();
+        FUN_080182ac();
+        FUN_08016684();
+        FUN_08017ed0();
+        FUN_08013214(mode);
+        FUN_08017f6c();
+        if (mode != 10) {
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+        }
+        FUN_08011c7c();
+        FUN_080175d4();
+        FUN_08017d58();
+        FUN_08017c5c();
+    }
+    (*(u16 *)(&gUnknown_03001620 + 114))++;
+}
+
+void FUN_0801b394(void) {
+    u8 *scene = &gUnknown_03001620;
+    u8 index;
+    u8 mode;
+
+    if (gUnknown_0300138c == 0) {
+        if ((u8)(scene[28] - 1) <= 0xfd) {
+            FUN_0801d5d4(0);
+        }
+        if ((u8)(scene[29] - 1) <= 0xfd) {
+            FUN_0801d5d4(1);
+        }
+        if ((u8)(scene[30] - 1) <= 0xfd) {
+            FUN_0801d5d4(2);
+        }
+        if ((u8)(scene[31] - 1) <= 0xfd) {
+            FUN_0801d5d4(3);
+        }
+    } else {
+        u32 current = gUnknown_03001380;
+
+        if (current <= 1 && scene[current + 30] != 0) {
+            current += 2;
+        }
+        FUN_0801d5d4(current);
+        FUN_080074a8(current);
+    }
+
+    FUN_080177b8(gUnknown_03001380);
+    {
+        u32 current = gUnknown_03001380;
+        struct UnknownEntityData *entity = &gUnknown_03001c40[current];
+        u32 scaled = current << 6;
+        u8 *state = gUnknown_03001b30 + scaled;
+        u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+        if (entity->field20 == 55) {
+            if ((flags & 0x20) != 0) {
+                gUnknown_03002040.base -= 128;
+            } else if ((flags & 0x10) != 0) {
+                gUnknown_03002040.base += 128;
+            } else {
+                gUnknown_03002040.base = 0;
+            }
+        } else if (entity->field20 == 53) {
+            if ((flags & 0x200) != 0) {
+                switch (entity->field159) {
+                case 0:
+                    entity->field159 = 1;
+                    break;
+                case 1:
+                    entity->field159 = 0;
+                    break;
+                case 2:
+                    entity->field159 = 3;
+                    break;
+                case 3:
+                    entity->field159 = 2;
+                    break;
+                }
+                gUnknown_03001c40[0].field18 = gUnknown_03001c40[0].field16 ^ 1;
+                gUnknown_03001c40[1].field18 = gUnknown_03001c40[1].field16 ^ 1;
+                gUnknown_03001c40[2].field18 = gUnknown_03001c40[2].field16 ^ 1;
+                gUnknown_03001c40[3].field18 = gUnknown_03001c40[3].field16 ^ 1;
+                entity->field36 = 0;
+            }
+        } else if (scene[136] == 0xff) {
+            gUnknown_03002040.base = 0;
+        }
+    }
+
+    FUN_08006e64();
+    FUN_0800c728();
+    if (gUnknown_0300138c == 0) {
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        FUN_080066d8();
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
+        }
+    } else {
+        u32 current = gUnknown_03001380;
+
+        for (index = 0; index <= 3; index++) {
+            if (scene[index + 20] != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
+        }
+        FUN_080066d8();
+        FUN_08006134(current);
+        FUN_08005310(current);
+        FUN_0800486c(current);
+        if (current <= 1 && scene[current + 30] != 0) {
+            FUN_08006134(current + 2);
+            FUN_08005310(current + 2);
+            FUN_0800486c(current + 2);
+        }
+    }
+    FUN_080006d0();
+
+    if (gUnknown_0300138c != 0) {
+        FUN_080074a8(gUnknown_03001380);
+    }
+    {
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u8 *state = gUnknown_03001b30 + scaled;
+        u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+        if (gUnknown_0300138c == 0 && (flags & 8) != 0 && FUN_0801584c() == 30 &&
+            gUnknown_03001c40[current].field191 == 0 && scene[116] == 0) {
+            gUnknown_03002030 = FUN_0801c8f0;
+            FUN_080182ac();
+            FUN_08016684();
+            FUN_08017ed0();
+            FUN_08013214(0x45);
+            FUN_08017f6c();
+            FUN_08006ff4(4);
+            FUN_0800f9c0();
+            FUN_08011c7c();
+            FUN_080175d4();
+            FUN_08017d58();
+            FUN_08017c5c();
+            return;
+        }
+    }
+
+    if (scene[37] != 0) {
+        u8 condition = FUN_0801c968(scene[37], gUnknown_03001380);
+        u8 previous = scene[116];
+
+        scene[116] = previous | condition;
+        if ((previous != 0 || condition != 0) &&
+            (gUnknown_03001c40[gUnknown_03001380].field180 & 0x200000) != 0) {
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 47] > 2) {
+            u8 command = gUnknown_03001c40[index].field196;
+
+            switch (command) {
+            case 0:
+                FUN_0801f618(0x145);
+                break;
+            case 1:
+                FUN_0801f618(0x146);
+                break;
+            case 2:
+                FUN_0801f618(0x147);
+                break;
+            case 3:
+                FUN_0801f618(0x148);
+                break;
+            case 4:
+                FUN_0801f618(0x149);
+                break;
+            case 5:
+                FUN_0801f618(0x14a);
+                break;
+            case 6:
+                FUN_0801f618(0x14b);
+                break;
+            case 7:
+                FUN_0801f618(0x14c);
+                break;
+            }
+            scene[index + 47] = 0;
+        }
+    }
+
+    if (gUnknown_0300138c != 0) {
+        if (scene[132] == gUnknown_03003d9c) {
+            scene[133] = 0;
+        } else {
+            scene[133]++;
+        }
+        if (scene[133] > 60) {
+            scene[125] = 5;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+    }
+
+    if (scene[116] == 0) {
+        gUnknown_03003da0 = FUN_0801a228(scene[4]);
+    } else {
+        gUnknown_03003da0 = 0xff;
+    }
+    if (gUnknown_03003da0 != 0xff) {
+        FUN_08012b98(40);
+        gUnknown_03002030 = FUN_0801afc4;
+        scene[135] = 1;
+        FUN_08020944();
+        FUN_0801f618(47);
+        FUN_08017964(gUnknown_03001380);
+    } else if (scene[4] != 2 || scene[gUnknown_03001380 + 51] < scene[6]) {
+        if (*(u16 *)(scene + 128) < *(u16 *)(scene + 130) && scene[10] != 0) {
+            struct UnknownEntityData *entity = &gUnknown_03001c40[gUnknown_03001380];
+
+            *(u16 *)(scene + 130) = 0;
+            if (entity->field20 == 0xfe) {
+                entity->field141 = entity->filler142[0];
+            }
+            FUN_080007fc(gUnknown_03001380);
+            FUN_08012b98(30);
+            FUN_08017964(gUnknown_03001380);
+        } else {
+            struct UnknownEntityData *entity = &gUnknown_03001c40[gUnknown_03001380];
+
+            if (entity->field20 == 0xfe) {
+                (*(u16 *)(scene + 130))++;
+                if ((entity->field180 & 0x200000) != 0) {
+                    FUN_08012b98(11);
+                }
+                if (FUN_08015498() != 0) {
+                    FUN_08012b98(12);
+                    FUN_08001b0c(gUnknown_03001380, 0xff);
+                }
+            } else if (entity->field20 == 0xff) {
+                u32 scaled = gUnknown_03001380 << 6;
+                u8 *state = gUnknown_03001b30 + scaled;
+                u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+                (*(u16 *)(scene + 130))++;
+                if ((flags & 1) != 0) {
+                    FUN_080007fc(gUnknown_03001380);
+                    FUN_08012b98(30);
+                    FUN_08017964(gUnknown_03001380);
+                    *(u16 *)(scene + 130) = 0;
+                }
+            }
+        }
+    } else {
+        if ((u8)(scene[125] - 2) <= 1) {
+            scene[117] = 0xff;
+            FUN_080207ec(32);
+            gUnknown_03002030 = FUN_0801bd90;
+        }
+        if ((s32)((u32) * (u16 *)(scene + 114) -
+                  (u32) * (u16 *)(scene + 106 + gUnknown_03001380 * 2)) >= 91) {
+            if (scene[136] == 0xff) {
+                scene[136] = 0;
+            } else {
+                u32 current = gUnknown_03001380;
+                u32 scaled = current << 6;
+                u8 *state = gUnknown_03001b30 + scaled;
+                u16 flags = *(u16 *)(gUnknown_03001b30 + scaled + state[60] * 2 + 20);
+
+                if ((flags & 1) == 0) {
+                    if ((flags & 0x20) != 0) {
+                        gUnknown_03002040.base -= 32;
+                    } else if ((flags & 0x10) != 0) {
+                        gUnknown_03002040.base += 32;
+                    }
+                } else {
+                    scene[136]++;
+                    gUnknown_03002040.base = 0;
+                }
+            }
+
+            for (index = 0; index <= 3; index++) {
+                u32 candidate = scene[136];
+
+                if (candidate < 4 && scene[candidate + 51] < scene[6] &&
+                    scene[candidate + 20] != 0xff) {
+                    break;
+                }
+                scene[136]++;
+                if (scene[136] > 3) {
+                    scene[136] = 0;
+                }
+            }
+        }
+    }
+
+    if (scene[136] == 0xff) {
+        FUN_0801a04c(gUnknown_03001380);
+    } else {
+        FUN_0801a04c(scene[136]);
+    }
+    mode = FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(mode);
+    FUN_08017f6c();
+    if (mode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+
+    for (index = 0; index <= 3; index++) {
+        struct UnknownEntityData *entity = &gUnknown_03001c40[index];
+
+        if (scene[index + 28] != 0 && entity->field20 == 0xfe &&
+            (scene[4] != 2 || scene[index + 51] < scene[6]) && entity->field26 > 64) {
+            s16 *position = (s16 *)entity;
+            u32 random;
+
+            FUN_080007fc(index);
+            random = FUN_08020144();
+            position[0] += (random & 0xfff) - 0x800;
+            random = FUN_08020144();
+            position[1] += (random & 0xfff) - 0x800;
+            if (position[0] >= gUnknown_03002b74) {
+                position[0] = gUnknown_03002b74 - 16;
+            } else if (position[0] <= gUnknown_03002bd0) {
+                position[0] = gUnknown_03002bd0 + 16;
+            }
+            if (position[1] >= gUnknown_03002b80) {
+                position[1] = gUnknown_03002b80 - 16;
+            } else if (position[1] <= gUnknown_03002b70) {
+                position[1] = gUnknown_03002b70 + 16;
+            }
+            FUN_0801a6a8(index);
+        }
+    }
+    (*(u16 *)(scene + 114))++;
+    if ((*(u16 *)(scene + 114) & 0xf) == 0) {
+        FUN_08007e24();
+    }
 }
 
 void FUN_0801bcac(void) {
@@ -1469,6 +3046,178 @@ void FUN_0801bcac(void) {
     FUN_080175d4();
     FUN_08017d58();
     FUN_08017c5c();
+}
+
+void FUN_0801bd90(void) {
+    FUN_080177b8(gUnknown_03001380);
+    gUnknown_03003d98 = 0;
+    if (gUnknown_03003d94 != 0xff) {
+        FUN_0801f718(gUnknown_03003d94, 120);
+        gUnknown_03003d94 = 0xff;
+    }
+
+    if ((u8)FUN_080205d0() != 0) {
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            switch (scene[125]) {
+            case 0:
+                gUnknown_03002030 = FUN_0802b980;
+                break;
+            case 1:
+                gUnknown_03002030 = FUN_0802b980;
+                break;
+            case 2:
+                gUnknown_03002030 = FUN_080402a0;
+                break;
+            case 3:
+                gUnknown_03002030 = FUN_080402b0;
+                break;
+            case 4:
+                gUnknown_03002030 = FUN_0803ae04;
+                break;
+            case 5:
+                FUN_080184c8();
+                gUnknown_03002030 = FUN_0803d1a0;
+                break;
+            }
+        }
+
+        {
+            u8 *scene = &gUnknown_03001620;
+            u8 *savedScene = scene;
+
+            if (scene[125] == 0 && scene[117] == 0) {
+                u32 *statistics = (u32 *)&gUnknown_03002110;
+
+                statistics[2] += (u16)FUN_0804b4e4(*(u16 *)(savedScene + 114), 30);
+                statistics[3]++;
+                if (savedScene[4] == 0) {
+                    statistics[4]++;
+                } else if (savedScene[4] == 1) {
+                    statistics[5]++;
+                } else if (savedScene[4] == 2) {
+                    statistics[6]++;
+                }
+
+                {
+                    u8 *field = savedScene + 39;
+                    u32 *selectedAddress = &gUnknown_03001380;
+                    u32 selected = *selectedAddress;
+
+                    statistics[7] += *(u8 *)(selected + (u32)field);
+                    field = savedScene + 43;
+                    statistics[8] += *(u8 *)(selected + (u32)field);
+                    field = savedScene + 51;
+                    statistics[9] += *(u8 *)(selected + (u32)field);
+                    if (savedScene[8] == 0) {
+                        if (gUnknown_03003da0 == selected || gUnknown_03003d90 == selected) {
+                            statistics[10]++;
+                        } else {
+                            statistics[11]++;
+                        }
+                    } else {
+                        field = savedScene + 32;
+                        if (gUnknown_03003da0 == *(u8 *)(selected + (u32)field)) {
+                            statistics[10]++;
+                        } else {
+                            statistics[11]++;
+                        }
+                    }
+
+                    selected = *selectedAddress;
+                    {
+                        u32 doubled = selected * 2;
+                        u8 *field = savedScene + 90;
+
+                        statistics[12] += *(u16 *)(doubled + (u32)field);
+                        field = savedScene + 98;
+                        statistics[13] += *(u16 *)(doubled + (u32)field);
+                    }
+                    {
+                        u8 *stateAddress = savedScene + 20;
+                        u8 state = *(u8 *)(selected + (u32)stateAddress);
+                        u32 *counts = statistics + 15;
+
+                        if (state <= 8) {
+                            counts[state]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        {
+            u8 *scene = &gUnknown_03001620;
+            u8 *firstSource = scene + 129;
+            u8 *secondSource = scene + 133;
+            u8 *secondDestination = scene + 4;
+            u8 index = 0;
+
+            do {
+                scene[index] = firstSource[index];
+                secondDestination[index] = secondSource[index];
+                index++;
+            } while (index <= 3);
+        }
+    }
+
+    FUN_080006d0();
+    if ((u8)FUN_080205d0() != 0) {
+        u32 zero = 0;
+        u32 otherZero;
+
+        FUN_0804a594(&zero, (void *)0x05000000, 0x01000100);
+        otherZero = 0;
+        FUN_0804a594(&otherZero, (void *)0x05000200, 0x01000100);
+        FUN_08020944();
+    } else {
+        u8 mode;
+
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[136] == 0xff) {
+                FUN_0801a04c(gUnknown_03001380);
+            } else {
+                FUN_0801a04c(scene[136]);
+            }
+        }
+
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            scene += 125;
+            if (*scene == 4) {
+                FUN_080182ac();
+                FUN_08016684();
+                FUN_08017ed0();
+                FUN_08013214(0);
+                FUN_08017f6c();
+                FUN_08006ff4(4);
+                FUN_0800f9c0();
+                FUN_08011c7c();
+                FUN_080175d4();
+                FUN_08017d58();
+                FUN_08017c5c();
+            } else {
+                mode = FUN_0801584c();
+                FUN_080182ac();
+                FUN_08016684();
+                FUN_08017ed0();
+                FUN_08013214(mode);
+                FUN_08017f6c();
+                if (mode != 10) {
+                    FUN_08006ff4(4);
+                    FUN_0800f9c0();
+                }
+                FUN_08011c7c();
+                FUN_080175d4();
+                FUN_08017d58();
+                FUN_08017c5c();
+            }
+        }
+    }
 }
 
 void FUN_0801c090(void) {
@@ -1603,85 +3352,161 @@ void FUN_0801c090(void) {
 }
 
 void FUN_0801c28c(void) {
-    u32 current;
-    struct UnknownEntityData *metadata;
-    u8 *state;
-    u16 flags;
     u8 index;
 
     FUN_0801c090();
-    current = gUnknown_03001380;
-    FUN_080177b8(current);
-    metadata = &gUnknown_03001c40[current];
+    FUN_080177b8(gUnknown_03001380);
+    {
+        struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u32 metadataOffset = (scaled - current) * 4;
+        struct UnknownEntityData *metadata =
+            (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+        u16 flags;
 
-    if (metadata->field20 == 55) {
-        state = gUnknown_03001b30 + current * 64;
-        flags = *(u16 *)(state + state[60] * 2);
-        if ((flags & 0x20) != 0) {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) -= 128;
-        } else if ((flags & 0x10) != 0) {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) += 128;
-        } else {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
-        }
-    } else if (metadata->field20 == 53) {
-        state = gUnknown_03001b30 + current * 64;
-        flags = *(u16 *)(state + 20 + state[60] * 2);
-        if ((flags & 0x200) != 0) {
-            switch (metadata->field159) {
-            case 0:
-                metadata->field159 = 1;
-                break;
-            case 1:
-                metadata->field159 = 0;
-                break;
-            case 2:
-                metadata->field159 = 3;
-                break;
-            case 3:
-                metadata->field159 = 2;
-                break;
+        if (metadata->field20 == 55) {
+            u8 *stateBase = gUnknown_03001b30;
+            u8 *state = (u8 *)(scaled + (u32)stateBase);
+            u32 stateOffset = state[60] * 2;
+
+            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
+            if ((flags & 0x20) != 0) {
+                gUnknown_03002040.base -= 128;
+            } else {
+                u32 mask = 0x10;
+
+                mask &= flags;
+                if ((u16)mask != 0) {
+                    gUnknown_03002040.base += 128;
+                } else {
+                    gUnknown_03002040.base = 0;
+                }
             }
+        } else if (metadata->field20 == 53) {
+            u8 *stateBase = gUnknown_03001b30;
+            u8 *state = (u8 *)(scaled + (u32)stateBase);
+            u32 stateOffset = state[60] * 2;
+            u32 mask = 0x80;
 
-            ((u8 *)gUnknown_03001c40)[18] = ((u8 *)gUnknown_03001c40)[16] ^ 1;
-            ((u8 *)gUnknown_03001c40)[270] = ((u8 *)gUnknown_03001c40)[268] ^ 1;
-            ((u8 *)gUnknown_03001c40)[522] = ((u8 *)gUnknown_03001c40)[520] ^ 1;
-            ((u8 *)gUnknown_03001c40)[774] = ((u8 *)gUnknown_03001c40)[772] ^ 1;
-            metadata->field36 = 0;
+            stateOffset += scaled;
+            stateBase += 20;
+            flags = *(u16 *)(stateOffset + (u32)stateBase);
+            mask <<= 2;
+            mask &= flags;
+            if (mask != 0) {
+                switch (metadata->field159) {
+                case 0:
+                    metadata->field159 = 1;
+                    break;
+                case 1:
+                    metadata->field159 = 0;
+                    break;
+                case 2:
+                    metadata->field159 = 3;
+                    break;
+                case 3:
+                    metadata->field159 = 2;
+                    break;
+                }
+
+                {
+                    u8 *base = (u8 *)gUnknown_03001c40;
+                    u32 one;
+                    u32 zero;
+                    u32 sourceOffset;
+                    u32 destinationOffset;
+                    u32 toggled;
+
+                    toggled = base[16];
+                    one = 1;
+                    toggled ^= one;
+                    zero = 0;
+                    base[18] = toggled;
+
+                    sourceOffset = 0x86;
+                    sourceOffset <<= 1;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset = 0x87;
+                    destinationOffset <<= 1;
+                    base[destinationOffset] = toggled;
+
+                    sourceOffset = 0x82;
+                    sourceOffset <<= 2;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset += 0xfc;
+                    base[destinationOffset] = toggled;
+
+                    sourceOffset = 0xc1;
+                    sourceOffset <<= 2;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset = 0x306;
+                    base[destinationOffset] = toggled;
+                    gUnknown_03001c40[gUnknown_03001380].field36 = zero;
+                }
+            }
+        } else {
+            gUnknown_03002040.base = 0;
         }
-    } else {
-        *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
     }
 
     FUN_08006e64();
     FUN_0800c728();
-    for (index = 0; index <= 3; index++) {
-        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
-            FUN_08007ec8(index);
-            FUN_0800597c(index);
-            FUN_080036dc(index);
+    index = 0;
+    {
+        u8 *metadataBase = (u8 *)gUnknown_03001c40;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)(index + (u32)metadataBase) != 0xff) {
+                FUN_08007ec8(index);
+                FUN_0800597c(index);
+                FUN_080036dc(index);
+            }
         }
     }
     FUN_080066d8();
-    for (index = 0; index <= 3; index++) {
-        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
-            FUN_08006134(index);
-            FUN_08005310(index);
-            FUN_0800486c(index);
+    index = 0;
+    {
+        u8 *metadataBase = (u8 *)gUnknown_03001c40;
+
+        for (; index <= 3; index++) {
+            if (*(u8 *)(index + (u32)metadataBase) != 0xff) {
+                FUN_08006134(index);
+                FUN_08005310(index);
+                FUN_0800486c(index);
+            }
         }
     }
     FUN_080006d0();
 
-    state = gUnknown_03001b30 + current * 64;
-    flags = *(u16 *)(state + 20 + state[60] * 2);
-    if ((flags & 8) != 0 && metadata->field191 != 0) {
-        FUN_080207ec(32);
-        gUnknown_03002030 = FUN_0801bd90;
+    {
+        u8 *stateBase = gUnknown_03001b30;
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u8 *state = (u8 *)(scaled + (u32)stateBase);
+        u32 stateOffset = state[60] * 2;
+        u16 flags;
+        u32 mask;
+
+        stateOffset += scaled;
+        stateBase += 20;
+        flags = *(u16 *)(stateOffset + (u32)stateBase);
+        mask = 8;
+        mask &= flags;
+
+        if ((u16)mask != 0) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+
+            if (metadataBase[current].field191 != 0) {
+                FUN_080207ec(32);
+                gUnknown_03002030 = FUN_0801bd90;
+            }
+        }
     }
-    if (FUN_080205d0() != 0) {
+    if ((u8)FUN_080205d0() != 0) {
         FUN_08020944();
     }
-    FUN_0801a04c(current);
+    FUN_0801a04c(gUnknown_03001380);
     FUN_080182ac();
     FUN_08016684();
     FUN_08017ed0();
@@ -1693,6 +3518,160 @@ void FUN_0801c28c(void) {
     FUN_080175d4();
     FUN_08017d58();
     FUN_08017c5c();
+}
+
+void FUN_0801c4bc(void) {
+    u8 index;
+    u8 metadataIndex;
+    u8 entityIndex;
+    u8 *scene;
+    u8 mode;
+    u32 renderMode;
+
+    FUN_080178d0();
+    scene = &gUnknown_03001620;
+    if ((u8)(scene[28] - 1) <= 0xfd)
+        FUN_0801d5d4(0);
+    if ((u8)(scene[29] - 1) <= 0xfd)
+        FUN_0801d5d4(1);
+    if ((u8)(scene[30] - 1) <= 0xfd)
+        FUN_0801d5d4(2);
+    if ((u8)(scene[31] - 1) <= 0xfd)
+        FUN_0801d5d4(3);
+
+    FUN_08006e64();
+    FUN_0800c728();
+    for (index = 0, scene += 20; index <= 3; index++) {
+        if (scene[index] != 0xff) {
+            FUN_08007ec8(index);
+            FUN_0800597c(index);
+            FUN_080036dc(index);
+        }
+    }
+    FUN_080066d8();
+    for (metadataIndex = 0, scene = (u8 *)gUnknown_03001c40; metadataIndex <= 3; metadataIndex++) {
+        if (scene[metadataIndex] != 0xff) {
+            FUN_08006134(metadataIndex);
+            FUN_08005310(metadataIndex);
+            FUN_0800486c(metadataIndex);
+        }
+    }
+    FUN_080006d0();
+
+    mode = (u8)FUN_080205d0();
+    if (mode == 0) {
+        if ((u8)FUN_08015384() != 0) {
+            FUN_08020944();
+        }
+    } else if ((u8)FUN_080205d0() == 1) {
+        if ((u8)FUN_08015384() != 0) {
+            FUN_0801f718(0, 120);
+            FUN_080207ec(24);
+        }
+    } else {
+        FUN_08015f6c();
+        FUN_08000a2c();
+        FUN_08017964(0);
+        FUN_08017964(1);
+        FUN_08017964(2);
+        FUN_08017964(3);
+        gUnknown_03002030 = (void (*)(void))((u32)FUN_08034748 + 1);
+        return;
+    }
+
+    gUnknown_03002040.base += 16;
+    if ((s16)gUnknown_03002040.base > 8192) {
+        gUnknown_03002040.base = 0;
+    }
+    FUN_0800673c(0);
+    FUN_08018318(gUnknown_03001374, gUnknown_03001b24);
+    FUN_080176e4(gUnknown_03002040.base);
+    FUN_08018300((s16)(gUnknown_03002100 + 512));
+    FUN_080182e4(512);
+    renderMode = (u8)FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(renderMode);
+    FUN_08017f6c();
+    if (renderMode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+
+    for (entityIndex = 0; entityIndex <= 3; entityIndex++) {
+        u32 scaled = entityIndex << 6;
+        u32 metadataOffset = (scaled - entityIndex) * 4;
+        struct UnknownEntityData *metadata =
+            (struct UnknownEntityData *)(metadataOffset + (u32)gUnknown_03001c40);
+
+        if (metadata->field20 == 0xfe && metadata->field26 > 64) {
+            u32 selection;
+
+            FUN_080007fc(entityIndex);
+            selection = ((gUnknown_03001378 + 4) * (gUnknown_03001378 + 7)) % 6;
+            switch (selection) {
+            case 0: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 27;
+                break;
+            }
+            case 1: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 30;
+                break;
+            }
+            case 2: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 39;
+                break;
+            }
+            case 3: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 45;
+                break;
+            }
+            case 4: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 54;
+                break;
+            }
+            case 5: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - entityIndex) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 57;
+                break;
+            }
+            }
+        }
+    }
 }
 
 void FUN_0801c8f0(void) {
@@ -1774,16 +3753,9 @@ void FUN_08019ed8(void) {
 }
 
 void FUN_0801a04c(u32 value) {
-    struct CameraTarget {
-        u8 filler0[8];
-        s16 x;
-        s16 y;
-        u16 base;
-    };
-
     FUN_0800673c(value);
     if ((s32)value <= 3) {
-        struct CameraTarget *camera = (struct CameraTarget *)&gUnknown_03002040;
+        struct CameraTarget *camera = &gUnknown_03002040;
         s16 *baseX = &gUnknown_03001374;
         const u16 *offsetsX = gUnknown_08071222;
         struct UnknownEntityData *metadataBase = gUnknown_03001c40;
@@ -2317,16 +4289,16 @@ void FUN_0801e174(u8 value) {
 
             switch (result) {
             case 0:
-                FUN_0801de5c_wide(index);
+                ((void (*)(u32))FUN_0801de5c)(index);
                 break;
             case 0x10:
-                FUN_0801debc_wide(index);
+                ((void (*)(u32))FUN_0801debc)(index);
                 break;
             case 0x20:
-                FUN_0801df1c_wide(index);
+                ((void (*)(u32))FUN_0801df1c)(index);
                 break;
             case 0x30:
-                FUN_0801df7c_wide(index);
+                ((void (*)(u32))FUN_0801df7c)(index);
                 break;
             }
             return;
@@ -2600,6 +4572,128 @@ void FUN_0801e62c(u8 value) {
             entity->callback = (UnknownCallback)((u32)FUN_0801e6a0 + 1);
             metadataOffset += (u32)metadata;
             entity->field20 = *((u8 *)metadataOffset + 50);
+        }
+    }
+}
+
+void FUN_0801e6a0(u8 value) {
+    u32 index = value;
+    struct UnknownEntity *entities = gUnknown_03003db0;
+    u32 initialDoubled = index * 2;
+    struct UnknownEntity *entity =
+        (struct UnknownEntity *)(((initialDoubled + index) * 8) + (u32)entities);
+    u32 linkedOffset = entity->field15 * 2;
+    u32 metadataOffset = (index * 64 - index) * 4;
+    u32 coordinateOffset = linkedOffset + metadataOffset;
+    s16 first = *(s16 *)(coordinateOffset + (u32)gUnknown_03001c40[0].field54);
+    s16 second = *(s16 *)(coordinateOffset + (u32)gUnknown_03001c40[0].field62);
+    const u8 *lookup = gUnknown_08ed8ae4;
+    u16 angle = ArcTan2(first, second);
+
+    if ((entity->field8 & lookup[angle >> 12]) == 0) {
+        entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+        entity->field15 = FUN_0801d068(index);
+        return;
+    }
+
+    entity->field12++;
+    if (entity->field12 > 249) {
+        entity->callback = (UnknownCallback)((u32)FUN_0801d618 + 1);
+        entity->field15 = FUN_0801d188(index);
+        return;
+    }
+
+    {
+        u32 savedDoubled = initialDoubled;
+        u32 linked = entity->field15;
+        s16 linkedFirst = *(s16 *)((u8 *)gUnknown_03001c40 + metadataOffset + linked * 2 + 54);
+        s16 linkedSecond = *(s16 *)((u8 *)gUnknown_03001c40 + metadataOffset + linked * 2 + 62);
+        u32 counter = gUnknown_03001c40[index].field191;
+
+        if ((s32)counter < (s32)(gUnknown_03001b28 - counter) / 2 &&
+            ((u16)(linkedFirst + 0x1000) > 0x1fff || linkedSecond > 0x1000 ||
+             linkedSecond < -0x1000)) {
+            u32 doubled = index * 2;
+            struct UnknownEntity *thresholdEntity =
+                (struct UnknownEntity *)(((doubled + index) * 8) + (u32)entities);
+
+            thresholdEntity->field8 = (thresholdEntity->field8 & 0xff0f) | 0x200;
+            thresholdEntity->field12 = 0;
+            thresholdEntity->callback = (UnknownCallback)((u32)FUN_0801e4f4 + 1);
+            savedDoubled = doubled;
+        }
+
+        {
+            struct UnknownEntity *closeEntity =
+                (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+
+            if (closeEntity->field18 != 0 && (u16)(gUnknown_03001c40[linked].field20 - 10) <= 5 &&
+                (u16)(linkedFirst + 0x4ff) <= 0x9fe && linkedSecond <= 0x1ff &&
+                linkedSecond > -0x200) {
+                closeEntity->callback = (UnknownCallback)((u32)FUN_0801ebf4 + 1);
+                {
+                    const struct UnknownEntityFrame *data =
+                        (const struct UnknownEntityFrame *)gUnknown_08ed89e4;
+                    u32 dataBase = (u32)gUnknown_03003db0;
+
+                    dataBase += 4;
+                    *(const struct UnknownEntityFrame **)(((savedDoubled + index) * 8) + dataBase) =
+                        data;
+                }
+                closeEntity->field14 = 0;
+                closeEntity->field16 = gUnknown_03001c40[index].field16;
+                return;
+            }
+        }
+        {
+            if (gUnknown_03001c40[index].field20 == 66) {
+                if (FUN_08020160((s8)gUnknown_08071245[gUnknown_03003e10]) != 0)
+                    FUN_0801e3cc(index);
+                else
+                    FUN_0801d870(index);
+                return;
+            }
+
+            {
+                struct UnknownEntity *combatEntity =
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+                u8 linkedMask = gUnknown_03001c40[index].field50;
+                u8 entityMask = combatEntity->field20;
+
+                if ((linkedMask & entityMask) == 0)
+                    goto combat_fallback;
+                if ((combatEntity->field8 & 0x20) != 0 && (entityMask & 0x22) == 0 &&
+                    (linkedMask & 0x22) != 0)
+                    combatEntity->field8 ^= 0x30;
+            }
+            {
+                struct UnknownEntity *combatEntity =
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+
+                if ((combatEntity->field8 & 0x10) != 0 && (combatEntity->field20 & 0x11) == 0 &&
+                    (*((u8 *)gUnknown_03001c40 + (metadataOffset - index) * 4 + 50) & 0x11) != 0)
+                    combatEntity->field8 ^= 0x30;
+            }
+            {
+                struct UnknownEntity *combatEntity =
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+
+                if ((combatEntity->field8 & 0x40) != 0 && (combatEntity->field20 & 0x88) == 0 &&
+                    (*((u8 *)gUnknown_03001c40 + (metadataOffset - index) * 4 + 50) & 0x88) != 0)
+                    combatEntity->field8 ^= 0xc0;
+            }
+            {
+                struct UnknownEntity *combatEntity =
+                    (struct UnknownEntity *)(((savedDoubled + index) * 8) + (u32)entities);
+
+                if ((combatEntity->field8 & 0x80) != 0 && (combatEntity->field20 & 0x44) == 0 &&
+                    (*((u8 *)gUnknown_03001c40 + (metadataOffset - index) * 4 + 50) & 0x44) != 0)
+                    combatEntity->field8 ^= 0xc0;
+            }
+            return;
+
+        combat_fallback:
+            FUN_0801d870(index);
         }
     }
 }
@@ -3052,6 +5146,217 @@ void FUN_0801d8f4(u8 value) {
     }
 }
 
+void FUN_0801d618(u8 value) {
+    register u8 index = value;
+    u32 savedDoubled;
+    u32 action;
+
+    if (gUnknown_03001c40[index].field196 != 19) {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset;
+
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b3c);
+        savedDoubled = doubled;
+    } else {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset;
+
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b64);
+        savedDoubled = doubled;
+    }
+
+    switch (action) {
+    case 15:
+        ((void (*)(u32))FUN_0801e3cc)(index);
+        return;
+    case 2:
+        ((void (*)(u32))FUN_0801de5c)(index);
+        return;
+    case 3:
+        ((void (*)(u32))FUN_0801eb50)(index);
+        return;
+    case 4:
+        ((void (*)(u32))FUN_0801ebb0)(index);
+        return;
+    case 5: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid5;
+                goto entity_fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test5;
+            }
+        valid5:
+            valid = 1;
+        test5:
+            if (valid == 0) {
+                goto entity_fallback;
+            }
+        }
+        ((void (*)(u32))FUN_0801ec10)(index);
+        return;
+    }
+    case 6: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid6;
+                goto entity_fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test6;
+            }
+        valid6:
+            valid = 1;
+        test6:
+            if (valid == 0) {
+                goto entity_fallback;
+            }
+        }
+        ((void (*)(u32))FUN_0801ec64)(index);
+        return;
+    }
+    case 7: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid7;
+                goto entity_fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test7;
+            }
+        valid7:
+            valid = 1;
+        test7:
+            if (valid == 0) {
+            entity_fallback:
+                FUN_0801ed0c(index);
+                return;
+            }
+        }
+        ((void (*)(u32))FUN_0801ecb8)(index);
+        return;
+    }
+    case 8:
+        ((void (*)(u32))FUN_0801e0c4)(index);
+        return;
+    case 9:
+        ((void (*)(u32))FUN_0801ed6c)(index);
+        return;
+    case 10:
+        ((void (*)(u32))FUN_0801eddc)(index);
+        return;
+    case 11:
+        FUN_0801db4c(index);
+        return;
+    case 12:
+        FUN_0801d9e0(index);
+        return;
+    case 13: {
+        u32 result = FUN_0801d068(index);
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 linked = result;
+
+        entity->field15 = linked;
+        linked = (u8)linked;
+        if (linked == index) {
+            return;
+        }
+        {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = entity->field15 * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset = linkedOffset + metadataOffset;
+            u8 *coordinateBase = (u8 *)metadataBase + 54;
+            s16 *coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid13;
+                goto fallback13;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test13;
+            }
+        valid13:
+            valid = 1;
+        test13:
+            if (valid != 0) {
+                return;
+            }
+        }
+        goto fallback13;
+    }
+    default:
+        return;
+    }
+
+fallback13:
+    ((void (*)(u32))FUN_0801ed0c)(index);
+}
+
 void FUN_0801d9e0(u8 value) {
     u32 index = value;
     u8 *state;
@@ -3266,6 +5571,191 @@ void FUN_0801db4c(u32 value) {
     entity->field16 = gUnknown_03001c40[index].field16;
 }
 
+void FUN_0801dbd0(u8 value) {
+    register u32 index;
+    register u32 linked;
+    register s16 x;
+    register s16 y;
+    register struct UnknownEntity *savedEntities;
+    register struct UnknownEntityData *savedMetadata;
+    register u32 savedDoubled;
+
+    index = value;
+
+    {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+        struct UnknownEntity *entity;
+        struct UnknownEntityData *metadataBase;
+        u32 linkedOffset;
+        u32 scaled;
+        u32 metadataOffset;
+        u32 coordinateOffset;
+        u8 *firstBase;
+        s16 *firstPointer;
+        u8 *secondBase;
+        s16 *secondPointer;
+        u32 counter;
+        s32 limit;
+
+        entityOffset = index * 24;
+        entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        linked = entity->field15;
+        metadataBase = gUnknown_03001c40;
+        linkedOffset = linked * 2;
+        scaled = index << 6;
+        metadataOffset = (scaled - index) * 4;
+        coordinateOffset = linkedOffset + metadataOffset;
+        firstBase = (u8 *)metadataBase + 54;
+        firstPointer = (s16 *)(coordinateOffset + (u32)firstBase);
+        x = *firstPointer;
+        secondBase = (u8 *)metadataBase + 62;
+        secondPointer = (s16 *)(coordinateOffset + (u32)secondBase);
+        y = *secondPointer;
+        counter = *(u8 *)(metadataOffset + (u32)metadataBase + 191);
+        limit = (s32)(gUnknown_03001b28 - counter) / 2;
+
+        if ((s32)counter < limit && ((u16)(x + 0xC00) > 0x1800 || y > 0xC00 || y < -0xC00)) {
+            FUN_0801eee0(index);
+        }
+    }
+
+    {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 active = entity->field18;
+
+        savedEntities = entities;
+        savedDoubled = doubled;
+        savedMetadata = gUnknown_03001c40;
+
+        if (active != 0 && (u16)(savedMetadata[linked].field20 - 10) <= 5 &&
+            (u16)(x + 0x4FF) <= 0x9FE && y <= 0x1FF && y > -0x200) {
+            FUN_0801ebb0(index);
+            return;
+        }
+    }
+
+    if (savedMetadata[index].field20 == 0x42) {
+        if (FUN_08020160((s8)gUnknown_08071245[gUnknown_03003e10]) != 0) {
+            FUN_0801e3cc(index);
+        } else {
+            FUN_0801d870(index);
+        }
+        return;
+    }
+
+    if ((savedMetadata[index].field50 & 0xF) == 0)
+        goto update;
+    {
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+        if (entity->field12 <= 5)
+            goto update;
+    }
+    {
+        const void *data;
+        u32 type = savedMetadata[index].field196;
+
+        if (type > 19)
+            goto finish;
+        switch (type) {
+        case 0:
+        case 3:
+        case 4:
+        case 6:
+        case 7:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+            goto first_data_early;
+        case 1:
+        case 2:
+        case 5:
+        case 8:
+            goto second_data;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+            goto complex_data;
+        }
+
+    first_data_early:
+        data = gUnknown_08ed8a58;
+        goto set_data;
+
+    complex_data: {
+        u8 *record = gUnknown_030013f5 + index * 156;
+        u8 *entry = record + record[81] * 27;
+        u32 first = entry[2];
+
+        if (first > 19)
+            first = (u8)(first - 20);
+        if (first > 8)
+            first = 9;
+        if (first == 0 || (u8)(first - 3) <= 3) {
+            data = gUnknown_08ed8a58;
+            goto set_data;
+        } else {
+            u32 second = entry[3];
+
+            if (second > 19)
+                second = (u8)(second - 20);
+            if (second > 8)
+                second = 9;
+            if ((u8)(second - 1) <= 1 || second == 4 || second == 5 || second == 7) {
+                goto second_data;
+            }
+        }
+    }
+
+        FUN_0801e62c(index);
+        return;
+
+    second_data:
+        data = gUnknown_08ed8a64;
+
+    set_data: {
+        u32 entityOffset;
+        struct UnknownEntity *dataBase;
+        u32 dataAddress;
+        struct UnknownEntity *entity;
+
+        entityOffset = (savedDoubled + index) * 8;
+        dataBase = (struct UnknownEntity *)((u32)savedEntities + 4);
+        dataAddress = entityOffset + (u32)dataBase;
+        *(const void **)dataAddress = data;
+        entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+        entity->field14 = 0;
+        entity->field16 = savedMetadata[index].field16;
+        entity->callback = (UnknownCallback)((u32)FUN_0801ea6c + 1);
+    }
+    }
+
+    goto finish;
+
+update: {
+    u32 entityOffset = (savedDoubled + index) * 8;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+    entity->field12++;
+    FUN_0801d408(index);
+}
+
+finish:
+    if ((u16)FUN_0801d288(index) == 0) {
+        FUN_0801d870(index);
+    }
+}
+
 u16 FUN_0801d370(u8 value) {
     u32 index = value;
     struct UnknownEntity *entities = gUnknown_03003db0;
@@ -3338,7 +5828,7 @@ u32 FUN_0801d068(u8 value) {
         return FUN_0801d200(value);
     }
     if (FUN_08020160(20) != 0) {
-        return FUN_0801d188_wide(value);
+        return ((u32 (*)(u8))FUN_0801d188)(value);
     }
 
     bestIndex = 0;
@@ -3355,20 +5845,27 @@ u32 FUN_0801d068(u8 value) {
         candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
         score = scores;
         for (; index <= 3; candidate++, score++, index++) {
-            if (index != value && *(u8 *)(index + (u32)entries) != 0xff &&
-                groupState->groups[index] != group && bestScore > *score) {
-                u16 type = candidate->field20;
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff) {
+                union {
+                    u8 *pointer;
+                    u32 address;
+                } groupAddress;
 
-                if (type == 0xfc)
-                    continue;
-                if (type == 0xfd)
-                    continue;
-                if (type == 0xfe)
-                    continue;
-                if (type == 0xff)
-                    continue;
-                bestScore = *score;
-                bestIndex = index;
+                groupAddress.pointer = groupState->groups;
+                if (*(u8 *)(index + groupAddress.address) != group && bestScore > *score) {
+                    u16 type = candidate->field20;
+
+                    if (type == 0xfc)
+                        continue;
+                    if (type == 0xfd)
+                        continue;
+                    if (type == 0xfe)
+                        continue;
+                    if (type == 0xff)
+                        continue;
+                    bestScore = *score;
+                    bestIndex = index;
+                }
             }
         }
     } else {
@@ -3522,7 +6019,174 @@ u32 FUN_0801d200(u8 value) {
         attempt++;
     } while (attempt <= 5);
 
-    return FUN_0801d188_wide(value);
+    return ((u32 (*)(u8))FUN_0801d188)(value);
+}
+
+u16 FUN_0801d408(u8 value) {
+    register u8 index = value;
+    u32 savedDoubled;
+    u32 action;
+
+    if (gUnknown_03001c40[index].field196 != 19) {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset;
+
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b3c);
+        savedDoubled = doubled;
+    } else {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset;
+
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b64);
+        savedDoubled = doubled;
+    }
+
+    switch (action) {
+    case 15:
+        ((void (*)(u32))FUN_0801e3cc)(index);
+        break;
+    case 2:
+        ((void (*)(u32))FUN_0801de5c)(index);
+        break;
+    case 3:
+        ((void (*)(u32))FUN_0801eb50)(index);
+        break;
+    case 4:
+        ((void (*)(u32))FUN_0801ebb0)(index);
+        break;
+    case 5: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
+            u8 *coordinateBase = (u8 *)metadataBase;
+            s16 *coordinate;
+            u32 valid;
+
+            coordinateOffset = linkedOffset + metadataOffset;
+            coordinateBase += 54;
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid5;
+                goto fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test5;
+            }
+        valid5:
+            valid = 1;
+        test5:
+            if (valid == 0)
+                goto fallback;
+        }
+        ((void (*)(u32))FUN_0801ec10)(index);
+        break;
+    }
+    case 6: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
+            u8 *coordinateBase = (u8 *)metadataBase;
+            s16 *coordinate;
+            u32 valid;
+
+            coordinateOffset = linkedOffset + metadataOffset;
+            coordinateBase += 54;
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid6;
+                goto fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test6;
+            }
+        valid6:
+            valid = 1;
+        test6:
+            if (valid == 0)
+                goto fallback;
+        }
+        ((void (*)(u32))FUN_0801ec64)(index);
+        break;
+    }
+    case 7: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            u32 coordinateOffset;
+            u8 *coordinateBase = (u8 *)metadataBase;
+            s16 *coordinate;
+            u32 valid;
+
+            coordinateOffset = linkedOffset + metadataOffset;
+            coordinateBase += 54;
+            coordinate = (s16 *)(coordinateOffset + (u32)coordinateBase);
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid7;
+                goto fallback;
+            } else {
+                u32 field = metadataBase[index].field16;
+
+                valid = 0;
+                if (field != 0)
+                    goto test7;
+            }
+        valid7:
+            valid = 1;
+        test7:
+            if (valid == 0)
+                goto fallback;
+        }
+        goto success7;
+    }
+    }
+    goto done;
+
+fallback:
+    ((void (*)(u32))FUN_0801ed0c)(index);
+    goto done;
+
+success7:
+    ((void (*)(u32))FUN_0801ecb8)(index);
+
+done:
+    return action;
 }
 
 void FUN_0801d5d4(u8 value) {
@@ -3604,7 +6268,6 @@ void FUN_0802dc90(struct UnknownListNode *node) {
     s32 signedValue = node->position->x;
 
     node->position->x = value + (signedValue - 32) * 2;
-    asm volatile("" ::: "memory");
     if (node->position->x > 255) {
         FUN_0801f8c0(node);
     } else {
@@ -3617,7 +6280,6 @@ void FUN_0802dce0(struct UnknownListNode *node) {
     s32 signedValue = node->position->x;
 
     node->position->x = value + (signedValue - 28) * 2;
-    asm volatile("" ::: "memory");
     if (node->position->x > 255) {
         FUN_0801f8c0(node);
     } else {
@@ -3673,7 +6335,7 @@ void FUN_0803bea8(void) {
     u8 comparison;
     u8 target;
     u8 *savedState;
-    u8 result;
+    u32 result;
 
     targetPointer += (u32)targets;
     current = *state;
@@ -3699,13 +6361,13 @@ void FUN_0803bb08(struct UnknownListNode *node);
 
 void FUN_0803bef0(struct UnknownListNode *node) {
     u8 *allocation = node->allocation;
-    struct UnknownPosition *graphics = (struct UnknownPosition *)(allocation + 16);
     u16 tile;
     u8 graphicsOffset;
     struct UnknownPosition *position;
     u32 zero;
 
-    *graphics = *(const struct UnknownPosition *)gUnknown_0816faf4;
+    *(struct UnknownPosition *)(allocation + 16) =
+        *(const struct UnknownPosition *)gUnknown_0816faf4;
     graphicsOffset = -(gUnknown_030052e8[gUnknown_030052e0] + 12);
     tile = 0;
     allocation[21] = graphicsOffset;
@@ -3727,22 +6389,15 @@ void FUN_0803bf68(struct UnknownListNode *node) {
     u8 *allocation = owner->allocation;
     const u8 *graphicsOffsets = gUnknown_030052e8;
     u8 *indexPointer = &gUnknown_030052e0;
-    const u8 *graphicsOffsetPointer = (const u8 *)(u32)*indexPointer;
     u32 value;
     struct UnknownPosition *position;
     u8 *fadePointer;
     struct UnknownPosition *savedPosition;
 
-    graphicsOffsetPointer += (u32)graphicsOffsets;
-    value = *graphicsOffsetPointer;
-    value += 12;
-    value = -value;
-    allocation[21] = value;
+    allocation[21] = -(graphicsOffsets[*indexPointer] + 12);
     position = owner->position;
     fadePointer = &gUnknown_030052f8;
-    value = *fadePointer;
-    value += 199;
-    position->x = value;
+    position->x = *fadePointer + 199;
     savedPosition = owner->position;
     value = gUnknown_08edd540[*indexPointer];
     value += 8;
@@ -3790,9 +6445,9 @@ void FUN_0803bd0c(void) {
         FUN_0802188c();
         FUN_080215a8();
         {
-            register u32 *state asm("r2") = &gUnknown_03002610;
-            register u32 one asm("r0") = 1;
-            register u32 zero asm("r1") = 0;
+            register u32 *state = &gUnknown_03002610;
+            register u32 one = 1;
+            register u32 zero = 0;
 
             state[0] = one;
             state[1] = zero;
@@ -3886,27 +6541,27 @@ void FUN_0803f7cc(void) {
 }
 
 void FUN_0803fd4c(void) {
-    register u32 index asm("r5") = 1;
-    register struct UnknownTransferList403c0 **queue asm("r1") = &gUnknown_030001a4;
-    register struct UnknownTransferList403c0 **queueCopy asm("r6");
+    register u32 index = 1;
+    register struct UnknownTransferList403c0 **queue = &gUnknown_030001a4;
+    register struct UnknownTransferList403c0 **queueCopy;
 
     if (index < (*queue)->records[0].flags) {
         queueCopy = queue;
         do {
-            register struct UnknownTransferRecord403c0 *recordBase asm("r0") =
+            register struct UnknownTransferRecord403c0 *recordBase =
                 (struct UnknownTransferRecord403c0 *)*queueCopy;
-            register u32 recordOffset asm("r4") = index * 12;
-            register struct UnknownTransferRecord403c0 *record asm("r4") =
+            register u32 recordOffset = index * 12;
+            register struct UnknownTransferRecord403c0 *record =
                 (struct UnknownTransferRecord403c0 *)(recordOffset + (u32)recordBase);
-            register const u16 *source asm("r0") = record->source;
-            register u16 *destination asm("r1") = record->destination;
-            register u32 width asm("r2") = record->width;
-            register u32 height asm("r3") = record->height;
-            register u32 flags asm("r4") = record->flags;
+            register const u16 *source = record->source;
+            register u16 *destination = record->destination;
+            register u32 width = record->width;
+            register u32 height = record->height;
+            register u32 flags = record->flags;
 
             FUN_08040408(source, destination, width, height, flags);
             {
-                register u32 nextIndex asm("r0") = index + 1;
+                register u32 nextIndex = index + 1;
 
                 index = (u16)nextIndex;
             }
@@ -3958,6 +6613,183 @@ void FUN_0801c930(void) {
     FUN_08020840(24);
     FUN_080205d0();
     gUnknown_030013a0 = 1;
+}
+
+u8 FUN_0801c968(u8 condition, u8 index) {
+    u8 result = 0;
+
+    switch (condition) {
+    case 1: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x200) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x80) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 2: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x300) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0xc0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 3: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x700) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x1c0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 4: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 9 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 5: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 16 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 3;
+        break;
+    }
+    case 6: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 0x135 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 7: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 55 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 8: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+#define COUNT_ENTITY_STATE(primary, secondary)                                                     \
+    do {                                                                                           \
+        u32 first = metadata + 116;                                                                \
+        if ((*(u32 *)(offset + first) & 0x1f00) == (primary)) {                                    \
+            gUnknown_03003d88++;                                                                   \
+        }                                                                                          \
+        first = metadata;                                                                          \
+        if ((*(u16 *)(offset + first + 174) & 0x7c0) == (secondary)) {                             \
+            gUnknown_03003d88++;                                                                   \
+        }                                                                                          \
+        result += gUnknown_03003d88 >= 1;                                                          \
+    } while (0)
+
+        COUNT_ENTITY_STATE(0xa00, 0x280);
+        COUNT_ENTITY_STATE(0xb00, 0x2c0);
+        COUNT_ENTITY_STATE(0xc00, 0x300);
+        COUNT_ENTITY_STATE(0xd00, 0x340);
+        COUNT_ENTITY_STATE(0xe00, 0x380);
+        COUNT_ENTITY_STATE(0xf00, 0x3c0);
+#undef COUNT_ENTITY_STATE
+        result = result != 0;
+        break;
+    }
+    case 9: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 0x135 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 10: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 15 && *(u32 *)(offset + metadata + 116) != 0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 11: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x700) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x1c0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 12:
+        result = *(u16 *)(&gUnknown_03001620 + 98 + index * 2) == 0;
+        break;
+    case 13:
+        result = *(&gUnknown_03001620 + 51 + index) != 0;
+        break;
+    }
+
+    return result;
 }
 
 void FUN_0801ce70(void) {
@@ -4319,6 +7151,7 @@ void FUN_0801f770(u16 value) { FUN_080490b4(value); }
 
 void FUN_0801f780(void) {
     s16 i = 0;
+    u8 *count = &gUnknown_0300006c;
 
     do {
         gUnknown_03000008[i] = i + 1;
@@ -4326,7 +7159,7 @@ void FUN_0801f780(void) {
     } while (i <= 99);
 
     gUnknown_0300006d = 0;
-    gUnknown_0300006c = 0;
+    *count = 0;
     gUnknown_03003e20[0].data = (const void *)((u32)FUN_080200f8 + 1);
     gUnknown_03003e20[0].next = 0;
     gUnknown_03003e20[0].field6 = 0;
@@ -5200,10 +8033,8 @@ void FUN_080219e4(u8 *data, u32 count) {
             u32 value;
 
             index += (u32)table;
-            value = data[1];
-            index = *(const u8 *)index;
-            value += index;
-            data[1] = value;
+            value = *(const u8 *)index;
+            data[1] += value;
             data++;
             i++;
         } while (i < end);
@@ -6209,11 +9040,9 @@ void FUN_08027c8c(struct UnknownListNode *node) {
     }
 
     {
-        register struct Unknown16ByteRecord *record asm("r1");
-        register u8 index asm("r0");
+        u8 index = gUnknown_030051f0;
+        struct Unknown16ByteRecord *record = &gUnknown_030016fc[index];
 
-        index = gUnknown_030051f0;
-        record = &gUnknown_030016fc[index];
         if (record->field0 <= 6) {
             node->data = (const void *)((u32)FUN_08027d18 + 1);
         }
@@ -6725,27 +9554,27 @@ void FUN_08028814(struct UnknownListNode *node) {
 
 void FUN_080288b4(struct UnknownListNode *node) {
     struct UnknownListNode *current = node;
-    register struct UnknownAllocation28770 *allocation asm("r8") = current->allocation;
+    register struct UnknownAllocation28770 *allocation = current->allocation;
     u8 count;
     u16 keys;
     u32 ready;
-    register u32 one asm("r9");
-    register u32 oneAgain asm("r10");
-    register u32 secondOne asm("r2");
-    register u32 keyMask asm("r5");
-    register u32 zero asm("r4");
-    register u8 *countAddress asm("r6");
-    register u8 *selectionAddress asm("r2");
-    register u8 *validationAddress asm("r3");
-    register u32 selectionValue asm("r0");
-    register u32 secondMask asm("r0");
-    register struct UnknownAllocation28770 *selectionRead asm("r4");
-    register struct UnknownAllocation28770 *selectionWrite asm("r5");
-    register u16 *resetWords asm("r0");
-    register u32 *resetFlagAddress asm("r0");
-    register u8 *resetCountAddress asm("r0");
-    register struct UnknownListNode *nodesAddress asm("r1");
-    register s32 recordType asm("r1");
+    register u32 one;
+    register u32 oneAgain;
+    register u32 secondOne;
+    register u32 keyMask;
+    register u32 zero;
+    register u8 *countAddress;
+    register u8 *selectionAddress;
+    register u8 *validationAddress;
+    register u32 selectionValue;
+    register u32 secondMask;
+    register struct UnknownAllocation28770 *selectionRead;
+    register struct UnknownAllocation28770 *selectionWrite;
+    register u16 *resetWords;
+    register u32 *resetFlagAddress;
+    register u8 *resetCountAddress;
+    register struct UnknownListNode *nodesAddress;
+    register s32 recordType;
     u8 limitedSelection;
 
     gUnknown_03001b10[1] = 0x1234;
@@ -6791,10 +9620,8 @@ void FUN_080288b4(struct UnknownListNode *node) {
     keys = gUnknown_030048e0.third;
     one = 1;
     secondOne = 1;
-    asm volatile("" : "+r"(secondOne));
     oneAgain = secondOne;
     keyMask = oneAgain;
-    asm volatile("" : "+r"(keyMask));
     keyMask &= keys;
     if (keyMask != 0) {
         if (gUnknown_03005264 == 4) {
@@ -6829,7 +9656,6 @@ void FUN_080288b4(struct UnknownListNode *node) {
                 gUnknown_03005260 = keyMask;
                 resetFlagAddress = &gUnknown_03005254;
                 zero = oneAgain;
-                asm volatile("" : "+r"(zero));
                 *resetFlagAddress = zero;
                 gUnknown_03005258 = keyMask;
                 current->data = (const void *)((u32)FUN_08028c80 + 1);
@@ -6854,7 +9680,6 @@ void FUN_080288b4(struct UnknownListNode *node) {
         FUN_0801f618(404);
     } else {
         secondMask = 2;
-        asm volatile("" : "+r"(secondMask));
         secondMask &= keys;
         if (secondMask == 0) {
             goto update_child;
@@ -6882,42 +9707,30 @@ update_child:
             nodesAddress = gUnknown_03003e20;
             validationAddress = (u8 *)allocation;
             selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
-            asm volatile("" : "+r"(selectionValue));
             nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-            asm volatile("" : "+r"(nodesAddress));
             selectionValue += (u32)nodesAddress;
-            asm volatile("" : "+r"(selectionValue));
             (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
         } else {
             nodesAddress = gUnknown_03003e20;
             selectionRead = allocation;
             selectionValue = selectionRead->field5 * 16;
-            asm volatile("" : "+r"(selectionValue));
             nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-            asm volatile("" : "+r"(nodesAddress));
             selectionValue += (u32)nodesAddress;
-            asm volatile("" : "+r"(selectionValue));
             (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
         }
     } else if (gUnknown_030017c4 != 0 && gUnknown_03001380 != 0) {
         nodesAddress = gUnknown_03003e20;
         selectionWrite = allocation;
         selectionValue = selectionWrite->field5 * 16;
-        asm volatile("" : "+r"(selectionValue));
         nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-        asm volatile("" : "+r"(nodesAddress));
         selectionValue += (u32)nodesAddress;
-        asm volatile("" : "+r"(selectionValue));
         (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb974;
     } else {
         nodesAddress = gUnknown_03003e20;
         validationAddress = (u8 *)allocation;
         selectionValue = ((struct UnknownAllocation28770 *)validationAddress)->field5 * 16;
-        asm volatile("" : "+r"(selectionValue));
         nodesAddress = (struct UnknownListNode *)((u8 *)nodesAddress + 8);
-        asm volatile("" : "+r"(nodesAddress));
         selectionValue += (u32)nodesAddress;
-        asm volatile("" : "+r"(selectionValue));
         (*(struct UnknownPosition **)selectionValue)->field0 = gUnknown_08edb94c;
     }
 
@@ -6925,8 +9738,7 @@ update_child:
     if (ready != 0) {
         validationAddress = (u8 *)&gUnknown_030016f0;
         zero = 2;
-        asm volatile("" : "+r"(zero));
-        asm volatile("ldrsh %0, [%1, %2]" : "=r"(recordType) : "r"(validationAddress), "r"(zero));
+        recordType = *(s16 *)(validationAddress + zero);
         if (recordType == 0x2345) {
             gUnknown_03005260 = ready;
             gUnknown_03005254 = 1;
@@ -7026,16 +9838,15 @@ void FUN_08028c80(struct UnknownListNode *node) {
 
 void FUN_08028d30(struct UnknownListNode *node) {
     struct UnknownListNode *volatile owner[1];
-    register u16 *command asm("r1");
-    register u32 zero asm("r0");
-    register u32 commandCode asm("r4");
-    register const u8 *state asm("r2");
-    register u32 failed asm("r6");
-    register u32 i asm("r5");
-    register const void *next asm("r0");
+    register u16 *command;
+    register u32 zero;
+    register u32 commandCode;
+    register const u8 *state;
+    register u32 failed;
+    register u32 i;
+    register const void *next;
 
     owner[0] = node;
-    asm volatile("" : : : "memory");
     command = gUnknown_03001b10;
     zero = 0;
     commandCode = 0x2346;
@@ -7047,34 +9858,29 @@ void FUN_08028d30(struct UnknownListNode *node) {
     command[5] = *(const u16 *)(state + 100);
     command[6] = *(const u16 *)(state + 102);
     command[7] = *(const u16 *)(state + 104);
-    asm volatile("" : : "r"(state));
     FUN_0801fab0(0x1357);
 
     failed = 0;
     i = 0;
     if (failed < gUnknown_0300525c) {
-        register u32 expected asm("r10") = commandCode;
-        register u16 *destinationBase asm("r12") = gUnknown_03005200[0];
-        register u8 *localIndex asm("r9") = &gUnknown_03005260;
-        register const u8 *records asm("r3") = (const u8 *)&gUnknown_030016f0;
-        register const u8 *count asm("r8") = &gUnknown_0300525c;
-        register u16 *destination asm("r4") = destinationBase;
+        register u32 expected = commandCode;
+        register u16 *destinationBase = gUnknown_03005200[0];
+        register u8 *localIndex = &gUnknown_03005260;
+        register const u8 *records = (const u8 *)&gUnknown_030016f0;
+        register const u8 *count = &gUnknown_0300525c;
+        register u16 *destination = destinationBase;
         u32 sentinel = 0xFFFE;
-
-        asm volatile("" : : "r"(count));
-        asm volatile("" : : "r"(destination));
-        asm volatile("" : : "r"(sentinel));
 
         do {
             if (i != *localIndex) {
-                register u32 offset asm("r2") = i * 16;
-                register const u8 *address asm("r0") = records + 2;
-                register u32 addressZero asm("r1") = 0;
+                register u32 offset = i * 16;
+                register const u8 *address = records + 2;
+                register u32 addressZero = 0;
 
                 address = (const u8 *)(offset + (u32)address);
                 if (*(const s16 *)((u32)address + addressZero) == expected) {
-                    register const u8 *sourceAddress asm("r0") = records + 6;
-                    register u8 *destinationAddress asm("r1");
+                    register const u8 *sourceAddress = records + 6;
+                    register u8 *destinationAddress;
 
                     sourceAddress = (const u8 *)(offset + (u32)sourceAddress);
                     destination[0] = *(const u16 *)sourceAddress;
@@ -7116,63 +9922,58 @@ void FUN_08028d30(struct UnknownListNode *node) {
             return;
         }
     } else {
-        register u16 *destinationBase asm("r2") = gUnknown_03005200[0];
-        register u8 *localIndex asm("r3") = &gUnknown_03005260;
-        register const u8 *source asm("r4");
+        register u16 *destinationBase = gUnknown_03005200[0];
+        register u8 *localIndex = &gUnknown_03005260;
+        register const u8 *source;
 
         *(u16 *)((u8 *)destinationBase + *localIndex * 16) =
             *(const u16 *)((source = (const u8 *)&gUnknown_03002110) + 96);
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 2;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 98);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 4;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 100);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 6;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 102);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationOffset asm("r1");
-            register u8 *destinationAddress asm("r0");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationOffset;
+            register u8 *destinationAddress;
 
             destinationOffset = (u8 *)destinationBase + 8;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 104);
         }
         {
-            register u32 offset asm("r0") = *localIndex * 16;
-            register u8 *destinationAddress asm("r0");
-            register u32 sentinel asm("r1");
+            register u32 offset = *localIndex * 16;
+            register u8 *destinationAddress;
+            register u32 sentinel;
 
             destinationBase = (u16 *)((u8 *)destinationBase + 10);
             destinationAddress = (u8 *)(offset + (u32)destinationBase);
             sentinel = 0xFFFE;
             *(u16 *)destinationAddress = sentinel;
         }
-        asm volatile("" : : "r"(source));
         next = (const void *)((u32)FUN_08028bec + 1);
     }
     owner[0]->data = next;
@@ -7214,29 +10015,27 @@ void FUN_08028f80(struct UnknownListNode *node) {
 }
 
 void FUN_08028f98(struct UnknownListNode *node) {
-    register struct UnknownListNode *owner asm("r4") = node;
-    register struct UnknownPosition *position asm("r2") = owner->position;
-    register s32 index asm("r3");
+    register struct UnknownListNode *owner = node;
+    register struct UnknownPosition *position = owner->position;
+    register s32 index;
 
     position->field0 = gUnknown_08edb97c;
     if (gUnknown_0300525c >= (index = position->field13) + 1) {
-        register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
-        register u32 offset asm("r3") = index * 8;
-        register u32 zero asm("r5");
-        register const s16 *xAddress asm("r0") = (const s16 *)(table + 4);
-        register const s16 *yAddress asm("r3");
-        register u32 zero0 asm("r0");
-        register s32 x asm("r1");
-        register s32 y asm("r2");
+        register const u8 *table = (const u8 *)gUnknown_08edb98c;
+        register u32 offset = index * 8;
+        register u32 zero;
+        register const s16 *xAddress = (const s16 *)(table + 4);
+        register const s16 *yAddress;
+        register u32 zero0;
+        register s32 x;
+        register s32 y;
 
         xAddress = (const s16 *)(offset + (u32)xAddress);
         zero = 0;
         x = xAddress[zero];
-        asm volatile("" : : "r"(x));
         table += 6;
         offset += (u32)table;
         yAddress = (const s16 *)offset;
-        asm volatile("" : : "r"(yAddress));
         zero0 = 0;
         y = *(const s16 *)((u32)yAddress + zero0);
 
@@ -7244,21 +10043,19 @@ void FUN_08028f98(struct UnknownListNode *node) {
             owner->position->field0 = gUnknown_08edb984;
         }
     } else {
-        register const u8 *table asm("r0") = (const u8 *)gUnknown_08edb98c;
-        register u32 offset asm("r2") = index * 8;
-        register u32 zero3 asm("r3");
-        register u32 zero5 asm("r5");
-        register const s16 *xAddress asm("r1") = (const s16 *)(offset + (u32)table);
-        register const s16 *yAddress asm("r2");
-        register s32 x asm("r1");
-        register s32 y asm("r2");
+        register const u8 *table = (const u8 *)gUnknown_08edb98c;
+        register u32 offset = index * 8;
+        register u32 zero3;
+        register u32 zero5;
+        register const s16 *xAddress = (const s16 *)(offset + (u32)table);
+        register const s16 *yAddress;
+        register s32 x;
+        register s32 y;
 
         zero3 = 0;
         x = xAddress[zero3];
-        asm volatile("" : : "r"(x));
         table += 2;
         yAddress = (const s16 *)(offset + (u32)table);
-        asm volatile("" : : "r"(yAddress));
         zero5 = 0;
         y = yAddress[zero5];
 
@@ -7277,15 +10074,23 @@ void FUN_08029014(struct UnknownListNode *node) {
     halfwordZero = 0;
     position->tile = halfwordZero;
     {
-        struct UnknownPosition *selected = node->position;
-        const u8 *table = (const u8 *)gUnknown_08edb98c;
-        u32 offset = selected->field13 * 8;
+        const u8 *table;
 
-        selected->x = *(const u16 *)(offset + (u32)table);
-        selected = node->position;
-        offset = selected->field13 * 8;
-        table += 2;
-        selected->y = *(const u16 *)(offset + (u32)table);
+        {
+            struct UnknownPosition *selected = node->position;
+            u32 offset;
+
+            table = (const u8 *)gUnknown_08edb98c;
+            offset = selected->field13 * 8;
+            selected->x = *(const u16 *)(offset + (u32)table);
+        }
+        {
+            struct UnknownPosition *selected = node->position;
+            u32 offset = selected->field13 * 8;
+
+            table += 2;
+            selected->y = *(const u16 *)(offset + (u32)table);
+        }
     }
     node->position->field10 = zero;
     node->position->field11 = zero;
@@ -7350,12 +10155,13 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
     FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, destination, 10, 2, 0);
     if (variant <= 3) {
         u16 *entries = gUnknown_03005200[index];
-        register s32 y asm("r6") = 30;
-        register u32 stop asm("r1");
+        register s32 y = 30;
+        register u32 stop;
+        u32 secondStop;
         u32 i = 0;
 
         if (entries[0] != (stop = 0xFFFE)) {
-            register u32 scanStop asm("r3") = stop;
+            register u32 scanStop = stop;
             const u16 *entry = entries;
 
             do {
@@ -7367,15 +10173,13 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
                 }
             } while (entry[0] != scanStop);
         }
-        asm volatile("" : : : "memory");
-        if (entries[0] != (stop = 0xFFFE)) {
-            register u32 sentinel asm("r7") = stop;
+        if (entries[0] != (secondStop = 0xFFFE)) {
+            register u32 sentinel = secondStop;
 
             do {
-                register s32 width asm("r0") = (s16)FUN_08020fac(entries[0]);
-                register s32 x asm("r4");
+                register s32 width = (s16)FUN_08020fac(entries[0]);
+                register s32 x;
 
-                asm volatile("" : "+r"(width));
                 x = 12 - width;
                 x += (u32)x >> 31;
                 x = (s32)((u32)x << 15) >> 16;
@@ -7453,43 +10257,36 @@ void FUN_08029250(void) {
     struct UnknownListNode *node;
 
     {
-        register u8 *scene asm("r4") = &gUnknown_03001620;
-        register u32 zero asm("r0") = 0;
-        register u32 one asm("r2");
-        register u8 *state asm("r1");
-        register u32 stateOffset asm("r3");
+        register u8 *scene = &gUnknown_03001620;
+        register u32 zero = 0;
+        register u32 one;
+        register u8 *state;
+        register u32 stateOffset;
 
         scene[1] = zero;
         one = 1;
         scene[2] = one;
         state = (u8 *)&gUnknown_03002110;
         stateOffset = 0x473;
-        asm volatile("" : "+r"(stateOffset));
         {
-            register u8 *checkAddress asm("r0") = state + stateOffset;
+            register u8 *checkAddress = state + stateOffset;
 
-            asm volatile("" : "+r"(checkAddress));
             if (*checkAddress != 0) {
-                register u32 selectorOffset asm("r5") = 0x472;
-                register u32 selector asm("r0");
-                register u8 *selectorAddress asm("r0");
-
-                asm volatile("" : "+r"(selectorOffset));
+                register u32 selectorOffset = 0x472;
+                register u32 selector;
+                register u8 *selectorAddress;
                 selectorAddress = state + selectorOffset;
-                asm volatile("" : "+r"(selectorAddress));
                 {
-                    register u32 tableOffset asm("r6") = 0x474;
-
-                    asm volatile("" : "+r"(tableOffset));
+                    register u32 tableOffset = 0x474;
                     state += tableOffset;
                 }
                 selector = *selectorAddress;
                 state += selector;
                 scene[3] = *state - 1;
             } else {
-                register u8 *address asm("r0") = state;
-                register u32 flags asm("r1");
-                register u32 test asm("r0");
+                register u8 *address = state;
+                register u32 flags;
+                register u32 test;
 
                 address += 0x79;
                 flags = *address;
@@ -7517,10 +10314,10 @@ void FUN_08029250(void) {
 
     {
         u32 mode;
-        register u8 *config asm("r12");
+        register u8 *config;
 
         {
-            register u32 *modeAddress asm("r6") = &gUnknown_03005254;
+            register u32 *modeAddress = &gUnknown_03005254;
 
             mode = *modeAddress;
         }
@@ -7529,14 +10326,14 @@ void FUN_08029250(void) {
             u32 recordIndex = gUnknown_03005260;
             u8 *record = gUnknown_030013b0;
             u8 *recordAddress;
-            register u8 *destinationBase asm("r7");
-            register u8 *state asm("r3");
-            register u8 *selectedEntries asm("r9");
+            register u8 *destinationBase;
+            register u8 *state;
+            register u8 *selectedEntries;
             u8 metadata;
             u8 group;
 
             {
-                register u32 recordOffset asm("r4");
+                register u32 recordOffset;
 
                 recordOffset = recordIndex * 156;
                 recordAddress = &record[recordOffset];
@@ -7547,39 +10344,35 @@ void FUN_08029250(void) {
                 entryOffset = 802;
                 selectedEntries = &state[entryOffset];
                 {
-                    register u8 *selectedConfig asm("r0") = gUnknown_0300524c;
-
-                    asm volatile("" : "+r"(selectedConfig));
+                    register u8 *selectedConfig = gUnknown_0300524c;
                     config = selectedConfig;
                 }
                 {
-                    register u32 *firstFill asm("r1");
+                    register u32 *firstFill;
 
-                    asm volatile("mov %0, sp" : "=r"(firstFill));
-                    firstFill += 2;
+                    firstFill = &fills[2];
                     fillAddresses[0] = firstFill;
                 }
                 {
-                    register u32 *secondFill asm("r3");
+                    register u32 *secondFill;
 
-                    asm volatile("mov %0, sp" : "=r"(secondFill));
-                    secondFill += 3;
+                    secondFill = (u32 *)&fillAddresses[0];
                     fillAddresses[1] = secondFill;
                 }
                 record += 69;
                 destinationBase = &record[recordOffset];
             }
             {
-                register const struct UnknownLookupRecord29250 *lookupTable asm("r4") =
+                register const struct UnknownLookupRecord29250 *lookupTable =
                     (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
 
                 for (; group <= 2; group++) {
                     u8 column;
-                    register u32 scaledGroup asm("r1") = group;
-                    register u32 destinationOffset asm("r0");
-                    register u8 *destination asm("r3");
-                    register const u16 *entries asm("r6");
-                    register u8 *entryBase asm("r0");
+                    register u32 scaledGroup = group;
+                    register u32 destinationOffset;
+                    register u8 *destination;
+                    register const u16 *entries;
+                    register u8 *entryBase;
 
                     scaledGroup <<= 3;
                     scaledGroup -= group;
@@ -7598,99 +10391,81 @@ void FUN_08029250(void) {
                 }
             }
         } else {
-            register u8 *record asm("r3") = gUnknown_030013b0;
-            register u8 *initialState asm("r2") = (u8 *)&gUnknown_03002110;
-            register u8 *state asm("r8");
-            register u8 *entryBytes asm("r9");
+            register u8 *record = gUnknown_030013b0;
+            register u8 *initialState = (u8 *)&gUnknown_03002110;
+            register u8 *state;
+            register u8 *entryBytes;
 
             {
                 u8 initialMetadata;
 
                 {
-                    register u32 metadataOffset asm("r1") = 200;
-                    register u8 *metadataAddress asm("r0");
+                    register u32 metadataOffset = 200;
+                    register u8 *metadataAddress;
 
-                    asm volatile("" : "+r"(metadataOffset));
                     metadataOffset <<= 2;
-                    asm volatile("" : "+r"(metadataOffset));
                     metadataAddress = initialState + metadataOffset;
-                    asm volatile("" : "+r"(metadataAddress));
                     initialMetadata = *metadataAddress;
                 }
                 {
-                    register u8 *recordAddress asm("r1");
-                    register u32 metadataValue asm("r0") = initialMetadata;
+                    register u8 *recordAddress;
+                    register u32 metadataValue = initialMetadata;
 
-                    asm volatile("" : "+r"(metadataValue));
                     recordAddress = record;
-                    asm volatile("" : "+r"(recordAddress));
                     recordAddress += 150;
                     *recordAddress = metadataValue;
                 }
             }
             {
-                register u32 firstGroup asm("r4") = 0;
+                register u32 firstGroup = 0;
 
                 state = initialState;
-                asm volatile("" : "+r"(state));
                 {
-                    register u32 unselectedEntryOffset asm("r2") = 802;
-
-                    asm volatile("" : "+r"(unselectedEntryOffset));
+                    register u32 unselectedEntryOffset = 802;
                     entryBytes = &state[unselectedEntryOffset];
-                    asm volatile("" : "+r"(entryBytes));
                 }
                 {
-                    register u8 *unselectedConfig asm("r5") = gUnknown_0300524c;
-
-                    asm volatile("" : "+r"(unselectedConfig));
+                    register u8 *unselectedConfig = gUnknown_0300524c;
                     config = unselectedConfig;
                 }
                 {
-                    register u32 *firstFill asm("r6");
+                    register u32 *firstFill;
 
-                    asm volatile("mov %0, sp" : "=r"(firstFill));
-                    firstFill += 2;
+                    firstFill = &fills[2];
                     fillAddresses[0] = firstFill;
                 }
                 {
-                    register u32 *secondFill asm("r0");
+                    register u32 *secondFill;
 
-                    asm volatile("mov %0, sp" : "=r"(secondFill));
-                    secondFill += 3;
+                    secondFill = (u32 *)&fillAddresses[0];
                     fillAddresses[1] = secondFill;
                 }
 
                 do {
-                    register u8 *firstDestinationBase asm("r10");
-                    register u32 firstBaseAddress asm("r1") = 69;
-
-                    asm volatile("" : "+r"(firstBaseAddress));
+                    register u8 *firstDestinationBase;
+                    register u32 firstBaseAddress = 69;
                     firstBaseAddress += (u32)record;
-                    asm volatile("" : "+r"(firstBaseAddress));
                     firstDestinationBase = (u8 *)firstBaseAddress;
                     {
-                        register const struct UnknownLookupRecord29250 *firstLookupTable asm("r7") =
+                        register const struct UnknownLookupRecord29250 *firstLookupTable =
                             (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
 
                         do {
                             u8 column;
-                            register u32 scaledGroup asm("r1") = firstGroup;
-                            register u32 scratch asm("r0");
-                            register u8 *destination asm("r6");
-                            register u8 *destinationAddress asm("r2");
-                            register const u16 *entries asm("r5");
+                            register u32 scaledGroup = firstGroup;
+                            register u32 scratch;
+                            register u8 *destination;
+                            register u8 *destinationAddress;
+                            register const u16 *entries;
 
                             scaledGroup <<= 3;
                             scaledGroup -= firstGroup;
                             scratch = scaledGroup << 2;
                             scratch -= firstGroup;
                             destinationAddress = firstDestinationBase;
-                            asm volatile("" : "+r"(destinationAddress));
                             destination = (u8 *)(scratch + (u32)destinationAddress);
                             scaledGroup <<= 3;
                             scratch = (u32)entryBytes;
-                            asm volatile("" : "+r"(scratch));
                             entries = (const u16 *)(scaledGroup + scratch);
                             column = 0;
                             firstGroup += 1;
@@ -7708,48 +10483,39 @@ void FUN_08029250(void) {
             }
             do {
                 {
-                    register u8 metadata asm("r0") = state[800];
-                    register u32 secondRecordOffset asm("r2") = 153;
-                    register u8 *secondRecordAddress asm("r1");
-
-                    asm volatile("" : "+r"(metadata));
+                    register u8 metadata = state[800];
+                    register u32 secondRecordOffset = 153;
+                    register u8 *secondRecordAddress;
                     secondRecordOffset <<= 1;
                     secondRecordAddress = record + secondRecordOffset;
-                    asm volatile("" : "+r"(secondRecordAddress));
                     *secondRecordAddress = metadata;
                 }
                 {
-                    register u32 secondGroup asm("r4") = 0;
-                    register u8 *secondDestinationBase asm("r10");
-                    register u32 secondBaseAddress asm("r5") = 225;
-
-                    asm volatile("" : "+r"(secondGroup));
-                    asm volatile("" : "+r"(secondBaseAddress));
+                    register u32 secondGroup = 0;
+                    register u8 *secondDestinationBase;
+                    register u32 secondBaseAddress = 225;
                     secondBaseAddress += (u32)record;
-                    asm volatile("" : "+r"(secondBaseAddress));
                     secondDestinationBase = (u8 *)secondBaseAddress;
                     {
-                        register const struct UnknownLookupRecord29250 *secondLookupTable asm(
-                            "r7") = (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+                        register const struct UnknownLookupRecord29250 *secondLookupTable =
+                            (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
 
                         do {
                             u8 column;
-                            register u32 scaledGroup asm("r1") = secondGroup;
-                            register u32 scratch asm("r0");
-                            register u8 *destination asm("r6");
-                            register u8 *destinationAddress asm("r2");
-                            register const u16 *entries asm("r5");
+                            register u32 scaledGroup = secondGroup;
+                            register u32 scratch;
+                            register u8 *destination;
+                            register u8 *destinationAddress;
+                            register const u16 *entries;
 
                             scaledGroup <<= 3;
                             scaledGroup -= secondGroup;
                             scratch = scaledGroup << 2;
                             scratch -= secondGroup;
                             destinationAddress = secondDestinationBase;
-                            asm volatile("" : "+r"(destinationAddress));
                             destination = (u8 *)(scratch + (u32)destinationAddress);
                             scaledGroup <<= 3;
                             scratch = (u32)entryBytes;
-                            asm volatile("" : "+r"(scratch));
                             entries = (const u16 *)(scaledGroup + scratch);
                             column = 0;
                             secondGroup += 1;
@@ -7767,48 +10533,39 @@ void FUN_08029250(void) {
             } while (0);
             do {
                 {
-                    register u8 metadata asm("r0") = state[800];
-                    register u32 thirdRecordOffset asm("r2") = 231;
-                    register u8 *thirdRecordAddress asm("r1");
-
-                    asm volatile("" : "+r"(metadata));
+                    register u8 metadata = state[800];
+                    register u32 thirdRecordOffset = 231;
+                    register u8 *thirdRecordAddress;
                     thirdRecordOffset <<= 1;
                     thirdRecordAddress = record + thirdRecordOffset;
-                    asm volatile("" : "+r"(thirdRecordAddress));
                     *thirdRecordAddress = metadata;
                 }
                 {
-                    register u32 thirdGroup asm("r4") = 0;
-                    register u8 *thirdDestinationBase asm("r10");
-                    register u32 thirdBaseAddress asm("r5") = 381;
-
-                    asm volatile("" : "+r"(thirdGroup));
-                    asm volatile("" : "+r"(thirdBaseAddress));
+                    register u32 thirdGroup = 0;
+                    register u8 *thirdDestinationBase;
+                    register u32 thirdBaseAddress = 381;
                     thirdBaseAddress += (u32)record;
-                    asm volatile("" : "+r"(thirdBaseAddress));
                     thirdDestinationBase = (u8 *)thirdBaseAddress;
                     {
-                        register const struct UnknownLookupRecord29250 *thirdLookupTable asm("r7") =
+                        register const struct UnknownLookupRecord29250 *thirdLookupTable =
                             (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
 
                         do {
                             u8 column;
-                            register u32 scaledGroup asm("r1") = thirdGroup;
-                            register u32 scratch asm("r0");
-                            register u8 *destination asm("r6");
-                            register u8 *destinationAddress asm("r2");
-                            register const u16 *entries asm("r5");
+                            register u32 scaledGroup = thirdGroup;
+                            register u32 scratch;
+                            register u8 *destination;
+                            register u8 *destinationAddress;
+                            register const u16 *entries;
 
                             scaledGroup <<= 3;
                             scaledGroup -= thirdGroup;
                             scratch = scaledGroup << 2;
                             scratch -= thirdGroup;
                             destinationAddress = thirdDestinationBase;
-                            asm volatile("" : "+r"(destinationAddress));
                             destination = (u8 *)(scratch + (u32)destinationAddress);
                             scaledGroup <<= 3;
                             scratch = (u32)entryBytes;
-                            asm volatile("" : "+r"(scratch));
                             entries = (const u16 *)(scaledGroup + scratch);
                             column = 0;
                             thirdGroup += 1;
@@ -7826,41 +10583,35 @@ void FUN_08029250(void) {
             } while (0);
             do {
                 {
-                    register u32 metadataScratch asm("r0") = 200;
-                    register u8 metadata asm("r1");
+                    register u32 metadataScratch = 200;
+                    register u8 metadata;
 
                     metadataScratch <<= 2;
                     metadataScratch += (u32)state;
                     metadata = *(u8 *)metadataScratch;
-                    asm volatile("" : "+r"(metadata));
                     {
-                        register u32 fourthRecordOffset asm("r2") = 618;
-                        register u8 *fourthRecordAddress asm("r0");
+                        register u32 fourthRecordOffset = 618;
+                        register u8 *fourthRecordAddress;
 
                         fourthRecordAddress = record + fourthRecordOffset;
-                        asm volatile("" : "+r"(fourthRecordAddress));
                         *fourthRecordAddress = metadata;
                     }
                 }
                 {
-                    register u32 fourthGroup asm("r4") = 0;
-                    register u8 *fourthDestinationBase asm("r7");
-                    register u32 fourthBaseAddress asm("r5") = 537;
-
-                    asm volatile("" : "+r"(fourthGroup));
-                    asm volatile("" : "+r"(fourthBaseAddress));
+                    register u32 fourthGroup = 0;
+                    register u8 *fourthDestinationBase;
+                    register u32 fourthBaseAddress = 537;
                     fourthDestinationBase = record + fourthBaseAddress;
-                    asm volatile("" : "+r"(fourthDestinationBase));
                     {
-                        register const struct UnknownLookupRecord29250 *fourthLookupTable asm(
-                            "r3") = (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
+                        register const struct UnknownLookupRecord29250 *fourthLookupTable =
+                            (const struct UnknownLookupRecord29250 *)gUnknown_0810b32c;
 
                         do {
                             u8 column;
-                            register u32 scaledGroup asm("r1") = fourthGroup;
-                            register u32 scratch asm("r0");
-                            register u8 *destination asm("r6");
-                            register const u16 *entries asm("r5");
+                            register u32 scaledGroup = fourthGroup;
+                            register u32 scratch;
+                            register u8 *destination;
+                            register const u16 *entries;
 
                             scaledGroup <<= 3;
                             scaledGroup -= fourthGroup;
@@ -7869,7 +10620,6 @@ void FUN_08029250(void) {
                             destination = (u8 *)(scratch + (u32)fourthDestinationBase);
                             scaledGroup <<= 3;
                             scratch = (u32)entryBytes;
-                            asm volatile("" : "+r"(scratch));
                             entries = (const u16 *)(scaledGroup + scratch);
                             column = 0;
                             fourthGroup += 1;
@@ -7888,9 +10638,8 @@ void FUN_08029250(void) {
         }
 
         {
-            register u8 *configAddress asm("r3") = config;
+            register u8 *configAddress = config;
 
-            asm volatile("" : "+r"(configAddress));
             if (configAddress[0] == 10) {
                 gUnknown_03005268[0] |= 1;
             }
@@ -7902,9 +10651,8 @@ void FUN_08029250(void) {
             }
         }
         {
-            register u8 *configAddress asm("r1") = config;
+            register u8 *configAddress = config;
 
-            asm volatile("" : "+r"(configAddress));
             if (configAddress[3] == 10) {
                 gUnknown_03005268[3] |= 1;
             }
@@ -7915,17 +10663,16 @@ void FUN_08029250(void) {
         u32 mode;
 
         {
-            register u32 *modeAddress asm("r2") = &gUnknown_03005254;
+            register u32 *modeAddress = &gUnknown_03005254;
 
-            asm volatile("" : "+r"(modeAddress));
             mode = *modeAddress;
         }
         if (mode != 0) {
-            register u8 *scene asm("r0") = &gUnknown_03001620;
+            register u8 *scene = &gUnknown_03001620;
 
             scene += 36;
             {
-                register u32 four asm("r1") = 4;
+                register u32 four = 4;
 
                 *scene = four;
             }
@@ -7933,11 +10680,11 @@ void FUN_08029250(void) {
                 memcpy(gUnknown_03005200[i], gUnknown_08edbaac, 16);
             }
         } else {
-            register u8 *scene asm("r1") = &gUnknown_03001620;
+            register u8 *scene = &gUnknown_03001620;
 
             scene += 36;
             {
-                register u32 four asm("r0") = 4;
+                register u32 four = 4;
 
                 *scene = four;
             }
@@ -7952,28 +10699,23 @@ void FUN_08029250(void) {
     LZ77UnCompVram(gUnknown_0810dbcc, (void *)0x06000000);
     LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
     {
-        register u32 count asm("r5");
+        register u32 count;
 
         fills[1] = 0;
         {
-            register void *destination asm("r1") = (void *)0x0600F800;
-            register const void *source asm("r0");
+            register void *destination = (void *)0x0600F800;
+            register const void *source;
 
-            asm volatile("" : "+r"(destination));
             count = 0x01000200;
-            asm volatile("" : "+r"(count));
             source = fillAddresses[0];
-            asm volatile("" : "+r"(source));
             CpuFastSet(source, destination, count);
         }
         fills[2] = 0;
         {
-            register void *destination asm("r1") = (void *)0x0600F000;
-            register const void *source asm("r0");
+            register void *destination = (void *)0x0600F000;
+            register const void *source;
 
-            asm volatile("" : "+r"(destination));
             source = fillAddresses[1];
-            asm volatile("" : "+r"(source));
             CpuFastSet(source, destination, count);
         }
     }
@@ -7993,58 +10735,49 @@ void FUN_08029250(void) {
 
     LZ77UnCompVram(gUnknown_0810df04, (void *)0x06010000);
     {
-        register u32 selected asm("r1") = gUnknown_03005250;
-        register u32 selectedCopy asm("r0") = selected;
+        register u32 selected = gUnknown_03005250;
+        register u32 selectedCopy = selected;
 
-        asm volatile("" : "+r"(selected), "+r"(selectedCopy));
         if (selected <= 4) {
-            register u32 source asm("r1");
+            register u32 source;
 
             selected += 2;
             selected <<= 9;
             selected += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(selected));
             FUN_0802036c(0x06016000, selected, 512);
             source = (u32)gUnknown_08117368;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selected <= 9) {
-            register u32 source asm("r1");
+            register u32 source;
 
             selected -= 4;
             selected <<= 9;
             selected += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(selected));
             FUN_0802036c(0x06016000, selected, 512);
             source = (u32)gUnknown_08117b68;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         } else if (selectedCopy <= 14) {
-            register u32 source asm("r1") = selectedCopy;
+            register u32 source = selectedCopy;
 
             source -= 10;
             source <<= 9;
             source += (u32)gUnknown_08116568;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016000, source, 512);
             source = (u32)gUnknown_08118368;
-            asm volatile("" : "+r"(source));
             FUN_0802036c(0x06016200, source, 2048);
         }
     }
 
 #define LOAD_PLAYER_GRAPHICS(index, destination)                                                   \
     do {                                                                                           \
-        register u32 value asm("r0") = gUnknown_0300524c[index];                                   \
-        asm volatile("" : "+r"(value));                                                            \
+        register u32 value = gUnknown_0300524c[index];                                             \
         if (value > 9) {                                                                           \
             value = 10;                                                                            \
         } else if (value > 8) {                                                                    \
             value = 9;                                                                             \
         }                                                                                          \
         {                                                                                          \
-            register u32 source asm("r1") = (u32)gUnknown_08edbadc[value];                         \
-            asm volatile("" : "+r"(source));                                                       \
+            register u32 source = (u32)gUnknown_08edbadc[value];                                   \
             FUN_08020408((destination), source);                                                   \
         }                                                                                          \
     } while (0)
@@ -8056,9 +10789,8 @@ void FUN_08029250(void) {
 #undef LOAD_PLAYER_GRAPHICS
 
     {
-        register u8 *variants asm("r5") = gUnknown_03005268;
+        register u8 *variants = gUnknown_03005268;
 
-        asm volatile("" : "+r"(variants));
         FUN_080290e8(0, variants[0], 0);
         FUN_080290e8(1, variants[1], 1);
         FUN_080290e8(2, variants[2], 2);
@@ -8092,29 +10824,25 @@ void FUN_08029250(void) {
     FUN_0801fba0(0, 8000);
     gUnknown_03002030 = FUN_08029ba0;
     if (gUnknown_03005254 != 0) {
-        register u16 *command asm("r5");
-        register u8 *playerAddress asm("r3");
-        register u32 mask asm("r1");
-        register u32 packed asm("r2");
-        register u32 player asm("r0");
-        register u8 *selectionAddress asm("r0");
-        register u32 selection asm("r4");
-        register u8 *variants asm("r6");
-        register u8 *scene asm("r0");
+        register u16 *command;
+        register u8 *playerAddress;
+        register u32 mask;
+        register u32 packed;
+        register u32 player;
+        register u8 *selectionAddress;
+        register u32 selection;
+        register u8 *variants;
+        register u8 *scene;
 
         command = gUnknown_03001b10;
-        asm volatile("" : "+r"(command));
         {
-            register u32 commandValue asm("r0") = 0x3456;
+            register u32 commandValue = 0x3456;
 
-            asm volatile("" : "+r"(commandValue));
             command[1] = commandValue;
         }
         playerAddress = &gUnknown_03005260;
-        asm volatile("" : "+r"(playerAddress));
         player = *playerAddress;
         mask = 15;
-        asm volatile("" : "+r"(mask));
         packed = mask;
         packed &= player;
         packed <<= 12;
@@ -8161,25 +10889,25 @@ void FUN_080299c0(void) {
     FUN_0802110c();
 
     {
-        register u8 *selectionDestination asm("r2") = &gUnknown_03001620;
-        register u8 *selectionCount asm("r1") = selectionDestination;
+        register u8 *selectionDestination = &gUnknown_03001620;
+        register u8 *selectionCount = selectionDestination;
 
         selectionCount += 36;
         {
-            register u32 countZero asm("r0") = 0;
+            register u32 countZero = 0;
 
             *selectionCount = countZero;
         }
         {
-            register u32 loopIndex asm("r4") = 0;
+            register u32 loopIndex = 0;
 
             selectionDestination += 20;
             {
-                register u32 zero asm("r5") = 0;
+                register u32 zero = 0;
 
                 do {
-                    register u32 selection asm("r0") = gUnknown_0300524c[loopIndex];
-                    register u32 selectionTest asm("r3") = selection;
+                    register u32 selection = gUnknown_0300524c[loopIndex];
+                    register u32 selectionTest = selection;
 
                     if (selectionTest > 9) {
                         selection = 0xFF;
@@ -8222,69 +10950,68 @@ void FUN_080299c0(void) {
         scene[0] = 0;
     }
 
-    asm volatile("" : : : "r4");
     {
-        register u8 *output asm("r3") = &gUnknown_03001620;
-        register const u8 *table asm("r2") = gUnknown_0810db54;
-        register const u8 *indices asm("r1") = gUnknown_03002600;
+        register u8 *output = &gUnknown_03001620;
+        register const u8 *table = gUnknown_0810db54;
+        register const u8 *indices = gUnknown_03002600;
 
         {
-            register u32 index asm("r0") = indices[0];
+            register u32 index = indices[0];
 
             index += (u32)table;
             output[4] = *(u8 *)index;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[1];
+            register const u8 *entry = table;
+            register u32 index = indices[1];
 
             entry += 8;
             entry += index;
             output[5] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[2];
+            register const u8 *entry = table;
+            register u32 index = indices[2];
 
             entry += 16;
             entry += index;
             output[6] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[3];
+            register const u8 *entry = table;
+            register u32 index = indices[3];
 
             entry += 24;
             entry += index;
             output[7] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[4];
+            register const u8 *entry = table;
+            register u32 index = indices[4];
 
             entry += 32;
             entry += index;
             output[8] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[5];
+            register const u8 *entry = table;
+            register u32 index = indices[5];
 
             entry += 40;
             entry += index;
             output[9] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[6];
+            register const u8 *entry = table;
+            register u32 index = indices[6];
 
             entry += 48;
             entry += index;
             output[10] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r1") = indices[8];
+            register const u8 *entry = table;
+            register u32 index = indices[8];
 
             entry += 64;
             entry += index;
@@ -8292,8 +11019,8 @@ void FUN_080299c0(void) {
         }
 
         {
-            register u32 active asm("r2") = 0;
-            register const u8 *variants asm("r1") = gUnknown_03005268;
+            register u32 active = 0;
+            register const u8 *variants = gUnknown_03005268;
 
             if (variants[0] == 0) {
                 active = 1;
@@ -8317,19 +11044,18 @@ void FUN_080299c0(void) {
                 active = 1;
             }
             output[35] = active;
-            asm volatile("" : "+r"(output));
         }
     }
 
     state = (u8 *)&gUnknown_03002110;
     {
-        register u32 counterOffset asm("r0") = 1138;
-        register u8 *counter asm("r2") = state + counterOffset;
-        register u32 value asm("r0") = *counter + 1;
+        register u32 counterOffset = 1138;
+        register u8 *counter = state + counterOffset;
+        register u32 value = *counter + 1;
         *counter = value;
         {
-            register u32 limitOffset asm("r3") = 1139;
-            register u8 *limit asm("r1") = state;
+            register u32 limitOffset = 1139;
+            register u8 *limit = state;
 
             limit += limitOffset;
             if ((u8)value >= *limit) {
@@ -8398,56 +11124,53 @@ void FUN_08029cc8(u32 index, u32 selection) {
 }
 
 void FUN_08029cfc(u32 playerIndex) {
-    register u32 normalizedIndex asm("r0") = (u8)playerIndex;
-    register u8 *players asm("r2") = gUnknown_030013b0;
-    register u32 multiplier asm("r1") = 156;
-    register u32 playerOffset asm("r4") = normalizedIndex;
-
-    asm volatile("" : "+r"(normalizedIndex));
+    register u32 normalizedIndex = (u8)playerIndex;
+    register u8 *players = gUnknown_030013b0;
+    register u32 multiplier = 156;
+    register u32 playerOffset = normalizedIndex;
     playerOffset *= multiplier;
     {
-        register u8 *player asm("r1") = (u8 *)(playerOffset + (u32)players);
-        register u8 *state asm("r3") = (u8 *)&gUnknown_03002110;
-        register u32 stateOffset asm("r5") = 800;
-        register u8 *stateValue asm("r0") = state + stateOffset;
-        register u32 value asm("r0") = *stateValue;
+        register u8 *player = (u8 *)(playerOffset + (u32)players);
+        register u8 *state = (u8 *)&gUnknown_03002110;
+        register u32 stateOffset = 800;
+        register u8 *stateValue = state + stateOffset;
+        register u32 value = *stateValue;
 
-        asm volatile("" : "+r"(value));
         player[150] = value;
 
         {
-            register u32 row asm("r5") = 0;
-            register u16 *sourceBase asm("r12") = (u16 *)(state + 0x322);
+            register u32 row = 0;
+            register u16 *sourceBase = (u16 *)(state + 0x322);
             u8 *destinationBase;
 
             players += 69;
             destinationBase = (u8 *)(playerOffset + (u32)players);
             {
-                register const u8(*records)[8] asm("r6") = (const u8(*)[8])gUnknown_0810b32c;
+                register const u8(*records)[8] = (const u8(*)[8])gUnknown_0810b32c;
 
                 do {
-                    register u32 rowTimesSeven asm("r1") = (row << 3) - row;
-                    register u32 destinationOffset asm("r0") = (rowTimesSeven << 2) - row;
-                    register u8 *destination asm("r4") = destinationBase + destinationOffset;
-                    register u16 *sources asm("r3");
+                    register u32 rowTimesSeven = (row << 3) - row;
+                    register u32 destinationOffset = (rowTimesSeven << 2) - row;
+                    register u8 *destination = destinationBase + destinationOffset;
+                    register u16 *sources;
 
                     rowTimesSeven <<= 3;
                     sources = (u16 *)(rowTimesSeven + (u32)sourceBase);
                     {
-                        register u32 column asm("r2") = 0;
+                        register u32 column = 0;
 
                         row++;
                         do {
                             destination[column] = records[sources[column]][4];
                             {
-                                register u32 nextColumn asm("r0") = column + 1;
+                                register u32 nextColumn = column + 1;
 
                                 column = (u8)nextColumn;
                             }
                         } while (column <= 26);
                     }
                     {
-                        register u32 shiftedRow asm("r0") = row << 24;
+                        register u32 shiftedRow = row << 24;
 
                         row = shiftedRow >> 24;
                     }
@@ -8458,21 +11181,21 @@ void FUN_08029cfc(u32 playerIndex) {
 }
 
 void FUN_08029d74(struct UnknownListNode *node) {
-    register struct UnknownAllocation29d74 *data asm("r12") = node->allocation;
+    register struct UnknownAllocation29d74 *data = node->allocation;
 
     if (gUnknown_03005254 == 0) {
         return;
     }
     {
-        register u16 *displayState asm("r5") = gUnknown_03001b10;
-        register u32 mask asm("r6");
+        register u16 *displayState = gUnknown_03001b10;
+        register u32 mask;
 
         {
-            register struct UnknownAllocation29d74 *dataAddress asm("r1") = data;
-            register u32 index asm("r0") = dataAddress->index;
-            register u32 lowMask asm("r1");
-            register u32 value asm("r2");
-            register u32 tableIndex asm("r3");
+            register struct UnknownAllocation29d74 *dataAddress = data;
+            register u32 index = dataAddress->index;
+            register u32 lowMask;
+            register u32 value;
+            register u32 tableIndex;
 
             mask = 15;
             lowMask = 15;
@@ -8480,13 +11203,13 @@ void FUN_08029d74(struct UnknownListNode *node) {
             value &= index;
             value <<= 12;
             {
-                register const u8 *firstTable asm("r0") = gUnknown_0300524c;
-                register struct UnknownAllocation29d74 *indexAddress asm("r4") = data;
+                register const u8 *firstTable = gUnknown_0300524c;
+                register struct UnknownAllocation29d74 *indexAddress = data;
 
                 tableIndex = indexAddress->index;
                 firstTable = (const u8 *)(tableIndex + (u32)firstTable);
                 {
-                    register u32 tableValue asm("r4") = *firstTable;
+                    register u32 tableValue = *firstTable;
 
                     index = lowMask;
                     index &= tableValue;
@@ -8495,8 +11218,8 @@ void FUN_08029d74(struct UnknownListNode *node) {
                 value |= index;
             }
             {
-                register const u8 *secondTable asm("r0") = gUnknown_03005268;
-                register u32 tableAddress asm("r3") = tableIndex + (u32)secondTable;
+                register const u8 *secondTable = gUnknown_03005268;
+                register u32 tableAddress = tableIndex + (u32)secondTable;
 
                 tableIndex = *(const u8 *)tableAddress;
                 index = lowMask;
@@ -8505,7 +11228,7 @@ void FUN_08029d74(struct UnknownListNode *node) {
                 value |= index;
             }
             {
-                register u8 *scene asm("r0") = &gUnknown_03001620;
+                register u8 *scene = &gUnknown_03001620;
 
                 index = scene[3];
             }
@@ -8515,10 +11238,10 @@ void FUN_08029d74(struct UnknownListNode *node) {
         }
 
         {
-            register struct UnknownAllocation29d74 *firstAddress asm("r1") = data;
-            register u32 first asm("r0") = firstAddress->firstSelection;
-            register struct UnknownAllocation29d74 *secondAddress asm("r2");
-            register u32 flags asm("r1");
+            register struct UnknownAllocation29d74 *firstAddress = data;
+            register u32 first = firstAddress->firstSelection;
+            register struct UnknownAllocation29d74 *secondAddress;
+            register u32 flags;
 
             first++;
             first &= mask;
@@ -8532,26 +11255,23 @@ void FUN_08029d74(struct UnknownListNode *node) {
             displayState[3] = flags;
 
             if (secondAddress->firstSelection != 0xFF) {
-                register u8 selection asm("r3");
-                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+                register u8 selection;
+                register u8 *flagAddress = (u8 *)data + 16;
 
                 selection = secondAddress->firstSelection;
                 flagAddress += selection;
                 if (*flagAddress != 0) {
-                    register u32 highBit asm("r4") = 128;
-                    register u32 bit asm("r0");
+                    register u32 highBit = 128;
+                    register u32 bit;
 
-                    asm volatile("" : "+r"(highBit));
                     highBit <<= 1;
-                    asm volatile("" : "+r"(highBit));
                     bit = highBit;
-                    asm volatile("" : "+r"(bit));
                     displayState[3] = flags | bit;
                 }
                 {
-                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
-                    register struct UnknownAllocation29d74 *selectionAddress asm("r1") = data;
-                    register u32 selection asm("r1") = selectionAddress->firstSelection;
+                    register u8 *flagAddress = (u8 *)data + 12;
+                    register struct UnknownAllocation29d74 *selectionAddress = data;
+                    register u32 selection = selectionAddress->firstSelection;
 
                     flagAddress += selection;
                     if (*flagAddress != 0) {
@@ -8562,30 +11282,30 @@ void FUN_08029d74(struct UnknownListNode *node) {
         }
 
         {
-            register struct UnknownAllocation29d74 *selectionAddress asm("r3") = data;
+            register struct UnknownAllocation29d74 *selectionAddress = data;
 
             if (selectionAddress->secondSelection != 0xFF) {
-                register u8 selection asm("r4");
-                register u8 *flagAddress asm("r0") = (u8 *)data + 16;
+                register u8 selection;
+                register u8 *flagAddress = (u8 *)data + 16;
 
                 selection = selectionAddress->secondSelection;
                 flagAddress += selection;
                 if (*flagAddress != 0) {
-                    register u32 current asm("r1") = displayState[3];
-                    register u32 bit asm("r0") = 1;
+                    register u32 current = displayState[3];
+                    register u32 bit = 1;
 
                     bit |= current;
                     displayState[3] = bit;
                 }
                 {
-                    register u8 *flagAddress asm("r0") = (u8 *)data + 12;
-                    register struct UnknownAllocation29d74 *secondAddress asm("r1") = data;
-                    register u32 selection asm("r1") = secondAddress->secondSelection;
+                    register u8 *flagAddress = (u8 *)data + 12;
+                    register struct UnknownAllocation29d74 *secondAddress = data;
+                    register u32 selection = secondAddress->secondSelection;
 
                     flagAddress += selection;
                     if (*flagAddress != 0) {
-                        register u32 current asm("r1") = displayState[3];
-                        register u32 bits asm("r0") = 15;
+                        register u32 current = displayState[3];
+                        register u32 bits = 15;
 
                         bits |= current;
                         displayState[3] = bits;
@@ -8955,18 +11675,15 @@ void FUN_08040624(void) {
 }
 
 s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
-    register s32 current asm("r3") = value;
-    register s32 adjustedWidth asm("r2");
-    register s8 *cursor asm("r4") = destination;
-    register u8 remaining asm("r5");
+    register s32 current = value;
+    register s32 adjustedWidth;
+    register s8 *cursor = destination;
+    register u8 remaining;
 
-    asm volatile("" : "+r"(cursor));
     adjustedWidth = (s8)width;
-    asm volatile("" : "+r"(adjustedWidth));
     cursor += adjustedWidth;
     adjustedWidth--;
     adjustedWidth <<= 24;
-    asm volatile("" : "+r"(adjustedWidth));
     remaining = (u32)adjustedWidth >> 24;
     adjustedWidth >>= 24;
     if (adjustedWidth == -1) {
@@ -8975,17 +11692,14 @@ s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
     goto check_current;
 
 digit_loop: {
-    register s32 quotient asm("r0") = FUN_0804a59c(current, 10);
-    register s32 remainder asm("r1");
-    register u32 shifted asm("r0");
-    register u32 decrement asm("r1");
-
-    asm volatile("" : "=r"(remainder));
+    register s32 quotient = FUN_0804a59c(current, 10);
+    register s32 remainder = current - quotient * 10;
+    register u32 shifted;
+    register u32 decrement;
     current = quotient;
     *--cursor = remainder;
     shifted = remaining << 24;
     decrement = 0xFFu << 24;
-    asm volatile("" : "+r"(shifted), "+r"(decrement));
     shifted += decrement;
     remaining = shifted >> 24;
     if ((s8)remaining == -1) {
@@ -9000,13 +11714,12 @@ check_current:
     *--cursor = current;
 
 digits_done: {
-    register u32 originalShift asm("r2") = remaining << 24;
-    register s32 signedRemaining asm("r0");
+    register u32 originalShift = remaining << 24;
+    register s32 signedRemaining;
 
-    asm volatile("" : "+r"(originalShift));
     signedRemaining = (s32)originalShift >> 24;
     if (signedRemaining > 0) {
-        register s32 minusOne asm("r1");
+        register s32 minusOne;
 
         originalShift >>= 24;
         signedRemaining--;
@@ -9014,19 +11727,16 @@ digits_done: {
         remaining = (u32)signedRemaining >> 24;
         signedRemaining >>= 24;
         minusOne = -1;
-        asm volatile("" : "+r"(minusOne), "+r"(signedRemaining));
         if (signedRemaining != minusOne) {
-            register s32 padding asm("r3") = minusOne;
+            register s32 padding = minusOne;
 
-            asm volatile("" : "+r"(padding));
             do {
-                register u32 shifted asm("r0");
-                register u32 decrement asm("r5");
+                register u32 shifted;
+                register u32 decrement;
 
                 *--cursor = padding;
                 shifted = remaining << 24;
                 decrement = 0xFFu << 24;
-                asm volatile("" : "+r"(shifted), "+r"(decrement));
                 shifted += decrement;
                 remaining = shifted >> 24;
                 signedRemaining = (s32)shifted >> 24;
@@ -10091,19 +12801,20 @@ void FUN_08036560(void) {
     LZ77UnCompVram(gUnknown_08132544, (void *)0x0600C000);
     LZ77UnCompVram((const void *)0x08156F08, (void *)0x06010000);
     {
-        register s32 variant asm("r0") = gUnknown_03002110.field119;
+        register s32 variant = gUnknown_03002110.field119;
 
-        asm volatile("" : "+r"(variant));
         if (variant == 0) {
             LZ77UnCompVram((const void *)0x0815711C, (void *)0x06010C00);
         } else {
-            asm volatile("cmp r0, #0\n\tblt .L08036560_variant_done");
+            if (variant < 0) {
+                goto variant_done;
+            }
             if (variant <= 5) {
                 LZ77UnCompVram((const void *)0x08157934, (void *)0x06010C00);
                 gUnknown_03005384 = 200;
             }
-            asm volatile(".L08036560_variant_done:");
         }
+    variant_done:;
     }
 
     zeroF800 = 0;
@@ -10114,15 +12825,15 @@ void FUN_08036560(void) {
     zero0800 = 0;
     FUN_0804a594(&zero0800, (void *)0x06000800, 0x01000780);
     {
-        register u16 *base asm("r3") = (u16 *)0x0600F1CA;
+        register u16 *base = (u16 *)0x0600F1CA;
         u16 tile = 0x1040;
-        register u32 outer asm("r6") = 0;
+        register u32 outer = 0;
 
         zeroE800Address = &zeroE800;
 
         do {
-            register u32 inner asm("r4") = 0;
-            register u16 *destination asm("r2") = base;
+            register u32 inner = 0;
+            register u16 *destination = base;
 
             do {
                 u16 current = tile;
@@ -10137,23 +12848,21 @@ void FUN_08036560(void) {
         } while (outer <= 19);
     }
     {
-        register u16 *base asm("r3") = (u16 *)0x0600F114;
+        register u16 *base = (u16 *)0x0600F114;
         register u16 tile = 0x1130;
-        register u32 counter asm("r6") = 0;
+        register u32 counter = 0;
 
         do {
             u16 first = tile;
             u16 second;
 
             tile++;
-            asm volatile("" : "+r"(tile));
             second = tile;
             base[0] = first;
             {
-                register u16 *secondDestination asm("r1") = base + 32;
+                register u16 *secondDestination = base + 32;
 
                 tile++;
-                asm volatile("" : "+r"(tile));
                 *secondDestination = second;
             }
             base++;
@@ -10167,10 +12876,10 @@ void FUN_08036560(void) {
 
     {
         u16 *destination = (u16 *)0x0600E000;
-        register u32 rowCounter asm("r6") = 0;
+        register u32 rowCounter = 0;
 
         do {
-            register u32 columnCounter asm("r4") = 0;
+            register u32 columnCounter = 0;
 
             do {
                 FUN_08021000(destination, (const u16 *)0x081327D4, 8, 8, 0xF200);
@@ -10185,12 +12894,12 @@ void FUN_08036560(void) {
     FUN_0801f7d0(FUN_08030d20, 4, gUnknown_03003e20, 0);
     FUN_0801f7d0(FUN_08036d90, 8, gUnknown_03003e20, 0);
     {
-        register u32 rowCounter asm("r6") = 0;
-        register u32 base asm("r7") = 9;
+        register u32 rowCounter = 0;
+        register u32 base = 9;
 
         do {
-            register u32 columnCounter asm("r4") = 0;
-            register u32 currentBase asm("r5") = base;
+            register u32 columnCounter = 0;
+            register u32 currentBase = base;
 
             do {
                 node = FUN_0801f7d0(FUN_08036e08, 24, gUnknown_03003e20, 0);
@@ -10202,8 +12911,8 @@ void FUN_08036560(void) {
         } while (rowCounter <= 5);
     }
     {
-        register u32 counter asm("r6") = 0;
-        register u32 base asm("r4") = 4;
+        register u32 counter = 0;
+        register u32 base = 4;
 
         do {
             node = FUN_0801f7d0(FUN_08037110, 24, gUnknown_03003e20, 0);
@@ -10859,13 +13568,13 @@ foundTable:
 }
 
 void FUN_0804224c(u8 value) {
-    register u8 *state asm("r3") = (u8 *)&gUnknown_03002110;
-    register u32 offset asm("r2") = 0x488;
+    register u8 *state = (u8 *)&gUnknown_03002110;
+    register u32 offset = 0x488;
 
     state[offset] = value;
     {
-        register struct UnknownGlobalRenderState *global asm("r4") = &gUnknown_03005440;
-        register u32 field asm("r1") = global->filler30;
+        register struct UnknownGlobalRenderState *global = &gUnknown_03005440;
+        register u32 field = global->filler30;
 
         offset++;
         state[offset] = field;
@@ -10875,21 +13584,18 @@ void FUN_0804224c(u8 value) {
         field = global->field44;
         offset++;
         state[offset] = field;
-        asm volatile("" : "+r"(offset));
         {
-            register u32 *destination asm("r5") = (u32 *)(state + 0x48c);
-            register const u32 *firstAddress asm("r0") = &gUnknown_03002610;
-            register const u32 *secondAddress asm("r2") = &gUnknown_03005488;
-            register u32 difference asm("r1");
-            register u32 second asm("r0");
+            register u32 *destination = (u32 *)(state + 0x48c);
+            register const u32 *firstAddress = &gUnknown_03002610;
+            register const u32 *secondAddress = &gUnknown_03005488;
+            register u32 difference;
+            register u32 second;
 
-            asm volatile("" : "+r"(firstAddress), "+r"(secondAddress));
             difference = *firstAddress;
             second = *secondAddress;
-            asm volatile("" : "+r"(difference), "+r"(second));
             difference -= second;
             {
-                register u32 total asm("r0") = global->field40 + difference;
+                register u32 total = global->field40 + difference;
 
                 *destination = total;
             }
@@ -10906,10 +13612,8 @@ void FUN_0804224c(u8 value) {
         const s16 *source = (const s16 *)0x02000200;
         s16 row = 0;
         u32 one = 1;
-        register u32 destinationOffset asm("r0") = 0x49c;
+        register u32 destinationOffset = 0x49c;
         u8 *destination;
-
-        asm volatile("" : "+r"(destinationOffset));
         destination = state + destinationOffset;
 
         do {
@@ -10918,10 +13622,9 @@ void FUN_0804224c(u8 value) {
 
             do {
                 if (*source++ != 0) {
-                    register s32 shift asm("r1") = column;
-                    register u32 bits asm("r0") = one;
+                    register s32 shift = column;
+                    register u32 bits = one;
 
-                    asm volatile("" : "+r"(shift), "+r"(bits));
                     bits <<= shift;
                     bits |= mask;
                     mask = bits;
@@ -11011,28 +13714,28 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
     }
 
     {
-        register u16 yPosition asm("r9");
-        register s16 *cameraYPointer asm("r12");
+        register u16 yPosition;
+        register s16 *cameraYPointer;
 
         {
-            register s16 *cameraX asm("r4") = &gUnknown_03005494;
-            register u16 x asm("r3") = state->x.half.high;
+            register s16 *cameraX = &gUnknown_03005494;
+            register u16 x = state->x.half.high;
             u16 oldCameraX = *cameraX;
             u16 deltaXValue = (x - oldCameraX) & 0xffff;
             register u16 deltaX = deltaXValue;
-            register s16 *cameraY asm("r2") = &gUnknown_03005490;
-            register u16 y asm("r1") = state->y.half.high;
-            register s16 oldCameraY asm("r6") = *cameraY;
-            register s32 shiftedDeltaY asm("r0") = ((u32)y - (u16)oldCameraY) << 16;
+            register s16 *cameraY = &gUnknown_03005490;
+            register u16 y = state->y.half.high;
+            register s16 oldCameraY = *cameraY;
+            register s32 shiftedDeltaY = ((u32)y - (u16)oldCameraY) << 16;
             u16 deltaYValue = (u32)shiftedDeltaY >> 16;
             register u16 deltaY = deltaYValue;
-            register s32 signedDeltaY asm("r5") = shiftedDeltaY >> 16;
+            register s32 signedDeltaY = shiftedDeltaY >> 16;
 
             yPosition = y;
             cameraYPointer = cameraY;
 
             if (signedDeltaY <= 76) {
-                register s16 updatedCameraY asm("r0") = oldCameraY;
+                register s16 updatedCameraY = oldCameraY;
 
                 updatedCameraY -= 77;
                 updatedCameraY = signedDeltaY + updatedCameraY;
@@ -11043,13 +13746,13 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                 }
             }
             {
-                register u16 rawSecondDeltaY asm("r1") = deltaY;
-                register s32 shiftedSecondDeltaY asm("r0") = rawSecondDeltaY << 16;
-                register s32 secondDeltaY asm("r5") = shiftedSecondDeltaY >> 16;
+                register u16 rawSecondDeltaY = deltaY;
+                register s32 shiftedSecondDeltaY = rawSecondDeltaY << 16;
+                register s32 secondDeltaY = shiftedSecondDeltaY >> 16;
 
                 if (secondDeltaY > 131) {
-                    register s16 *secondCameraY asm("r2") = cameraYPointer;
-                    register s16 updatedCameraY asm("r0") = *secondCameraY;
+                    register s16 *secondCameraY = cameraYPointer;
+                    register s16 updatedCameraY = *secondCameraY;
 
                     updatedCameraY -= 131;
                     updatedCameraY = secondDeltaY + updatedCameraY;
@@ -11061,13 +13764,13 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                 }
             }
             {
-                register u16 rawDeltaX asm("r2") = deltaX;
-                register s32 shiftedDeltaX asm("r0") = rawDeltaX << 16;
-                register s32 firstDeltaX asm("r2") = shiftedDeltaX >> 16;
-                register s32 retainedShiftedX asm("r1") = shiftedDeltaX;
+                register u16 rawDeltaX = deltaX;
+                register s32 shiftedDeltaX = rawDeltaX << 16;
+                register s32 firstDeltaX = shiftedDeltaX >> 16;
+                register s32 retainedShiftedX = shiftedDeltaX;
 
                 if (firstDeltaX <= 79) {
-                    register s16 updatedCameraX asm("r0") = *cameraX;
+                    register s16 updatedCameraX = *cameraX;
 
                     updatedCameraX -= 80;
                     updatedCameraX = firstDeltaX + updatedCameraX;
@@ -11077,10 +13780,10 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                     }
                 }
                 {
-                    register s32 secondDeltaX asm("r1") = retainedShiftedX >> 16;
+                    register s32 secondDeltaX = retainedShiftedX >> 16;
 
                     if (secondDeltaX > 160) {
-                        register s16 updatedCameraX asm("r0") = *cameraX;
+                        register s16 updatedCameraX = *cameraX;
 
                         updatedCameraX -= 160;
                         updatedCameraX = secondDeltaX + updatedCameraX;
@@ -11093,30 +13796,27 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
             }
 
             {
-                register volatile s16 *relativeCameraX asm("r1") = &gUnknown_03005494;
+                register volatile s16 *relativeCameraX = &gUnknown_03005494;
 
                 state->relativeX = x - *relativeCameraX;
             }
         }
         {
-            register s16 *relativeCameraY asm("r2") = cameraYPointer;
-            register u16 relativeCameraYValue asm("r0") = *relativeCameraY;
-            register u16 relativeYPosition asm("r4") = yPosition;
-            register u16 relativeY asm("r2") = relativeYPosition - relativeCameraYValue;
-
-            asm volatile("" : "+r"(relativeYPosition));
+            register s16 *relativeCameraY = cameraYPointer;
+            register u16 relativeCameraYValue = *relativeCameraY;
+            register u16 relativeYPosition = yPosition;
+            register u16 relativeY = relativeYPosition - relativeCameraYValue;
             state->relativeY = relativeY;
         }
         {
-            register u32 heldDirection asm("r5") = keys & 0xf0;
+            register u32 heldDirection = keys & 0xf0;
 
-            asm volatile("" : "+r"(heldDirection));
             if (heldDirection == 0) {
                 s16 targetX = 120 - state->relativeX;
                 s16 targetY = 104 - state->relativeY;
 
                 if (targetX != 0 || targetY != 0) {
-                    register u32 angle asm("r9") = ArcTan2(targetX, targetY) >> 8;
+                    register u32 angle = ArcTan2(targetX, targetY) >> 8;
                     u16 distance = Sqrt((targetX * targetX + targetY * targetY) << 4) >> 2;
 
                     if (((s16)gUnknown_03005494 <= 0 && state->relativeX <= 120) ||
@@ -11152,8 +13852,8 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                         distance = 15;
                     }
                     distance = (distance >> 1) + 1;
-                    gUnknown_0300023c -= FUN_08040698_wide(angle) * distance;
-                    gUnknown_03000240 -= FUN_08040684_wide(angle) * distance;
+                    gUnknown_0300023c -= ((s16 (*)(u32))FUN_08040698)(angle)*distance;
+                    gUnknown_03000240 -= ((s16 (*)(u32))FUN_08040684)(angle)*distance;
                     if ((s32)gUnknown_0300023c < 0) {
                         gUnknown_0300023c = 0;
                     } else {
@@ -11185,12 +13885,12 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                 }
             } else {
                 {
-                    register s16 *fixedCameraX asm("r5");
+                    register s16 *fixedCameraX;
 
                     gUnknown_0300023c = *(fixedCameraX = &gUnknown_03005494) << 16;
                 }
                 {
-                    register s16 *fixedCameraY asm("r3");
+                    register s16 *fixedCameraY;
 
                     gUnknown_03000240 = *(fixedCameraY = cameraYPointer) << 16;
                 }
@@ -11220,7 +13920,7 @@ updateAnimation: {
     }
     state->animationFrame++;
     {
-        register u32 animationIndexMask asm("r2") = 0xff;
+        register u32 animationIndexMask = 0xff;
 
         if (state->animationFrame > 4) {
             state->animationFrame = animationReset;
