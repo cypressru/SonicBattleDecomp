@@ -2162,7 +2162,7 @@ void FUN_0801e4f4(u8 value) {
                 entity->field8 = mask;
             }
         }
-        savedDoubled = entityOffset / 8 - index;
+        savedDoubled = ((savedDoubled + index) * 8) / 8 - index;
     }
     {
         u32 scaled = savedDoubled * 32;
