@@ -3479,24 +3479,23 @@ void FUN_0801d618(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = entity->field15 * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0)
-                    goto valid5;
-                goto fallback;
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
-                    goto test5;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
             }
-        valid5:
-            valid = 1;
-        test5:
             if (valid == 0) {
                 goto fallback;
             }
@@ -3511,24 +3510,23 @@ void FUN_0801d618(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = entity->field15 * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0)
-                    goto valid6;
-                goto fallback;
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
-                    goto test6;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
             }
-        valid6:
-            valid = 1;
-        test6:
             if (valid == 0) {
                 goto fallback;
             }
@@ -3543,24 +3541,23 @@ void FUN_0801d618(u8 value) {
 
         if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = entity->field15 * 2;
+            u32 linkedOffset = *(volatile u8 *)((u8 *)entities + entityOffset + 15) * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0)
-                    goto valid7;
-                goto fallback;
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
-                    goto test7;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
             }
-        valid7:
-            valid = 1;
-        test7:
             if (valid == 0) {
                 goto fallback;
             }
@@ -3603,17 +3600,16 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0)
-                    goto valid13;
-                goto fallback;
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
             } else {
                 valid = 0;
-                if (metadataBase[index].field16 != 0)
-                    goto test13;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
             }
-        valid13:
-            valid = 1;
-        test13:
             if (valid != 0) {
                 return;
             }
