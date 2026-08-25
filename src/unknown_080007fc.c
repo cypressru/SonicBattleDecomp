@@ -59,7 +59,7 @@ extern s16 gUnknown_03001b2c;
 extern s16 gUnknown_03001384;
 extern s16 FUN_08018390(void);
 extern void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY);
-extern void FUN_08018204(s16 *outputX, s16 *outputY, u16 factorX, s16 factorY);
+extern void FUN_08018204(s16 *outputX, s16 *outputY, s16 factorX, s16 factorY);
 extern void FUN_08017f00(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_080069ac(void);
 extern void FUN_0800c1c8(u16 active, u8 mode, s16 x, s16 y, s16 height, u32 sixth, u32 seventh,
