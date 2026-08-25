@@ -183,7 +183,8 @@ extern u16 gUnknown_03005388;
 extern u16 gUnknown_0300538c;
 extern u8 gUnknown_0300537c;
 extern u8 gUnknown_030020f8;
-extern void FUN_08041808(void *state);
+struct UnknownFadeState41808;
+extern void FUN_08041808(struct UnknownFadeState41808 *state);
 extern void FUN_0802fcb4(u8 value);
 extern void FUN_0802fb58(u8 value);
 extern void FUN_080382bc(u8 value);
@@ -11336,13 +11337,10 @@ void FUN_08040408(const u16 *source, u16 *destination, s32 width, s32 height, s3
     }
 }
 
-void FUN_08041808(void *value) {
-    struct UnknownFadeState41808 *state = value;
-    u32 progress = state->step;
-    u32 oldProgress = state->progress;
+void FUN_08041808(struct UnknownFadeState41808 *state) {
+    u32 progress;
 
-    progress += oldProgress;
-    state->progress = progress;
+    progress = (state->progress += state->step);
     progress = (u8)progress;
     if (progress > 15) {
         state->progress = 16;
