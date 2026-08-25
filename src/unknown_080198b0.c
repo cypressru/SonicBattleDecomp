@@ -1941,20 +1941,20 @@ void FUN_0801ad38(void) {
             }
         }
         {
-            u32 current = gUnknown_03001380;
+            u32 *currentAddress = &gUnknown_03001380;
+            u8 current = *(u8 *)currentAddress;
 
             FUN_08006134(current);
             FUN_08005310(current);
             FUN_0800486c(current);
-            if (current <= 1) {
+            if (*currentAddress <= 1) {
                 u8 *scene = &gUnknown_03001620;
+                u32 other = *currentAddress + 2;
 
-                if (scene[current + 30] != 0) {
-                    u8 other = current + 2;
-
+                if (scene[other + 28] != 0) {
                     FUN_08006134(other);
-                    FUN_08005310(other);
-                    FUN_0800486c(other);
+                    FUN_08005310((u8)(*currentAddress + 2));
+                    FUN_0800486c((u8)(*currentAddress + 2));
                 }
             }
         }
