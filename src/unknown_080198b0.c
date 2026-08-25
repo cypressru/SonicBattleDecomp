@@ -8570,7 +8570,7 @@ void FUN_08029250(void) {
             }
             do {
                 {
-                    register u8 metadata asm("r0") = state[800];
+                    register u8 metadata = state[800];
                     register u32 secondRecordOffset asm("r2") = 153;
                     register u8 *secondRecordAddress asm("r1");
 
@@ -8626,7 +8626,7 @@ void FUN_08029250(void) {
             } while (0);
             do {
                 {
-                    register u8 metadata asm("r0") = state[800];
+                    register u8 metadata = state[800];
                     register u32 thirdRecordOffset asm("r2") = 231;
                     register u8 *thirdRecordAddress asm("r1");
 
@@ -8682,15 +8682,15 @@ void FUN_08029250(void) {
             } while (0);
             do {
                 {
-                    register u32 metadataScratch asm("r0") = 200;
-                    register u8 metadata asm("r1");
+                    register u32 metadataScratch = 200;
+                    register u8 metadata;
 
                     metadataScratch <<= 2;
                     metadataScratch += (u32)state;
                     metadata = *(u8 *)metadataScratch;
                     asm volatile("" : "+r"(metadata));
                     {
-                        register u32 fourthRecordOffset asm("r2") = 618;
+                        register u32 fourthRecordOffset = 618;
                         register u8 *fourthRecordAddress asm("r0");
 
                         fourthRecordAddress = record + fourthRecordOffset;
