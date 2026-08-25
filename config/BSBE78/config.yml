@@ -1717,6 +1717,7 @@ units:
       FUN_080312a0: 0x1E
       FUN_0803256c: 0x1E
       FUN_080325f0: 0x1E
+      FUN_08032f9c: 0x3E
       FUN_08032ff8: 0x34
       FUN_08033038: 0x1E
       FUN_08033bf8: 0x1E
@@ -4792,6 +4793,14 @@ units:
       - { offset: 0x19672, type: thumb_call, symbol: FUN_0804af6c }
       - { offset: 0x1967C, type: abs32, symbol: gUnknown_03005300 }
       - { offset: 0x19680, type: abs32, symbol: FUN_08032f34, addend: 1 }
+      - { offset: 0x196F2, type: thumb_call, symbol: FUN_08021564 }
+      - { offset: 0x1972C, type: abs32, symbol: gUnknown_03001b10 }
+      - { offset: 0x19730, type: abs32, symbol: gUnknown_03004d8c }
+      - { offset: 0x19734, type: abs32, symbol: gUnknown_0300530c }
+      - { offset: 0x19738, type: abs32, symbol: gUnknown_03003e20 }
+      - { offset: 0x1973C, type: abs32, symbol: FUN_08033474, addend: 1 }
+      - { offset: 0x19740, type: abs32, symbol: gUnknown_03005258 }
+      - { offset: 0x19744, type: abs32, symbol: FUN_08032be0, addend: 1 }
       - { offset: 0x19752, type: thumb_call, symbol: FUN_080206ec }
       - { offset: 0x19768, type: thumb_call, symbol: LZ77UnCompVram }
       - { offset: 0x1976E, type: thumb_call, symbol: RegisterRamReset }

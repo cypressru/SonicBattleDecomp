@@ -137,6 +137,8 @@ extern void FUN_080304e4(struct UnknownListNode *node);
 extern void FUN_08038448(struct UnknownListNode *node);
 extern void FUN_0803b82c(struct UnknownListNode *node);
 extern void FUN_08032f34(struct UnknownListNode *node);
+extern void FUN_08032be0(struct UnknownListNode *node);
+extern void FUN_08033474(struct UnknownListNode *node);
 extern void FUN_08035408(struct UnknownListNode *node);
 extern void FUN_0803551c(struct UnknownListNode *node);
 extern void FUN_08035668(struct UnknownListNode *node);
@@ -166,6 +168,7 @@ extern void FUN_08036898(struct UnknownListNode *node);
 extern void FUN_080368dc(struct UnknownListNode *node);
 extern void FUN_08036e64(struct UnknownListNode *node);
 extern u8 gUnknown_03005300;
+extern u32 gUnknown_0300530c;
 extern u8 gUnknown_0300533c;
 extern u16 gUnknown_0300536c;
 extern u16 gUnknown_03005368;
@@ -10860,6 +10863,28 @@ void FUN_08032ff8(void) {
         RegisterRamReset(0xC2);
         ((void (*)(void))0x02000100)();
     }
+}
+
+void FUN_08032f9c(struct UnknownListNode *node) {
+    struct UnknownListNode *owner = node;
+    u8 *allocation = owner->allocation;
+    u32 zero;
+
+    FUN_08021564();
+    {
+        u16 *command = gUnknown_03001b10;
+        u32 size = gUnknown_03004d8c;
+        u32 control = 7 & ~(size >> 15);
+
+        zero = 0;
+        command[2] = control;
+        command[3] = size >> 16;
+        command[4] = size;
+    }
+    gUnknown_0300530c = zero;
+    gUnknown_03003e20[allocation[4]].data = (const void *)((u32)FUN_08033474 + 1);
+    gUnknown_03005258 = zero;
+    owner->data = (const void *)((u32)FUN_08032be0 + 1);
 }
 
 void FUN_08033038(void) {
