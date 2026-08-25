@@ -11024,7 +11024,7 @@ void FUN_08036560(void) {
     }
     {
         register u32 counter asm("r6") = 0;
-        register u32 base asm("r4") = 4;
+        register u32 base = 4;
 
         do {
             node = FUN_0801f7d0(FUN_08037110, 24, gUnknown_03003e20, 0);
