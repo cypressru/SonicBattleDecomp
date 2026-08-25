@@ -4515,6 +4515,24 @@ void FUN_0801ff30(void) {
     gUnknown_030048d0 = 1;
 }
 
+u8 FUN_0801ffe4(u16 first, u16 second, u16 third, u16 fourth) {
+    u8 *count = &gUnknown_030044c0;
+    u8 result;
+
+    if (*count <= 31) {
+        u16 *destination = (u16 *)((u8 *)gUnknown_030044d0 + *count * 2);
+
+        destination[3] = first;
+        destination[7] = second;
+        destination[11] = third;
+        destination[15] = fourth;
+        result = (*count)++;
+    } else {
+        result = 0xFF;
+    }
+    return result;
+}
+
 void FUN_0801ffa4(u8 force) {
     if (gUnknown_030048d0 != 0 || force != 0) {
         FUN_0804a594(gUnknown_030044d0, (void *)0x07000000, 0x100);
