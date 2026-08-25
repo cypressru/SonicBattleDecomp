@@ -10960,7 +10960,7 @@ void FUN_08036560(void) {
         } while (outer <= 19);
     }
     {
-        register u16 *base asm("r3") = (u16 *)0x0600F114;
+        register u16 *base = (u16 *)0x0600F114;
         register u16 tile = 0x1130;
         register u32 counter asm("r6") = 0;
 
@@ -10969,14 +10969,12 @@ void FUN_08036560(void) {
             u16 second;
 
             tile++;
-            asm volatile("" : "+r"(tile));
             second = tile;
             base[0] = first;
             {
-                register u16 *secondDestination asm("r1") = base + 32;
+                register u16 *secondDestination = base + 32;
 
                 tile++;
-                asm volatile("" : "+r"(tile));
                 *secondDestination = second;
             }
             base++;
