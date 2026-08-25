@@ -28,6 +28,9 @@ void FUN_0801a898(void);
 void FUN_0801ad38(void);
 void FUN_0801c28c(void);
 extern u8 gUnknown_0300138c;
+extern u8 gUnknown_03003d98;
+extern u8 gUnknown_03003d9c;
+extern u8 FUN_08017b74(u8 participant, u8 status, u8 expected);
 extern u8 gUnknown_03003d94;
 extern void FUN_0801c8a4(void);
 extern void FUN_080402a0(void);
@@ -1404,9 +1407,6 @@ void FUN_0801a6a8(u8 value) {
 
 void FUN_0801a898(void) {
     u8 status;
-    u8 *scene = &gUnknown_03001620;
-    u8 *phase = (u8 *)0x03003d98;
-    u8 *expected = (u8 *)0x03003d9c;
 
     if ((u8)FUN_080205d0() != 0) {
         FUN_080177b8(gUnknown_03001380);
@@ -1415,75 +1415,108 @@ void FUN_0801a898(void) {
 
     status = FUN_08015498();
     if (gUnknown_0300138c != 0) {
-        status = FUN_08017b74(gUnknown_03001380, status, *expected);
-        if (scene[132] == *expected) {
-            scene[133] = 0;
-        } else {
-            scene[133]++;
+        u8 participant = gUnknown_03001380;
+        u8 *expected = &gUnknown_03003d9c;
+        u8 expectedValue = *expected;
+
+        status = FUN_08017b74(participant, status, expectedValue);
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[132] == *expected) {
+                scene[133] = 0;
+            } else {
+                scene[133]++;
+            }
         }
-        if (scene[133] > 60) {
-            scene[125] = 5;
-            FUN_080207ec(32);
-            gUnknown_03002030 = FUN_0801bd90;
-            status = 0;
+        {
+            u8 *scene = &gUnknown_03001620;
+
+            if (scene[133] > 60) {
+                scene[125] = 5;
+                FUN_080207ec(32);
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801bd90 + 1);
+                status = 0;
+            }
         }
     }
 
-    if (*phase > 8) {
-        *phase = 0;
-        FUN_08017964(0);
-        FUN_08017964(1);
-        FUN_08017964(2);
-        FUN_08017964(3);
-        if (scene[125] == 4) {
-            gUnknown_03002030 = FUN_0801c28c;
-            goto finish;
-        }
-        if (gUnknown_0300138c != 0) {
-            FUN_08018530();
-        }
-        FUN_08012b98(20);
-        gUnknown_03002030 = FUN_0801ad38;
+    {
+        u8 *phase = &gUnknown_03003d98;
 
-        if (scene[23] != 10) {
-            u8 command = scene[20 + gUnknown_03001380];
+        if (*phase > 8) {
+            u8 *scene;
 
-            if (command <= 19) {
-                switch (command) {
-                case 0:
-                    FUN_0801f618(0xfa);
-                    break;
-                case 1:
-                    FUN_0801f618(0xfb);
-                    break;
-                case 2:
-                    FUN_0801f618(0xfc);
-                    break;
-                case 3:
-                    FUN_0801f618(0xfd);
-                    break;
-                case 4:
-                    FUN_0801f618(0xff);
-                    break;
-                case 5:
-                    FUN_0801f618(0xfe);
-                    break;
-                case 6:
-                    FUN_0801f618(0x100);
-                    break;
-                case 7:
-                    FUN_0801f618(0x101);
-                    break;
-                case 8:
-                    FUN_0801f618(0xd0);
-                    break;
+            *phase = 0;
+            FUN_08017964(0);
+            FUN_08017964(1);
+            FUN_08017964(2);
+            FUN_08017964(3);
+            scene = &gUnknown_03001620;
+            if (scene[125] == 4) {
+                gUnknown_03002030 = (void (*)(void))((u32)FUN_0801c28c + 1);
+                goto finish;
+            }
+            if (gUnknown_0300138c != 0) {
+                FUN_08018530();
+            }
+            FUN_08012b98(20);
+            gUnknown_03002030 = (void (*)(void))((u32)FUN_0801ad38 + 1);
+
+            if (scene[23] != 10) {
+                u8 *commandBase = scene + 20;
+                u32 current = gUnknown_03001380;
+                u8 command = *(u8 *)(current + (u32)commandBase);
+
+                if (command <= 19) {
+                    switch (command) {
+                    case 0:
+                        FUN_0801f618(0xfa);
+                        break;
+                    case 1:
+                        FUN_0801f618(0xfb);
+                        break;
+                    case 2:
+                        FUN_0801f618(0xfc);
+                        break;
+                    case 3:
+                        FUN_0801f618(0xfd);
+                        break;
+                    case 4:
+                        FUN_0801f618(0xff);
+                        break;
+                    case 5:
+                        FUN_0801f618(0xfe);
+                        break;
+                    case 7:
+                        FUN_0801f618(0x101);
+                        break;
+                    case 6:
+                        FUN_0801f618(0x100);
+                        break;
+                    case 8:
+                        FUN_0801f618(0xd0);
+                        break;
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                        break;
+                    }
                 }
             }
+        } else if (*phase != 0) {
+            (*phase)++;
+        } else if (status != 0) {
+            *phase = 1;
         }
-    } else if (*phase != 0) {
-        (*phase)++;
-    } else if (status != 0) {
-        *phase = 1;
     }
 
 finish:
