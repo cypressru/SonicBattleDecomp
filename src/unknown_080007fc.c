@@ -254,7 +254,7 @@ extern union UnknownQueueEntry08017f34 gUnknown_03003190[];
 extern union UnknownQueueRecord030033e0 gUnknown_030033e0[];
 extern struct UnknownEntry03002cd0 gUnknown_03002cd0[];
 extern struct UnknownState030030d0 gUnknown_030030d0;
-extern volatile struct UnknownState080180d4 gUnknown_030048e0;
+extern struct UnknownState080180d4 gUnknown_030048e0;
 extern struct UnknownState080180f0 gUnknown_03001b30[];
 extern struct UnknownRecord03001c40 gUnknown_03001c40[];
 extern struct UnknownRecord030017d0 gUnknown_030017d0[];
