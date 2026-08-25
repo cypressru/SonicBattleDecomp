@@ -1471,17 +1471,21 @@ void FUN_0801c090(void) {
     {
         u8 *timer;
         u8 *scene;
+        u8 *savedScene;
+        u8 mode;
 
         scene = &gUnknown_03001620;
         timer = scene + 134;
 
         (*timer)++;
-        switch (scene[38]) {
+        mode = scene[38];
+        savedScene = scene;
+        switch (mode) {
     case 0:
         return;
     case 1:
-        if (scene[134] == 40) {
-            scene[134] = 0;
+        if (savedScene[134] == 40) {
+            savedScene[134] = 0;
             *(u16 *)(savedMetadata + 0x3bc) = 1;
         } else {
             *(u16 *)(savedMetadata + 0x3bc) = 0;
@@ -1491,40 +1495,40 @@ void FUN_0801c090(void) {
         if (*(u16 *)(savedMetadata + 0x308) == 0x42 ||
             *(u16 *)(savedMetadata + 0x308) == 0x44) {
             goto zero_output;
-        } else if (scene[134] <= 29) {
+        } else if (savedScene[134] <= 29) {
             *(u16 *)(savedMetadata + 0x3bc) = 0x40;
-        } else if (scene[134] <= 59) {
+        } else if (savedScene[134] <= 59) {
             *(u16 *)(savedMetadata + 0x3bc) = 0x10;
-        } else if (scene[134] <= 89) {
+        } else if (savedScene[134] <= 89) {
             *(u16 *)(savedMetadata + 0x3bc) = 0x80;
-        } else if (scene[134] <= 119) {
+        } else if (savedScene[134] <= 119) {
             *(u16 *)(savedMetadata + 0x3bc) = 0x20;
         } else {
-            scene[134] = 0;
+            savedScene[134] = 0;
             return;
         }
         break;
     case 3:
-        if (scene[134] == 20) {
-            scene[134] = 0;
+        if (savedScene[134] == 20) {
+            savedScene[134] = 0;
             *(u16 *)(savedMetadata + 0x3bc) = 0x200;
         } else {
             goto zero_output;
         }
         break;
     case 4:
-        if (scene[134] == 30) {
-            scene[134] = 0;
+        if (savedScene[134] == 30) {
+            savedScene[134] = 0;
             *(u16 *)(savedMetadata + 0x3bc) = 2;
         } else {
             goto zero_output;
         }
         break;
     case 5:
-        if (scene[134] == 40) {
+        if (savedScene[134] == 40) {
             u8 random;
 
-            scene[134] = 0;
+            savedScene[134] = 0;
             random = FUN_08006894() % 3;
             switch (random) {
             case 0: {
@@ -1555,8 +1559,8 @@ void FUN_0801c090(void) {
         }
         break;
     case 6:
-        if (scene[134] == 40) {
-            scene[134] = 0;
+        if (savedScene[134] == 40) {
+            savedScene[134] = 0;
             if (savedMetadata[0x305] == 0) {
                 *(u16 *)(savedMetadata + 0x3bc) = 0x12;
             } else {
