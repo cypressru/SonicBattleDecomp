@@ -199,6 +199,7 @@ extern void FUN_08033228(struct UnknownListNode *node);
 extern void FUN_080333dc(struct UnknownListNode *node);
 extern void FUN_08033390(struct UnknownListNode *node);
 extern void FUN_08024304(struct UnknownListNode *node);
+extern void FUN_08024170(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033cdc(struct UnknownListNode *node);
 extern const u8 gUnknown_081a7f60[];
@@ -6038,6 +6039,15 @@ void FUN_080242bc(struct UnknownListNode *node) {
     data = row[gUnknown_03004dd4];
     FUN_08020b74(0, 0, data, 15, 1);
     node->data = (const void *)((u32)FUN_08024304 + 1);
+}
+
+void FUN_0802426c(struct UnknownListNode *node) {
+    gUnknown_03004dbc->field12 = (s16)gUnknown_03004dbc->field12 / 2;
+    FUN_0801fba0(16, -gUnknown_03004dbc->field12 & 0x1ff);
+    FUN_0801fba0(20, -gUnknown_03004dbc->field12 & 0x1ff);
+    if ((s16)gUnknown_03004dbc->field12 == 0) {
+        node->data = (const void *)((u32)FUN_08024170 + 1);
+    }
 }
 
 void FUN_080278b4(struct UnknownListNode *node) {
