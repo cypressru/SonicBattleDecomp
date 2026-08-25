@@ -1253,6 +1253,12 @@ void FUN_08025fd4(struct UnknownListNode *node);
 extern void FUN_08018444(void);
 extern void FUN_080184c8(void);
 extern void FUN_08018530(void);
+extern void FUN_080178d0(void);
+extern u8 FUN_08015384(void);
+extern void FUN_080007fc(u8 index);
+extern void FUN_08034748(void);
+extern void FUN_0801d5d4(u8 value);
+extern void FUN_0801f718(u16 value, u16 other);
 extern void FUN_080176e4(s16 target);
 extern void FUN_080182e4(s16 target);
 extern void FUN_08018300(s16 target);
@@ -2212,6 +2218,157 @@ void FUN_0801c28c(void) {
     FUN_080175d4();
     FUN_08017d58();
     FUN_08017c5c();
+}
+
+void FUN_0801c4bc(void) {
+    u8 index;
+    u8 *scene;
+    u8 mode;
+
+    FUN_080178d0();
+    scene = &gUnknown_03001620;
+    if ((u8)(scene[28] - 1) <= 0xfd)
+        FUN_0801d5d4(0);
+    if ((u8)(scene[29] - 1) <= 0xfd)
+        FUN_0801d5d4(1);
+    if ((u8)(scene[30] - 1) <= 0xfd)
+        FUN_0801d5d4(2);
+    if ((u8)(scene[31] - 1) <= 0xfd)
+        FUN_0801d5d4(3);
+
+    FUN_08006e64();
+    FUN_0800c728();
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 20] != 0xff) {
+            FUN_08007ec8(index);
+            FUN_0800597c(index);
+            FUN_080036dc(index);
+        }
+    }
+    FUN_080066d8();
+    for (index = 0; index <= 3; index++) {
+        if (((u8 *)gUnknown_03001c40)[index] != 0xff) {
+            FUN_08006134(index);
+            FUN_08005310(index);
+            FUN_0800486c(index);
+        }
+    }
+    FUN_080006d0();
+
+    mode = (u8)FUN_080205d0();
+    if (mode == 0) {
+        if ((u8)FUN_08015384() != 0) {
+            FUN_08020944();
+        }
+    } else if ((u8)FUN_080205d0() == 1) {
+        if ((u8)FUN_08015384() != 0) {
+            FUN_0801f718(0, 120);
+            FUN_080207ec(24);
+        }
+    } else {
+        FUN_08015f6c();
+        FUN_08000a2c();
+        FUN_08017964(0);
+        FUN_08017964(1);
+        FUN_08017964(2);
+        FUN_08017964(3);
+        gUnknown_03002030 = (void (*)(void))((u32)FUN_08034748 + 1);
+        return;
+    }
+
+    gUnknown_03002040.base += 16;
+    if (gUnknown_03002040.base > 2048) {
+        gUnknown_03002040.base = 0;
+    }
+    FUN_0800673c(0);
+    FUN_08018318(gUnknown_03001374, gUnknown_03001b24);
+    FUN_080176e4(gUnknown_03002040.base);
+    FUN_08018300((s16)(gUnknown_03002100 + 512));
+    FUN_080182e4(512);
+    mode = FUN_0801584c();
+    FUN_080182ac();
+    FUN_08016684();
+    FUN_08017ed0();
+    FUN_08013214(mode);
+    FUN_08017f6c();
+    if (mode != 10) {
+        FUN_08006ff4(4);
+        FUN_0800f9c0();
+    }
+    FUN_08011c7c();
+    FUN_080175d4();
+    FUN_08017d58();
+    FUN_08017c5c();
+
+    for (index = 0; index <= 3; index++) {
+        u32 scaled = index << 6;
+        u32 metadataOffset = (scaled - index) * 4;
+        struct UnknownEntityData *metadata =
+            (struct UnknownEntityData *)(metadataOffset + (u32)gUnknown_03001c40);
+
+        if (metadata->field20 == 0xfe && metadata->field26 > 64) {
+            u32 selection;
+
+            FUN_080007fc(index);
+            selection = ((gUnknown_03001378 + 7) * (gUnknown_03001378 + 4)) % 6;
+            switch (selection) {
+            case 0: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 27;
+                break;
+            }
+            case 1: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 30;
+                break;
+            }
+            case 2: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 39;
+                break;
+            }
+            case 3: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 45;
+                break;
+            }
+            case 4: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 54;
+                break;
+            }
+            case 5: {
+                u8 *base = (u8 *)gUnknown_03001c40;
+                u32 offset = (scaled - index) * 4;
+                u8 *destination = base + offset;
+
+                destination += 141;
+                *destination = 57;
+                break;
+            }
+            }
+        }
+    }
 }
 
 void FUN_0801c8f0(void) {
