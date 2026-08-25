@@ -1395,47 +1395,51 @@ void FUN_080198b0(void) {
                 *(u8 *)(index + field.address) = loopZero;
             }
             {
+                u32 doubledIndex = index * 2;
+
+            {
                 union AddressView field;
 
                 field.pointer = state->field58;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 union AddressView field;
 
                 field.pointer = state->field66;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 union AddressView field;
 
                 field.pointer = state->field74;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 union AddressView field;
 
                 field.pointer = state->field82;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 union AddressView field;
 
                 field.pointer = state->field90;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 union AddressView field;
 
                 field.pointer = state->field98;
-                *(u16 *)(index * 2 + field.address) = loopZero;
+                *(u16 *)(doubledIndex + field.address) = loopZero;
             }
             {
                 u8 *field = (u8 *)state + 106;
 
-                *(u16 *)(index * 2 + (u32)field) = loopZero;
+                *(u16 *)(doubledIndex + (u32)field) = loopZero;
                 field += 31;
                 field[index] = loopZero;
+            }
             }
             {
                 union AddressView address12;
@@ -1462,15 +1466,15 @@ void FUN_080198b0(void) {
     }
 
     savedScene = scene;
-    wordZero = 0;
-    finalZero = 0;
     {
         u8 *cursor = savedScene + 55;
 
+        wordZero = 0;
         *cursor = wordZero;
         cursor++;
         *cursor = wordZero;
         cursor += 58;
+        finalZero = 0;
         *(u16 *)cursor = wordZero;
         cursor += 2;
         *cursor = finalZero;
