@@ -9294,13 +9294,13 @@ void FUN_08029d74(struct UnknownListNode *node) {
     }
     {
         register u16 *displayState asm("r5") = gUnknown_03001b10;
-        register u32 mask asm("r6");
+        register u32 mask;
 
         {
             register struct UnknownAllocation29d74 *dataAddress asm("r1") = data;
             register u32 index asm("r0") = dataAddress->index;
             register u32 lowMask asm("r1");
-            register u32 value asm("r2");
+            register u32 value;
             register u32 tableIndex asm("r3");
 
             mask = 15;
