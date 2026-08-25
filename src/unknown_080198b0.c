@@ -8580,7 +8580,7 @@ void FUN_08029250(void) {
                     *secondRecordAddress = metadata;
                 }
                 {
-                    register u32 secondGroup asm("r4") = 0;
+                    register u32 secondGroup = 0;
                     register u8 *secondDestinationBase asm("r10");
                     register u32 secondBaseAddress asm("r5") = 225;
 
@@ -8636,7 +8636,7 @@ void FUN_08029250(void) {
                     *thirdRecordAddress = metadata;
                 }
                 {
-                    register u32 thirdGroup asm("r4") = 0;
+                    register u32 thirdGroup = 0;
                     register u8 *thirdDestinationBase asm("r10");
                     register u32 thirdBaseAddress asm("r5") = 381;
 
@@ -8698,7 +8698,7 @@ void FUN_08029250(void) {
                     }
                 }
                 {
-                    register u32 fourthGroup asm("r4") = 0;
+                    register u32 fourthGroup = 0;
                     register u8 *fourthDestinationBase asm("r7");
                     register u32 fourthBaseAddress asm("r5") = 537;
 
@@ -8741,7 +8741,7 @@ void FUN_08029250(void) {
         }
 
         {
-            register u8 *configAddress asm("r3") = config;
+            register u8 *configAddress = config;
 
             if (configAddress[0] == 10) {
                 gUnknown_03005268[0] |= 1;
