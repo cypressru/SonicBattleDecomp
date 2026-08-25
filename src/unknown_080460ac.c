@@ -577,90 +577,91 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
 
                 emptyCommand <<= 2;
                 soundTable = gUnknown_08edda44;
-            scriptLoop:
-            parseNext: {
-                const u16 *script = state->field28.script;
-                u16 command = script[0];
-                const u16 *nextScript = script + 1;
+                while (1) {
+                parseNext: {
+                    const u16 *script = state->field28.script;
+                    u16 command = script[0];
+                    const u16 *nextScript = script + 1;
 
-                state->field28.script = nextScript;
+                    state->field28.script = nextScript;
 
-                switch (command) {
-                case 0xfffe:
-                    state->field27 = 0xff;
-                    if (state->field40 != 0) {
-                        state->field40 = 0xf;
-                    }
-                    break;
-                case 0xfffd:
-                    state->field8 = 8;
-                    state->field12.half.low += 0x10;
-                    state->field39++;
-                    if (state->field12.half.low > 0x1f) {
-                        state->field12.half.low -= 0x10;
-                        state->filler25 = 0;
-                        if (state->field39 == 2) {
-                            FUN_0803ff98((const void *)((u32)FUN_08048284 + 1), state, 1);
-                            state->field39 = 0;
-                            state->field27++;
-                        } else {
-                            state->field27 = 3;
+                    switch (command) {
+                    case 0xfffe:
+                        state->field27 = 0xff;
+                        if (state->field40 != 0) {
+                            state->field40 = 0xf;
                         }
-                    } else {
+                        break;
+                    case 0xfffd:
+                        state->field8 = 8;
+                        state->field12.half.low += 0x10;
+                        state->field39++;
+                        if (state->field12.half.low > 0x1f) {
+                            state->field12.half.low -= 0x10;
+                            state->filler25 = 0;
+                            if (state->field39 == 2) {
+                                FUN_0803ff98((const void *)((u32)FUN_08048284 + 1), state, 1);
+                                state->field39 = 0;
+                                state->field27++;
+                            } else {
+                                state->field27 = 3;
+                            }
+                        } else {
+                            goto parseNext;
+                        }
+                        break;
+                    case 0xfffb:
+                        command = nextScript[0];
+                        state->field28.script = nextScript + 1;
+                        state->field37 = command;
                         goto parseNext;
-                    }
-                    break;
-                case 0xfffb:
-                    command = nextScript[0];
-                    state->field28.script = nextScript + 1;
-                    state->field37 = command;
-                    goto parseNext;
-                case 0xfff9: {
-                    s32 conversionResult;
+                    case 0xfff9: {
+                        s32 conversionResult;
 
-                    command = nextScript[0];
-                    state->field28.script = nextScript + 1;
-                    conversionResult =
-                        FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
-                    gUnknown_03000285 = conversionResult;
-                    if ((s8)conversionResult < 0) {
-                        gUnknown_03000285 = 0;
+                        command = nextScript[0];
+                        state->field28.script = nextScript + 1;
+                        conversionResult =
+                            FUN_080406d4(gUnknown_03000274[command], (s8 *)gUnknown_03000280, 5);
+                        gUnknown_03000285 = conversionResult;
+                        if ((s8)conversionResult < 0) {
+                            gUnknown_03000285 = 0;
+                        }
+                        FUN_08046af8(state);
+                        if (gUnknown_03000285 > 4) {
+                            state->field27 = 1;
+                        } else {
+                            state->field27 = 4;
+                        }
+                        break;
                     }
-                    FUN_08046af8(state);
-                    if (gUnknown_03000285 > 4) {
-                        state->field27 = 1;
-                    } else {
-                        state->field27 = 4;
-                    }
-                    break;
-                }
-                default:
-                    gUnknown_0300028c.second = 0;
-                    if ((command == 0 || command == emptyCommand) &&
-                        (gUnknown_0300028c.first == 0 || gUnknown_0300028c.first == emptyCommand)) {
-                        gUnknown_0300028c.second = 1;
-                    }
-                    gUnknown_0300028c.first = command;
-                    state->field8 += FUN_08020978(state->field8, state->field12.half.low, command,
-                                                  state->field37);
-                    FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
-                    if (state->field38 != 0) {
-                        if (gUnknown_0300028c.second == 0) {
+                    default:
+                        gUnknown_0300028c.second = 0;
+                        if ((command == 0 || command == emptyCommand) &&
+                            (gUnknown_0300028c.first == 0 ||
+                             gUnknown_0300028c.first == emptyCommand)) {
+                            gUnknown_0300028c.second = 1;
+                        }
+                        gUnknown_0300028c.first = command;
+                        state->field8 += FUN_08020978(state->field8, state->field12.half.low,
+                                                      command, state->field37);
+                        FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
+                        if (state->field38 != 0) {
+                            if (gUnknown_0300028c.second == 0) {
+                                FUN_0801f618(soundTable[*field36]);
+                            }
+                        } else if ((state->field28.half.low & 2) != 0 &&
+                                   gUnknown_0300028c.second == 0) {
                             FUN_0801f618(soundTable[*field36]);
                         }
-                    } else if ((state->field28.half.low & 2) != 0 &&
-                               gUnknown_0300028c.second == 0) {
-                        FUN_0801f618(soundTable[*field36]);
+                        done = 1;
+                        break;
                     }
-                    break;
                 }
-                done = emptyCommand != 0;
+                    if (done != 0) {
+                        goto switchDone;
+                    }
+                }
             }
-            }
-            if (done != 0) {
-                goto switchDone;
-            }
-            goto scriptLoop;
         }
         goto switchDone;
     case 2:
