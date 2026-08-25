@@ -2277,7 +2277,7 @@ void FUN_0801c4bc(void) {
     }
 
     gUnknown_03002040.base += 16;
-    if (gUnknown_03002040.base > 2048) {
+    if ((s16)gUnknown_03002040.base > 2048) {
         gUnknown_03002040.base = 0;
     }
     FUN_0800673c(0);
