@@ -3145,11 +3145,10 @@ void FUN_0801d618(u8 value) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = (doubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        u32 linked = entity->field15;
 
-        if (linked != index) {
+        if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = linked * 2;
+            u32 linkedOffset = entity->field15 * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
@@ -3178,11 +3177,10 @@ void FUN_0801d618(u8 value) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = (doubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        u32 linked = entity->field15;
 
-        if (linked != index) {
+        if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = linked * 2;
+            u32 linkedOffset = entity->field15 * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
@@ -3211,11 +3209,10 @@ void FUN_0801d618(u8 value) {
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = (doubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        u32 linked = entity->field15;
 
-        if (linked != index) {
+        if (entity->field15 != index) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = linked * 2;
+            u32 linkedOffset = entity->field15 * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
@@ -3256,10 +3253,10 @@ void FUN_0801d618(u8 value) {
         FUN_0801d9e0(index);
         return;
     case 13: {
+        u32 linked = FUN_0801d068(index);
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = (doubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
-        u32 linked = FUN_0801d068(index);
 
         entity->field15 = linked;
         linked = (u8)linked;
@@ -3268,7 +3265,7 @@ void FUN_0801d618(u8 value) {
         }
         {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
-            u32 linkedOffset = linked * 2;
+            u32 linkedOffset = entity->field15 * 2;
             u32 metadataOffset = (index * 64 - index) * 4;
             s16 *coordinate =
                 (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
