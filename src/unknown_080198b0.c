@@ -9477,6 +9477,28 @@ void FUN_08030a8c(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_080309c0 + 1);
 }
 
+void FUN_08030a30(struct UnknownListNode *node) {
+    u8 *counter = &gUnknown_030052f8;
+    u8 *selection;
+
+    if (*counter > 2) {
+        *counter -= 2;
+        return;
+    }
+
+    *counter = 0;
+    selection = &gUnknown_030052e0;
+    FUN_0802fb58(*selection);
+    (*selection)++;
+    if (*selection > 6) {
+        *selection = 0;
+    }
+    if (gUnknown_030052e8[*selection] == 0) {
+        (*selection)++;
+    }
+    node->data = (const void *)((u32)FUN_080309c0 + 1);
+}
+
 void FUN_08030c78(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         FUN_0803035c();
