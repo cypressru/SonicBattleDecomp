@@ -5306,13 +5306,10 @@ void FUN_080219e4(u8 *data, u32 count) {
 
         do {
             u32 index = data[0];
-            u32 value;
 
             index += (u32)table;
-            value = data[1];
             index = *(const u8 *)index;
-            value += index;
-            data[1] = value;
+            data[1] += index;
             data++;
             i++;
         } while (i < end);
