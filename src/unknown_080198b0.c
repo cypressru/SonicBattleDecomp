@@ -3673,7 +3673,7 @@ void FUN_0803bea8(void) {
     u8 comparison;
     u8 target;
     u8 *savedState;
-    u8 result;
+    u32 result;
 
     targetPointer += (u32)targets;
     current = *state;
