@@ -1877,6 +1877,8 @@ void FUN_0801ad38(void) {
 
     if (*(u16 *)(gUnknown_030030d0 + 4) <= 2) {
         u8 *metadata;
+        u32 zero;
+        u32 one;
 
         FUN_08017964(0);
         FUN_08017964(1);
@@ -1884,6 +1886,7 @@ void FUN_0801ad38(void) {
         FUN_08017964(3);
 
         metadata = (u8 *)gUnknown_03001c40;
+        zero = 0;
         metadata[36] = 6;
         metadata[288] = 4;
         metadata[540] = 6;
@@ -1892,14 +1895,15 @@ void FUN_0801ad38(void) {
         metadata[289] = 4;
         metadata[541] = 6;
         metadata[793] = 4;
-        metadata[16] = 1;
-        metadata[268] = 0;
-        metadata[520] = 1;
-        metadata[772] = 0;
-        metadata[18] = 1;
-        metadata[270] = 0;
-        metadata[522] = 1;
-        metadata[774] = 0;
+        one = 1;
+        metadata[16] = one;
+        metadata[268] = zero;
+        metadata[520] = one;
+        metadata[772] = zero;
+        metadata[18] = one;
+        metadata[270] = zero;
+        metadata[522] = one;
+        metadata[774] = zero;
     }
 
     if ((u8)FUN_08015858() != 0) {
