@@ -8743,7 +8743,6 @@ void FUN_08029250(void) {
         {
             register u8 *configAddress asm("r3") = config;
 
-            asm volatile("" : "+r"(configAddress));
             if (configAddress[0] == 10) {
                 gUnknown_03005268[0] |= 1;
             }
@@ -8757,7 +8756,6 @@ void FUN_08029250(void) {
         {
             register u8 *configAddress asm("r1") = config;
 
-            asm volatile("" : "+r"(configAddress));
             if (configAddress[3] == 10) {
                 gUnknown_03005268[3] |= 1;
             }
@@ -8770,7 +8768,6 @@ void FUN_08029250(void) {
         {
             register u32 *modeAddress asm("r2") = &gUnknown_03005254;
 
-            asm volatile("" : "+r"(modeAddress));
             mode = *modeAddress;
         }
         if (mode != 0) {
