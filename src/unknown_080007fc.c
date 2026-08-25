@@ -1118,18 +1118,24 @@ void FUN_0800f9c0(void) {
             FUN_08018204(&record->x, &record->y, record->x, record->y);
 
             switch (record->fifteenth) {
-            case 0:
+            case 0: {
+                u16 caseY;
+
                 record->x -= 8;
-                oldY = record->y;
-                record->y = oldY - 8;
-                frame.placementY.word = (u16)(oldY - 1);
+                caseY = record->y;
+                record->y = caseY - 8;
+                frame.placementY.word = (u16)(caseY - 1);
                 break;
-            case 1:
+            }
+            case 1: {
+                u16 caseY;
+
                 record->x -= 16;
-                oldY = record->y;
-                record->y = oldY - 8;
-                frame.placementY.word = (u16)(oldY - 1);
+                caseY = record->y;
+                record->y = caseY - 8;
+                frame.placementY.word = (u16)(caseY - 1);
                 break;
+            }
             case 2:
                 record->x -= 8;
                 oldY = record->y;
