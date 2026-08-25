@@ -8006,7 +8006,6 @@ void FUN_08029250(void) {
     {
         register u8 *variants asm("r5") = gUnknown_03005268;
 
-        asm volatile("" : "+r"(variants));
         FUN_080290e8(0, variants[0], 0);
         FUN_080290e8(1, variants[1], 1);
         FUN_080290e8(2, variants[2], 2);
