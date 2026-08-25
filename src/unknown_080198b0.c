@@ -7437,11 +7437,11 @@ void FUN_08029250(void) {
     struct UnknownListNode *node;
 
     {
-        register u8 *scene asm("r4") = &gUnknown_03001620;
-        register u32 zero asm("r0") = 0;
+        register u8 *scene = &gUnknown_03001620;
+        register u32 zero = 0;
         register u32 one asm("r2");
         register u8 *state asm("r1");
-        register u32 stateOffset asm("r3");
+        register u32 stateOffset;
 
         scene[1] = zero;
         one = 1;
