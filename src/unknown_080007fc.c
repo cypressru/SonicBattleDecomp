@@ -1075,16 +1075,24 @@ animation_ready:
 
     {
         u16 *scanIndex = &gUnknown_03003110[slot];
+        u32 sentinel;
+        u32 mask;
+        u32 header;
 
-        if ((commands[*scanIndex] & 0xffff0000) != 0xfff00000) {
+        header = commands[*scanIndex];
+        mask = 0xffff0000;
+        header &= mask;
+        sentinel = 0xfff00000;
+        if (header != sentinel) {
             u16 *cursor = scanIndex;
+            u32 loopSentinel = sentinel;
 
             do {
                 (*cursor)++;
                 if (*cursor > 0xfe) {
                     return 0xff;
                 }
-            } while ((commands[*cursor] & 0xffff0000) != 0xfff00000);
+            } while ((commands[*cursor] & mask) != loopSentinel);
         }
     }
 
