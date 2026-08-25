@@ -1607,6 +1607,7 @@ units:
       FUN_08043f00: 0x24
       FUN_08043f7c: 0x3A
       FUN_080309c0: 0x16
+      FUN_08030a8c: 0x34
       FUN_0803876c: 0x16
       FUN_0803bb34: 0x16
       FUN_0803bbf0: 0x16
@@ -3304,6 +3305,8 @@ units:
       - { offset: 0x17170, mode: thumb }
       - { offset: 0x1717C, mode: data }
       - { offset: 0x17180, mode: thumb }
+      - { offset: 0x171EE, mode: data }
+      - { offset: 0x171F4, mode: thumb }
       - { offset: 0x1EF04, mode: thumb }
       - { offset: 0x1EF16, mode: data }
       - { offset: 0x1EF1C, mode: thumb }
@@ -4271,6 +4274,10 @@ units:
       - { offset: 0x17118, type: thumb_call, symbol: FUN_0802ea64 }
       - { offset: 0x17128, type: abs32, symbol: gUnknown_030052e0 }
       - { offset: 0x1712C, type: abs32, symbol: FUN_080309e0, addend: 1 }
+      - { offset: 0x171F0, type: abs32, symbol: gUnknown_030052f8 }
+      - { offset: 0x171FE, type: thumb_call, symbol: FUN_0802fb58 }
+      - { offset: 0x17210, type: abs32, symbol: gUnknown_030052e0 }
+      - { offset: 0x17214, type: abs32, symbol: FUN_080309c0, addend: 1 }
       - { offset: 0x1EEC4, type: thumb_call, symbol: FUN_080375d8 }
       - { offset: 0x1EED4, type: abs32, symbol: gUnknown_030052e0 }
       - { offset: 0x1EED8, type: abs32, symbol: FUN_0803878c, addend: 1 }
