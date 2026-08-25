@@ -9432,6 +9432,33 @@ void FUN_080309c0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_080309e0 + 1);
 }
 
+void FUN_0803044c(u8 value) {
+    if (value != 0xff) {
+        u32 zero = 0;
+        u32 offset = value << 6;
+        u32 *rowDestination = (u32 *)(0x06008020 + offset);
+        u32 row = 0;
+        u32 stride = 144;
+
+        do {
+            u32 column = 0;
+            u32 nextRow = row + 1;
+            u32 *destination = rowDestination;
+
+            do {
+                *destination++ = zero;
+                column++;
+            } while (column <= 15);
+            rowDestination += stride;
+            row = nextRow;
+        } while (row <= 23);
+    } else {
+        u32 zero = 0;
+
+        CpuFastSet(&zero, (void *)0x06017a00, 0x01000180);
+    }
+}
+
 void FUN_08030a8c(struct UnknownListNode *node) {
     u8 *counter = &gUnknown_030052f8;
     u16 *allocation;
