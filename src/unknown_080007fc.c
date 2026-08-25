@@ -873,8 +873,6 @@ void FUN_08006ff4(u8 count) {
             (record->stateType != 2 || identifier != 0x116 || index == gUnknown_03001380) &&
             (record->stateType != 3 || identifier != 0x115 || index == gUnknown_03001380) &&
             gUnknown_03001620.activeSlots[index] != 0xFF) {
-            s16 adjustedY;
-
             FUN_0801816c(&x, &y, record->x, record->y);
             FUN_08018204(&x, &y, x, y);
             entry.fields.yMinus6 = y - 6;
@@ -893,10 +891,9 @@ void FUN_08006ff4(u8 count) {
             }
 
             record->screenX = x;
-            adjustedY = y - record->height;
-            record->screenY = adjustedY;
-            if ((u16)(x + 64) <= 304 && adjustedY <= gUnknown_030017c0 &&
-                adjustedY >= gUnknown_030016d0 - 64) {
+            record->screenY = y - record->height;
+            if ((u16)(x + 64) <= 304 && (s16)record->screenY <= gUnknown_030017c0 &&
+                (s16)record->screenY >= gUnknown_030016d0 - 64) {
                 u16 tile = (u16)index * 36;
 
                 entry.fields.index = index;
