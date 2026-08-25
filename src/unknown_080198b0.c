@@ -3877,27 +3877,27 @@ void FUN_0803f7cc(void) {
 }
 
 void FUN_0803fd4c(void) {
-    register u32 index asm("r5") = 1;
-    register struct UnknownTransferList403c0 **queue asm("r1") = &gUnknown_030001a4;
-    register struct UnknownTransferList403c0 **queueCopy asm("r6");
+    register u32 index = 1;
+    register struct UnknownTransferList403c0 **queue = &gUnknown_030001a4;
+    register struct UnknownTransferList403c0 **queueCopy;
 
     if (index < (*queue)->records[0].flags) {
         queueCopy = queue;
         do {
-            register struct UnknownTransferRecord403c0 *recordBase asm("r0") =
+            register struct UnknownTransferRecord403c0 *recordBase =
                 (struct UnknownTransferRecord403c0 *)*queueCopy;
-            register u32 recordOffset asm("r4") = index * 12;
-            register struct UnknownTransferRecord403c0 *record asm("r4") =
+            register u32 recordOffset = index * 12;
+            register struct UnknownTransferRecord403c0 *record =
                 (struct UnknownTransferRecord403c0 *)(recordOffset + (u32)recordBase);
-            register const u16 *source asm("r0") = record->source;
-            register u16 *destination asm("r1") = record->destination;
-            register u32 width asm("r2") = record->width;
-            register u32 height asm("r3") = record->height;
-            register u32 flags asm("r4") = record->flags;
+            register const u16 *source = record->source;
+            register u16 *destination = record->destination;
+            register u32 width = record->width;
+            register u32 height = record->height;
+            register u32 flags = record->flags;
 
             FUN_08040408(source, destination, width, height, flags);
             {
-                register u32 nextIndex asm("r0") = index + 1;
+                register u32 nextIndex = index + 1;
 
                 index = (u16)nextIndex;
             }
