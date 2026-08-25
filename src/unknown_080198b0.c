@@ -11681,12 +11681,12 @@ foundTable:
 
 void FUN_0804224c(u8 value) {
     register u8 *state asm("r3") = (u8 *)&gUnknown_03002110;
-    register u32 offset asm("r2") = 0x488;
+    register u32 offset = 0x488;
 
     state[offset] = value;
     {
-        register struct UnknownGlobalRenderState *global asm("r4") = &gUnknown_03005440;
-        register u32 field asm("r1") = global->filler30;
+        register struct UnknownGlobalRenderState *global = &gUnknown_03005440;
+        register u32 field = global->filler30;
 
         offset++;
         state[offset] = field;
@@ -11698,7 +11698,7 @@ void FUN_0804224c(u8 value) {
         state[offset] = field;
         asm volatile("" : "+r"(offset));
         {
-            register u32 *destination asm("r5") = (u32 *)(state + 0x48c);
+            register u32 *destination = (u32 *)(state + 0x48c);
             register const u32 *firstAddress = &gUnknown_03002610;
             register const u32 *secondAddress = &gUnknown_03005488;
             register u32 difference;
@@ -11725,7 +11725,7 @@ void FUN_0804224c(u8 value) {
         const s16 *source = (const s16 *)0x02000200;
         s16 row = 0;
         u32 one = 1;
-        register u32 destinationOffset asm("r0") = 0x49c;
+        register u32 destinationOffset = 0x49c;
         u8 *destination;
 
         asm volatile("" : "+r"(destinationOffset));
@@ -11737,8 +11737,8 @@ void FUN_0804224c(u8 value) {
 
             do {
                 if (*source++ != 0) {
-                    register s32 shift asm("r1") = column;
-                    register u32 bits asm("r0") = one;
+                    register s32 shift = column;
+                    register u32 bits = one;
 
                     bits <<= shift;
                     bits |= mask;
