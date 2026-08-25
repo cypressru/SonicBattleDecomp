@@ -8809,11 +8809,8 @@ void FUN_08029250(void) {
             register void *destination asm("r1") = (void *)0x0600F800;
             register const void *source asm("r0");
 
-            asm volatile("" : "+r"(destination));
             count = 0x01000200;
-            asm volatile("" : "+r"(count));
             source = fillAddresses[0];
-            asm volatile("" : "+r"(source));
             CpuFastSet(source, destination, count);
         }
         fills[2] = 0;
@@ -8821,9 +8818,7 @@ void FUN_08029250(void) {
             register void *destination asm("r1") = (void *)0x0600F000;
             register const void *source asm("r0");
 
-            asm volatile("" : "+r"(destination));
             source = fillAddresses[1];
-            asm volatile("" : "+r"(source));
             CpuFastSet(source, destination, count);
         }
     }
