@@ -1082,7 +1082,7 @@ animation_ready:
             do {
                 (*cursor)++;
                 if (*cursor > 0xfe) {
-                    goto invalid_stream;
+                    return 0xff;
                 }
             } while ((commands[*cursor] & 0xffff0000) != 0xfff00000);
         }
@@ -1188,7 +1188,7 @@ animation_ready:
     command_done:
         gUnknown_03003110[slot]++;
         if (gUnknown_03003110[slot] > 0xfe) {
-            goto invalid_stream;
+            return 0xff;
         }
     }
 
