@@ -1840,6 +1840,7 @@ units:
       FUN_080211d8: 0x10
       FUN_08021244: 0x1E
       FUN_08021484: 0x38
+      FUN_080214c0: 0x48
       FUN_08021518: 0x12
       FUN_08021534: 0x2E
       FUN_08021564: 0x1C
@@ -2495,6 +2496,8 @@ units:
       - { offset: 0x79B8, mode: thumb }
       - { offset: 0x7C0C, mode: data }
       - { offset: 0x7C10, mode: thumb }
+      - { offset: 0x7C26, mode: data }
+      - { offset: 0x7C2C, mode: thumb }
       - { offset: 0x7C64, mode: data }
       - { offset: 0x7C68, mode: thumb }
       - { offset: 0x7C7A, mode: data }
@@ -5482,6 +5485,10 @@ units:
       - { offset: 0x7980, type: abs32, symbol: gUnknown_03004d34 }
       - { offset: 0x79B4, type: abs32, symbol: gUnknown_03004d34 }
       - { offset: 0x7C0C, type: abs32, symbol: gUnknown_03004d40 }
+      - { offset: 0x7C4C, type: thumb_call, symbol: MultiBootStartMaster }
+      - { offset: 0x7C5C, type: abs32, symbol: gUnknown_0300525c }
+      - { offset: 0x7C60, type: abs32, symbol: gUnknown_03002610 }
+      - { offset: 0x7C64, type: abs32, symbol: gUnknown_03004d9c }
       - { offset: 0x7C72, type: thumb_call, symbol: SoftResetExram }
       - { offset: 0x7C7C, type: abs32, symbol: gUnknown_020000e0 }
       - { offset: 0x7C8A, type: thumb_call, symbol: FUN_08018c8c }

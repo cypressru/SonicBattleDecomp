@@ -998,6 +998,7 @@ extern void CpuSet(const void *source, void *destination, u32 mode);
 extern struct UnknownState08021484 gUnknown_03004d40;
 extern u32 gUnknown_020000e0;
 extern const void *gUnknown_03004d94;
+extern u32 gUnknown_03004d9c;
 extern u32 gUnknown_03004d8c;
 extern void SoftResetExram(u32 flags);
 extern void RegisterRamReset(u32 flags);
@@ -1181,7 +1182,10 @@ extern u32 FUN_08020978(s32 x, u32 y, u16 tile, u32 attributes);
 extern void FUN_08028f1c(struct UnknownListNode *node);
 extern void FUN_0802f328(void *state);
 extern u32 FUN_0801fab0(u16 value);
-extern void FUN_080214c0(u32 value);
+extern u8 FUN_080214c0();
+struct MultiBootParam;
+extern void MultiBootStartMaster(struct MultiBootParam *param, const u8 *source, s32 length,
+                                 u8 paletteColor, s8 paletteSpeed);
 extern u8 gUnknown_03005260;
 extern u32 gUnknown_03005258;
 extern struct UnknownRecords28c80 gUnknown_030016f0;
@@ -5183,6 +5187,20 @@ u8 FUN_08021484(void) {
         }
     }
     return result;
+}
+
+u8 FUN_080214c0() {
+    struct UnknownState08021484 *state = (void *)0x03004d40;
+
+    if (state->filler0[24] != 0 || state->secondFlags == 0) {
+        return 0;
+    }
+
+    *(u32 *)0x020000cc = gUnknown_0300525c;
+    *(u32 *)0x020000d0 = gUnknown_03002610;
+    MultiBootStartMaster((struct MultiBootParam *)state, (const u8 *)0x020000c0,
+                         gUnknown_03004d9c - 0xc0, 4, 1);
+    return 1;
 }
 
 void FUN_08021518(void) {
