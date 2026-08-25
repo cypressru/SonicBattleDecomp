@@ -4070,20 +4070,27 @@ u32 FUN_0801d068(u8 value) {
         candidate = (struct UnknownEntityData *)((u8 *)gUnknown_03001c40 - 72);
         score = scores;
         for (; index <= 3; candidate++, score++, index++) {
-            if (index != value && *(u8 *)(index + (u32)entries) != 0xff &&
-                groupState->groups[index] != group && bestScore > *score) {
-                u16 type = candidate->field20;
+            if (index != value && *(u8 *)(index + (u32)entries) != 0xff) {
+                union {
+                    u8 *pointer;
+                    u32 address;
+                } groupAddress;
 
-                if (type == 0xfc)
-                    continue;
-                if (type == 0xfd)
-                    continue;
-                if (type == 0xfe)
-                    continue;
-                if (type == 0xff)
-                    continue;
-                bestScore = *score;
-                bestIndex = index;
+                groupAddress.pointer = groupState->groups;
+                if (*(u8 *)(index + groupAddress.address) != group && bestScore > *score) {
+                    u16 type = candidate->field20;
+
+                    if (type == 0xfc)
+                        continue;
+                    if (type == 0xfd)
+                        continue;
+                    if (type == 0xfe)
+                        continue;
+                    if (type == 0xff)
+                        continue;
+                    bestScore = *score;
+                    bestIndex = index;
+                }
             }
         }
     } else {
