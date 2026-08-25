@@ -948,6 +948,11 @@ pools at the first two alleged starts and converge on `0x0802F31A`, whose `add s
 pops, and `bx r0` restore the still-live owner frame. The corrected function therefore spans
 `0x0802EA64-0x0802F322`, before alignment padding and the next real function at `0x0802F328`.
 
+The alleged function at `0x0803013A` instead lands inside the trailing literal pool after
+`FUN_0802fdf8` returns at `0x08030118`. Its 48-byte claimed extent contains address and constant
+words consumed by the preceding owner, including EWRAM, VRAM, and ROM pointers; it has no prologue,
+call edge, or coherent independent control flow. Those bytes remain represented as data.
+
 The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
 at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
 function. It initializes six halfwords in each of four 16-byte link records, exchanges those

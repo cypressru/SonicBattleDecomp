@@ -9317,6 +9317,19 @@ void FUN_080303cc(void) {
     *registers = copy;
 }
 
+void FUN_080304a4(void) {
+    FUN_0801fbfc((const u16 *)0x0812e608, 16);
+    FUN_0801fb94();
+    FUN_0801ff30();
+    FUN_0801f780();
+    FUN_080210d8();
+    FUN_0802110c();
+    FUN_0803035c();
+    FUN_080184c8();
+    FUN_08018c3c();
+    gUnknown_03002030 = FUN_08000210;
+}
+
 void FUN_080381e4(void) {
     volatile u16 *registers = (volatile u16 *)0x0400000a;
     u32 value = 0x1e09;
