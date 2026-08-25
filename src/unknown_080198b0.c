@@ -8165,7 +8165,6 @@ void FUN_080299c0(void) {
         scene[0] = 0;
     }
 
-    asm volatile("" : : : "r4");
     {
         register u8 *output asm("r3") = &gUnknown_03001620;
         register const u8 *table asm("r2") = gUnknown_0810db54;
