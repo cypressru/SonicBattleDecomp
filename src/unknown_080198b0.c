@@ -206,6 +206,7 @@ extern void FUN_08033228(struct UnknownListNode *node);
 extern void FUN_080333dc(struct UnknownListNode *node);
 extern void FUN_08033390(struct UnknownListNode *node);
 extern void FUN_08024304(struct UnknownListNode *node);
+extern void FUN_08023b54(struct UnknownListNode *node);
 extern void FUN_08024170(struct UnknownListNode *node);
 extern void FUN_08033bc4(struct UnknownListNode *node);
 extern void FUN_08033bb4(struct UnknownListNode *node);
@@ -6115,6 +6116,24 @@ void FUN_080242bc(struct UnknownListNode *node) {
     data = row[gUnknown_03004dd4];
     FUN_08020b74(0, 0, data, 15, 1);
     node->data = (const void *)((u32)FUN_08024304 + 1);
+}
+
+void FUN_08024304(struct UnknownListNode *node) {
+    struct UnknownListNode *owner = node;
+    struct UnknownAllocation25a98 *allocation = owner->allocation;
+    u32 zero;
+    u32 fill;
+
+    if ((gUnknown_030048e0.third & 0x100) != 0) {
+        zero = 0;
+        fill = zero;
+        CpuFastSet(&fill, (void *)0x0600b000, 0x01000700);
+        gUnknown_03004dbc->field18 = zero;
+        allocation->child40 = FUN_0801f7d0(
+            (void (*)(struct UnknownListNode *))((u32)FUN_0802482c + 1), 16, gUnknown_03003e20, 0);
+        owner->data = (const void *)((u32)FUN_08023b54 + 1);
+        FUN_0801f618(420);
+    }
 }
 
 void FUN_0802426c(struct UnknownListNode *node) {
