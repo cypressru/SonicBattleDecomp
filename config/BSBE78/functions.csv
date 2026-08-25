@@ -689,7 +689,6 @@ address,name,mode,confidence
 0x0802EA64,FUN_0802ea64,thumb,direct-call+exact-body
 0x0802F1EA,FUN_0802f1ea,thumb,rom-pointer+exact-body
 0x0802F2DE,FUN_0802f2de,thumb,rom-pointer+exact-body
-0x0802F31A,FUN_0802f31a,thumb,direct-call+exact-body
 0x0802F328,FUN_0802f328,thumb,direct-call+exact-body
 0x0802F428,FUN_0802f428,thumb,direct-call+exact-body
 0x0802F488,FUN_0802f488,thumb,direct-call+exact-body

@@ -941,6 +941,12 @@ zero-padding bytes; mapping symbols prevent that padding from inflating the func
 
 ## Original source language
 
+The label at `0x0802F31A` is not a function start. Control enters it directly from
+`FUN_0802f2de` with that function's 12-byte stack frame and saved `r4-r6` still live; the bytes are
+only `add sp, #12`, the matching pops, and `bx r0`. Its extent therefore belongs to
+`FUN_0802f2de`, which ends at `0x0802F322` before alignment padding and the next real function at
+`0x0802F328`.
+
 The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
 at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
 function. It initializes six halfwords in each of four 16-byte link records, exchanges those
