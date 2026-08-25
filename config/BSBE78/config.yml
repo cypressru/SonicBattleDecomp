@@ -2152,7 +2152,7 @@ units:
       - { offset: 0x3D98, mode: data }
       - { offset: 0x3DA4, mode: thumb }
       - { offset: 0x3DCC, mode: data }
-      - { offset: 0x3E0C, mode: thumb }
+      - { offset: 0x3E10, mode: thumb }
       - { offset: 0x3E64, mode: data }
       - { offset: 0x3E6C, mode: thumb }
       - { offset: 0x3EB8, mode: data }
@@ -4103,20 +4103,21 @@ units:
       - { offset: 0x3DCC, type: abs32, symbol: gUnknown_03003db0 }
       - { offset: 0x3DD0, type: abs32, symbol: gUnknown_08ed8b64 }
       - { offset: 0x3DB4, type: thumb_call, symbol: FUN_0801f578 }
-      - { offset: 0x3DD4, type: abs32, symbol: .text, addend: 0x3E18 }
-      - { offset: 0x3DD8, type: abs32, symbol: .text, addend: 0x3E20 }
-      - { offset: 0x3DDC, type: abs32, symbol: .text, addend: 0x3E28 }
-      - { offset: 0x3DE0, type: abs32, symbol: .text, addend: 0x3E30 }
-      - { offset: 0x3DE4, type: abs32, symbol: .text, addend: 0x3E84 }
-      - { offset: 0x3DE8, type: abs32, symbol: .text, addend: 0x3ED8 }
-      - { offset: 0x3DEC, type: abs32, symbol: .text, addend: 0x3F34 }
-      - { offset: 0x3DF0, type: abs32, symbol: .text, addend: 0x3F3C }
-      - { offset: 0x3DF4, type: abs32, symbol: .text, addend: 0x3F44 }
-      - { offset: 0x3DF8, type: abs32, symbol: .text, addend: 0x3F4C }
-      - { offset: 0x3DFC, type: abs32, symbol: .text, addend: 0x3F54 }
-      - { offset: 0x3E00, type: abs32, symbol: .text, addend: 0x3F5C }
-      - { offset: 0x3E04, type: abs32, symbol: .text, addend: 0x3FBA }
-      - { offset: 0x3E08, type: abs32, symbol: .text, addend: 0x3E0C }
+      - { offset: 0x3DD4, type: abs32, symbol: .text, addend: 0x3DD8 }
+      - { offset: 0x3DD8, type: abs32, symbol: .text, addend: 0x3E18 }
+      - { offset: 0x3DDC, type: abs32, symbol: .text, addend: 0x3E20 }
+      - { offset: 0x3DE0, type: abs32, symbol: .text, addend: 0x3E28 }
+      - { offset: 0x3DE4, type: abs32, symbol: .text, addend: 0x3E30 }
+      - { offset: 0x3DE8, type: abs32, symbol: .text, addend: 0x3E84 }
+      - { offset: 0x3DEC, type: abs32, symbol: .text, addend: 0x3ED8 }
+      - { offset: 0x3DF0, type: abs32, symbol: .text, addend: 0x3F34 }
+      - { offset: 0x3DF4, type: abs32, symbol: .text, addend: 0x3F3C }
+      - { offset: 0x3DF8, type: abs32, symbol: .text, addend: 0x3F44 }
+      - { offset: 0x3DFC, type: abs32, symbol: .text, addend: 0x3F4C }
+      - { offset: 0x3E00, type: abs32, symbol: .text, addend: 0x3F54 }
+      - { offset: 0x3E04, type: abs32, symbol: .text, addend: 0x3F5C }
+      - { offset: 0x3E08, type: abs32, symbol: .text, addend: 0x3FBA }
+      - { offset: 0x3E0C, type: abs32, symbol: .text, addend: 0x3E10 }
       - { offset: 0x3E12, type: thumb_call, symbol: FUN_0801e3cc }
       - { offset: 0x3E1A, type: thumb_call, symbol: FUN_0801de5c }
       - { offset: 0x3E22, type: thumb_call, symbol: FUN_0801eb50 }
