@@ -7448,11 +7448,9 @@ void FUN_08029250(void) {
         scene[2] = one;
         state = (u8 *)&gUnknown_03002110;
         stateOffset = 0x473;
-        asm volatile("" : "+r"(stateOffset));
         {
             register u8 *checkAddress asm("r0") = state + stateOffset;
 
-            asm volatile("" : "+r"(checkAddress));
             if (*checkAddress != 0) {
                 register u32 selectorOffset asm("r5") = 0x472;
                 register u32 selector asm("r0");
@@ -7460,7 +7458,6 @@ void FUN_08029250(void) {
 
                 asm volatile("" : "+r"(selectorOffset));
                 selectorAddress = state + selectorOffset;
-                asm volatile("" : "+r"(selectorAddress));
                 {
                     register u32 tableOffset asm("r6") = 0x474;
 
