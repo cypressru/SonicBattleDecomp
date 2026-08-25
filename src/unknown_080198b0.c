@@ -1613,54 +1613,63 @@ void FUN_0801c090(void) {
 }
 
 void FUN_0801c28c(void) {
-    u32 current;
-    struct UnknownEntityData *metadata;
-    u8 *state;
-    u16 flags;
     u8 index;
 
     FUN_0801c090();
-    current = gUnknown_03001380;
-    FUN_080177b8(current);
-    metadata = &gUnknown_03001c40[current];
+    FUN_080177b8(gUnknown_03001380);
+    {
+        struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u32 metadataOffset = (scaled - current) * 4;
+        struct UnknownEntityData *metadata =
+            (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+        u16 flags;
 
-    if (metadata->field20 == 55) {
-        state = gUnknown_03001b30 + current * 64;
-        flags = *(u16 *)(state + state[60] * 2);
-        if ((flags & 0x20) != 0) {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) -= 128;
-        } else if ((flags & 0x10) != 0) {
-            *(u16 *)((u8 *)&gUnknown_03002040 + 12) += 128;
+        if (metadata->field20 == 55) {
+            u8 *stateBase = gUnknown_03001b30;
+            u8 *state = (u8 *)(scaled + (u32)stateBase);
+            u32 stateOffset = state[60] * 2;
+
+            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
+            if ((flags & 0x20) != 0) {
+                *(u16 *)((u8 *)&gUnknown_03002040 + 12) -= 128;
+            } else if ((flags & 0x10) != 0) {
+                *(u16 *)((u8 *)&gUnknown_03002040 + 12) += 128;
+            } else {
+                *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
+            }
+        } else if (metadata->field20 == 53) {
+            u8 *stateBase = gUnknown_03001b30;
+            u8 *state = (u8 *)(scaled + (u32)stateBase);
+            u32 stateOffset = state[60] * 2;
+
+            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase + 20);
+            if ((flags & 0x200) != 0) {
+                switch (metadata->field159) {
+                case 0:
+                    metadata->field159 = 1;
+                    break;
+                case 1:
+                    metadata->field159 = 0;
+                    break;
+                case 2:
+                    metadata->field159 = 3;
+                    break;
+                case 3:
+                    metadata->field159 = 2;
+                    break;
+                }
+
+                ((u8 *)gUnknown_03001c40)[18] = ((u8 *)gUnknown_03001c40)[16] ^ 1;
+                ((u8 *)gUnknown_03001c40)[270] = ((u8 *)gUnknown_03001c40)[268] ^ 1;
+                ((u8 *)gUnknown_03001c40)[522] = ((u8 *)gUnknown_03001c40)[520] ^ 1;
+                ((u8 *)gUnknown_03001c40)[774] = ((u8 *)gUnknown_03001c40)[772] ^ 1;
+                metadata->field36 = 0;
+            }
         } else {
             *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
         }
-    } else if (metadata->field20 == 53) {
-        state = gUnknown_03001b30 + current * 64;
-        flags = *(u16 *)(state + 20 + state[60] * 2);
-        if ((flags & 0x200) != 0) {
-            switch (metadata->field159) {
-            case 0:
-                metadata->field159 = 1;
-                break;
-            case 1:
-                metadata->field159 = 0;
-                break;
-            case 2:
-                metadata->field159 = 3;
-                break;
-            case 3:
-                metadata->field159 = 2;
-                break;
-            }
-
-            ((u8 *)gUnknown_03001c40)[18] = ((u8 *)gUnknown_03001c40)[16] ^ 1;
-            ((u8 *)gUnknown_03001c40)[270] = ((u8 *)gUnknown_03001c40)[268] ^ 1;
-            ((u8 *)gUnknown_03001c40)[522] = ((u8 *)gUnknown_03001c40)[520] ^ 1;
-            ((u8 *)gUnknown_03001c40)[774] = ((u8 *)gUnknown_03001c40)[772] ^ 1;
-            metadata->field36 = 0;
-        }
-    } else {
-        *(u16 *)((u8 *)&gUnknown_03002040 + 12) = 0;
     }
 
     FUN_08006e64();
@@ -1682,16 +1691,30 @@ void FUN_0801c28c(void) {
     }
     FUN_080006d0();
 
-    state = gUnknown_03001b30 + current * 64;
-    flags = *(u16 *)(state + 20 + state[60] * 2);
-    if ((flags & 8) != 0 && metadata->field191 != 0) {
-        FUN_080207ec(32);
-        gUnknown_03002030 = FUN_0801bd90;
+    {
+        u8 *stateBase = gUnknown_03001b30;
+        u32 current = gUnknown_03001380;
+        u32 scaled = current << 6;
+        u8 *state = (u8 *)(scaled + (u32)stateBase);
+        u32 stateOffset = state[60] * 2;
+        u16 flags = *(u16 *)(stateOffset + scaled + (u32)stateBase + 20);
+
+        if ((flags & 8) != 0) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 metadataOffset = (scaled - current) * 4;
+            struct UnknownEntityData *metadata =
+                (struct UnknownEntityData *)(metadataOffset + (u32)metadataBase);
+
+            if (metadata->field191 != 0) {
+                FUN_080207ec(32);
+                gUnknown_03002030 = FUN_0801bd90;
+            }
+        }
     }
-    if (FUN_080205d0() != 0) {
+    if ((u8)FUN_080205d0() != 0) {
         FUN_08020944();
     }
-    FUN_0801a04c(current);
+    FUN_0801a04c(gUnknown_03001380);
     FUN_080182ac();
     FUN_08016684();
     FUN_08017ed0();
