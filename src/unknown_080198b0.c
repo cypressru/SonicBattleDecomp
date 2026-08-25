@@ -7354,10 +7354,10 @@ void FUN_080290e8(u32 index, u32 variant, u32 unused) {
             } while (entry[0] != scanStop);
         }
         if (entries[0] != (secondStop = 0xFFFE)) {
-            register u32 sentinel asm("r7") = secondStop;
+            register u32 sentinel = secondStop;
 
             do {
-                register s32 width asm("r0") = (s16)FUN_08020fac(entries[0]);
+                register s32 width = (s16)FUN_08020fac(entries[0]);
                 register s32 x asm("r4");
 
                 x = 12 - width;
