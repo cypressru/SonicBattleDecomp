@@ -68,6 +68,10 @@ extern void FUN_0800c1c8(u16 active, u8 mode, s16 x, s16 y, s16 height, u32 sixt
 extern u16 gUnknown_03003380[][16];
 extern u16 gUnknown_03003170;
 extern u16 gUnknown_030033cc;
+extern u32 gUnknown_03003150[];
+extern u32 gUnknown_030032a0[];
+extern u32 gUnknown_03007ffc;
+extern u32 gUnknown_03002110[];
 
 union UnknownQueueEntry08017f00 {
     u32 words[4];
@@ -317,6 +321,7 @@ extern s32 __divsi3(s32 numerator, s32 denominator);
 extern void FUN_0800baac(u8 index);
 extern u8 FUN_0800b098(u16 animation);
 extern void FUN_08020440(u32 first, u16 second, u16 third);
+extern void FUN_08020134(u32 value);
 extern void FUN_08016b30(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_08017690(void);
 extern void FUN_08017eec(void);
@@ -1584,6 +1589,138 @@ u8 FUN_080153e0(void) {
         return 0;
     }
     return 255;
+}
+
+void FUN_08016078(u32 mode) {
+    volatile u16 *oam;
+    u8 selectedMode;
+    volatile u16 zero;
+    u32 hidden;
+    u32 affine;
+    u32 value;
+    s32 counter;
+
+    selectedMode = mode;
+    zero = 0;
+    {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = (u32)&zero;
+        dma[1] = 0x06000000;
+        dma[2] = 0x8100c000;
+        dma[2];
+    }
+    CpuSet((const void *)0x05000000, (void *)0x05000200, 0x1ff);
+
+    oam = (volatile u16 *)0x07000000;
+    value = 0x200;
+    hidden = value;
+    value = 0;
+    counter = 0x100;
+    affine = counter;
+    counter = 31;
+    do {
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = affine;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = hidden;
+        *oam++ = value;
+        *oam++ = value;
+        *oam++ = affine;
+        counter--;
+    } while (counter >= 0);
+
+    gUnknown_03003140 = 0;
+    gUnknown_030013a0 = 0;
+    gUnknown_0300138c = 0;
+
+    switch (selectedMode) {
+    case 5: {
+        gUnknown_03003150[0] = 0x08018665;
+        gUnknown_03003150[1] = 0x08018669;
+        gUnknown_03003150[2] = 0x08018665;
+        gUnknown_03003150[3] = 0x08018665;
+        gUnknown_03003150[4] = 0x08018665;
+        {
+            volatile u32 *dma = (volatile u32 *)0x040000d4;
+            dma[0] = 0x08000104;
+            dma[1] = (u32)gUnknown_030032a0;
+            dma[2] = 0x80000070;
+            dma[2];
+        }
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_03001380 = 0;
+        break;
+    }
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 40: {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = 0x08071184;
+        dma[1] = (u32)gUnknown_03003150;
+        dma[2] = 0x8000000a;
+        dma[2];
+        dma[0] = 0x08000104;
+        dma[1] = (u32)gUnknown_030032a0;
+        dma[2] = 0x80000070;
+        dma[2];
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        FUN_08020134(0);
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_03001380 = 0;
+        break;
+    }
+    case 6: {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        dma[0] = 0x08071170;
+        dma[1] = (u32)gUnknown_03003150;
+        dma[2] = 0x8000000a;
+        dma[2];
+        dma[0] = 0x08000104;
+        dma[1] = (u32)gUnknown_030032a0;
+        dma[2] = 0x80000070;
+        dma[2];
+        gUnknown_03007ffc = (u32)gUnknown_030032a0;
+        *(volatile u16 *)0x04000000 = 0x1c62;
+        *(volatile u16 *)0x04000200 = 0x2005;
+        *(volatile u16 *)0x04000004 = 0x128;
+        *(volatile u16 *)0x04000208 = 1;
+        gUnknown_030016c4 = 0xa0;
+        break;
+    }
+    }
+
+    gUnknown_030017cc = 0;
+    gUnknown_030017c8 = 0;
+    gUnknown_03001388 = 0;
+    gUnknown_030033cc = 0;
+    gUnknown_03003170 = 0;
+    gUnknown_03001b04 = 0x100;
+    gUnknown_030016c8 = 0x200;
+    gUnknown_03001b2c = 0;
+    gUnknown_030016c0 = 0;
+    gUnknown_03001b08 = 0;
+    FUN_08020134(gUnknown_03002110[1] + (u32)gUnknown_03002610);
+    {
+        volatile u32 *dma = (volatile u32 *)0x040000d4;
+        while (dma[2] & 0x80000000) {
+        }
+    }
 }
 
 void FUN_080163c0(u8 layer) {
