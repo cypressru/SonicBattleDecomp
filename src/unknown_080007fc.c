@@ -1056,8 +1056,7 @@ not_remapped:
 animation_ready:
 
     animationIndex = FUN_0800b098(animation);
-    commands =
-        *(const u32 *const *)(character * 0x118 + animationIndex * 4 + (u32)commandTable);
+    commands = *(const u32 *const *)(character * 0x118 + animationIndex * 4 + (u32)commandTable);
 
     if (gUnknown_030030f8[slot] != animation || gUnknown_03003120[slot] != character ||
         (s16)gUnknown_03003108[slot] == 0) {
@@ -1135,71 +1134,71 @@ animation_ready:
 
     sprite_command:
         switch (character) {
-            case 0:
-                resource = !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8
-                                                                                     : 0x08787d18;
-                break;
-            case 1:
-            case 10:
-            case 11:
-            case 21:
-                resource = 0x08787d18;
-                break;
-            case 2:
-            case 22:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158
-                                                                                    : 0x08528418;
-                break;
-            case 3:
-            case 23:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38
-                                                                                    : 0x084cadf8;
-                break;
-            case 4:
-            case 24:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578
-                                                                                    : 0x0858d838;
-                break;
-            case 5:
-            case 25:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98
-                                                                                    : 0x085f3e58;
-                break;
-            case 6:
-            case 26:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8
-                                                                                    : 0x08636478;
-                break;
-            case 7:
-            case 27:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8
-                                                                                    : 0x086f6ab8;
-                break;
-            case 8:
-            case 28:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8
-                                                                                    : 0x08681a98;
-                break;
-            case 9:
-                resource = gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418
-                                                                                    : 0x087336d8;
-                break;
-            default:
-                break;
-            }
+        case 0:
+            resource =
+                !gUnknown_03001620.activeSlots[slot + 4] && remapped != 1 ? 0x0847afd8 : 0x08787d18;
+            break;
+        case 1:
+        case 10:
+        case 11:
+        case 21:
+            resource = 0x08787d18;
+            break;
+        case 2:
+        case 22:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08835158 : 0x08528418;
+            break;
+        case 3:
+        case 23:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x087d7b38 : 0x084cadf8;
+            break;
+        case 4:
+        case 24:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0889a578 : 0x0858d838;
+            break;
+        case 5:
+        case 25:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08900b98 : 0x085f3e58;
+            break;
+        case 6:
+        case 26:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x089431b8 : 0x08636478;
+            break;
+        case 7:
+        case 27:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a037f8 : 0x086f6ab8;
+            break;
+        case 8:
+        case 28:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x0898e7d8 : 0x08681a98;
+            break;
+        case 9:
+            resource =
+                gUnknown_03001620.activeSlots[slot + 4] || remapped == 1 ? 0x08a40418 : 0x087336d8;
+            break;
+        default:
+            break;
+        }
 
-            if (character == 1) {
-                if (animation == 19) {
-                    gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
-                    gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
-                } else if (animation == 20) {
-                    gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
-                    gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
-                }
-            } else if (character == 2 && animation == 21) {
-                gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+        if (character == 1) {
+            if (animation == 19) {
+                gUnknown_03003100[slot] = gUnknown_08055800[(s16)command - 172] - 8;
+                gUnknown_03003118[slot] = gUnknown_0805587e[(s16)command - 172];
+            } else if (animation == 20) {
+                gUnknown_03003100[slot] = gUnknown_08055994[(s16)command - 236] - 8;
+                gUnknown_03003118[slot] = gUnknown_080559d8[(s16)command - 236];
             }
-            FUN_08020440(resource, sound, command);
+        } else if (character == 2 && animation == 21) {
+            gUnknown_03003100[slot] = gUnknown_080576e8[(s16)command - 184];
+        }
+        FUN_08020440(resource, sound, command);
         goto command_done;
 
     loop_command:
@@ -1310,17 +1309,16 @@ void FUN_08015e30(s16 x, s16 y, u8 fourth, u8 fifth, u8 index) {
     u32 xOffset = gUnknown_03003100[index];
     s32 signedX = x;
 
-    FUN_08018004(signedX - xOffset, y + gUnknown_03003118[index], 0, fourth, fifth, 0,
-                 113, 0, 0);
+    FUN_08018004(signedX - xOffset, y + gUnknown_03003118[index], 0, fourth, fifth, 0, 113, 0, 0);
     xOffset = gUnknown_03003100[index];
-    FUN_08018004(signedX - xOffset, (s16)(gUnknown_03003118[index] + 32) + y, 0,
-                 fourth + 16, fifth, 0, 111, 0, 0);
+    FUN_08018004(signedX - xOffset, (s16)(gUnknown_03003118[index] + 32) + y, 0, fourth + 16, fifth,
+                 0, 111, 0, 0);
     xOffset = gUnknown_03003100[index];
-    FUN_08018004(signedX - (xOffset - 32), y + gUnknown_03003118[index], 0, fourth + 24,
-                 fifth, 0, 112, 0, 0);
+    FUN_08018004(signedX - (xOffset - 32), y + gUnknown_03003118[index], 0, fourth + 24, fifth, 0,
+                 112, 0, 0);
     xOffset = gUnknown_03003100[index];
-    FUN_08018004(signedX - (xOffset - 32), (s16)(gUnknown_03003118[index] + 32) + y, 0,
-                 fourth + 32, fifth, 0, 110, 0, 0);
+    FUN_08018004(signedX - (xOffset - 32), (s16)(gUnknown_03003118[index] + 32) + y, 0, fourth + 32,
+                 fifth, 0, 110, 0, 0);
 }
 
 s16 FUN_08015f40(u8 index) { return -gUnknown_03003100[index]; }
@@ -1520,10 +1518,8 @@ void FUN_080177b8(u8 participant) {
         gUnknown_03001b30[previous].position = 0;
     }
     gUnknown_03001b30[initialParticipant].flags[rings[initialParticipant].position] = pressed;
-    gUnknown_03001b30[previous].third[gUnknown_03001b30[initialParticipant].position] =
-        released;
-    gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[previous].position] =
-        value;
+    gUnknown_03001b30[previous].third[gUnknown_03001b30[initialParticipant].position] = released;
+    gUnknown_03001b30[initialParticipant].first[gUnknown_03001b30[previous].position] = value;
 
     for (i = 0; i <= 3; i++) {
         if (i != participantSlot) {
