@@ -3104,35 +3104,47 @@ void FUN_0801d8f4(u8 value) {
 }
 
 void FUN_0801d618(u8 value) {
-    u32 index = value;
-    u32 doubled = index * 2;
-    struct UnknownEntity *entities = gUnknown_03003db0;
-    u32 entityOffset = (doubled + index) * 8;
-    struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+    register u32 doubled;
+    register u8 index = value;
     u32 action;
 
     if (gUnknown_03001c40[index].field196 != 19) {
-        action = FUN_0801f578(index, entity->field15, gUnknown_08ed8b3c);
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+
+        doubled = index * 2;
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b3c);
     } else {
-        action = FUN_0801f578(index, entity->field15, gUnknown_08ed8b64);
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+
+        doubled = index * 2;
+        entityOffset = (doubled + index) * 8;
+        action =
+            FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
+                         gUnknown_08ed8b64);
     }
 
     switch (action) {
-    case 2:
+    case 15:
         ((void (*)(u32))FUN_0801e3cc)(index);
         return;
-    case 3:
+    case 2:
         ((void (*)(u32))FUN_0801de5c)(index);
         return;
-    case 4:
+    case 3:
         ((void (*)(u32))FUN_0801eb50)(index);
         return;
-    case 5:
+    case 4:
         ((void (*)(u32))FUN_0801ebb0)(index);
         return;
-    case 6:
-    case 7:
-    case 8: {
+    case 5: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         u32 linked = entity->field15;
 
         if (linked != index) {
@@ -3144,45 +3156,109 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                if (metadataBase[index].field16 != 0) {
-                    valid = 1;
-                } else {
-                    valid = 0;
-                }
-            } else if (metadataBase[index].field16 == 0) {
-                valid = 1;
+                if (metadataBase[index].field16 != 0)
+                    goto valid5;
+                goto fallback;
             } else {
                 valid = 0;
+                if (metadataBase[index].field16 != 0)
+                    goto test5;
             }
+        valid5:
+            valid = 1;
+        test5:
             if (valid == 0) {
                 goto fallback;
             }
         }
-        if (action == 6) {
-            ((void (*)(u32))FUN_0801ec10)(index);
-        } else if (action == 7) {
-            ((void (*)(u32))FUN_0801ec64)(index);
-        } else {
-            ((void (*)(u32))FUN_0801ecb8)(index);
-        }
+        ((void (*)(u32))FUN_0801ec10)(index);
         return;
     }
-    case 9:
+    case 6: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 linked = entity->field15;
+
+        if (linked != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = linked * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid6;
+                goto fallback;
+            } else {
+                valid = 0;
+                if (metadataBase[index].field16 != 0)
+                    goto test6;
+            }
+        valid6:
+            valid = 1;
+        test6:
+            if (valid == 0) {
+                goto fallback;
+            }
+        }
+        ((void (*)(u32))FUN_0801ec64)(index);
+        return;
+    }
+    case 7: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 linked = entity->field15;
+
+        if (linked != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = linked * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0)
+                    goto valid7;
+                goto fallback;
+            } else {
+                valid = 0;
+                if (metadataBase[index].field16 != 0)
+                    goto test7;
+            }
+        valid7:
+            valid = 1;
+        test7:
+            if (valid == 0) {
+                goto fallback;
+            }
+        }
+        ((void (*)(u32))FUN_0801ecb8)(index);
+        return;
+    }
+    case 8:
         ((void (*)(u32))FUN_0801e0c4)(index);
         return;
-    case 10:
+    case 9:
         ((void (*)(u32))FUN_0801ed6c)(index);
         return;
-    case 11:
+    case 10:
         ((void (*)(u32))FUN_0801eddc)(index);
         return;
-    case 12:
+    case 11:
         FUN_0801db4c(index);
         return;
-    case 13:
+    case 12:
         FUN_0801d9e0(index);
         return;
-    case 14: {
+    case 13: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
         u32 linked = FUN_0801d068(index);
 
         entity->field15 = linked;
@@ -3199,10 +3275,17 @@ void FUN_0801d618(u8 value) {
             u32 valid;
 
             if (*coordinate < 0) {
-                valid = metadataBase[index].field16 != 0;
+                if (metadataBase[index].field16 != 0)
+                    goto valid13;
+                goto fallback;
             } else {
-                valid = metadataBase[index].field16 == 0;
+                valid = 0;
+                if (metadataBase[index].field16 != 0)
+                    goto test13;
             }
+        valid13:
+            valid = 1;
+        test13:
             if (valid != 0) {
                 return;
             }
