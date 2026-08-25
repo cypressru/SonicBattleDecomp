@@ -1267,6 +1267,7 @@ extern const u16 gUnknown_08071222[];
 extern const u16 gUnknown_0807122a[];
 extern const u16 gUnknown_0807121a[];
 extern struct CameraTarget gUnknown_03002040;
+extern u8 gUnknown_03002034;
 extern void FUN_080006d0(void);
 extern u16 gUnknown_03001378;
 extern void FUN_080177b8(u8 participant);
@@ -1283,12 +1284,144 @@ extern void FUN_080066d8(void);
 extern void FUN_08006134(u8 value);
 extern void FUN_08005310(u8 value);
 extern void FUN_0800486c(u8 value);
+extern void FUN_08015f6c(void);
+extern void FUN_08017964(u32 value);
+extern void FUN_0801ce70(void);
+extern void FUN_0800186c(void);
+extern void FUN_08000cf4(u8 index, u8 first, u8 second);
+extern void FUN_0800fdc8(u8 value);
+extern void FUN_0801103c(u8 value);
+extern void FUN_08000a2c(void);
+extern void FUN_0800fd8c(void);
+extern void FUN_08017f58(u8 first, u8 second);
+extern void FUN_0801f024(u8 value);
+extern void FUN_0801e9ec(u8 value);
 extern void FUN_08020944(void);
 extern u8 gUnknown_03001b30[];
 void FUN_080207ec(u16 value);
 void FUN_0801bd90(void);
 void FUN_0801c910(void);
 void FUN_0801a04c(u32 value);
+
+void FUN_080198b0(void) {
+    struct DmaTransfer {
+        const void *source;
+        void *destination;
+        u32 control;
+    };
+    u8 *scene = &gUnknown_03001620;
+    u8 index;
+    u8 zero = 0;
+
+    gUnknown_03003d98 = 0;
+    gUnknown_03003d9c = 0;
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 28] == 0 && scene[index + 20] != 0xff) {
+            gUnknown_03003d9c++;
+        }
+    }
+
+    scene[136] = 0xff;
+    for (index = 0; index <= 3; index++) {
+        scene[index + 39] = zero;
+        scene[index + 43] = zero;
+        scene[index + 47] = zero;
+        scene[index + 51] = zero;
+        *(u16 *)(scene + index * 2 + 58) = zero;
+        *(u16 *)(scene + index * 2 + 66) = zero;
+        *(u16 *)(scene + index * 2 + 74) = zero;
+        *(u16 *)(scene + index * 2 + 82) = zero;
+        *(u16 *)(scene + index * 2 + 90) = zero;
+        *(u16 *)(scene + index * 2 + 98) = zero;
+        *(u16 *)(scene + index * 2 + 106) = zero;
+        scene[index + 137] = zero;
+        if (scene[index + 12] > 100) {
+            scene[index + 12] = 100;
+        }
+        if (scene[index + 16] > 100) {
+            scene[index + 16] = 100;
+        }
+        scene[index + 141] = scene[index + 12];
+        scene[index + 145] = scene[index + 16];
+    }
+
+    scene[55] = zero;
+    scene[56] = zero;
+    *(u16 *)(scene + 114) = zero;
+    scene[116] = zero;
+    *(u16 *)(scene + 130) = zero;
+    scene[117] = zero;
+    scene[133] = zero;
+    scene[134] = zero;
+    scene[135] = zero;
+    *(u16 *)(scene + 126) = scene[7] * 1800;
+    *(u16 *)(scene + 128) = scene[10] * 30;
+
+    FUN_08015f6c();
+    gUnknown_03002040.base = zero;
+    gUnknown_03002040.x = zero;
+    gUnknown_03002040.y = zero;
+    gUnknown_03001374 = zero;
+    gUnknown_03001b24 = zero;
+    FUN_08017964(0);
+    FUN_08017964(1);
+    FUN_08017964(2);
+    FUN_08017964(3);
+    FUN_0801ce70();
+    gUnknown_03002034 = 1;
+    FUN_0800186c();
+
+    for (index = 0; index <= 3; index++) {
+        if (scene[index + 20] != 0xff) {
+            FUN_08000cf4(index, scene[index + 20], 0);
+        }
+    }
+
+    {
+        u8 selected = scene[scene[1] + 3];
+
+        FUN_0800fdc8(selected);
+        FUN_0801103c(selected);
+    }
+    FUN_08000a2c();
+    FUN_0800fd8c();
+
+    {
+        volatile struct DmaTransfer *dma = (volatile struct DmaTransfer *)0x040000d4;
+
+        dma->source = (const void *)0x08bf2058;
+        dma->destination = (void *)0x050002a0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf2078;
+        dma->destination = (void *)0x050002c0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf2098;
+        dma->destination = (void *)0x050002e0;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf20b8;
+        dma->destination = (void *)0x05000300;
+        dma->control = 0x08000010;
+        (void)dma->control;
+        dma->source = (const void *)0x08bf20d8;
+        dma->destination = (void *)0x05000320;
+        dma->control = 0x08000010;
+        (void)dma->control;
+    }
+
+    FUN_08017f58(0, 160);
+    FUN_0801f024(scene[11]);
+    FUN_0801e9ec(0);
+    FUN_0801e9ec(1);
+    FUN_0801e9ec(2);
+    FUN_0801e9ec(3);
+
+    for (index = 0; index <= 3; index++) {
+        *((u8 *)gUnknown_03001c40 + index * 252 + 159) = zero;
+    }
+}
 
 void FUN_0801a61c(u8 mode) {
     u8 *selection;
