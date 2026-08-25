@@ -7211,7 +7211,6 @@ void FUN_08028f98(struct UnknownListNode *node) {
         xAddress = (const s16 *)(offset + (u32)xAddress);
         zero = 0;
         x = xAddress[zero];
-        asm volatile("" : : "r"(x));
         table += 6;
         offset += (u32)table;
         yAddress = (const s16 *)offset;
@@ -7234,7 +7233,6 @@ void FUN_08028f98(struct UnknownListNode *node) {
 
         zero3 = 0;
         x = xAddress[zero3];
-        asm volatile("" : : "r"(x));
         table += 2;
         yAddress = (const s16 *)(offset + (u32)table);
         asm volatile("" : : "r"(yAddress));
