@@ -653,9 +653,9 @@ void FUN_08046bc4(struct UnknownState460ac *state) {
                                    gUnknown_0300028c.second == 0) {
                             FUN_0801f618(soundTable[*field36]);
                         }
+                        done = 1;
                         break;
                     }
-                    done = emptyCommand != 0;
                 }
                     if (done != 0) {
                         goto switchDone;
