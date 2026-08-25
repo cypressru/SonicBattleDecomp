@@ -2012,14 +2012,37 @@ void FUN_0801c28c(void) {
                 }
 
                 {
-                    struct UnknownEntityData *base = gUnknown_03001c40;
-                    u32 one = 1;
-                    u32 zero = 0;
+                    u8 *base = (u8 *)gUnknown_03001c40;
+                    u32 one;
+                    u32 zero;
+                    u32 sourceOffset;
+                    u32 destinationOffset;
+                    u32 toggled;
 
-                    base[0].field18 = base[0].field16 ^ one;
-                    base[1].field18 = base[1].field16 ^ one;
-                    base[2].field18 = base[2].field16 ^ one;
-                    base[3].field18 = base[3].field16 ^ one;
+                    toggled = base[16];
+                    one = 1;
+                    toggled ^= one;
+                    zero = 0;
+                    base[18] = toggled;
+
+                    sourceOffset = 0x86;
+                    sourceOffset <<= 1;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset = 0x87;
+                    destinationOffset <<= 1;
+                    base[destinationOffset] = toggled;
+
+                    sourceOffset = 0x82;
+                    sourceOffset <<= 2;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset += 0xfc;
+                    base[destinationOffset] = toggled;
+
+                    sourceOffset = 0xc1;
+                    sourceOffset <<= 2;
+                    toggled = base[sourceOffset] ^ one;
+                    destinationOffset = 0x306;
+                    base[destinationOffset] = toggled;
                     gUnknown_03001c40[gUnknown_03001380].field36 = zero;
                 }
             }
@@ -2053,7 +2076,11 @@ void FUN_0801c28c(void) {
         u32 scaled = current << 6;
         u8 *state = (u8 *)(scaled + (u32)stateBase);
         u32 stateOffset = state[60] * 2;
-        u16 flags = *(u16 *)(stateOffset + scaled + (u32)stateBase + 20);
+        u16 flags;
+
+        stateOffset += scaled;
+        stateBase += 20;
+        flags = *(u16 *)(stateOffset + (u32)stateBase);
 
         if ((flags & 8) != 0) {
             struct UnknownEntityData *metadataBase = gUnknown_03001c40;
