@@ -7914,8 +7914,8 @@ void FUN_08028d30(struct UnknownListNode *node) {
     register u32 zero;
     register u32 commandCode;
     register const u8 *state;
-    register u32 failed asm("r6");
-    register u32 i asm("r5");
+    register u32 failed;
+    register u32 i;
     register const void *next asm("r0");
 
     owner[0] = node;
@@ -7930,17 +7930,16 @@ void FUN_08028d30(struct UnknownListNode *node) {
     command[5] = *(const u16 *)(state + 100);
     command[6] = *(const u16 *)(state + 102);
     command[7] = *(const u16 *)(state + 104);
-    asm volatile("" : : "r"(state));
     FUN_0801fab0(0x1357);
 
     failed = 0;
     i = 0;
     if (failed < gUnknown_0300525c) {
-        register u32 expected asm("r10") = commandCode;
+        register u32 expected = commandCode;
         register u16 *destinationBase asm("r12") = gUnknown_03005200[0];
-        register u8 *localIndex asm("r9") = &gUnknown_03005260;
-        register const u8 *records asm("r3") = (const u8 *)&gUnknown_030016f0;
-        register const u8 *count asm("r8") = &gUnknown_0300525c;
+        register u8 *localIndex = &gUnknown_03005260;
+        register const u8 *records = (const u8 *)&gUnknown_030016f0;
+        register const u8 *count = &gUnknown_0300525c;
         register u16 *destination asm("r4") = destinationBase;
         u32 sentinel = 0xFFFE;
 
@@ -7995,9 +7994,9 @@ void FUN_08028d30(struct UnknownListNode *node) {
             return;
         }
     } else {
-        register u16 *destinationBase asm("r2") = gUnknown_03005200[0];
-        register u8 *localIndex asm("r3") = &gUnknown_03005260;
-        register const u8 *source asm("r4");
+        register u16 *destinationBase = gUnknown_03005200[0];
+        register u8 *localIndex = &gUnknown_03005260;
+        register const u8 *source;
 
         *(u16 *)((u8 *)destinationBase + *localIndex * 16) =
             *(const u16 *)((source = (const u8 *)&gUnknown_03002110) + 96);
@@ -8047,7 +8046,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
             sentinel = 0xFFFE;
             *(u16 *)destinationAddress = sentinel;
         }
-        asm volatile("" : : "r"(source));
         next = (const void *)((u32)FUN_08028bec + 1);
     }
     owner[0]->data = next;
