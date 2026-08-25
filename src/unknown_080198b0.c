@@ -8050,18 +8050,14 @@ void FUN_08029250(void) {
         register u8 *scene asm("r0");
 
         command = gUnknown_03001b10;
-        asm volatile("" : "+r"(command));
         {
             register u32 commandValue asm("r0") = 0x3456;
 
-            asm volatile("" : "+r"(commandValue));
             command[1] = commandValue;
         }
         playerAddress = &gUnknown_03005260;
-        asm volatile("" : "+r"(playerAddress));
         player = *playerAddress;
         mask = 15;
-        asm volatile("" : "+r"(mask));
         packed = mask;
         packed &= player;
         packed <<= 12;
