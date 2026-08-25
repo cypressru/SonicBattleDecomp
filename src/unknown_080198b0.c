@@ -9242,7 +9242,6 @@ void FUN_08029cfc(u32 playerIndex) {
         register u8 *stateValue asm("r0") = state + stateOffset;
         register u32 value asm("r0") = *stateValue;
 
-        asm volatile("" : "+r"(value));
         player[150] = value;
 
         {
