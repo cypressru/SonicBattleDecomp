@@ -9054,9 +9054,9 @@ void FUN_080299c0(void) {
     }
 
     {
-        register u8 *output asm("r3") = &gUnknown_03001620;
-        register const u8 *table asm("r2") = gUnknown_0810db54;
-        register const u8 *indices asm("r1") = gUnknown_03002600;
+        register u8 *output = &gUnknown_03001620;
+        register const u8 *table = gUnknown_0810db54;
+        register const u8 *indices = gUnknown_03002600;
 
         {
             register u32 index = indices[0];
