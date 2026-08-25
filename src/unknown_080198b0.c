@@ -117,6 +117,8 @@ extern void FUN_08043f2c(struct UnknownState420dc *state);
 extern void FUN_08045840(struct UnknownState420dc *state);
 extern void FUN_08045928(struct UnknownState420dc *state);
 extern u8 gUnknown_030052e0;
+extern const u8 *gUnknown_08edd32c[];
+extern const u8 gUnknown_0816e9e4[];
 extern u8 gUnknown_030052e4;
 extern void FUN_0802ea64(u8 value);
 extern void FUN_0802ded4(struct UnknownListNode *node);
@@ -9758,6 +9760,20 @@ void FUN_0803a428(struct UnknownListNode *node) {
         node->data = (const void *)((u32)FUN_0803a0f8 + 1);
     }
     FUN_0803a0f8(node);
+}
+
+void FUN_0803a3b8(struct UnknownListNode *node) {
+    struct UnknownListNode *owner = node;
+    u8 *selection;
+    u32 transferSize;
+    u32 source = (u32)gUnknown_08edd32c[gUnknown_03002110.field119];
+
+    FUN_0802036c(0x06007000, source + *(selection = &gUnknown_030052e0) * 4096,
+                 transferSize = 4096);
+    FUN_0802036c(0x050001a0, (u32)gUnknown_0816e9e4 + *selection * 32, 32);
+    FUN_0801fba0(80, 0x3f41);
+    FUN_0801fba0(82, transferSize);
+    owner->data = (const void *)((u32)FUN_0803a428 + 1);
 }
 
 void FUN_0803876c(struct UnknownListNode *node) {
