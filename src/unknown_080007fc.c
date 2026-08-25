@@ -883,12 +883,12 @@ void FUN_08006ff4(u8 count) {
 
             switch (record->directionMode) {
             case 0:
-                x -= record->offsetX + 24;
-                y += record->offsetY - 40;
+                x = x - (record->offsetX + 24);
+                y = (record->offsetY - 40) + y;
                 break;
             case 1:
-                x += record->offsetX - 24;
-                y += record->offsetY - 40;
+                x = x + (record->offsetX - 24);
+                y = (record->offsetY - 40) + y;
                 break;
             }
 
@@ -923,19 +923,22 @@ void FUN_08006ff4(u8 count) {
                 (s16)y >= gUnknown_030016d0 - 64 && record->first != 255) {
                 s16 indicator;
 
-                if (record->height < record->anchorHeight + 20) {
+                if ((s16)record->height < record->anchorHeight + 20) {
                     indicator = 0;
-                } else if (record->height < record->anchorHeight + 40) {
+                } else if ((s16)record->height < record->anchorHeight + 40) {
                     indicator = 1;
-                } else if (record->height < record->anchorHeight + 60) {
+                } else if ((s16)record->height < record->anchorHeight + 60) {
                     indicator = 2;
                 } else {
                     indicator = 3;
                 }
+                entry.fields.x = originalX;
+                entry.fields.y = originalY;
                 entry.fields.height = record->anchorHeight;
                 entry.fields.index = 4;
+                entry.fields.tile = indicator * 8 + 0x90;
                 entry.fields.type = 0x14;
-                SUBMIT_QUEUE(originalX, originalY, indicator * 8 + 0x90, 0x14);
+                FUN_08017f00(entry.words[0], entry.words[1], entry.words[2], entry.words[3]);
             }
         }
 
@@ -943,32 +946,37 @@ void FUN_08006ff4(u8 count) {
         record->directionMode = record->requestedDirection;
         if (record->first != 0x37 || gUnknown_0300138c == 0 || index == gUnknown_03001380 ||
             (index == gUnknown_03001380 + 2 && gUnknown_0300163c[index] != 0)) {
-            if (gUnknown_03001370 == 1) {
-                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
-                    record->requestedDirection = 1;
-                } else if (record->renderMode == 6 || record->renderMode == 9 ||
-                           record->renderMode == 3) {
-                    record->requestedDirection = 0;
-                }
-            } else if (gUnknown_03001370 == 0) {
+            switch (gUnknown_03001370) {
+            case 0:
                 if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
                     record->requestedDirection = 0;
                 } else if (record->renderMode == 6 || record->renderMode == 9 ||
                            record->renderMode == 3) {
                     record->requestedDirection = 1;
                 }
-            } else if (gUnknown_03001370 == 2) {
+                break;
+            case 1:
+                if (record->renderMode == 4 || record->renderMode == 7 || record->renderMode == 1) {
+                    record->requestedDirection = 1;
+                } else if (record->renderMode == 6 || record->renderMode == 9 ||
+                           record->renderMode == 3) {
+                    record->requestedDirection = 0;
+                }
+                break;
+            case 2:
                 if ((u8)(record->renderMode - 1) < 3) {
                     record->requestedDirection = 0;
                 } else if ((u8)(record->renderMode - 7) < 3) {
                     record->requestedDirection = 1;
                 }
-            } else if (gUnknown_03001370 == 3) {
+                break;
+            case 3:
                 if ((u8)(record->renderMode - 1) < 3) {
                     record->requestedDirection = 1;
                 } else if ((u8)(record->renderMode - 7) < 3) {
                     record->requestedDirection = 0;
                 }
+                break;
             }
         }
         index++;
