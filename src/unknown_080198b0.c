@@ -8479,20 +8479,15 @@ void FUN_08029250(void) {
                     register u32 metadataOffset asm("r1") = 200;
                     register u8 *metadataAddress asm("r0");
 
-                    asm volatile("" : "+r"(metadataOffset));
                     metadataOffset <<= 2;
-                    asm volatile("" : "+r"(metadataOffset));
                     metadataAddress = initialState + metadataOffset;
-                    asm volatile("" : "+r"(metadataAddress));
                     initialMetadata = *metadataAddress;
                 }
                 {
                     register u8 *recordAddress asm("r1");
                     register u32 metadataValue asm("r0") = initialMetadata;
 
-                    asm volatile("" : "+r"(metadataValue));
                     recordAddress = record;
-                    asm volatile("" : "+r"(recordAddress));
                     recordAddress += 150;
                     *recordAddress = metadataValue;
                 }
@@ -8501,13 +8496,11 @@ void FUN_08029250(void) {
                 register u32 firstGroup asm("r4") = 0;
 
                 state = initialState;
-                asm volatile("" : "+r"(state));
                 {
                     register u32 unselectedEntryOffset asm("r2") = 802;
 
                     asm volatile("" : "+r"(unselectedEntryOffset));
                     entryBytes = &state[unselectedEntryOffset];
-                    asm volatile("" : "+r"(entryBytes));
                 }
                 {
                     register u8 *unselectedConfig asm("r5") = gUnknown_0300524c;
