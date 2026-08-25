@@ -46,7 +46,7 @@ extern u32 FUN_0801cfc8(u8 value);
 u32 FUN_0801d068(u8 value);
 u8 FUN_0801d188(u8 value);
 u32 FUN_0801d200(u8 value);
-extern void FUN_0801d408(u8 value);
+u16 FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
 void FUN_080200f8(void);
@@ -1177,7 +1177,15 @@ void FUN_0801e258(u8 value);
 void FUN_0801e2c8(u32 value);
 extern void FUN_0801e4f4(u8 value);
 extern void FUN_0801e6a0(void);
+void FUN_0801e3cc(u8 value);
+void FUN_0801eb50(u8 value);
+void FUN_0801ebb0(u8 value);
+void FUN_0801ec10(u8 value);
+void FUN_0801ec64(u8 value);
+void FUN_0801ecb8(u8 value);
+void FUN_0801ed0c(u8 value);
 extern u8 FUN_0801ee4c(u8 value);
+extern u32 FUN_0801f578(u32 value, u32 linked, const void *table);
 extern u32 FUN_08020160(u32 value);
 extern u32 FUN_08020144(void);
 extern const u8 gUnknown_08071237[];
@@ -1188,6 +1196,8 @@ extern u16 gUnknown_08071250[];
 extern u16 gUnknown_0807125a[];
 extern u8 gUnknown_08071240[];
 extern u8 gUnknown_08071245[];
+extern const u8 gUnknown_08ed8b3c[];
+extern const u8 gUnknown_08ed8b64[];
 
 void FUN_0801eb94(u8 value);
 void FUN_0801ebf4(u8 value);
@@ -3523,6 +3533,146 @@ u32 FUN_0801d200(u8 value) {
     } while (attempt <= 5);
 
     return FUN_0801d188_wide(value);
+}
+
+u16 FUN_0801d408(u8 value) {
+    u32 doubled;
+    u32 index = value;
+    const void *table;
+    u8 linked;
+    u32 action;
+
+    if (gUnknown_03001c40[index].field196 != 19) {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+
+        doubled = index * 2;
+        entityOffset = (doubled + index) * 8;
+        linked = ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15;
+        table = gUnknown_08ed8b3c;
+    } else {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+
+        doubled = index * 2;
+        entityOffset = (doubled + index) * 8;
+        linked = ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15;
+        table = gUnknown_08ed8b64;
+    }
+    action = FUN_0801f578(index, linked, table);
+
+    switch (action) {
+    case 15:
+        ((void (*)(u32))FUN_0801e3cc)(index);
+        break;
+    case 2:
+        FUN_0801de5c_wide(index);
+        break;
+    case 3:
+        ((void (*)(u32))FUN_0801eb50)(index);
+        break;
+    case 4:
+        ((void (*)(u32))FUN_0801ebb0)(index);
+        break;
+    case 5: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = entity->field15 * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
+            } else {
+                valid = 0;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
+            }
+            if (valid == 0)
+                goto fallback;
+        }
+        ((void (*)(u32))FUN_0801ec10)(index);
+        break;
+    }
+    case 6: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = entity->field15 * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
+            } else {
+                valid = 0;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
+            }
+            if (valid == 0)
+                goto fallback;
+        }
+        ((void (*)(u32))FUN_0801ec64)(index);
+        break;
+    }
+    case 7: {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+
+        if (entity->field15 != index) {
+            struct UnknownEntityData *metadataBase = gUnknown_03001c40;
+            u32 linkedOffset = entity->field15 * 2;
+            u32 metadataOffset = (index * 64 - index) * 4;
+            s16 *coordinate =
+                (s16 *)(linkedOffset + metadataOffset + (u32)((u8 *)metadataBase + 54));
+            u32 valid;
+
+            if (*coordinate < 0) {
+                if (metadataBase[index].field16 != 0) {
+                    valid = 1;
+                } else {
+                    goto fallback;
+                }
+            } else {
+                valid = 0;
+                if (metadataBase[index].field16 == 0)
+                    valid = 1;
+            }
+            if (valid != 0) {
+                ((void (*)(u32))FUN_0801ecb8)(index);
+                break;
+            }
+            goto fallback;
+        }
+        ((void (*)(u32))FUN_0801ecb8)(index);
+        break;
+    }
+    }
+    return action;
+
+fallback:
+    ((void (*)(u32))FUN_0801ed0c)(index);
+    return action;
 }
 
 void FUN_0801d5d4(u8 value) {
