@@ -8482,7 +8482,6 @@ void FUN_08029d74(struct UnknownListNode *node) {
                     register u32 highBit asm("r4") = 128;
                     register u32 bit asm("r0");
 
-                    asm volatile("" : "+r"(highBit));
                     highBit <<= 1;
                     asm volatile("" : "+r"(highBit));
                     bit = highBit;
