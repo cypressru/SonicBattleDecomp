@@ -9456,6 +9456,26 @@ void FUN_080387dc(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_0803876c + 1);
 }
 
+void FUN_08038724(struct UnknownListNode *node) {
+    u8 *counter = &gUnknown_030052f8;
+    u8 *selection;
+
+    if (*counter > 1) {
+        (*counter)--;
+        return;
+    }
+
+    *counter = 0;
+    selection = &gUnknown_030052e0;
+    FUN_080382bc(*selection);
+    if (*selection == 0) {
+        *selection = 3;
+    } else {
+        (*selection)--;
+    }
+    node->data = (const void *)((u32)FUN_0803876c + 1);
+}
+
 void FUN_08038850(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         FUN_080380b0();
