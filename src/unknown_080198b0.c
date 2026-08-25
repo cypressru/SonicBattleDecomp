@@ -4152,10 +4152,11 @@ void FUN_0801d618(u8 value) {
         FUN_0801d9e0(index);
         return;
     case 13: {
-        u32 linked = FUN_0801d068(index);
+        u32 result = FUN_0801d068(index);
         struct UnknownEntity *entities = gUnknown_03003db0;
         u32 entityOffset = (savedDoubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 linked = result;
 
         entity->field15 = linked;
         linked = (u8)linked;
