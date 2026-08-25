@@ -3990,28 +3990,30 @@ void FUN_0801d8f4(u8 value) {
 }
 
 void FUN_0801d618(u8 value) {
-    register u32 doubled;
     register u8 index = value;
+    u32 savedDoubled;
     u32 action;
 
     if (gUnknown_03001c40[index].field196 != 19) {
         struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
         u32 entityOffset;
 
-        doubled = index * 2;
         entityOffset = (doubled + index) * 8;
         action =
             FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
                          gUnknown_08ed8b3c);
+        savedDoubled = doubled;
     } else {
         struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
         u32 entityOffset;
 
-        doubled = index * 2;
         entityOffset = (doubled + index) * 8;
         action =
             FUN_0801f578(index, ((struct UnknownEntity *)(entityOffset + (u32)entities))->field15,
                          gUnknown_08ed8b64);
+        savedDoubled = doubled;
     }
 
     switch (action) {
@@ -4029,7 +4031,7 @@ void FUN_0801d618(u8 value) {
         return;
     case 5: {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = (doubled + index) * 8;
+        u32 entityOffset = (savedDoubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         if (entity->field15 != index) {
@@ -4064,7 +4066,7 @@ void FUN_0801d618(u8 value) {
     }
     case 6: {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = (doubled + index) * 8;
+        u32 entityOffset = (savedDoubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         if (entity->field15 != index) {
@@ -4099,7 +4101,7 @@ void FUN_0801d618(u8 value) {
     }
     case 7: {
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = (doubled + index) * 8;
+        u32 entityOffset = (savedDoubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         if (entity->field15 != index) {
@@ -4152,7 +4154,7 @@ void FUN_0801d618(u8 value) {
     case 13: {
         u32 linked = FUN_0801d068(index);
         struct UnknownEntity *entities = gUnknown_03003db0;
-        u32 entityOffset = (doubled + index) * 8;
+        u32 entityOffset = (savedDoubled + index) * 8;
         struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
 
         entity->field15 = linked;
