@@ -119,6 +119,7 @@ extern void FUN_08045928(struct UnknownState420dc *state);
 extern u8 gUnknown_030052e0;
 extern const u8 *gUnknown_08edd32c[];
 extern const u8 gUnknown_0816e9e4[];
+extern const s16 gUnknown_08edbe7c[][3];
 extern u8 gUnknown_030052e4;
 extern void FUN_0802ea64(u8 value);
 extern void FUN_0802ded4(struct UnknownListNode *node);
@@ -11149,6 +11150,16 @@ void FUN_0802db10(struct UnknownListNode *node) {
     if (node->position->field14 == 0) {
         node->data = (const void *)((u32)FUN_0802da00 + 1);
     }
+}
+
+void FUN_0802dbb4(struct UnknownListNode *node) {
+    s8 *allocation = node->allocation;
+    const s16 *targets = gUnknown_08edbe7c[node->position->field13];
+
+    allocation[21] = FUN_0801f914(*targets++, allocation[21]);
+    allocation[29] = FUN_0801f914(*targets++, allocation[29]);
+    allocation[37] = FUN_0801f914(*targets, allocation[37]);
+    FUN_0801fed8(node->field6, 0);
 }
 
 void FUN_0803bb08(struct UnknownListNode *node) {
