@@ -10103,7 +10103,7 @@ void FUN_08036560(void) {
         register u32 rowCounter asm("r6") = 0;
 
         do {
-            register u32 columnCounter asm("r4") = 0;
+            register u32 columnCounter = 0;
 
             do {
                 FUN_08021000(destination, (const u16 *)0x081327D4, 8, 8, 0xF200);
@@ -10122,8 +10122,8 @@ void FUN_08036560(void) {
         register u32 base asm("r7") = 9;
 
         do {
-            register u32 columnCounter asm("r4") = 0;
-            register u32 currentBase asm("r5") = base;
+            register u32 columnCounter = 0;
+            register u32 currentBase = base;
 
             do {
                 node = FUN_0801f7d0(FUN_08036e08, 24, gUnknown_03003e20, 0);
