@@ -11696,13 +11696,12 @@ void FUN_0804224c(u8 value) {
         field = global->field44;
         offset++;
         state[offset] = field;
-        asm volatile("" : "+r"(offset));
         {
             register u32 *destination = (u32 *)(state + 0x48c);
             register const u32 *firstAddress = &gUnknown_03002610;
             register const u32 *secondAddress = &gUnknown_03005488;
             register u32 difference;
-            register u32 second asm("r0");
+            register u32 second;
 
             difference = *firstAddress;
             second = *secondAddress;
