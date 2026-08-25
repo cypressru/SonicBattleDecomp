@@ -8931,15 +8931,15 @@ void FUN_08029250(void) {
         register u8 *playerAddress asm("r3");
         register u32 mask asm("r1");
         register u32 packed asm("r2");
-        register u32 player asm("r0");
-        register u8 *selectionAddress asm("r0");
+        register u32 player;
+        register u8 *selectionAddress;
         register u32 selection asm("r4");
-        register u8 *variants asm("r6");
-        register u8 *scene asm("r0");
+        register u8 *variants;
+        register u8 *scene;
 
         command = gUnknown_03001b10;
         {
-            register u32 commandValue asm("r0") = 0x3456;
+            register u32 commandValue = 0x3456;
 
             command[1] = commandValue;
         }
