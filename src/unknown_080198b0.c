@@ -1510,8 +1510,14 @@ void FUN_0801c090(void) {
         break;
     case 3:
         if (savedScene[134] == 20) {
+            u16 *output;
+            u32 result;
+
             savedScene[134] = 0;
-            *(u16 *)(savedMetadata + 0x3bc) = 0x200;
+            output = (u16 *)(savedMetadata + 0x3bc);
+            result = 0x80;
+            result <<= 2;
+            *output = result;
         } else {
             goto zero_output;
         }
