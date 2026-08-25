@@ -1030,6 +1030,7 @@ u8 FUN_08015924(u8 character, u16 animation, u8 direction, u16 sound, u8 slot) {
     u32 command;
     u32 opcode;
     u32 resource;
+    const u8 *commandTable;
     u16 commandIndex;
     u8 animationIndex;
     u32 remapped;
@@ -1052,8 +1053,10 @@ not_remapped:
 
 animation_ready:
 
+    commandTable = (const u8 *)0x0868eda8;
     animationIndex = FUN_0800b098(animation);
-    commands = *(const u32 *const *)(0x0868eda8 + character * 0x118 + animationIndex * 4);
+    commands =
+        *(const u32 *const *)(commandTable + (character * 0x118 + animationIndex * 4));
 
     if (gUnknown_030030f8[slot] != animation || gUnknown_03003120[slot] != character ||
         (s16)gUnknown_03003108[slot] == 0) {
