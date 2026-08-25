@@ -8900,13 +8900,11 @@ s32 FUN_080406d4(s32 value, s8 *destination, s32 width) {
     register s8 *cursor asm("r4") = destination;
     register u8 remaining asm("r5");
 
-    asm volatile("" : "+r"(cursor));
     adjustedWidth = (s8)width;
     asm volatile("" : "+r"(adjustedWidth));
     cursor += adjustedWidth;
     adjustedWidth--;
     adjustedWidth <<= 24;
-    asm volatile("" : "+r"(adjustedWidth));
     remaining = (u32)adjustedWidth >> 24;
     adjustedWidth >>= 24;
     if (adjustedWidth == -1) {
