@@ -8109,20 +8109,20 @@ void FUN_080299c0(void) {
 
         selectionCount += 36;
         {
-            register u32 countZero asm("r0") = 0;
+            register u32 countZero = 0;
 
             *selectionCount = countZero;
         }
         {
-            register u32 loopIndex asm("r4") = 0;
+            register u32 loopIndex = 0;
 
             selectionDestination += 20;
             {
-                register u32 zero asm("r5") = 0;
+                register u32 zero = 0;
 
                 do {
                     register u32 selection asm("r0") = gUnknown_0300524c[loopIndex];
-                    register u32 selectionTest asm("r3") = selection;
+                    register u32 selectionTest = selection;
 
                     if (selectionTest > 9) {
                         selection = 0xFF;
