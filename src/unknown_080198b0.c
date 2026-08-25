@@ -8577,7 +8577,6 @@ void FUN_08029250(void) {
                     asm volatile("" : "+r"(metadata));
                     secondRecordOffset <<= 1;
                     secondRecordAddress = record + secondRecordOffset;
-                    asm volatile("" : "+r"(secondRecordAddress));
                     *secondRecordAddress = metadata;
                 }
                 {
@@ -8636,7 +8635,6 @@ void FUN_08029250(void) {
                     asm volatile("" : "+r"(metadata));
                     thirdRecordOffset <<= 1;
                     thirdRecordAddress = record + thirdRecordOffset;
-                    asm volatile("" : "+r"(thirdRecordAddress));
                     *thirdRecordAddress = metadata;
                 }
                 {
@@ -8700,7 +8698,6 @@ void FUN_08029250(void) {
                         register u8 *fourthRecordAddress asm("r0");
 
                         fourthRecordAddress = record + fourthRecordOffset;
-                        asm volatile("" : "+r"(fourthRecordAddress));
                         *fourthRecordAddress = metadata;
                     }
                 }
