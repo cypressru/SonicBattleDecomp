@@ -295,6 +295,12 @@ extern void FUN_0801fbd8(void);
 extern u16 gUnknown_030016b8;
 extern u16 gUnknown_030020fc;
 extern u16 gUnknown_03001b20;
+extern s16 gUnknown_03002b70;
+extern s16 gUnknown_03002b74;
+extern s16 gUnknown_03002b80;
+extern u8 gUnknown_03002b84;
+extern s16 gUnknown_03002b90[];
+extern s16 gUnknown_03002bd0;
 extern u16 gUnknown_03001d0c[][126];
 extern void CpuFastSet(const void *source, void *destination, u32 mode);
 extern void CpuSet(const void *source, void *destination, u32 mode);
@@ -875,6 +881,93 @@ void FUN_08012b60(void) {
         gUnknown_03002cd0[i].fifth = 0;
         gUnknown_03002cd0[i].sixth = 0;
     }
+}
+
+u8 FUN_080125dc(u16 *horizontal, u16 *vertical, u16 *boundaryX, u16 *boundaryY, s16 x, s16 y) {
+    s16 distancesX[2];
+    s16 distancesY[2];
+    u8 result;
+    u8 i;
+
+    result = 0;
+    *horizontal = result;
+    *vertical = result;
+    *boundaryX = result;
+    *boundaryY = result;
+
+    for (i = result; i < gUnknown_03002b84; i += 4) {
+        u8 horizontalSide;
+        u8 verticalSide;
+        s32 horizontalDistance;
+        s32 verticalDistance;
+        s32 firstDistance;
+        s32 secondDistance;
+
+        if (gUnknown_03002b90[i] < x && x < gUnknown_03002b90[i + 1] &&
+            gUnknown_03002b90[i + 2] < y && y < gUnknown_03002b90[i + 3]) {
+            distancesX[0] = x - gUnknown_03002b90[i];
+            distancesX[1] = x - gUnknown_03002b90[i + 1];
+            distancesY[0] = y - gUnknown_03002b90[i + 2];
+            distancesY[1] = y - gUnknown_03002b90[i + 3];
+
+            firstDistance = distancesX[0];
+            if (firstDistance < 0) {
+                firstDistance = -firstDistance;
+            }
+            secondDistance = distancesX[1];
+            if (secondDistance < 0) {
+                secondDistance = -secondDistance;
+            }
+            horizontalSide = 1;
+            if (firstDistance < secondDistance) {
+                horizontalSide = 0;
+            }
+            firstDistance = distancesY[0];
+            if (firstDistance < 0) {
+                firstDistance = -firstDistance;
+            }
+            secondDistance = distancesY[1];
+            if (secondDistance < 0) {
+                secondDistance = -secondDistance;
+            }
+            verticalSide = 3;
+            if (firstDistance < secondDistance) {
+                verticalSide = 2;
+            }
+
+            result |= 1 << horizontalSide;
+            result |= 1 << verticalSide;
+            horizontalDistance = distancesX[horizontalSide];
+            if (horizontalDistance < 0) {
+                horizontalDistance = -horizontalDistance;
+            }
+            verticalDistance = distancesY[verticalSide - 2];
+            if (verticalDistance < 0) {
+                verticalDistance = -verticalDistance;
+            }
+            if (horizontalDistance < verticalDistance) {
+                *horizontal = distancesX[horizontalSide];
+            } else {
+                *vertical = distancesY[verticalSide - 2];
+            }
+        }
+    }
+
+    if (x > gUnknown_03002b74) {
+        *boundaryX = x - gUnknown_03002b74;
+        result |= 0x10;
+    } else if (x < gUnknown_03002bd0) {
+        *boundaryX = x - gUnknown_03002bd0;
+        result |= 0x20;
+    }
+    if (y > gUnknown_03002b80) {
+        *boundaryY = y - gUnknown_03002b80;
+        result |= 0x40;
+    } else if (y < gUnknown_03002b70) {
+        *boundaryY = y - gUnknown_03002b70;
+        result |= 0x80;
+    }
+    return result;
 }
 
 #define BUTTON_STATE                                                                               \
