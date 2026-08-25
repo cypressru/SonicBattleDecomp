@@ -1477,55 +1477,77 @@ void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 s
 }
 
 void FUN_0800f3c4(void) {
-    u8 recordIndex;
+    u8 recordIndex = 0;
 
-    for (recordIndex = 0; recordIndex < 12; recordIndex++) {
-        struct UnknownRecord030017d0 *record = &gUnknown_030017d0[recordIndex];
+#define records ((u8 *)gUnknown_030017d0)
 
-        if (record->seventeenth != 0) {
-            const u8 *count = &gUnknown_0806b414[record->seventeenth];
+    do {
+        u32 recordOffset = recordIndex * 68;
+
+        if (*(u16 *)(records + recordOffset + 56) != 0) {
             u8 slot;
 
-            for (slot = 0; slot < *count; slot++) {
-                u16 *value = (u16 *)((u8 *)record + 26 + slot * 2);
+            for (slot = 0; slot < gUnknown_0806b414[*(u16 *)(records + recordOffset + 56)];
+                 slot++) {
+                u16 *value = (u16 *)(records + recordOffset + 26 + slot * 2);
 
                 if (*value != 0xffff) {
                     const u8 *state = (const u8 *)&gUnknown_03001620;
-                    const u8 *resource;
-                    u16 scale;
 
-                    if ((u8)(state[20 + record->sixteenth] - 9) < 8 ||
-                        state[24 + record->sixteenth] != 0) {
-                        resource = (const u8 *)0x08b40858;
+                    if ((u8)(state[20 + records[recordOffset + 53]] - 9) < 8 ||
+                        state[24 + records[recordOffset + 53]] != 0) {
+                        const u8 *resource = (const u8 *)0x08b40858;
+
+                        switch (records[recordOffset + 52]) {
+                        case 0:
+                            FUN_080204b8((u32)resource, 0x100, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 1:
+                        case 2:
+                            FUN_080204b8((u32)resource, 0x200, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 3:
+                            FUN_080204b8((u32)resource, 0x400, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 4:
+                            FUN_080204b8((u32)resource, 0x40, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        }
                     } else {
-                        resource = (const u8 *)0x08a8f038;
+                        const u8 *resource = (const u8 *)0x08a8f038;
+
+                        switch (records[recordOffset + 52]) {
+                        case 0:
+                            FUN_080204b8((u32)resource, 0x100, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 1:
+                        case 2:
+                            FUN_080204b8((u32)resource, 0x200, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 3:
+                            FUN_080204b8((u32)resource, 0x400, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        case 4:
+                            FUN_080204b8((u32)resource, 0x40, resource[recordIndex * 68 + slot],
+                                         *value);
+                            break;
+                        }
                     }
 
-                    switch (record->fifteenth) {
-                    case 0:
-                        scale = 0x100;
-                        break;
-                    case 1:
-                    case 2:
-                        scale = 0x200;
-                        break;
-                    case 3:
-                        scale = 0x400;
-                        break;
-                    case 4:
-                        scale = 0x40;
-                        break;
-                    default:
-                        *value = 0xffff;
-                        continue;
-                    }
-
-                    FUN_080204b8((u32)resource, scale, resource[recordIndex * 68 + slot], *value);
                     *value = 0xffff;
                 }
             }
         }
-    }
+        recordIndex = (u8)(recordIndex + 1);
+    } while (recordIndex < 12);
+#undef records
 }
 
 void FUN_0800f9c0(void) {
