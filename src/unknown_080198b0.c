@@ -3806,22 +3806,15 @@ void FUN_0803bf68(struct UnknownListNode *node) {
     u8 *allocation = owner->allocation;
     const u8 *graphicsOffsets = gUnknown_030052e8;
     u8 *indexPointer = &gUnknown_030052e0;
-    const u8 *graphicsOffsetPointer = (const u8 *)(u32)*indexPointer;
     u32 value;
     struct UnknownPosition *position;
     u8 *fadePointer;
     struct UnknownPosition *savedPosition;
 
-    graphicsOffsetPointer += (u32)graphicsOffsets;
-    value = *graphicsOffsetPointer;
-    value += 12;
-    value = -value;
-    allocation[21] = value;
+    allocation[21] = -(graphicsOffsets[*indexPointer] + 12);
     position = owner->position;
     fadePointer = &gUnknown_030052f8;
-    value = *fadePointer;
-    value += 199;
-    position->x = value;
+    position->x = *fadePointer + 199;
     savedPosition = owner->position;
     value = gUnknown_08edd540[*indexPointer];
     value += 8;
