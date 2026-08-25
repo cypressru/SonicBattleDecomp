@@ -3604,8 +3604,7 @@ void FUN_0802dc90(struct UnknownListNode *node) {
     s32 signedValue = node->position->x;
 
     node->position->x = value + (signedValue - 32) * 2;
-    asm volatile("" ::: "memory");
-    if (node->position->x > 255) {
+    if (((volatile struct UnknownListNode *)node)->position->x > 255) {
         FUN_0801f8c0(node);
     } else {
         FUN_0801fed8(node->field6, 0);
@@ -3617,8 +3616,7 @@ void FUN_0802dce0(struct UnknownListNode *node) {
     s32 signedValue = node->position->x;
 
     node->position->x = value + (signedValue - 28) * 2;
-    asm volatile("" ::: "memory");
-    if (node->position->x > 255) {
+    if (((volatile struct UnknownListNode *)node)->position->x > 255) {
         FUN_0801f8c0(node);
     } else {
         FUN_0801fed8(node->field6, 0);
