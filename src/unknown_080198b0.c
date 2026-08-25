@@ -8923,7 +8923,6 @@ digit_loop: {
     *--cursor = remainder;
     shifted = remaining << 24;
     decrement = 0xFFu << 24;
-    asm volatile("" : "+r"(shifted), "+r"(decrement));
     shifted += decrement;
     remaining = shifted >> 24;
     if ((s8)remaining == -1) {
@@ -8941,7 +8940,6 @@ digits_done: {
     register u32 originalShift asm("r2") = remaining << 24;
     register s32 signedRemaining asm("r0");
 
-    asm volatile("" : "+r"(originalShift));
     signedRemaining = (s32)originalShift >> 24;
     if (signedRemaining > 0) {
         register s32 minusOne asm("r1");
@@ -8952,11 +8950,9 @@ digits_done: {
         remaining = (u32)signedRemaining >> 24;
         signedRemaining >>= 24;
         minusOne = -1;
-        asm volatile("" : "+r"(minusOne), "+r"(signedRemaining));
         if (signedRemaining != minusOne) {
             register s32 padding asm("r3") = minusOne;
 
-            asm volatile("" : "+r"(padding));
             do {
                 register u32 shifted asm("r0");
                 register u32 decrement asm("r5");
@@ -8964,7 +8960,6 @@ digits_done: {
                 *--cursor = padding;
                 shifted = remaining << 24;
                 decrement = 0xFFu << 24;
-                asm volatile("" : "+r"(shifted), "+r"(decrement));
                 shifted += decrement;
                 remaining = shifted >> 24;
                 signedRemaining = (s32)shifted >> 24;
