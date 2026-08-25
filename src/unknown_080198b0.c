@@ -8786,9 +8786,11 @@ void FUN_080404ec(void) {
 
         do {
             struct UnknownPoolNode404ec *node = *globalAddress;
+            u32 nodeAddress;
 
             index *= stride;
-            node = (struct UnknownPoolNode404ec *)(index + (u32)node);
+            nodeAddress = index + (u32)node;
+            node = (struct UnknownPoolNode404ec *)nodeAddress;
             FUN_0804af6c((struct UnknownListNode *)node, node->data);
             node = *globalAddress;
             index += (u32)node;
