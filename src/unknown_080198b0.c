@@ -2165,7 +2165,7 @@ void FUN_0801e4f4(u8 value) {
         savedDoubled = ((savedDoubled + index) * 8) / 8 - index;
     }
     {
-        u32 scaled = savedDoubled * 32;
+        u32 scaled = index << 6;
         u32 metadataOffset2 = (scaled - index) * 4;
         struct UnknownEntityData *metadata2 =
             (struct UnknownEntityData *)(metadataOffset2 + (u32)savedMetadataBase);
