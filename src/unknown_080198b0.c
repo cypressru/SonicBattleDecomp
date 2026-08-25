@@ -8171,62 +8171,62 @@ void FUN_080299c0(void) {
         register const u8 *indices asm("r1") = gUnknown_03002600;
 
         {
-            register u32 index asm("r0") = indices[0];
+            register u32 index = indices[0];
 
             index += (u32)table;
             output[4] = *(u8 *)index;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[1];
+            register const u8 *entry = table;
+            register u32 index = indices[1];
 
             entry += 8;
             entry += index;
             output[5] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[2];
+            register const u8 *entry = table;
+            register u32 index = indices[2];
 
             entry += 16;
             entry += index;
             output[6] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[3];
+            register const u8 *entry = table;
+            register u32 index = indices[3];
 
             entry += 24;
             entry += index;
             output[7] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[4];
+            register const u8 *entry = table;
+            register u32 index = indices[4];
 
             entry += 32;
             entry += index;
             output[8] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[5];
+            register const u8 *entry = table;
+            register u32 index = indices[5];
 
             entry += 40;
             entry += index;
             output[9] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r4") = indices[6];
+            register const u8 *entry = table;
+            register u32 index = indices[6];
 
             entry += 48;
             entry += index;
             output[10] = *entry;
         }
         {
-            register const u8 *entry asm("r0") = table;
-            register u32 index asm("r1") = indices[8];
+            register const u8 *entry = table;
+            register u32 index = indices[8];
 
             entry += 64;
             entry += index;
@@ -8234,7 +8234,7 @@ void FUN_080299c0(void) {
         }
 
         {
-            register u32 active asm("r2") = 0;
+            register u32 active = 0;
             register const u8 *variants asm("r1") = gUnknown_03005268;
 
             if (variants[0] == 0) {
