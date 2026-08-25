@@ -1085,20 +1085,16 @@ void FUN_0800baac(u8 index) {
 
 void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 strength, u8 hitType,
                   u32 hitFlags, u8 markHit, u32 unused, u8 minimumState, u8 maximumState) {
-    struct UnknownRecord030017d0 *actor;
-    u8 *battleState;
     s16 heightAdjustment;
     u8 participant;
 
+#define actor (&gUnknown_030017d0[actorIndex])
     (void)unused;
-    battleState = (u8 *)&gUnknown_03001620;
-    actor = &gUnknown_030017d0[actorIndex];
-
     if (gUnknown_0300138c != 0) {
-        u8 target = actor->sixteenth;
+        u8 target = gUnknown_030017d0[actorIndex].sixteenth;
 
         if (target != gUnknown_03001380) {
-            if (target != gUnknown_03001380 + 2 || battleState[28 + target] == 0) {
+            if (target != gUnknown_03001380 + 2 || ((u8 *)&gUnknown_03001620)[28 + target] == 0) {
                 return;
             }
         }
@@ -1116,18 +1112,26 @@ void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 s
     }
 
     for (participant = 0; participant <= 3; participant++) {
-        u8 *metadata = (u8 *)&gUnknown_03001c40[participant];
+        u8 *battleState;
+        u8 *metadata;
         u8 target = actor->sixteenth;
-        u8 *targetMetadata = (u8 *)&gUnknown_03001c40[target];
         s32 deltaX;
         s32 deltaY;
         s32 collisionRadius;
         s32 deltaHeight;
-        u16 *action;
-        u16 *counter;
 
-        if (participant == target || metadata[187] == 0 || metadata[28] != 0 ||
-            battleState[20 + participant] == 0xff) {
+        if (participant == target) {
+            continue;
+        }
+        metadata = (u8 *)&gUnknown_03001c40[participant];
+        if (metadata[187] == 0) {
+            continue;
+        }
+        if (metadata[28] != 0) {
+            continue;
+        }
+        battleState = (u8 *)&gUnknown_03001620;
+        if (battleState[20 + participant] == 0xff) {
             continue;
         }
         if (battleState[8] != 0 && battleState[9] != 1 &&
@@ -1148,28 +1152,32 @@ void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 s
             continue;
         }
 
-        action = (u16 *)(targetMetadata + 174);
-        if (*action == 0) {
-            if ((actor->twentieth & 1) != 0 && hitFlags > 0x27f) {
-                *action = ((participant & 3) << 11) | hitFlags | 0xe000 | 0x3f;
-            } else {
-                *action = ((hitType & 0xf) << 13) | ((participant & 3) << 11) | hitFlags | strength;
-            }
-        }
+        {
+            u8 *targetMetadata = (u8 *)&gUnknown_03001c40[target];
+            u16 *action = (u16 *)(targetMetadata + 174);
 
-        counter = (u16 *)0x0300167a + target;
-        *counter += strength;
-        if (*action != 0) {
-            *(u16 *)(targetMetadata + 176) = *action;
-            *(u32 *)(targetMetadata + 120) = 0;
-        }
-        if (markHit == 0) {
-            actor->padding54[1] |= 1 << participant;
-        }
-        actor->padding54[0] = hitType;
-        if (actor->seventeenth == 0x5e || actor->seventeenth == 0xae ||
-            actor->seventeenth == 0xbf || actor->seventeenth == 0xc2) {
-            targetMetadata[28] = hitType;
+            if (*action == 0) {
+                if ((actor->twentieth & 1) != 0 && hitFlags > 0x27f) {
+                    *action = ((participant & 3) << 11) | hitFlags | 0xe000 | 0x3f;
+                } else {
+                    *action =
+                        ((hitType & 0xf) << 13) | ((participant & 3) << 11) | hitFlags | strength;
+                }
+            }
+
+            *((u16 *)0x0300167a + target) += strength;
+            if (*action != 0) {
+                *(u16 *)(targetMetadata + 176) = *action;
+                *(u32 *)(targetMetadata + 120) = 0;
+            }
+            if (markHit == 0) {
+                actor->padding54[1] |= 1 << participant;
+            }
+            actor->padding54[0] = hitType;
+            if (actor->seventeenth == 0x5e || actor->seventeenth == 0xae ||
+                actor->seventeenth == 0xbf || actor->seventeenth == 0xc2) {
+                targetMetadata[28] = hitType;
+            }
         }
         (*(u16 *)((u8 *)0x03001662 + target * 2))++;
         if (actor->twentyfirst == 0) {
@@ -1177,6 +1185,7 @@ void FUN_0800f0ac(u8 actorIndex, u16 horizontalRadius, u16 verticalRadius, u16 s
             (*(u16 *)(battleState + 74 + target * 2))++;
         }
     }
+#undef actor
 }
 
 void FUN_0800f9c0(void) {
