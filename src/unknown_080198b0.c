@@ -1363,7 +1363,7 @@ void FUN_080198b0(void) {
         void *pointer;
         u32 address;
     };
-    u8 *scene = &gUnknown_03001620;
+    u8 *scene;
     u8 *savedScene;
     u8 index;
     u32 wordZero;
@@ -1372,6 +1372,7 @@ void FUN_080198b0(void) {
     gUnknown_03003d98 = 0;
     gUnknown_03003d9c = 0;
     index = 0;
+    scene = &gUnknown_03001620;
     {
         u8 *active = scene + 28;
         u8 *count = &gUnknown_03003d9c;
@@ -1556,8 +1557,8 @@ void FUN_080198b0(void) {
         FUN_08000cf4(3, savedScene[23], 0);
     }
 
-    FUN_0800fdc8(savedScene[savedScene[1] + 3]);
-    FUN_0801103c(savedScene[savedScene[1] + 3]);
+    FUN_0800fdc8(scene[scene[1] + 3]);
+    FUN_0801103c(scene[scene[1] + 3]);
     FUN_08000a2c();
     FUN_0800fd8c();
 
