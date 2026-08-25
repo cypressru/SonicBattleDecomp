@@ -9416,6 +9416,14 @@ void FUN_08030a8c(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_080309c0 + 1);
 }
 
+void FUN_08030c78(void) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
+        FUN_0803035c();
+        gUnknown_03002030 = FUN_080304a4;
+        FUN_080217d0(0);
+    }
+}
+
 void FUN_0803876c(struct UnknownListNode *node) {
     FUN_080375d8(gUnknown_030052e0);
     node->data = (const void *)((u32)FUN_0803878c + 1);

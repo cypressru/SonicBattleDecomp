@@ -716,7 +716,7 @@ address,name,mode,confidence
 0x08030B68,FUN_08030b68,thumb,rom-pointer+exact-body
 0x08030BD8,FUN_08030bd8,thumb,rom-pointer+exact-body
 0x08030C08,FUN_08030c08,thumb,rom-pointer+exact-body
-0x08030C6E,FUN_08030c6e,thumb,rom-pointer+exact-body
+0x08030C78,FUN_08030c78,thumb,rom-pointer+exact-body
 0x08030CA8,FUN_08030ca8,thumb,rom-pointer+exact-body
 0x08030D20,FUN_08030d20,thumb,rom-pointer+exact-body
 0x08030D3C,FUN_08030d3c,thumb,rom-pointer+exact-body

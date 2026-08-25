@@ -953,6 +953,12 @@ The alleged function at `0x0803013A` instead lands inside the trailing literal p
 words consumed by the preceding owner, including EWRAM, VRAM, and ROM pointers; it has no prologue,
 call edge, or coherent independent control flow. Those bytes remain represented as data.
 
+The former `0x08030C6E` entry similarly begins ten bytes too early in `FUN_08030c08`'s trailing
+literal pool. The pool itself contains `0x08030C79`, establishing the Thumb callback at
+`0x08030C78`; that address begins with a normal prologue and has coherent control flow through the
+return at `0x08030C9E`. The corrected 40-byte function excludes both the preceding pool bytes and
+its own trailing literals at `0x08030CA0`.
+
 The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
 at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
 function. It initializes six halfwords in each of four 16-byte link records, exchanges those
