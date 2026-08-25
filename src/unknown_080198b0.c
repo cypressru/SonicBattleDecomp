@@ -922,6 +922,9 @@ extern u16 gUnknown_03001b28;
 extern u16 gUnknown_08071264[];
 extern const u8 gUnknown_08ed89d0[];
 extern const u8 gUnknown_08ed898c[];
+extern const u8 gUnknown_08ed8a58[];
+extern const u8 gUnknown_08ed8a64[];
+extern u8 gUnknown_030013f5[];
 extern const u8 gUnknown_08ed8990[];
 extern const u8 gUnknown_08ed89a0[];
 extern const u8 gUnknown_08ed89b0[];
@@ -4282,6 +4285,191 @@ void FUN_0801db4c(u32 value) {
     entity->field16 = gUnknown_03001c40[index].field16;
 }
 
+void FUN_0801dbd0(u8 value) {
+    register u32 index;
+    register u32 linked;
+    register s16 x;
+    register s16 y;
+    register struct UnknownEntity *savedEntities;
+    register struct UnknownEntityData *savedMetadata;
+    register u32 savedDoubled;
+
+    index = value;
+
+    {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 entityOffset;
+        struct UnknownEntity *entity;
+        struct UnknownEntityData *metadataBase;
+        u32 linkedOffset;
+        u32 scaled;
+        u32 metadataOffset;
+        u32 coordinateOffset;
+        u8 *firstBase;
+        s16 *firstPointer;
+        u8 *secondBase;
+        s16 *secondPointer;
+        u32 counter;
+        s32 limit;
+
+        entityOffset = index * 24;
+        entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        linked = entity->field15;
+        metadataBase = gUnknown_03001c40;
+        linkedOffset = linked * 2;
+        scaled = index << 6;
+        metadataOffset = (scaled - index) * 4;
+        coordinateOffset = linkedOffset + metadataOffset;
+        firstBase = (u8 *)metadataBase + 54;
+        firstPointer = (s16 *)(coordinateOffset + (u32)firstBase);
+        x = *firstPointer;
+        secondBase = (u8 *)metadataBase + 62;
+        secondPointer = (s16 *)(coordinateOffset + (u32)secondBase);
+        y = *secondPointer;
+        counter = *(u8 *)(metadataOffset + (u32)metadataBase + 191);
+        limit = (s32)(gUnknown_03001b28 - counter) / 2;
+
+        if ((s32)counter < limit && ((u16)(x + 0xC00) > 0x1800 || y > 0xC00 || y < -0xC00)) {
+            FUN_0801eee0(index);
+        }
+    }
+
+    {
+        struct UnknownEntity *entities = gUnknown_03003db0;
+        u32 doubled = index * 2;
+        u32 entityOffset = (doubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)entities);
+        u32 active = entity->field18;
+
+        savedEntities = entities;
+        savedDoubled = doubled;
+        savedMetadata = gUnknown_03001c40;
+
+        if (active != 0 && (u16)(savedMetadata[linked].field20 - 10) <= 5 &&
+            (u16)(x + 0x4FF) <= 0x9FE && y <= 0x1FF && y > -0x200) {
+            FUN_0801ebb0(index);
+            return;
+        }
+    }
+
+    if (savedMetadata[index].field20 == 0x42) {
+        if (FUN_08020160((s8)gUnknown_08071245[gUnknown_03003e10]) != 0) {
+            FUN_0801e3cc(index);
+        } else {
+            FUN_0801d870(index);
+        }
+        return;
+    }
+
+    if ((savedMetadata[index].field50 & 0xF) == 0)
+        goto update;
+    {
+        u32 entityOffset = (savedDoubled + index) * 8;
+        struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+        if (entity->field12 <= 5)
+            goto update;
+    }
+    {
+        const void *data;
+        u32 type = savedMetadata[index].field196;
+
+        if (type > 19)
+            goto finish;
+        switch (type) {
+        case 0:
+        case 3:
+        case 4:
+        case 6:
+        case 7:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+            goto first_data_early;
+        case 1:
+        case 2:
+        case 5:
+        case 8:
+            goto second_data;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+            goto complex_data;
+        }
+
+    first_data_early:
+        data = gUnknown_08ed8a58;
+        goto set_data;
+
+    complex_data: {
+        u8 *record = gUnknown_030013f5 + index * 156;
+        u8 *entry = record + record[81] * 27;
+        u32 first = entry[2];
+
+        if (first > 19)
+            first = (u8)(first - 20);
+        if (first > 8)
+            first = 9;
+        if (first == 0 || (u8)(first - 3) <= 3) {
+            data = gUnknown_08ed8a58;
+            goto set_data;
+        } else {
+            u32 second = entry[3];
+
+            if (second > 19)
+                second = (u8)(second - 20);
+            if (second > 8)
+                second = 9;
+            if ((u8)(second - 1) <= 1 || second == 4 || second == 5 || second == 7) {
+                goto second_data;
+            }
+        }
+    }
+
+        FUN_0801e62c(index);
+        return;
+
+    second_data:
+        data = gUnknown_08ed8a64;
+
+    set_data: {
+        u32 entityOffset;
+        struct UnknownEntity *dataBase;
+        u32 dataAddress;
+        struct UnknownEntity *entity;
+
+        entityOffset = (savedDoubled + index) * 8;
+        dataBase = (struct UnknownEntity *)((u32)savedEntities + 4);
+        dataAddress = entityOffset + (u32)dataBase;
+        *(const void **)dataAddress = data;
+        entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+        entity->field14 = 0;
+        entity->field16 = savedMetadata[index].field16;
+        entity->callback = (UnknownCallback)((u32)FUN_0801ea6c + 1);
+    }
+    }
+
+    goto finish;
+
+update: {
+    u32 entityOffset = (savedDoubled + index) * 8;
+    struct UnknownEntity *entity = (struct UnknownEntity *)(entityOffset + (u32)savedEntities);
+
+    entity->field12++;
+    FUN_0801d408(index);
+}
+
+finish:
+    if ((u16)FUN_0801d288(index) == 0) {
+        FUN_0801d870(index);
+    }
+}
+
 u16 FUN_0801d370(u8 value) {
     u32 index = value;
     struct UnknownEntity *entities = gUnknown_03003db0;
@@ -4354,7 +4542,7 @@ u32 FUN_0801d068(u8 value) {
         return FUN_0801d200(value);
     }
     if (FUN_08020160(20) != 0) {
-        return ((u32(*)(u8))FUN_0801d188)(value);
+        return ((u32 (*)(u8))FUN_0801d188)(value);
     }
 
     bestIndex = 0;
@@ -4545,7 +4733,7 @@ u32 FUN_0801d200(u8 value) {
         attempt++;
     } while (attempt <= 5);
 
-    return ((u32(*)(u8))FUN_0801d188)(value);
+    return ((u32 (*)(u8))FUN_0801d188)(value);
 }
 
 u16 FUN_0801d408(u8 value) {
@@ -11211,8 +11399,7 @@ void FUN_08036560(void) {
                 gUnknown_03005384 = 200;
             }
         }
-    variant_done:
-        ;
+    variant_done:;
     }
 
     zeroF800 = 0;
@@ -12254,8 +12441,8 @@ void FUN_0804230c(struct UnknownCameraState4230c *state) {
                         distance = 15;
                     }
                     distance = (distance >> 1) + 1;
-                    gUnknown_0300023c -= ((s16(*)(u32))FUN_08040698)(angle) * distance;
-                    gUnknown_03000240 -= ((s16(*)(u32))FUN_08040684)(angle) * distance;
+                    gUnknown_0300023c -= ((s16 (*)(u32))FUN_08040698)(angle)*distance;
+                    gUnknown_03000240 -= ((s16 (*)(u32))FUN_08040684)(angle)*distance;
                     if ((s32)gUnknown_0300023c < 0) {
                         gUnknown_0300023c = 0;
                     } else {
