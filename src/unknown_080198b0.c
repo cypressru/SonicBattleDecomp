@@ -8097,12 +8097,12 @@ void FUN_08028f98(struct UnknownListNode *node) {
     if (gUnknown_0300525c >= (index = position->field13) + 1) {
         register const u8 *table asm("r2") = (const u8 *)gUnknown_08edb98c;
         register u32 offset asm("r3") = index * 8;
-        register u32 zero asm("r5");
+        register u32 zero;
         register const s16 *xAddress asm("r0") = (const s16 *)(table + 4);
         register const s16 *yAddress asm("r3");
-        register u32 zero0 asm("r0");
-        register s32 x asm("r1");
-        register s32 y asm("r2");
+        register u32 zero0;
+        register s32 x;
+        register s32 y;
 
         xAddress = (const s16 *)(offset + (u32)xAddress);
         zero = 0;
@@ -8120,12 +8120,12 @@ void FUN_08028f98(struct UnknownListNode *node) {
     } else {
         register const u8 *table asm("r0") = (const u8 *)gUnknown_08edb98c;
         register u32 offset asm("r2") = index * 8;
-        register u32 zero3 asm("r3");
-        register u32 zero5 asm("r5");
+        register u32 zero3;
+        register u32 zero5;
         register const s16 *xAddress asm("r1") = (const s16 *)(offset + (u32)table);
         register const s16 *yAddress asm("r2");
-        register s32 x asm("r1");
-        register s32 y asm("r2");
+        register s32 x;
+        register s32 y;
 
         zero3 = 0;
         x = xAddress[zero3];
