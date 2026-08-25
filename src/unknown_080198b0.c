@@ -4458,6 +4458,18 @@ void FUN_0801fc60(void) {
     *count = 0;
 }
 
+u32 FUN_0801fcd8(u16 songId, u16 parameter) {
+    u8 *count = &gUnknown_03004470;
+
+    if (*count <= 31) {
+        gUnknown_03004480[*count].songId = songId;
+        gUnknown_03004480[*count].parameter = parameter;
+        (*count)++;
+        return 1;
+    }
+    return 0;
+}
+
 void FUN_0801ffa4(u8 force) {
     if (gUnknown_030048d0 != 0 || force != 0) {
         FUN_0804a594(gUnknown_030044d0, (void *)0x07000000, 0x100);

@@ -1762,6 +1762,7 @@ units:
       FUN_0801fc30: 0x1A
       FUN_0801fc54: 0x8
       FUN_0801fc60: 0x68
+      FUN_0801fcd8: 0x3C
       FUN_0801ffa4: 0x2A
       FUN_08020028: 0x8
       FUN_08020034: 0x40
@@ -2353,6 +2354,9 @@ units:
       - { offset: 0x63A4, mode: thumb }
       - { offset: 0x63AC, mode: data }
       - { offset: 0x63B0, mode: thumb }
+      # FUN_0801FCD8 branches around its count-address literal.
+      - { offset: 0x643E, mode: data }
+      - { offset: 0x6444, mode: thumb }
       # FUN_0801ffe4's internal two-word literal island.
       - { offset: 0x6768, mode: data }
       - { offset: 0x6770, mode: thumb }
@@ -5165,6 +5169,8 @@ units:
       - { offset: 0x63F8, type: thumb_call, symbol: FUN_0801f6a0 }
       - { offset: 0x6418, type: abs32, symbol: gUnknown_03004470 }
       - { offset: 0x6420, type: abs32, symbol: gUnknown_03004480 }
+      - { offset: 0x6440, type: abs32, symbol: gUnknown_03004470 }
+      - { offset: 0x6464, type: abs32, symbol: gUnknown_03004480 }
       - { offset: 0x6710, type: thumb_call, symbol: FUN_0804a594 }
       - { offset: 0x67B4, type: abs32, symbol: gUnknown_030048d4 }
       - { offset: 0x67B8, type: abs32, symbol: gUnknown_030044d0 }
