@@ -6252,6 +6252,183 @@ void FUN_0801c930(void) {
     gUnknown_030013a0 = 1;
 }
 
+u8 FUN_0801c968(u8 condition, u8 index) {
+    u8 result = 0;
+
+    switch (condition) {
+    case 1: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x200) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x80) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 2: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x300) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0xc0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 3: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x700) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x1c0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 4: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 9 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 5: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 16 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 3;
+        break;
+    }
+    case 6: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 0x135 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 7: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 55 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 1;
+        break;
+    }
+    case 8: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+#define COUNT_ENTITY_STATE(primary, secondary)                                                     \
+    do {                                                                                           \
+        u32 first = metadata + 116;                                                                \
+        if ((*(u32 *)(offset + first) & 0x1f00) == (primary)) {                                    \
+            gUnknown_03003d88++;                                                                   \
+        }                                                                                          \
+        first = metadata;                                                                          \
+        if ((*(u16 *)(offset + first + 174) & 0x7c0) == (secondary)) {                             \
+            gUnknown_03003d88++;                                                                   \
+        }                                                                                          \
+        result += gUnknown_03003d88 >= 1;                                                          \
+    } while (0)
+
+        COUNT_ENTITY_STATE(0xa00, 0x280);
+        COUNT_ENTITY_STATE(0xb00, 0x2c0);
+        COUNT_ENTITY_STATE(0xc00, 0x300);
+        COUNT_ENTITY_STATE(0xd00, 0x340);
+        COUNT_ENTITY_STATE(0xe00, 0x380);
+        COUNT_ENTITY_STATE(0xf00, 0x3c0);
+#undef COUNT_ENTITY_STATE
+        result = result != 0;
+        break;
+    }
+    case 9: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 0x135 && *(s16 *)(offset + metadata + 26) == 1) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 10: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 offset = scaled * 4;
+
+        if (*(u16 *)(offset + metadata + 20) == 15 && *(u32 *)(offset + metadata + 116) != 0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 11: {
+        u32 metadata = (u32)gUnknown_03001c40;
+        u32 scaled = index * 63;
+        u32 firstOffset = scaled * 4;
+        u32 secondOffset = scaled * 4;
+        u32 first = metadata + 116;
+
+        if ((*(u32 *)(firstOffset + first) & 0x1f00) == 0x700) {
+            gUnknown_03003d88++;
+        }
+        first = metadata;
+        if ((*(u16 *)(secondOffset + first + 174) & 0x7c0) == 0x1c0) {
+            gUnknown_03003d88++;
+        }
+        result = gUnknown_03003d88 >= 5;
+        break;
+    }
+    case 12:
+        result = *(u16 *)(&gUnknown_03001620 + 98 + index * 2) == 0;
+        break;
+    case 13:
+        result = *(&gUnknown_03001620 + 51 + index) != 0;
+        break;
+    }
+
+    return result;
+}
+
 void FUN_0801ce70(void) {
     gUnknown_03001b00[0] = 0;
     gUnknown_03001b00[1] = 0;
