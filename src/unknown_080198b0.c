@@ -8499,11 +8499,9 @@ void FUN_08027c8c(struct UnknownListNode *node) {
     }
 
     {
-        register struct Unknown16ByteRecord *record asm("r1");
-        register u8 index asm("r0");
+        u8 index = gUnknown_030051f0;
+        struct Unknown16ByteRecord *record = &gUnknown_030016fc[index];
 
-        index = gUnknown_030051f0;
-        record = &gUnknown_030016fc[index];
         if (record->field0 <= 6) {
             node->data = (const void *)((u32)FUN_08027d18 + 1);
         }
