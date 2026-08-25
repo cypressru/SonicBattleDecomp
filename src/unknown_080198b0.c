@@ -340,6 +340,8 @@ struct UnknownPosition {
     u8 field15;
 };
 
+extern const struct UnknownPosition gUnknown_08edc550[];
+
 struct UnknownListNode {
     const void *data;
     u8 field4;
@@ -9674,6 +9676,17 @@ void FUN_0803315c(struct UnknownListNode *node) {
         node->position->field14 = 0;
         node->data = (const void *)((u32)FUN_08033090 + 1);
     }
+}
+
+void FUN_08033184(struct UnknownListNode *node) {
+    struct UnknownListNode *child;
+
+    *node->position = gUnknown_08edc550[0];
+    child = FUN_0801f7d0(FUN_0801f9d8, 16, node, 0);
+    node->position->field13 = child->field6;
+    *child->position = gUnknown_08edc550[1];
+    node->position->field14 = 0;
+    node->data = (const void *)((u32)FUN_0803315c + 1);
 }
 
 void FUN_080333dc(struct UnknownListNode *node) {
