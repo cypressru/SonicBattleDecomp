@@ -62,6 +62,7 @@ extern void FUN_0801816c(s16 *outputX, s16 *outputY, s16 inputX, s16 inputY);
 extern void FUN_08018204(s16 *outputX, s16 *outputY, s16 factorX, s16 factorY);
 extern void FUN_08017f00(u32 first, u32 second, u32 third, u32 fourth);
 extern void FUN_080069ac(void);
+extern void FUN_0800f3c4(void);
 extern void FUN_0800c1c8(u16 active, u8 mode, s16 x, s16 y, s16 height, u32 sixth, u32 seventh,
                          u32 eighth, u8 field172, u8 index, u8 field149);
 extern u16 gUnknown_03003380[][16];
@@ -136,7 +137,9 @@ struct UnknownRecord030017d0 {
     u16 fourth[4];
     u8 fifth;
     u8 sixth;
-    u16 seventh[3];
+    s16 x;
+    s16 y;
+    s16 height;
     u8 eighth;
     u8 padding25;
     u16 ninth;
@@ -261,6 +264,7 @@ extern struct UnknownRecord030017d0 gUnknown_030017d0[];
 extern const s16 gUnknown_0804df7c[];
 extern const u8 gUnknown_0806b2d4[][10];
 extern const u16 gUnknown_0806b2fc[][8];
+extern const u8 gUnknown_0806b414[];
 extern const u16 gUnknown_0847aa18[];
 extern const u16 gUnknown_08055800[];
 extern const u16 gUnknown_0805587e[];
@@ -1055,9 +1059,9 @@ void FUN_0800baac(u8 index) {
     record->eighteenth[2] = 0;
     record->fifth = 0;
     record->sixth = 0;
-    record->seventh[0] = 0;
-    record->seventh[1] = 0;
-    record->seventh[2] = 0;
+    record->x = 0;
+    record->y = 0;
+    record->height = 0;
     record->eighth = 0;
     record->ninth = 0xffff;
     record->tenth[0] = -1;
@@ -1077,6 +1081,148 @@ void FUN_0800baac(u8 index) {
     record->thirteenth = 1;
     record->twentieth = 0;
     record->twentyfirst = 0;
+}
+
+void FUN_0800f9c0(void) {
+    struct UnknownQueueEntry08018004 entry;
+    u16 constant;
+    u8 recordIndex;
+    u8 slotIndex;
+
+    constant = 0;
+    recordIndex = 0;
+    do {
+#define record (&gUnknown_030017d0[recordIndex])
+        u32 nextRecordIndex = recordIndex + 1;
+
+        if (record->seventeenth != 0) {
+            u32 packedY;
+            u16 adjustedX;
+            u16 oldY;
+
+            FUN_0801816c(&record->x, &record->y,
+                         (s16)record->eighteenth[0], (s16)record->eighteenth[1]);
+            FUN_08018204(&record->x, &record->y, record->x, record->y);
+
+            switch (record->fifteenth) {
+            case 0:
+                record->x -= 8;
+                oldY = record->y;
+                record->y = oldY - 8;
+                constant = oldY - 1;
+                break;
+            case 1:
+                record->x -= 16;
+                oldY = record->y;
+                record->y = oldY - 8;
+                constant = oldY - 1;
+                break;
+            case 2:
+                record->x -= 8;
+                oldY = record->y;
+                record->y = oldY - 16;
+                constant = oldY - 2;
+                break;
+            case 3:
+                record->x -= 16;
+                oldY = record->y;
+                record->y = oldY - 16;
+                constant = oldY - 2;
+                break;
+            case 4:
+                record->x -= 4;
+                oldY = record->y;
+                record->y = oldY - 4;
+                constant = oldY;
+                break;
+            default:
+                break;
+            }
+
+            adjustedX = record->x;
+            packedY = (u16)record->y << 16;
+            if ((u16)((s16)adjustedX + 64) <= 304 &&
+                (s16)(packedY >> 16) - (s16)record->eighteenth[2] <=
+                    gUnknown_030017c0 &&
+                (s16)(packedY >> 16) - (s16)record->eighteenth[2] >=
+                    gUnknown_030016d0 - 64) {
+                switch (gUnknown_03001370) {
+                case 0:
+                    if (record->nineteenth == 4 || record->nineteenth == 7 ||
+                        record->nineteenth == 1) {
+                        record->second = record->third ^ 1;
+                    } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
+                               record->nineteenth == 3) {
+                        record->second = record->third;
+                    }
+                    break;
+                case 1:
+                    if (record->nineteenth == 4 || record->nineteenth == 7 ||
+                        record->nineteenth == 1) {
+                        record->second = record->third;
+                    } else if (record->nineteenth == 6 || record->nineteenth == 9 ||
+                               record->nineteenth == 3) {
+                        record->second = record->third ^ 1;
+                    }
+                    break;
+                case 2:
+                    if ((u8)(record->nineteenth - 1) <= 2) {
+                        record->second = record->third;
+                    } else if ((u8)(record->nineteenth - 7) <= 2) {
+                        record->second = record->third ^ 1;
+                    }
+                    break;
+                case 3:
+                    if ((u8)(record->nineteenth - 1) <= 2) {
+                        record->second = record->third ^ 1;
+                    } else if ((u8)(record->nineteenth - 7) <= 2) {
+                        record->second = record->third;
+                    }
+                    break;
+                }
+
+                slotIndex = 0;
+                while (slotIndex < gUnknown_0806b414[record->seventeenth]) {
+                    if (record->slots[slotIndex] <= 26 && slotIndex <= 3) {
+#define FILL_ENTRY(entryX)                                                                        \
+    do {                                                                                           \
+        entry.first = (entryX);                                                                    \
+        entry.second = (s16)(packedY >> 16) + record->twelfth[slotIndex];                          \
+        entry.zero = record->eighteenth[2];                                                        \
+        entry.third = 3;                                                                           \
+        entry.constant = constant;                                                                 \
+        entry.ninth = record->second;                                                               \
+        entry.sixth = 0;                                                                           \
+        entry.fourth = record->slots[slotIndex] * 16 + 176;                                        \
+        if (record->first == 255) {                                                                \
+            entry.fifth = record->sixteenth;                                                       \
+        } else if (record->first == 254) {                                                         \
+            entry.fifth = 4;                                                                       \
+        } else {                                                                                   \
+            entry.fifth = record->first + 5;                                                       \
+        }                                                                                          \
+        entry.seventh = record->fifteenth + 30;                                                    \
+        entry.eighth = 0;                                                                          \
+    } while (0)
+                        if (record->second == 0) {
+                            FILL_ENTRY(record->eleventh[slotIndex] + (s16)adjustedX);
+                        } else {
+                            FILL_ENTRY((s16)adjustedX - record->eleventh[slotIndex]);
+                        }
+#undef FILL_ENTRY
+                    }
+                    FUN_08017f00(*(u32 *)&entry, *((u32 *)&entry + 1), *((u32 *)&entry + 2),
+                                 *((u32 *)&entry + 3));
+                    slotIndex++;
+                }
+            }
+        }
+        recordIndex = nextRecordIndex;
+#undef record
+    } while (recordIndex <= 11);
+
+    gUnknown_03002684 = 0;
+    FUN_0800f3c4();
 }
 
 void FUN_0800fd8c(void) {
