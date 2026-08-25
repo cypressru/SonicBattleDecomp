@@ -1652,10 +1652,14 @@ void FUN_0801c28c(void) {
             u8 *stateBase = gUnknown_03001b30;
             u8 *state = (u8 *)(scaled + (u32)stateBase);
             u32 stateOffset = state[60] * 2;
+            u32 mask = 0x80;
 
+            stateOffset += scaled;
             stateBase += 20;
-            flags = *(u16 *)(stateOffset + scaled + (u32)stateBase);
-            if ((flags & 0x200) != 0) {
+            flags = *(u16 *)(stateOffset + (u32)stateBase);
+            mask <<= 2;
+            mask &= flags;
+            if (mask != 0) {
                 switch (metadata->field159) {
                 case 0:
                     metadata->field159 = 1;
