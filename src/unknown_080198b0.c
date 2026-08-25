@@ -1469,10 +1469,10 @@ void FUN_0801a898(void) {
                     FUN_0801f618(0xfe);
                     break;
                 case 6:
-                    FUN_0801f618(0x101);
+                    FUN_0801f618(0x100);
                     break;
                 case 7:
-                    FUN_0801f618(0x100);
+                    FUN_0801f618(0x101);
                     break;
                 case 8:
                     FUN_0801f618(0xd0);
