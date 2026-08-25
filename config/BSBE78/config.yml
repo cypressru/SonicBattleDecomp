@@ -1746,6 +1746,7 @@ units:
       FUN_0801f718: 0x24
       FUN_0801f744: 0x24
       FUN_0801f770: 0xE
+      FUN_0801f780: 0x3C
       FUN_0801f89c: 0x1E
       FUN_0801f8c0: 0x48
       FUN_0801f914: 0x18
@@ -1761,6 +1762,9 @@ units:
       FUN_0801fc30: 0x1A
       FUN_0801fc54: 0x8
       FUN_0801fc60: 0x68
+      FUN_0801fcd8: 0x3C
+      FUN_0801fed8: 0x46
+      FUN_0801ff30: 0x6A
       FUN_0801ffa4: 0x2A
       FUN_08020028: 0x8
       FUN_08020034: 0x40
@@ -1777,7 +1781,7 @@ units:
       FUN_08020e28: 0x9A
       FUN_08031154: 0xE
       FUN_0802036c: 0x30
-      FUN_080203a4: 0x54
+      FUN_080203a4: 0x5A
       FUN_08020408: 0x30
       FUN_08020440: 0x32
       FUN_0802047c: 0x32
@@ -1800,7 +1804,7 @@ units:
       FUN_08020fbc: 0x44
       FUN_08021000: 0x4E
       FUN_080210d8: 0x18
-      FUN_080210f8: 0x14
+      FUN_080210f8: 0x10
       FUN_0802110c: 0x10
       FUN_080211d8: 0x10
       FUN_08021244: 0x1E
@@ -2352,6 +2356,9 @@ units:
       - { offset: 0x63A4, mode: thumb }
       - { offset: 0x63AC, mode: data }
       - { offset: 0x63B0, mode: thumb }
+      # FUN_0801FCD8 branches around its count-address literal.
+      - { offset: 0x643E, mode: data }
+      - { offset: 0x6444, mode: thumb }
       # FUN_0801ffe4's internal two-word literal island.
       - { offset: 0x6768, mode: data }
       - { offset: 0x6770, mode: thumb }
@@ -5137,6 +5144,11 @@ units:
       - { offset: 0x5EB8, type: abs32, symbol: gUnknown_08bf71fc }
       - { offset: 0x5EBC, type: abs32, symbol: gUnknown_08bf7244 }
       - { offset: 0x5EC6, type: thumb_call, symbol: FUN_080490b4 }
+      - { offset: 0x5F0C, type: abs32, symbol: gUnknown_0300006c }
+      - { offset: 0x5F10, type: abs32, symbol: gUnknown_0300006d }
+      - { offset: 0x5F14, type: abs32, symbol: gUnknown_03003e20 }
+      - { offset: 0x5F18, type: abs32, symbol: FUN_080200f8, addend: 1 }
+      - { offset: 0x5F1C, type: abs32, symbol: gUnknown_03000008 }
       - { offset: 0x5FFA, type: thumb_call, symbol: FUN_0804af6c }
       - { offset: 0x600C, type: abs32, symbol: gUnknown_03003e20 }
       - { offset: 0x604E, type: thumb_call, symbol: FUN_08021180 }
@@ -5159,7 +5171,17 @@ units:
       - { offset: 0x63F8, type: thumb_call, symbol: FUN_0801f6a0 }
       - { offset: 0x6418, type: abs32, symbol: gUnknown_03004470 }
       - { offset: 0x6420, type: abs32, symbol: gUnknown_03004480 }
+      - { offset: 0x6440, type: abs32, symbol: gUnknown_03004470 }
+      - { offset: 0x6464, type: abs32, symbol: gUnknown_03004480 }
+      - { offset: 0x6670, type: abs32, symbol: gUnknown_03003e20 }
+      - { offset: 0x6674, type: abs32, symbol: gUnknown_030000d0 }
+      - { offset: 0x6678, type: abs32, symbol: gUnknown_0300019a }
+      - { offset: 0x667C, type: abs32, symbol: gUnknown_030000c8 }
+      - { offset: 0x66EC, type: abs32, symbol: gUnknown_030044d0 }
+      - { offset: 0x66F0, type: abs32, symbol: gUnknown_030048d0 }
       - { offset: 0x6710, type: thumb_call, symbol: FUN_0804a594 }
+      - { offset: 0x6768, type: abs32, symbol: gUnknown_030044c0 }
+      - { offset: 0x676C, type: abs32, symbol: gUnknown_030044d0 }
       - { offset: 0x67B4, type: abs32, symbol: gUnknown_030048d4 }
       - { offset: 0x67B8, type: abs32, symbol: gUnknown_030044d0 }
       - { offset: 0x6800, type: abs32, symbol: gUnknown_030048d4 }

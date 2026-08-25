@@ -49,6 +49,7 @@ u32 FUN_0801d200(u8 value);
 extern void FUN_0801d408(u8 value);
 extern void FUN_0801db4c(u32 value);
 void FUN_0801e41c(u8 value);
+void FUN_080200f8(void);
 extern void FUN_0801de5c_wide(u32 value) asm("FUN_0801de5c");
 extern void FUN_0801debc_wide(u32 value) asm("FUN_0801debc");
 extern void FUN_0801df1c_wide(u32 value) asm("FUN_0801df1c");
@@ -929,9 +930,12 @@ extern const struct UnknownSoundIndex gUnknown_08bf7244[];
 extern const struct UnknownSoundEntry gUnknown_08bf71fc[];
 extern u8 gUnknown_03000008[100];
 extern u8 gUnknown_0300006c;
+extern u8 gUnknown_0300006d;
 extern struct UnknownListNode gUnknown_03003e20[100];
 extern u8 gUnknown_030000c0;
+extern u8 gUnknown_030000d0[];
 extern u16 gUnknown_03000070[20][2];
+extern u8 gUnknown_0300019a;
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
 extern struct UnknownQueuedSoundCommand gUnknown_03004480[];
@@ -4313,6 +4317,23 @@ void FUN_0801f744(u16 value, u16 other) {
 
 void FUN_0801f770(u16 value) { FUN_080490b4(value); }
 
+void FUN_0801f780(void) {
+    s16 i = 0;
+
+    do {
+        gUnknown_03000008[i] = i + 1;
+        i++;
+    } while (i <= 99);
+
+    gUnknown_0300006d = 0;
+    gUnknown_0300006c = 0;
+    gUnknown_03003e20[0].data = (const void *)((u32)FUN_080200f8 + 1);
+    gUnknown_03003e20[0].next = 0;
+    gUnknown_03003e20[0].field6 = 0;
+    gUnknown_03003e20[0].previous = 0;
+    gUnknown_03003e20[0].allocation = 0;
+}
+
 void FUN_0801f89c(void) {
     u8 index = 0;
 
@@ -4437,6 +4458,79 @@ void FUN_0801fc60(void) {
         }
     }
     *count = 0;
+}
+
+u32 FUN_0801fcd8(u16 songId, u16 parameter) {
+    u8 *count = &gUnknown_03004470;
+
+    if (*count <= 31) {
+        gUnknown_03004480[*count].songId = songId;
+        gUnknown_03004480[*count].parameter = parameter;
+        (*count)++;
+        return 1;
+    }
+    return 0;
+}
+
+void FUN_0801fed8(u8 value, u32 unused) {
+    struct UnknownPosition *position = gUnknown_03003e20[value].position;
+
+    if (position != 0) {
+        u32 group = (position->field12 & 12) >> 2;
+        u8 *destination = gUnknown_030000d0;
+        u8 *count = &gUnknown_0300019a;
+        u32 offset;
+
+        destination[*count * 2] = gUnknown_030000c8[group];
+        offset = *count * 2;
+        destination++;
+        destination[offset] = value;
+        gUnknown_030000c8[group] = (*count)++;
+    }
+}
+
+void FUN_0801ff30(void) {
+    u16 *destination = (u16 *)gUnknown_030044d0;
+    u16 i = 0;
+
+    do {
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x100;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x200;
+        *destination++ = 0;
+        *destination++ = 0;
+        *destination++ = 0x100;
+        i++;
+    } while (i <= 31);
+    gUnknown_030048d0 = 1;
+}
+
+u8 FUN_0801ffe4(u16 first, u16 second, u16 third, u16 fourth) {
+    u8 *count = &gUnknown_030044c0;
+    u8 result;
+
+    if (*count <= 31) {
+        u16 *destination = (u16 *)((u8 *)gUnknown_030044d0 + *count * 2);
+
+        destination[3] = first;
+        destination[7] = second;
+        destination[11] = third;
+        destination[15] = fourth;
+        result = (*count)++;
+    } else {
+        result = 0xFF;
+    }
+    return result;
 }
 
 void FUN_0801ffa4(u8 force) {
@@ -8786,9 +8880,11 @@ void FUN_080404ec(void) {
 
         do {
             struct UnknownPoolNode404ec *node = *globalAddress;
+            u32 nodeAddress;
 
             index *= stride;
-            node = (struct UnknownPoolNode404ec *)(index + (u32)node);
+            nodeAddress = index + (u32)node;
+            node = (struct UnknownPoolNode404ec *)nodeAddress;
             FUN_0804af6c((struct UnknownListNode *)node, node->data);
             node = *globalAddress;
             index += (u32)node;
