@@ -7986,7 +7986,6 @@ void FUN_08029250(void) {
 #define LOAD_PLAYER_GRAPHICS(index, destination)                                                   \
     do {                                                                                           \
         register u32 value asm("r0") = gUnknown_0300524c[index];                                   \
-        asm volatile("" : "+r"(value));                                                            \
         if (value > 9) {                                                                           \
             value = 10;                                                                            \
         } else if (value > 8) {                                                                    \
@@ -7994,7 +7993,6 @@ void FUN_08029250(void) {
         }                                                                                          \
         {                                                                                          \
             register u32 source asm("r1") = (u32)gUnknown_08edbadc[value];                         \
-            asm volatile("" : "+r"(source));                                                       \
             FUN_08020408((destination), source);                                                   \
         }                                                                                          \
     } while (0)
