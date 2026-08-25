@@ -283,7 +283,10 @@ struct UnknownEntityData {
     s32 field72[4];
     s16 field88[14];
     u32 field116;
-    s32 field120[13];
+    s32 field120[5];
+    u8 filler140;
+    u8 field141;
+    u8 filler142[30];
     u16 field172;
     u16 field174;
     u32 field176;
@@ -294,7 +297,9 @@ struct UnknownEntityData {
     u8 field196;
     u8 filler197[3];
     u16 field200;
-    u8 filler202[50];
+    u8 filler202[36];
+    u16 field238;
+    u8 filler240[12];
 };
 
 struct UnknownSoundIndex {
@@ -1231,6 +1236,8 @@ extern u16 gUnknown_03001378;
 extern void FUN_080177b8(u8 participant);
 extern u8 FUN_080153e0(void);
 extern u8 FUN_0801584c(void);
+extern u32 FUN_08006894(void);
+extern const u8 gUnknown_08071232[];
 void FUN_080207ec(u16 value);
 void FUN_0801bd90(void);
 void FUN_0801c910(void);
@@ -1283,6 +1290,72 @@ void FUN_0801a61c(u8 mode) {
         return;
     }
     *selection = selected;
+}
+
+void FUN_0801a6a8(u8 value) {
+    struct SceneState {
+        u8 filler0[11];
+        u8 thresholdIndex;
+    };
+    u8 thresholds[5];
+    u8 random;
+
+    FUN_08031db4(thresholds, gUnknown_08071232, 5);
+    gUnknown_03001c40[value].field141 = 0;
+
+    switch (gUnknown_03001c40[value].field238) {
+    case 0x50:
+    case 0x51:
+    case 0x52:
+        if ((gUnknown_03001378 & 1) != 0) {
+            gUnknown_03001c40[value].field141 = 0x27;
+        } else {
+            gUnknown_03001c40[value].field141 = 0x2d;
+        }
+        break;
+    case 0x53:
+    case 0x54:
+        if ((gUnknown_03001378 & 1) != 0) {
+            gUnknown_03001c40[value].field141 = 0x1b;
+        } else {
+            gUnknown_03001c40[value].field141 = 0x1e;
+        }
+        break;
+    case 0x55:
+        if ((gUnknown_03001378 & 1) != 0) {
+            gUnknown_03001c40[value].field141 = 0x36;
+        } else {
+            gUnknown_03001c40[value].field141 = 0x39;
+        }
+        break;
+    }
+
+    random = FUN_08006894() % 100;
+    if (gUnknown_03001c40[value].field141 != 0 &&
+        (s8)random >= thresholds[((struct SceneState *)&gUnknown_03001620)->thresholdIndex]) {
+        return;
+    }
+
+    switch (FUN_08006894() % 6) {
+    case 0:
+        gUnknown_03001c40[value].field141 = 0x1b;
+        break;
+    case 1:
+        gUnknown_03001c40[value].field141 = 0x1e;
+        break;
+    case 2:
+        gUnknown_03001c40[value].field141 = 0x27;
+        break;
+    case 3:
+        gUnknown_03001c40[value].field141 = 0x2d;
+        break;
+    case 4:
+        gUnknown_03001c40[value].field141 = 0x36;
+        break;
+    case 5:
+        gUnknown_03001c40[value].field141 = 0x39;
+        break;
+    }
 }
 
 void FUN_0801aadc(void) {
