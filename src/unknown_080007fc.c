@@ -1090,14 +1090,13 @@ void FUN_0800f9c0(void) {
             u32 word;
             u16 half;
         } placementY;
-        u32 nextRecordIndex;
-        u32 packedY;
     } frame;
+    u32 nextRecordIndex;
+    u32 packedFrame;
     u8 recordIndex;
     u8 slotIndex;
 
 #define entry frame.entry
-#define nextRecordIndex frame.nextRecordIndex
     frame.placementY.word = 0;
     recordIndex = 0;
     do {
@@ -1167,7 +1166,7 @@ void FUN_0800f9c0(void) {
                 packedY = adjustedY << 16;
                 height = record->eighteenth[2];
                 screenY = ((s32)packedY >> 16) - height;
-                frame.packedY = packedY;
+                packedFrame = packedY;
                 if (screenY <= gUnknown_030017c0 && screenY >= gUnknown_030016d0 - 64) {
                 switch (gUnknown_03001370) {
                 case 0:
@@ -1210,7 +1209,7 @@ void FUN_0800f9c0(void) {
 #define FILL_ENTRY(entryX)                                                                        \
     do {                                                                                           \
         entry.first = (entryX);                                                                    \
-        entry.second = ((s32)frame.packedY >> 16) + record->twelfth[slotIndex];                    \
+        entry.second = ((s32)packedFrame >> 16) + record->twelfth[slotIndex];                      \
         entry.zero = record->eighteenth[2];                                                        \
         entry.third = 3;                                                                           \
         entry.constant = frame.placementY.half;                                                    \
@@ -1247,7 +1246,6 @@ void FUN_0800f9c0(void) {
 
     gUnknown_03002684 = 0;
     FUN_0800f3c4();
-#undef nextRecordIndex
 #undef entry
 }
 
