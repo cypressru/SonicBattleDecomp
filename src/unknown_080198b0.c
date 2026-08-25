@@ -8012,7 +8012,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
 
             destinationOffset = (u8 *)destinationBase + 2;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 98);
         }
         {
@@ -8022,7 +8021,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
 
             destinationOffset = (u8 *)destinationBase + 4;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 100);
         }
         {
@@ -8032,7 +8030,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
 
             destinationOffset = (u8 *)destinationBase + 6;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 102);
         }
         {
@@ -8042,7 +8039,6 @@ void FUN_08028d30(struct UnknownListNode *node) {
 
             destinationOffset = (u8 *)destinationBase + 8;
             destinationAddress = (u8 *)(offset + (u32)destinationOffset);
-            asm volatile("" : : "r"(destinationAddress));
             *(u16 *)destinationAddress = *(const u16 *)(source + 104);
         }
         {
