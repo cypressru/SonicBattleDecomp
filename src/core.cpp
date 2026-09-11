@@ -1,5 +1,9 @@
 #include "types.h"
 
+/* Original language is unknown; C++ is the reconstruction fallback.
+ * C linkage preserves reconstruction labels, not recovered retail names. */
+extern "C" {
+
 typedef void (*Callback)(void);
 typedef struct {
     u16 value;
@@ -13,7 +17,7 @@ extern s16 gUnknown_03001b2c;
 extern UnknownRecord gUnknown_03002110[];
 extern volatile u16 gUnknown_030048e0[];
 extern const u8 gUnknown_083270b4[];
-extern Callback gMainCallback;
+extern Callback gUnknown_03002030;
 
 extern void FUN_080003a8(void);
 extern void FUN_080006d0(void);
@@ -26,26 +30,24 @@ extern void FUN_08017d78(u32, u32);
 extern void FUN_08017de8(u32, u32);
 extern void FUN_08017e5c(u32, u32);
 extern void FUN_080183d0(u32, u32, u32, u32, u32, u32);
-extern void FUN_0801835c(void);
+extern void FUN_0801856c(void);
 extern void FUN_080184c8(void);
 extern void FUN_0801f5ec(void);
 extern void FUN_0801f618(u32);
 extern void FUN_0801f638(void);
 extern void FUN_08020198(void);
-extern u8 FUN_080202f0(void *, const void *, u32);
-extern u8 FUN_0802046c(void *, u32);
-extern u8 FUN_0802067c(void *, u32);
+extern u8 FUN_08020500(u16 *, const u16 *, u16);
+extern u32 FUN_0802067c(u16 *, u16);
 extern void FUN_08021920(void);
 extern void FUN_0803d748(void);
 extern void FUN_08049170(void);
 extern void FUN_0804962c(void);
-extern void FUN_0804a384(const void *, void *, u32);
-extern void FUN_0804a3c0(void);
+extern void CpuFastSet(const void *, void *, u32);
+extern void VBlankIntrWait(void);
 
 #define REG_DISPSTAT (*(volatile u16 *)0x04000004)
 #define REG_IE (*(volatile u16 *)0x04000200)
 #define REG_IF (*(volatile u16 *)0x04000208)
-#define REG_SIOCNT (*(volatile u16 *)0x04000128)
 #define MULTI_SIO_ENABLED (*(volatile u8 *)0x030020f8)
 #define MULTI_SIO_DATA gUnknown_030048e0
 #define RESET_REQUESTED (*(volatile u32 *)0x03005254)
@@ -116,7 +118,7 @@ void FUN_08000210(void) {
     }
 
     FUN_080183d0(1, 4, 8, 0, 0x10, 0);
-    gMainCallback = FUN_080006ec;
+    gUnknown_03002030 = FUN_080006ec;
     FUN_0801f638();
     zero = 0;
     gUnknown_03001b08 = zero;
@@ -185,7 +187,7 @@ void FUN_080003a8(void) {
         gUnknown_030016c0 = 0x10;
         break;
     case 0x118:
-        gMainCallback = FUN_08000724;
+        gUnknown_03002030 = FUN_08000724;
         break;
     }
 
@@ -218,7 +220,7 @@ void FUN_080005ac(void) {
         if ((multiSioData[2] & 0xf) == 0 || (multiSioData[0] & 0xf) != 0xf) {
             return;
         }
-        while (!FUN_0802067c((void *)0x05000000, 0x200)) {
+        while (!(u8)FUN_0802067c((u16 *)0x05000000, 0x200)) {
             FUN_080006d0();
         }
 
@@ -254,39 +256,42 @@ void FUN_080005ac(void) {
             }
         }
 
-        while ((REG_SIOCNT & 0xf) == 0xf) {
+        while ((MULTI_SIO_DATA[0] & 0xf) == 0xf) {
             FUN_08020198();
         }
         FUN_08021920();
         MULTI_SIO_ENABLED = 0;
         FUN_08016078(0);
         FUN_0801f5ec();
-        gMainCallback = FUN_08000210;
+        gUnknown_03002030 = FUN_08000210;
     }
 }
 
 void FUN_080006d0(void) {
     if (gUnknown_0300138c == 0) {
-        FUN_0804a3c0();
+        VBlankIntrWait();
     } else {
-        FUN_0801835c();
+        FUN_0801856c();
     }
 }
 
 void FUN_080006ec(void) {
-    if (FUN_080202f0((void *)0x05000000, gUnknown_083270b4, 0x100)) {
+    if (FUN_08020500((u16 *)0x05000000, (const u16 *)gUnknown_083270b4, 0x100)) {
         gUnknown_030016c0 = 0x10;
-        gMainCallback = FUN_080003a8;
+        gUnknown_03002030 = FUN_080003a8;
     }
 }
 
 void FUN_08000724(void) {
     u32 paletteFill;
 
-    if (FUN_0802046c((void *)0x05000000, 0x100)) {
+    if ((u8)FUN_0802067c((u16 *)0x05000000, 0x100)) {
         FUN_080183d0(0, 0, 0, 0, 0, 0);
         paletteFill = 0;
-        FUN_0804a384(&paletteFill, (void *)0x05000000, 0x01000100);
-        gMainCallback = FUN_0803d748;
+        CpuFastSet(&paletteFill, (void *)0x05000000, 0x01000100);
+        gUnknown_03002030 = FUN_0803d748;
     }
+}
+
+void FUN_08000774(void) {}
 }

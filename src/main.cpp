@@ -1,5 +1,9 @@
 #include "types.h"
 
+/* Original language is unknown; C++ is the reconstruction fallback.
+ * C linkage preserves reconstruction labels, not recovered retail names. */
+extern "C" {
+
 typedef void (*Callback)(void);
 
 extern void FUN_08000210(void);
@@ -50,4 +54,5 @@ void AgbMain(void) {
         FUN_080006d0();
         FUN_08020244();
     }
+}
 }
