@@ -5977,6 +5977,36 @@ units:
       FUN_0801f578: 0x72
   - name: main/unknown_0801F5EC
     start: 0x01F5EC
+    end: 0x020134
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+  # The three random helpers are the only users of the four-byte state word.
+  # Full boundary, storage, and language evidence: docs/unknown_08020134.md.
+  - name: main/unknown_08020134
+    start: 0x020134
+    end: 0x020198
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08020134.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08020134: 0xA
+      FUN_08020144: 0x10
+      FUN_08020160: 0x28
+    synthetic_sections:
+      - { name: .bss, size: 0x4 }
+    bss_address: 0x0300019C
+    relocations:
+      - { offset: 0xC, type: abs32, symbol: .bss }
+      - { offset: 0x20, type: abs32, symbol: .bss }
+      - { offset: 0x54, type: abs32, symbol: .bss }
+  - name: main/unknown_08020198
+    start: 0x020198
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0

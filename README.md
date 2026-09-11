@@ -23,14 +23,22 @@ Requirements: Python 3.10+, Ninja, an ARM GNU binutils installation, and a copy 
 Rev. 0 ROM. Build the pinned matching compiler with `tools/setup_agbcc.sh` before working on C
 translation units.
 
+The C++ fallback additionally needs a 32-bit host C development environment (`gcc-multilib` on
+Ubuntu), curl, tar, and patch. Run `tools/setup_gcc_cpp.sh` after the agbcc setup. It builds the
+GCC 2.95.2 C++ frontend with the pinned public Thumb ELF backend; downloaded source and build
+products stay under ignored `tools/gcc_cpp/`. This is a reconstruction toolchain, not a claim
+that the retail game used this exact compiler or C++ for every game unit.
+
 ```sh
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 tools/setup_agbcc.sh
+tools/setup_gcc_cpp.sh
 cp "/path/to/Sonic Battle.gba" rom/baserom.gba
 .venv/bin/python configure.py
 ninja
 sha1sum -c config/BSBE78/build.sha1
+python tools/check_unit_bytes.py main/unknown_08020134
 ```
 
 The required ROM SHA-1 is `8cf4fbbe73f6b1907ab9997caab4c4e7d9708937`.

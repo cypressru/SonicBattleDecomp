@@ -35,7 +35,7 @@ jobs:
       - name: Validate Python syntax
         run: python -m compileall -q configure.py tools
       - name: Check C formatting
-        run: git ls-files -z 'src/*.c' 'src/**/*.c' 'include/*.h' 'include/**/*.h' | xargs -0 -r clang-format --dry-run --Werror
+        run: git ls-files -z 'src/*.c' 'src/**/*.c' 'src/*.cpp' 'src/**/*.cpp' 'include/*.h' 'include/**/*.h' | xargs -0 -r clang-format --dry-run --Werror
 
   private_build:
     name: Private build (BSBE78)
@@ -54,7 +54,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y binutils-arm-none-eabi ninja-build
+          sudo apt-get install -y binutils-arm-none-eabi ninja-build gcc-multilib
           pip install -r requirements.txt
       - name: Restore private verified base ROM
         run: |
@@ -70,8 +70,13 @@ jobs:
       - name: Build pinned compiler
         run: |
           tools/setup_agbcc.sh
+          tools/setup_gcc_cpp.sh
           mkdir -p tools/binutils/root/usr/bin
           ln -s /usr/bin/arm-none-eabi-as tools/binutils/root/usr/bin/arm-none-eabi-as
+          ln -s /usr/bin/arm-none-eabi-ld tools/binutils/root/usr/bin/arm-none-eabi-ld
+          ln -s /usr/bin/arm-none-eabi-objcopy tools/binutils/root/usr/bin/arm-none-eabi-objcopy
+      - name: Test both installed compiler paths
+        run: python -m unittest discover -s tools -p 'test_*.py'
       - name: Configure and build every unit
         run: |
           python configure.py
@@ -79,6 +84,7 @@ jobs:
       - name: Verify artifact and embedded payload
         run: |
           sha1sum -c config/BSBE78/build.sha1
+          python tools/check_unit_bytes.py main/unknown_08020134
           python tools/check_payload_map.py rom/baserom.gba
           python tools/check_debug_metadata.py rom/baserom.gba
           python tools/check_function_map.py config/BSBE78/config.yml rom/baserom.gba

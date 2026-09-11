@@ -17,6 +17,7 @@ compile_commands.json
 tools/agbcc/
 tools/binutils/
 tools/objdiff/
+tools/gcc_cpp/
 
 # Python/editor state
 __pycache__/

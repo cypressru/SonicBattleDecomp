@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile one C translation unit with the pinned legacy agbcc toolchain."""
+"""Compile a C or C++ translation unit with its pinned legacy frontend."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 AGBCC = ROOT / "tools/agbcc/agbcc"
 OLD_AGBCC = ROOT / "tools/agbcc/old_agbcc"
+GCC_CPP = ROOT / "tools/gcc_cpp/cc1plus"
 AS = ROOT / "tools/binutils/root/usr/bin/arm-none-eabi-as"
 
 
@@ -55,12 +56,17 @@ def main() -> None:
             _tag, name, size = flag.split(":", 2)
             symbol_sizes[name] = int(size, 0)
             cc1_flags.remove(flag)
-    compiler = AGBCC
+    is_cpp = source.suffix in {".cpp", ".cc", ".cxx"}
+    compiler = GCC_CPP if is_cpp else AGBCC
     old_libc_mode = "--old-agbcc" in cc1_flags
     if old_libc_mode:
+        if is_cpp:
+            raise SystemExit("--old-agbcc does not support C++")
         cc1_flags.remove("--old-agbcc")
         compiler = OLD_AGBCC
     if not compiler.is_file():
+        if is_cpp:
+            raise SystemExit("missing pinned C++ compiler; run tools/setup_gcc_cpp.sh")
         raise SystemExit("missing pinned agbcc; run tools/setup_agbcc.sh")
     if not AS.is_file():
         raise SystemExit("missing ARM binutils assembler")
@@ -76,7 +82,8 @@ def main() -> None:
             str(ROOT / "tools/agbcc/gcc_arm/ginclude"),
             "-nostdinc",
             "-undef",
-            "-std=gnu89",
+            "-x", "c++" if is_cpp else "c",
+            "-std=gnu++98" if is_cpp else "-std=gnu89",
         ]
     if old_libc_mode:
         cpp_args.extend(
