@@ -104,6 +104,8 @@ def main() -> None:
         stdout=subprocess.PIPE,
     )
     cc1_flags = cc1_flags or ["-O2"]
+    if is_cpp:
+        cc1_flags = ["-quiet", "-Werror", *cc1_flags]
     assembly = subprocess.run(
         [str(compiler), *cc1_flags, "-o", "-", "-"],
         input=cpp.stdout,

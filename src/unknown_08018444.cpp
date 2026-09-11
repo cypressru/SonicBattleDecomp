@@ -1,5 +1,8 @@
 #include "types.h"
 
+// The original source language is unknown; C linkage preserves synthetic labels.
+extern "C" {
+
 typedef unsigned long long u64;
 
 extern u8 gUnknown_030013a0;
@@ -132,3 +135,4 @@ void FUN_08018654(void) {
 void FUN_08018664(void) {}
 
 void FUN_08018668(void) { *(volatile u16 *)0x03007ff8 |= 1; }
+}

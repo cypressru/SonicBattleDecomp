@@ -1,5 +1,8 @@
 #include "types.h"
 
+// The original source language is unknown; C linkage preserves synthetic labels.
+extern "C" {
+
 typedef u32 (*UnknownEntityCondition)(u8 value, u8 other, const u32 **stream);
 
 struct UnknownEntity {
@@ -327,3 +330,4 @@ const UnknownEntityCondition gUnknown_08ed8b04[] = {
     FUN_0801f31c, FUN_0801f350, FUN_0801f3a4, FUN_0801f3b0, FUN_0801f3e4,
     FUN_0801f418, FUN_0801f448, FUN_0801f474, FUN_0801f4f4,
 };
+}

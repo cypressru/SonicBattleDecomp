@@ -952,6 +952,13 @@ zero-padding bytes; mapping symbols prevent that padding from inflating the func
 
 ## Original source language
 
+The established frame-service TU at `0x08018444-0x08018678` and condition interpreter at
+`0x0801F080-0x0801F5EC` now compile as C++ with no changes to their recovered behavior, layouts,
+function order, or owned sections. Their original language remains unknown; the previous C byte
+matches did not supply language evidence. All 26 functions and all owned code, literals, alignment,
+and callback-table bytes remain exact. The C++ compiler and independent fully relocated comparisons
+are documented in [`cpp-tus.md`](cpp-tus.md).
+
 The full callee-save prologue at `0x08017A80`, coherent control flow through the interworking return
 at `0x08017B5A`, and the following aligned literal pool establish a previously omitted 0xDC-byte
 function. It initializes six halfwords in each of four 16-byte link records, exchanges those
