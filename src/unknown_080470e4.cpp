@@ -1,4 +1,8 @@
 #include "types.h"
+
+/* Original language is unknown; C++ is the reconstruction fallback.
+ * C linkage preserves synthetic address labels, not recovered retail names. */
+extern "C" {
 #include <string.h>
 
 struct UnknownListNode;
@@ -7,6 +11,7 @@ struct UnknownState420dc;
 struct UnknownCameraState4230c;
 struct UnknownState43f00;
 
+extern void FUN_0801f744(u16 value, u16 other);
 extern void FUN_08012b98(u32 value);
 extern void FUN_08016078(u32 value);
 extern void FUN_080182ac(void);
@@ -769,13 +774,14 @@ extern s16 FUN_08040698(u8 value);
 extern s16 FUN_08040684(u8 value);
 extern u32 FUN_080406b4(void);
 extern s32 FUN_0804a59c(s32 value, s32 divisor);
+extern s32 Mod(s32 value, s32 divisor);
 extern const u8 gUnknown_081a7f88[];
 extern void FUN_0804a5c4(void *destination, const void *source, u32 width, u32 height);
 extern struct UnknownTriple47c30 gUnknown_030002d0;
 extern const u8 gUnknown_030044d6[];
 extern struct UnknownTransferList4033c *gUnknown_030001a0;
 extern struct UnknownTransferList403c0 *gUnknown_030001a4;
-extern volatile struct UnknownTransferRecord4033c gUnknown_030000d4;
+extern volatile struct UnknownTransferRecord4033c gUnknown_040000d4;
 extern const u8 gUnknown_081a7f18[];
 extern const u8 gUnknown_081a7f68[];
 extern struct UnknownPair4825c gUnknown_03000288;
@@ -1245,8 +1251,8 @@ void FUN_080470e4(struct UnknownState482d0 *state) {
 void FUN_080471dc(struct UnknownState482d0 *state) {
     state->field26++;
     if ((u8)state->field26 > 2) {
-        state->field10 = state->field30 + FUN_0804a59c((s16)FUN_080406b4(), 16) - 8;
-        state->field12.half.high = state->field34 + FUN_0804a59c((s16)FUN_080406b4(), 8);
+        state->field10 = state->field30 + Mod((s16)FUN_080406b4(), 16) - 8;
+        state->field12.half.high = state->field34 + Mod((s16)FUN_080406b4(), 8);
     }
     state->field40--;
     if (state->field40 == 0) {
@@ -1458,8 +1464,8 @@ void FUN_080477c0(struct UnknownState482d0 *state) {
     switch (state->field27) {
     case 0: {
         if ((state->field26++ & 1) != 0) {
-            gUnknown_03000288.first = FUN_0804a59c((s16)FUN_080406b4(), 8) - 4;
-            gUnknown_03000288.second = FUN_0804a59c((s16)FUN_080406b4(), 8) - 4;
+            gUnknown_03000288.first = Mod((s16)FUN_080406b4(), 8) - 4;
+            gUnknown_03000288.second = Mod((s16)FUN_080406b4(), 8) - 4;
             FUN_080476e0();
         }
         state->field20--;
@@ -1528,10 +1534,10 @@ void FUN_08047948(struct UnknownState482d0 *state) {
         intensity = (u16)(state->field26 - 1);
         packed = (intensity << 10) | (intensity << 5) | intensity;
         color = packed;
-        gUnknown_030000d4.source = (const void *)&color;
-        gUnknown_030000d4.destination = (u8 *)gUnknown_03005478 + 0x420;
-        gUnknown_030000d4.size = 0x810000B0;
-        gUnknown_030000d4.size;
+        gUnknown_040000d4.source = (const void *)&color;
+        gUnknown_040000d4.destination = (u8 *)gUnknown_03005478 + 0x420;
+        gUnknown_040000d4.size = 0x810000B0;
+        gUnknown_040000d4.size;
         FUN_0804033c((u8 *)gUnknown_03005478 + 0x420, (void *)0x05000020, 352);
     } else {
         FUN_0803fd9c(0, 512, (u8)progress >> 1);
@@ -1558,10 +1564,10 @@ void FUN_08047a00(struct UnknownState482d0 *state) {
         packed = (intensity << 10) | (intensity << 5) | intensity;
         colorDestination = &color;
         *colorDestination = packed;
-        gUnknown_030000d4.source = &color;
-        gUnknown_030000d4.destination = (u8 *)gUnknown_03005478 + 0x420;
-        gUnknown_030000d4.size = 0x810000B0;
-        gUnknown_030000d4.size;
+        gUnknown_040000d4.source = &color;
+        gUnknown_040000d4.destination = (u8 *)gUnknown_03005478 + 0x420;
+        gUnknown_040000d4.size = 0x810000B0;
+        gUnknown_040000d4.size;
         FUN_0804033c((u8 *)gUnknown_03005478 + 0x420, (void *)0x05000020, 352);
     } else {
         FUN_0803fd9c(0, 512, 16 - ((u8)progress >> 1));
@@ -1731,10 +1737,10 @@ void FUN_08047d1c(struct UnknownState482d0 *state) {
 
     FUN_08045a5c(gUnknown_03000274[state->field20]);
     variant = gUnknown_03000274[state->field20 + 1];
-    gUnknown_030000d4.source = gUnknown_081bbbe8[variant].palette;
-    gUnknown_030000d4.destination = (u8 *)gUnknown_03005478 + 0x300;
-    gUnknown_030000d4.size = 0x80000010;
-    gUnknown_030000d4.size;
+    gUnknown_040000d4.source = gUnknown_081bbbe8[variant].palette;
+    gUnknown_040000d4.destination = (u8 *)gUnknown_03005478 + 0x300;
+    gUnknown_040000d4.size = 0x80000010;
+    gUnknown_040000d4.size;
     FUN_0803fe98(384, 16, 0);
     FUN_0804a5b8(gUnknown_081bbbe8[variant].graphics, (void *)0x02028000);
     if ((u8)(variant - 4) <= 1) {
@@ -1772,7 +1778,7 @@ void FUN_08047f20(struct UnknownState482d0 *state) {
     if (variant > 3) {
         variant = 1;
     }
-    FUN_080403c0(gUnknown_081a81d0 + variant * 360, (void *)0x06019b80, 30, 6, 0);
+    FUN_080403c0(gUnknown_081a81d0 + variant * 360, (void *)0x06009b80, 30, 6, 0);
     gUnknown_03005440.field46 = variant;
     state->field12.half.high = 48;
     state->callback = (const void *)((u32)FUN_0804542c + 1);
@@ -1822,7 +1828,7 @@ void FUN_08048014(struct UnknownState482d0 *state) {
 void FUN_08048074(struct UnknownState482d0 *state) {
     switch (state->field27) {
     case 0:
-        state->field30 = -64;
+        state->field30 = (u16)-64;
         state->field27++;
     case 1:
         *(s32 *)&state->field8 -=
@@ -1947,7 +1953,7 @@ void FUN_080482e8(struct UnknownState482d0 *state) {
 
 void FUN_08048300(struct UnknownState482d0 *state) {
     FUN_0804033c((const void *)0x02028000, (void *)0x06013200, 0x800);
-    state->field12.half.high = -32;
+    state->field12.half.high = (u16)-32;
     state->field20 = 0;
     state->field39 = 16;
     state->callback = (const void *)((u32)FUN_08047c30 + 1);
@@ -1959,3 +1965,4 @@ const UnknownStateCallback gUnknown_08edda6c[] = {
     FUN_080482a8, FUN_080482b4, FUN_080482d0, FUN_080482e8,
     FUN_08048300, FUN_08048300, FUN_080482a8,
 };
+}
