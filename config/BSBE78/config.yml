@@ -41,6 +41,9 @@ long_branch_targets:
   # then unwinds it, so it cannot be called as an independent function.
   - 0x0801F82A
 rejected_function_pointers:
+  # Opaque data encodes a pointer into the upper halfword of the preceding
+  # text routine's 0x0000FFF8 literal; the fill prologue begins at 0x08020C24.
+  - { source: 0x0C4E790, destination: 0x08020C22 }
   # Opaque asset bytes at 0x08E45E34 happen to encode 0x08020323. The
   # destination is midway through a switch case in FUN_08020244 and depends
   # on its live r2/r3/r5/r6 state and shared epilogue.
@@ -296,6 +299,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_glyph_span_table:
+    exclude_from_objdiff: true
+  owned_glyph_pixel_tables:
+    exclude_from_objdiff: true
   libgcc_clz_tab:
     exclude_from_objdiff: true
   owned_unknown_0801f080_rodata:
@@ -6179,12 +6186,32 @@ units:
   - name: main/unknown_08020978
     start: 0x020978
     end: 0x021050
-    offset_origin: 0x0198B0
-    config_entries_from: main/unknown_080198B0
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_080198b0.c
-    cflags: [-O2, -mthumb-interwork]
+    source: src/unknown_08020978.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08020978: 0x14A
+      FUN_08020ad0: 0x9A
+      FUN_08020b74: 0xAC
+      FUN_08020c24: 0xFA
+      FUN_08020d20: 0xF4
+      FUN_08020e28: 0x9A
+      FUN_08020ecc: 0x46
+      FUN_08020f18: 0x4A
+      FUN_08020f64: 0xE
+      FUN_08020f78: 0x2E
+      FUN_08020fac: 0xC
+      FUN_08020fbc: 0x44
+      FUN_08021000: 0x4E
+    target_sections:
+      - { name: .text, start: 0x020978, end: 0x021050 }
+      - { name: .rodata.span, start: 0x0716BC, end: 0x07173C }
+      - { name: .rodata.pixels, start: 0x07A37C, end: 0x07AB7C }
+    synthetic_sections:
+      - { name: .bss, size: 0x1C }
+    bss_address: 0x03004B10
   # Inferred allocator TU and private RAM ownership: docs/memory-tu-cpp.md.
   - name: main/unknown_08021050
     start: 0x021050
