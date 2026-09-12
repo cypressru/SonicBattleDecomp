@@ -156,7 +156,8 @@ linkage limitations, compiler provenance, and verification details. The remainde
 
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
 the executable range is represented in objdiff, but the game TU inventory is not complete. Four
-explicit placeholder objects currently contain nearly all unresolved game code:
+explicit placeholder objects at the random-helper milestone contained nearly all
+unresolved game code (historical inventory, before subsequent full-TU splits):
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
@@ -164,6 +165,12 @@ explicit placeholder objects currently contain nearly all unresolved game code:
 | `main/unknown_080198B0` | `0x0198B0-0x01F080` | 93 | 21,138 | 1,342 |
 | `main/unknown_0801F5EC` | `0x01F5EC-0x020134` | 47 | 2,590 | 298 |
 | `main/unknown_08020198` | `0x020198-0x0460AC` | 743 | 142,244 | 13,168 |
+
+Subsequent complete-TU splits include the sound wrapper at `0x0801F5EC-0x0801F780`
+and the allocator at `0x08021050-0x08021268`. The latter leaves unresolved buckets
+at `0x08020198-0x08021050` and `0x08021268-0x080460AC`; neither is claimed as an
+original source file. See [`memory-tu-cpp.md`](memory-tu-cpp.md) for the allocator's
+boundary and private-storage evidence. The configuration is the current inventory.
 
 These objects are conservative coverage buckets, not claims that any range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
