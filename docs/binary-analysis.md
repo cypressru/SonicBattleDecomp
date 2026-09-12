@@ -172,7 +172,10 @@ at `0x08020198-0x08021050` and `0x08021268-0x080460AC`; neither is claimed as an
 original source file. The input TU at `0x08020198-0x08020244` is now also recovered,
 leaving the former bucket's unresolved start at `0x08020244`. See
 [`memory-tu-cpp.md`](memory-tu-cpp.md) and [`input-tu-cpp.md`](input-tu-cpp.md) for
-boundary and storage evidence. The configuration is the current inventory.
+boundary and storage evidence. The transfer-command TU at `0x08020244-0x08020500`
+is also recovered, leaving the following coverage bucket at `0x08020500-0x08021050`.
+See [`transfer-command-tu-cpp.md`](transfer-command-tu-cpp.md) for its queue and
+storage evidence. The configuration is the current inventory.
 
 These objects are conservative coverage buckets, not claims that any range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even
