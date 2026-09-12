@@ -299,6 +299,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_selection_descriptors:
+    exclude_from_objdiff: true
+  owned_selection_positions:
+    exclude_from_objdiff: true
   owned_lobby_metadata:
     exclude_from_objdiff: true
   owned_multiboot_pointer_tables:
@@ -6380,6 +6384,66 @@ units:
       - { name: .rodata, start: 0xEDB94C, end: 0xEDBA6C }
   - name: main/unknown_08029250
     start: 0x029250
+    end: 0x02B6E8
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08029250.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x029250, end: 0x02B6E8 }
+      - { name: .rodata, start: 0xEDBABC, end: 0xEDBB08 }
+      - { name: .rodata.selection_positions, start: 0xEDBB34, end: 0xEDBBBC }
+    synthetic_sections:
+      - { name: .bss, size: 1 }
+    bss_address: 0x03005250
+    base_symbol_size_overrides:
+      FUN_08029250: 0x71E
+      FUN_080299c0: 0x1BC
+      FUN_08029ba0: 0x88
+      FUN_08029c2c: 0x8A
+      FUN_08029cc8: 0x2C
+      FUN_08029cfc: 0x68
+      FUN_08029d74: 0xD6
+      FUN_08029e60: 0x284
+      FUN_0802a0ec: 0x12E
+      FUN_0802a220: 0x78
+      FUN_0802a298: 0x9A
+      FUN_0802a34c: 0x9E
+      FUN_0802a3f4: 0x86
+      FUN_0802a480: 0x274
+      FUN_0802a70c: 0xF2
+      FUN_0802a804: 0xEC
+      FUN_0802a8f8: 0xA0
+      FUN_0802a9a4: 0x2A0
+      FUN_0802ac48: 0xF6
+      FUN_0802ad4c: 0xF6
+      FUN_0802ae50: 0xD8
+      FUN_0802af30: 0x7A
+      FUN_0802afb0: 0x14
+      FUN_0802afc4: 0x14
+      FUN_0802afd8: 0x86
+      FUN_0802b064: 0x1E
+      FUN_0802b08c: 0x62
+      FUN_0802b10c: 0x1E
+      FUN_0802b134: 0x62
+      FUN_0802b1b4: 0x1E
+      FUN_0802b1dc: 0x1E
+      FUN_0802b204: 0x42
+      FUN_0802b248: 0x7A
+      FUN_0802b2d4: 0x40
+      FUN_0802b31c: 0x5A
+      FUN_0802b388: 0x3C
+      FUN_0802b3c8: 0x4E
+      FUN_0802b424: 0xE
+      FUN_0802b434: 0xE
+      FUN_0802b444: 0x40
+      FUN_0802b490: 0x198
+      FUN_0802b638: 0x42
+      FUN_0802b688: 0x60
+      FUN_08029c28: 0x2
+  - name: main/unknown_0802B6E8
+    start: 0x02B6E8
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
