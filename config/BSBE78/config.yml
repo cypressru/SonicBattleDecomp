@@ -299,6 +299,8 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_multiboot_pointer_tables:
+    exclude_from_objdiff: true
   owned_glyph_span_table:
     exclude_from_objdiff: true
   owned_glyph_pixel_tables:
@@ -6273,6 +6275,32 @@ units:
       - { offset: 0xD0, type: abs32, symbol: gUnknown_030033e0 }
   - name: main/unknown_08021268
     start: 0x021268
+    end: 0x0215A8
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08021268.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08021268: 0x1FA
+      FUN_08021484: 0x38
+      FUN_080214c0: 0x48
+      FUN_08021518: 0x12
+      FUN_08021534: 0x2E
+      FUN_08021564: 0x1C
+      FUN_0802158c: 0x12
+    target_sections:
+      - { name: .text, start: 0x021268, end: 0x0215A8 }
+      - { name: .rodata, start: 0xED8B88, end: 0xED8C18 }
+    synthetic_sections:
+      - { name: .bss, size: 0x4C }
+    bss_address: 0x03004D40
+    bss_sections:
+      - { name: .bss.boot_reset, address: 0x03004D90, size: 4 }
+      - { name: .bss.boot_source, address: 0x03004D94, size: 4 }
+      - { name: .bss.boot_length, address: 0x03004D9C, size: 4 }
+  - name: main/unknown_080215A8
+    start: 0x0215A8
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0

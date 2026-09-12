@@ -1,7 +1,7 @@
 import unittest
 import struct
 
-from check_unit_bytes import resolve_symbol, section_script, verify_bss
+from check_unit_bytes import owned_bss_sections, resolve_symbol, section_script, verify_bss
 
 
 class BssLayoutTests(unittest.TestCase):
@@ -15,12 +15,12 @@ class BssLayoutTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             section_script([{"name": ".text; injected", "start": 0}], 0)
 
-    def fixture(self, kind=8, address=0x03004B30, size=0x20C):
+    def fixture(self, kind=8, address=0x03004B30, size=0x20C, name=".bss"):
         elf = bytearray(52 + 120)
         elf[:7] = b"\x7fELF\x01\x01\x01"
         struct.pack_into("<I", elf, 32, 52)
         struct.pack_into("<HHH", elf, 46, 40, 3, 1)
-        names = b"\0.shstrtab\0.bss\0"
+        names = b"\0.shstrtab\0" + name.encode() + b"\0"
         struct.pack_into("<10I", elf, 92, 1, 3, 0, 0, len(elf), len(names), 0, 0, 1, 0)
         struct.pack_into("<10I", elf, 132, 11, kind, 3, address, 0, size, 0, 0, 8, 0)
         return bytes(elf) + names
@@ -37,6 +37,49 @@ class BssLayoutTests(unittest.TestCase):
         for elf in (b"", bytes(52), self.fixture()[:100], self.fixture()[:-1]):
             with self.subTest(length=len(elf)), self.assertRaises(ValueError):
                 verify_bss(elf, 0x03004B30, 0x20C)
+
+    def test_named_nobits_layout(self):
+        elf = self.fixture(name=".bss.boot_source", address=0x03004D94, size=4)
+        verify_bss(elf, 0x03004D94, 4, ".bss.boot_source")
+        with self.assertRaises(ValueError):
+            verify_bss(elf, 0x03004D94, 4, ".bss.boot_reset")
+        with self.assertRaises(ValueError):
+            verify_bss(self.fixture(name=".bss.boot_source", kind=1),
+                       0x03004B30, 0x20C, ".bss.boot_source")
+
+    def test_discontiguous_sections_do_not_claim_gaps(self):
+        extra = [{"name": ".bss.boot_source", "address": 0x03004D94, "size": 4}]
+        unit = {"bss_address": 0x03004D40,
+                "synthetic_sections": [{"name": ".bss", "size": 76}],
+                "bss_sections": extra}
+        self.assertEqual(owned_bss_sections(unit), [
+            {"name": ".bss", "address": 0x03004D40, "size": 76}, *extra])
+        script = section_script([], unit["bss_address"], extra)
+        self.assertIn(".bss.boot_source 0x3004d94 (NOLOAD) : { *(.bss.boot_source) }", script)
+        self.assertNotIn(". +=", script)
+
+    def test_invalid_discontiguous_sections(self):
+        unit = {"bss_address": 0x03004D40,
+                "synthetic_sections": [{"name": ".bss", "size": 76}]}
+        for extra in (
+            {"name": ".bss", "address": 0x03004D94, "size": 4},
+            {"name": ".bss.bad;", "address": 0x03004D94, "size": 4},
+            {"name": ".bss.overlap", "address": 0x03004D88, "size": 8},
+            {"name": ".bss.empty", "address": 0x03004D94, "size": 0},
+            {"name": ".bss.rom", "address": 0x08004D94, "size": 4},
+            {"name": ".bss.end", "address": 0x03007FFC, "size": 8},
+        ):
+            with self.subTest(extra=extra), self.assertRaises(ValueError):
+                owned_bss_sections({**unit, "bss_sections": [extra]})
+        with self.assertRaises(ValueError):
+            owned_bss_sections({"bss_sections": [{"name": ".bss.extra"}]})
+        with self.assertRaises(ValueError):
+            owned_bss_sections({**unit, "bss_sections": [
+                {"name": ".bss.first", "address": 0x03004D90, "size": 8},
+                {"name": ".bss.second", "address": 0x03004D94, "size": 4},
+            ]})
+        with self.assertRaises(ValueError):
+            section_script([], 0x03004D40, [{"name": ".bss.bad;", "address": 0x03004D94}])
 
 
 class LinkerSymbolTests(unittest.TestCase):

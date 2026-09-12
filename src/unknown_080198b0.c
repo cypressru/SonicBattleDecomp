@@ -4558,46 +4558,11 @@ void FUN_080200f8(void) {
 
 extern void FUN_08020134(u32 value);
 
-u8 FUN_08021484(void) {
-    u8 result = 1;
-    u8 index;
-
-    for (index = 1; index <= 3; index++) {
-        if (((gUnknown_03004d40.firstFlags >> index) & 1) &&
-            ((gUnknown_03004d40.secondFlags >> index) & 1)) {
-            result++;
-        }
-    }
-    return result;
-}
-
-void FUN_08021518(void) {
-    gUnknown_020000e0 = 0x12345678;
-    SoftResetExram(0x40);
-}
-
-u32 FUN_08021534(void) {
-    if (FUN_08018c8c(&gUnknown_03004d40) != 0) {
-        return 0xFF;
-    }
-    if (FUN_0801950c(&gUnknown_03004d40) != 0) {
-        return 1;
-    }
-    return 0;
-}
-
-u32 FUN_0802158c(void) {
-    LZ77UnCompWram(gUnknown_03004d94, (void *)0x02000100);
-    return 0;
-}
-
-u32 FUN_08021564(void) {
-    const void *source = gUnknown_03004d94;
-    u32 size = gUnknown_03004d8c;
-
-    CpuSet(source, (void *)(0x0203B000 - size), (size << 10) >> 11);
-    return 0;
-}
+extern u8 FUN_08021484(void);
+extern void FUN_08021518(void);
+extern u32 FUN_08021534(void);
+extern u32 FUN_0802158c(void);
+extern u32 FUN_08021564(void);
 
 u32 FUN_080218ac(u8 sector, u8 *data) {
     ReadFlash(sector, 0, data, 0x1000);
