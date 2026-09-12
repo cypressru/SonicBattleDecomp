@@ -551,6 +551,8 @@ address,name,mode,confidence
 0x08EDBB08,data_gap_after_selection_descriptors,data,selection-descriptor-and-pointer-size
 0x08EDBB34,owned_selection_positions,data,selection-coordinate-owner
 0x08EDBBBC,data_gap_after_selection_positions,data,selection-coordinate-size
+0x08EDBBE8,owned_results_metadata,data,results-pointer-and-coordinate-owner
+0x08EDBC7C,data_gap_after_results_metadata,data,results-pointer-and-coordinate-size
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size

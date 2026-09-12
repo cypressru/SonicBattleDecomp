@@ -5690,23 +5690,6 @@ void FUN_08028f98(struct UnknownListNode *node);
 void FUN_08029014(struct UnknownListNode *node);
 void FUN_08029060(struct UnknownListNode *node);
 void FUN_080290b4(struct UnknownListNode *node);
-void FUN_0802cb30(struct UnknownListNode *node) {
-    struct UnknownPosition *position = node->position;
-    u32 zero;
-    u32 halfwordZero;
-
-    position->field0 = (const void *)0x0811DBA8;
-    zero = 0;
-    halfwordZero = 0;
-    position->tile = halfwordZero;
-    node->position->x = 214;
-    node->position->y = 145;
-    node->position->field10 = zero;
-    node->position->field11 = zero;
-    node->position->field12 = zero;
-    node->data = (const void *)((u32)FUN_0802cadc + 1);
-}
-
 void FUN_080290e8(u32 index, u32 variant, u32 unused);
 void FUN_080291a8(void);
 void FUN_08029200(void);
@@ -6260,30 +6243,6 @@ void FUN_0802dcc8(struct UnknownListNode *node) {
 
 void FUN_08031540(struct UnknownListNode *node) {
     FUN_0801f978(node, gUnknown_08edc2b6[node->position->field13]);
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802c85c(struct UnknownListNode *node) {
-    node->position->x =
-        gUnknown_08edbc1c[node->position->field13][0] + gUnknown_03005270[node->position->field13];
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802c914(struct UnknownListNode *node) {
-    node->position->x =
-        gUnknown_08edbc2c[node->position->field13][0] + gUnknown_03005270[node->position->field13];
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802c9ac(struct UnknownListNode *node) {
-    node->position->x =
-        gUnknown_08edbc3c[node->position->field13][0] + gUnknown_03005270[node->position->field13];
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802caac(struct UnknownListNode *node) {
-    node->position->x =
-        gUnknown_08edbc4c[node->position->field13][0] + gUnknown_03005270[node->position->field13];
     FUN_0801fed8(node->field6, 0);
 }
 
@@ -7301,20 +7260,6 @@ void FUN_08033cdc(struct UnknownListNode *node) {
     if (--*counter <= 0 || (gUnknown_030048e0.third & 1) != 0) {
         node->data = (const void *)((u32)FUN_08033bf8 + 1);
         FUN_0801f718(5, 120);
-    }
-}
-
-void FUN_0802c7d8(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_0802c25c;
-    }
-}
-
-void FUN_0802c25c(void) {
-    if (gUnknown_03005264 == 2) {
-        gUnknown_03002030 = FUN_0803c378;
-    } else {
-        gUnknown_03002030 = FUN_08029250;
     }
 }
 

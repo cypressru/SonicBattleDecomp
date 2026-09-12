@@ -299,6 +299,8 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_results_metadata:
+    exclude_from_objdiff: true
   owned_selection_descriptors:
     exclude_from_objdiff: true
   owned_selection_positions:
@@ -6444,6 +6446,51 @@ units:
       FUN_08029c28: 0x2
   - name: main/unknown_0802B6E8
     start: 0x02B6E8
+    end: 0x02CC78
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0802b6e8.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x02B6E8, end: 0x02CC78 }
+      - { name: .rodata, start: 0xEDBBE8, end: 0xEDBC7C }
+    synthetic_sections:
+      - { name: .bss, size: 8 }
+    bss_address: 0x03005270
+    bss_sections:
+      - { name: .bss.mapping, address: 0x03005278, size: 4 }
+      - { name: .bss.count, address: 0x0300527C, size: 1 }
+      - { name: .bss.text, address: 0x03005280, size: 4 }
+      - { name: .bss.digits, address: 0x03005290, size: 8 }
+      - { name: .bss.winner, address: 0x030052A0, size: 1 }
+      - { name: .bss.ranks, address: 0x030052A4, size: 4 }
+    base_symbol_size_overrides:
+      FUN_0802b6e8: 0x12C
+      FUN_0802b81c: 0x146
+      FUN_0802b980: 0x82C
+      FUN_0802c1d4: 0x88
+      FUN_0802c25c: 0x26
+      FUN_0802c28c: 0xE4
+      FUN_0802c37c: 0x1DA
+      FUN_0802c56c: 0xDE
+      FUN_0802c654: 0xE0
+      FUN_0802c734: 0xA0
+      FUN_0802c7d8: 0x1E
+      FUN_0802c800: 0x4A
+      FUN_0802c85c: 0x28
+      FUN_0802c88c: 0x7A
+      FUN_0802c914: 0x28
+      FUN_0802c944: 0x56
+      FUN_0802c9ac: 0x28
+      FUN_0802c9dc: 0xBC
+      FUN_0802caac: 0x28
+      FUN_0802cadc: 0x4E
+      FUN_0802cb30: 0x2A
+      FUN_0802cb64: 0x5C
+      FUN_0802cbd0: 0x9C
+  - name: main/unknown_0802CC78
+    start: 0x02CC78
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
