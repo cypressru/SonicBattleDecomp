@@ -6019,6 +6019,26 @@ units:
       - { offset: 0x54, type: abs32, symbol: .bss }
   - name: main/unknown_08020198
     start: 0x020198
+    end: 0x020244
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08020198.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08020198: 0x60
+      FUN_080201f8: 0x1C
+      FUN_0802021c: 0x22
+    mappings:
+      - { offset: 0x3A, mode: data }
+      - { offset: 0x44, mode: thumb }
+    relocations:
+      - { offset: 0x3C, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0x74, type: thumb_call, symbol: FUN_0802021c }
+      - { offset: 0x7C, type: abs32, symbol: gUnknown_030048e0 }
+      - { offset: 0xA8, type: abs32, symbol: gUnknown_030048e0 }
+  - name: main/unknown_08020244
+    start: 0x020244
     end: 0x021050
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
