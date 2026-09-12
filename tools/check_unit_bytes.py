@@ -86,6 +86,20 @@ def verify_bss(elf, expected_address, expected_size):
         )
 
 
+def section_script(sections, bss_address):
+    """Place owned sections without the default script's trailing BSS rounding."""
+    lines = ["SECTIONS {"]
+    for section in sections:
+        name = section["name"]
+        if not re.fullmatch(r"\.[A-Za-z0-9_.]+", name):
+            raise ValueError(f"invalid section name {name}")
+        address = int(section["start"]) + 0x08000000
+        lines.append(f"  {name} {address:#x} : {{ *({name}) }}")
+    lines.append(f"  .bss {bss_address:#x} (NOLOAD) : {{ *(.bss) *(COMMON) }}")
+    lines.append("}")
+    return "\n".join(lines) + "\n"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("unit", help="unit name in config/BSBE78/config.yml")
@@ -137,7 +151,12 @@ def main() -> None:
                 raise ValueError(f"invalid ROM extent for {section['name']}")
             command.append(f"--section-start={section['name']}={start + 0x08000000:#x}")
         if "bss_address" in unit:
-            command.append(f"-Tbss={int(unit['bss_address']):#x}")
+            # GNU ld's default script pads .bss to a word boundary. That padding
+            # is not owned input storage (for example a ten-byte state span).
+            # Use explicit output sections so the layout assertion stays exact.
+            script = Path(directory) / "sections.ld"
+            script.write_text(section_script(sections, int(unit["bss_address"])))
+            command.extend(["-T", str(script)])
         subprocess.run([*command, "-o", str(linked), str(base), str(symbol_object)], check=True)
         if "bss_address" in unit:
             bss = next(section for section in unit["synthetic_sections"]
