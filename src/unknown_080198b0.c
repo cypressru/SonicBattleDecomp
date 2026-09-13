@@ -3581,32 +3581,6 @@ void FUN_0803bc38(struct UnknownListNode *node) {
     }
 }
 
-void FUN_0802dc90(struct UnknownListNode *node) {
-    u32 value = (u16)node->position->x + 1;
-    s32 signedValue = node->position->x;
-
-    node->position->x = value + (signedValue - 32) * 2;
-    asm volatile("" ::: "memory");
-    if (node->position->x > 255) {
-        FUN_0801f8c0(node);
-    } else {
-        FUN_0801fed8(node->field6, 0);
-    }
-}
-
-void FUN_0802dce0(struct UnknownListNode *node) {
-    u32 value = (u16)node->position->x + 1;
-    s32 signedValue = node->position->x;
-
-    node->position->x = value + (signedValue - 28) * 2;
-    asm volatile("" ::: "memory");
-    if (node->position->x > 255) {
-        FUN_0801f8c0(node);
-    } else {
-        FUN_0801fed8(node->field6, 0);
-    }
-}
-
 void FUN_08038918(struct UnknownListNode *node) {
     node->position->x = gUnknown_030052f8 + 120;
     node->position->y = gUnknown_08edcee8[gUnknown_030052e0] - gUnknown_030052f8;
@@ -5891,11 +5865,6 @@ digits_done: {
 }
 }
 
-void FUN_0802cfd0(void) {
-    FUN_0801f89c();
-    FUN_0801fda0();
-}
-
 void FUN_08031154(void) {
     FUN_0801f89c();
     FUN_0801fda0();
@@ -6231,29 +6200,9 @@ void FUN_0803bbf0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_0803bc10 + 1);
 }
 
-void FUN_0802dc78(struct UnknownListNode *node) {
-    FUN_0801f978(node, 32);
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802dcc8(struct UnknownListNode *node) {
-    FUN_0801f978(node, 28);
-    FUN_0801fed8(node->field6, 0);
-}
-
 void FUN_08031540(struct UnknownListNode *node) {
     FUN_0801f978(node, gUnknown_08edc2b6[node->position->field13]);
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0802df40(struct UnknownListNode *node) {
-    struct UnknownBlendState2df40 *state = node->allocation;
-
-    state->value = 0xff00;
-    FUN_0801fba0(20, 0xff00);
-    state->field2 = 0;
-    state->field3 = 0;
-    node->data = (const void *)((u32)FUN_0802ded4 + 1);
 }
 
 void FUN_08034f10(struct UnknownListNode *node) {
@@ -7303,12 +7252,6 @@ void FUN_0803bd5c(void) {
     }
 }
 
-void FUN_0802d734(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_08039e20;
-    }
-}
-
 void FUN_08039d00(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08039e20;
@@ -7318,22 +7261,6 @@ void FUN_08039d00(void) {
 void FUN_0803d100(void) {
     if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
         gUnknown_03002030 = FUN_08039e20;
-    }
-}
-
-void FUN_0802d75c(struct UnknownListNode *node) { FUN_0801fed8(node->field6, 0); }
-
-void FUN_0802d95c(struct UnknownListNode *node) {
-    FUN_0801fed8(node->field6, 0);
-    if (node->position->field14 == 0) {
-        node->data = (const void *)((u32)FUN_0802d76c + 1);
-    }
-}
-
-void FUN_0802db10(struct UnknownListNode *node) {
-    FUN_0801fed8(node->field6, 0);
-    if (node->position->field14 == 0) {
-        node->data = (const void *)((u32)FUN_0802da00 + 1);
     }
 }
 
