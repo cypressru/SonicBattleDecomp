@@ -5865,11 +5865,6 @@ digits_done: {
 }
 }
 
-void FUN_08033a1c(void) {
-    FUN_0801f89c();
-    FUN_0801fda0();
-}
-
 void FUN_08035258(void) {
     FUN_0801f89c();
     FUN_0801fda0();
@@ -6910,40 +6905,6 @@ void FUN_08043ee4(struct UnknownState482d0 *state) {
 void FUN_08034ef4(struct UnknownListNode *node) {
     FUN_0801f978(node, -48);
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_08033bf8(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_08000210;
-    }
-}
-
-void FUN_08033bb4(struct UnknownListNode *node) {
-    *(u32 *)node->allocation = 180;
-    node->data = (const void *)((u32)FUN_08033bc4 + 1);
-}
-
-void FUN_08033cc8(struct UnknownListNode *node) {
-    *(u32 *)node->allocation = 300;
-    node->data = (const void *)((u32)FUN_08033cdc + 1);
-}
-
-void FUN_08033bc4(struct UnknownListNode *node) {
-    s32 *counter = node->allocation;
-
-    if (--*counter <= 0 || (gUnknown_030048e0.third & 1) != 0) {
-        node->data = (const void *)((u32)FUN_08033bf8 + 1);
-        FUN_0801f718(5, 120);
-    }
-}
-
-void FUN_08033cdc(struct UnknownListNode *node) {
-    s32 *counter = node->allocation;
-
-    if (--*counter <= 0 || (gUnknown_030048e0.third & 1) != 0) {
-        node->data = (const void *)((u32)FUN_08033bf8 + 1);
-        FUN_0801f718(5, 120);
-    }
 }
 
 void FUN_08038820(void) {
