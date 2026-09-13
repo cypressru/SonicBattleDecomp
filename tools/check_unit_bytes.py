@@ -86,8 +86,8 @@ def verify_bss(elf, expected_address, expected_size, section_name=".bss"):
         )
 
 
-def section_script(sections, bss_address, bss_sections=()):
-    """Place owned sections without the default script's trailing BSS rounding."""
+def section_script(sections, bss_address=None, bss_sections=()):
+    """Place exact owned sections without default wildcard merging or BSS rounding."""
     lines = ["SECTIONS {"]
     for section in sections:
         name = section["name"]
@@ -95,7 +95,10 @@ def section_script(sections, bss_address, bss_sections=()):
             raise ValueError(f"invalid section name {name}")
         address = int(section["start"]) + 0x08000000
         lines.append(f"  {name} {address:#x} : {{ *({name}) }}")
-    lines.append(f"  .bss {bss_address:#x} (NOLOAD) : {{ *(.bss) *(COMMON) }}")
+    if bss_address is not None:
+        lines.append(f"  .bss {bss_address:#x} (NOLOAD) : {{ *(.bss) *(COMMON) }}")
+    elif bss_sections:
+        raise ValueError("additional BSS sections require bss_address")
     for section in bss_sections:
         name = section["name"]
         if not re.fullmatch(r"\.bss\.[A-Za-z0-9_]+", name):
@@ -186,14 +189,13 @@ def main() -> None:
             if not 0 <= start < end <= len(rom):
                 raise ValueError(f"invalid ROM extent for {section['name']}")
             command.append(f"--section-start={section['name']}={start + 0x08000000:#x}")
-        if "bss_address" in unit:
-            # GNU ld's default script pads .bss to a word boundary. That padding
-            # is not owned input storage (for example a ten-byte state span).
-            # Use explicit output sections so the layout assertion stays exact.
-            script = Path(directory) / "sections.ld"
-            script.write_text(section_script(sections, int(unit["bss_address"]),
-                                             bss_sections[1:]))
-            command.extend(["-T", str(script)])
+        # Default wildcards merge .rodata.* into .rodata even with explicit
+        # --section-start options. Exact selectors keep disjoint ROM blocks
+        # separate, and also avoid default trailing BSS alignment when owned.
+        script = Path(directory) / "sections.ld"
+        bss_address = int(unit["bss_address"]) if "bss_address" in unit else None
+        script.write_text(section_script(sections, bss_address, bss_sections[1:]))
+        command.extend(["-T", str(script)])
         subprocess.run([*command, "-o", str(linked), str(base), str(symbol_object)], check=True)
         for bss in bss_sections:
             verify_bss(linked.read_bytes(), int(bss["address"]), int(bss["size"]), bss["name"])

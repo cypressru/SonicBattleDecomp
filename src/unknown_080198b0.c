@@ -5865,11 +5865,6 @@ digits_done: {
 }
 }
 
-void FUN_08031154(void) {
-    FUN_0801f89c();
-    FUN_0801fda0();
-}
-
 void FUN_0803186c(void) {
     FUN_0801f89c();
     FUN_0801fda0();
@@ -6114,22 +6109,6 @@ void FUN_0803b588(void) {
     *registers = copy;
 }
 
-void FUN_0803128c(struct UnknownListNode *node) {
-    struct UnknownAllocation3128c *allocation = node->allocation;
-
-    allocation->field4 = 30;
-    allocation->field2 = 0;
-    node->data = (const void *)((u32)FUN_080311b4 + 1);
-}
-
-void FUN_080312c8(struct UnknownListNode *node) {
-    u32 pending = FUN_08020500((u16 *)0x05000000, (const u16 *)0x08130364, 64) == 0;
-
-    if (pending == 0) {
-        node->data = (const void *)((u32)FUN_0803128c + 1);
-    }
-}
-
 void FUN_080368c0(u8 index) { gUnknown_0300537c &= ~gUnknown_0807163c[index]; }
 
 void FUN_08043e28(struct UnknownState43e28 *state) {
@@ -6165,11 +6144,6 @@ void FUN_0803bbf0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_0803bc10 + 1);
 }
 
-void FUN_08031540(struct UnknownListNode *node) {
-    FUN_0801f978(node, gUnknown_08edc2b6[node->position->field13]);
-    FUN_0801fed8(node->field6, 0);
-}
-
 void FUN_08034f10(struct UnknownListNode *node) {
     FUN_0801f978(node, 48);
     FUN_0801fed8(node->field6, 0);
@@ -6193,13 +6167,6 @@ void FUN_08035bf0(struct UnknownListNode *node) {
 void FUN_08036244(struct UnknownListNode *node) {
     node->position->x = gUnknown_03005378 + 4;
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_080312f8(struct UnknownListNode *node) {
-    u32 *counter = node->allocation;
-
-    FUN_0801fba0(28, *(u8 *)counter);
-    *counter -= 12;
 }
 
 void FUN_08032778(struct UnknownListNode *node) {
@@ -7097,12 +7064,6 @@ void FUN_08043ee4(struct UnknownState482d0 *state) {
 void FUN_08034ef4(struct UnknownListNode *node) {
     FUN_0801f978(node, -48);
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_080312a0(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_08031164;
-    }
 }
 
 void FUN_0803256c(void) {

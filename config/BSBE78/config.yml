@@ -308,6 +308,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_briefing_metadata:
+    exclude_from_objdiff: true
+  owned_briefing_registers:
+    exclude_from_objdiff: true
   owned_progress_menu_metadata:
     exclude_from_objdiff: true
   owned_text_menu_metadata:
@@ -6610,6 +6614,31 @@ units:
       FUN_08030ed4: 0x56
   - name: main/unknown_08030F38
     start: 0x030F38
+    end: 0x0315BC
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08030f38.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x030F38, end: 0x0315BC }
+      - { name: .rodata, start: 0xEDC23C, end: 0xEDC2D4 }
+      - { name: .rodata.registers, start: 0x130324, end: 0x130364 }
+    base_symbol_size_overrides:
+      FUN_08030f38: 0x1BC
+      FUN_08031154: 0xE
+      FUN_08031164: 0x3E
+      FUN_080311b4: 0xD2
+      FUN_0803128c: 0x10
+      FUN_080312a0: 0x1E
+      FUN_080312c8: 0x28
+      FUN_080312f8: 0x18
+      FUN_08031310: 0x74
+      FUN_0803139c: 0x196
+      FUN_08031540: 0x26
+      FUN_0803156c: 0x3E
+  - name: main/unknown_080315BC
+    start: 0x0315BC
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
