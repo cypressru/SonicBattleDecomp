@@ -6039,6 +6039,59 @@ units:
       - { offset: 0xA8, type: abs32, symbol: gUnknown_030048e0 }
   - name: main/unknown_08020244
     start: 0x020244
+    end: 0x020500
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08020244.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08020244: 0x114
+      FUN_08020360: 0x8
+      FUN_0802036c: 0x30
+      FUN_080203a4: 0x5A
+      FUN_08020408: 0x30
+      FUN_08020440: 0x32
+      FUN_0802047c: 0x32
+      FUN_080204b8: 0x3E
+    synthetic_sections:
+      - { name: .bss, size: 0x210 }
+    bss_address: 0x030048F0
+    mappings:
+      - { offset: 0x22, mode: data }
+      - { offset: 0x44, mode: thumb }
+      - { offset: 0xD0, mode: data }
+      - { offset: 0xD4, mode: thumb }
+    relocations:
+      - { offset: 0x28, type: abs32, symbol: .text, addend: 0x2C }
+      - { offset: 0x2C, type: abs32, symbol: .text, addend: 0x44 }
+      - { offset: 0x30, type: abs32, symbol: .text, addend: 0x60 }
+      - { offset: 0x34, type: abs32, symbol: .text, addend: 0x7C }
+      - { offset: 0x38, type: abs32, symbol: .text, addend: 0x8C }
+      - { offset: 0x3C, type: abs32, symbol: .text, addend: 0xA6 }
+      - { offset: 0x40, type: abs32, symbol: .text, addend: 0xD4 }
+      - { offset: 0x118, type: abs32, symbol: .bss }
+      - { offset: 0x124, type: abs32, symbol: .bss }
+      - { offset: 0x158, type: abs32, symbol: .bss }
+      - { offset: 0x1BC, type: abs32, symbol: .bss }
+      - { offset: 0x1F4, type: abs32, symbol: .bss }
+      - { offset: 0x230, type: abs32, symbol: .bss }
+      - { offset: 0x26C, type: abs32, symbol: .bss }
+      - { offset: 0x2B4, type: abs32, symbol: .bss }
+      - { offset: 0x24, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x15C, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x1C0, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x1F8, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x234, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x270, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x2B8, type: abs32, symbol: .bss, addend: 0x10 }
+      - { offset: 0x5A, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0x76, type: thumb_call, symbol: FUN_08021000 }
+      - { offset: 0x86, type: thumb_call, symbol: LZ77UnCompVram }
+      - { offset: 0xCA, type: thumb_call, symbol: CpuFastSet }
+      - { offset: 0xF6, type: thumb_call, symbol: CpuFastSet }
+  - name: main/unknown_08020500
+    start: 0x020500
     end: 0x021050
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0

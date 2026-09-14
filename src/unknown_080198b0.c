@@ -504,14 +504,6 @@ struct UnknownState080201f8 {
     u8 eighth;
 };
 
-struct UnknownCommandRecord {
-    u32 first;
-    u32 second;
-    u32 third;
-    u16 fourth;
-    u16 type;
-};
-
 struct UnknownBufferState {
     u32 field0;
     const u8 *source;
@@ -941,8 +933,6 @@ extern u8 gUnknown_0300019a;
 extern u8 gUnknown_030044c0;
 extern u8 gUnknown_030000c8[4];
 extern struct UnknownState080201f8 gUnknown_030048e0;
-extern u32 gUnknown_030048f0;
-extern struct UnknownCommandRecord gUnknown_03004900[];
 extern u16 gUnknown_03004b00;
 extern u8 gUnknown_03004b04;
 extern u16 gUnknown_03004b08;
@@ -4564,82 +4554,6 @@ void FUN_080200f8(void) {
 }
 
 extern void FUN_08020134(u32 value);
-
-void FUN_08020360(void) { gUnknown_030048f0 = 0; }
-
-void FUN_0802036c(u32 first, u32 second, u32 third) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].second = second;
-        gUnknown_03004900[index].third = third;
-        gUnknown_03004900[index].type = 0;
-        gUnknown_030048f0 = index + 1;
-    }
-}
-
-void FUN_080203a4(u32 first, u32 second, u16 third, u16 fourth, u16 fifth) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].second = second;
-        gUnknown_03004900[index].third = third | (fourth << 16);
-        gUnknown_03004900[index].fourth = fifth;
-        gUnknown_03004900[index].type = 1;
-        gUnknown_030048f0 = index + 1;
-    }
-}
-
-void FUN_08020408(u32 first, u32 second) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].second = second;
-        gUnknown_03004900[index].third = 0;
-        gUnknown_03004900[index].type = 2;
-        gUnknown_030048f0 = index + 1;
-    }
-}
-
-void FUN_08020440(u32 first, u16 second, u16 third) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].fourth = second;
-        gUnknown_03004900[index].third = third;
-        gUnknown_03004900[index].type = 3;
-        gUnknown_030048f0 = index + 1;
-    }
-}
-
-void FUN_0802047c(u32 first, u8 second, u16 third) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].fourth = second;
-        gUnknown_03004900[index].third = third;
-        gUnknown_03004900[index].type = 4;
-        gUnknown_030048f0 = index + 1;
-    }
-}
-
-void FUN_080204b8(u32 first, u16 second, u8 third, u16 fourth) {
-    u32 index = gUnknown_030048f0;
-
-    if (index <= 31) {
-        gUnknown_03004900[index].first = first;
-        gUnknown_03004900[index].second = second;
-        gUnknown_03004900[index].fourth = third;
-        gUnknown_03004900[index].third = fourth;
-        gUnknown_03004900[index].type = 5;
-        gUnknown_030048f0 = index + 1;
-    }
-}
 
 u8 FUN_08020500(u16 *destination, const u16 *source, u16 count) {
     u32 result = 1;
