@@ -369,7 +369,7 @@ address,name,mode,confidence
 0x08020978,FUN_08020978,thumb,direct-call+exact-body
 0x08020AD0,FUN_08020ad0,thumb,direct-call+exact-body
 0x08020B74,FUN_08020b74,thumb,direct-call+exact-body
-0x08020C22,FUN_08020c22,thumb,rom-pointer+exact-body
+0x08020C24,FUN_08020c24,thumb,prologue+whole-tu-byte-match
 0x08020D20,FUN_08020d20,thumb,sequential-prologue+complete-control-flow
 0x08020E28,FUN_08020e28,thumb,sequential-prologue+complete-control-flow+exact-body
 0x08020ECC,FUN_08020ecc,thumb,direct-call+exact-body

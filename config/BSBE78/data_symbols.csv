@@ -1,5 +1,9 @@
 address,name,mode,confidence
 0x0804B718,data_gap_000,data,range-gap
+0x080716BC,owned_glyph_span_table,data,arithmetic-table+renderer-reference
+0x0807173C,data_gap_glyph_font,data,shared-font-assets
+0x0807A37C,owned_glyph_pixel_tables,data,arithmetic-tables+renderer-references
+0x0807AB7C,data_gap_after_glyph_tables,data,range-gap
 0x0807BC80,lz77_asset_000,data,lz77-pointer-1
 0x0807BF98,lz77_asset_001,data,lz77-pointer-3
 0x0807C060,lz77_asset_002,data,lz77-pointer-2
