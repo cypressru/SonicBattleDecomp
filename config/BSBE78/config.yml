@@ -6092,6 +6092,92 @@ units:
       - { offset: 0xF6, type: thumb_call, symbol: CpuFastSet }
   - name: main/unknown_08020500
     start: 0x020500
+    end: 0x020978
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08020500.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08020500: 0xC6
+      FUN_080205d0: 0xAC
+      FUN_0802067c: 0x68
+      FUN_080206ec: 0x7E
+      FUN_08020774: 0x78
+      FUN_080207ec: 0x44
+      FUN_08020840: 0x48
+      FUN_08020898: 0x44
+      FUN_080208ec: 0x48
+      FUN_08020944: 0x26
+    synthetic_sections:
+      - { name: .bss, size: 0xA }
+    bss_address: 0x03004B00
+    mappings:
+      - { offset: 0x0, mode: thumb }
+      - { offset: 0xC6, mode: data }
+      - { offset: 0xD0, mode: thumb }
+      - { offset: 0xE4, mode: data }
+      - { offset: 0xE8, mode: thumb }
+      - { offset: 0x11A, mode: data }
+      - { offset: 0x124, mode: thumb }
+      - { offset: 0x142, mode: data }
+      - { offset: 0x148, mode: thumb }
+      - { offset: 0x15E, mode: data }
+      - { offset: 0x164, mode: thumb }
+      - { offset: 0x1E4, mode: data }
+      - { offset: 0x1EC, mode: thumb }
+      - { offset: 0x26A, mode: data }
+      - { offset: 0x274, mode: thumb }
+      - { offset: 0x330, mode: data }
+      - { offset: 0x340, mode: thumb }
+      - { offset: 0x388, mode: data }
+      - { offset: 0x398, mode: thumb }
+      - { offset: 0x3DC, mode: data }
+      - { offset: 0x3EC, mode: thumb }
+      - { offset: 0x434, mode: data }
+      - { offset: 0x444, mode: thumb }
+      - { offset: 0x46A, mode: data }
+    relocations:
+      - { offset: 0xE4, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x114, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x11C, type: abs32, symbol: .bss }
+      - { offset: 0x120, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x12E, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x144, type: abs32, symbol: .bss }
+      - { offset: 0x158, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x160, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x172, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x2F6, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x2FE, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x31A, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x330, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x334, type: abs32, symbol: .bss }
+      - { offset: 0x338, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x34A, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x352, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x372, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x388, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x38C, type: abs32, symbol: .bss }
+      - { offset: 0x390, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x3A2, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x3AA, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x3C6, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x3DC, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x3E0, type: abs32, symbol: .bss }
+      - { offset: 0x3E4, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x3F6, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x3FE, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x41E, type: thumb_call, symbol: __divsi3 }
+      - { offset: 0x434, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x438, type: abs32, symbol: .bss }
+      - { offset: 0x43C, type: abs32, symbol: .bss, addend: 0x8 }
+      - { offset: 0x44A, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x452, type: thumb_call, symbol: FUN_0801fba0 }
+      - { offset: 0x46C, type: abs32, symbol: .bss, addend: 0x4 }
+      - { offset: 0x470, type: abs32, symbol: .bss }
+      - { offset: 0x474, type: abs32, symbol: .bss, addend: 0x8 }
+  - name: main/unknown_08020978
+    start: 0x020978
     end: 0x021050
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0

@@ -175,7 +175,10 @@ leaving the former bucket's unresolved start at `0x08020244`. See
 boundary and storage evidence. The transfer-command TU at `0x08020244-0x08020500`
 is also recovered, leaving the following coverage bucket at `0x08020500-0x08021050`.
 See [`transfer-command-tu-cpp.md`](transfer-command-tu-cpp.md) for its queue and
-storage evidence. The configuration is the current inventory.
+storage evidence. The palette/blend TU at `0x08020500-0x08020978` is also recovered;
+its ten helpers and minimal state span are documented in
+[`palette-tu-cpp.md`](palette-tu-cpp.md). The remaining bucket begins at
+`0x08020978`. The configuration is the current inventory.
 
 These objects are conservative coverage buckets, not claims that any range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even

@@ -1,10 +1,20 @@
 import unittest
 import struct
 
-from check_unit_bytes import resolve_symbol, verify_bss
+from check_unit_bytes import resolve_symbol, section_script, verify_bss
 
 
 class BssLayoutTests(unittest.TestCase):
+    def test_explicit_sections_do_not_add_trailing_bss_padding(self):
+        script = section_script([{"name": ".text", "start": 0x20500}], 0x03004B00)
+        self.assertIn(".text 0x8020500 : { *(.text) }", script)
+        self.assertIn(".bss 0x3004b00 (NOLOAD) : { *(.bss) *(COMMON) }", script)
+        self.assertNotIn("ALIGN", script)
+
+    def test_invalid_section_name_is_rejected(self):
+        with self.assertRaises(ValueError):
+            section_script([{"name": ".text; injected", "start": 0}], 0)
+
     def fixture(self, kind=8, address=0x03004B30, size=0x20C):
         elf = bytearray(52 + 120)
         elf[:7] = b"\x7fELF\x01\x01\x01"
