@@ -299,6 +299,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_progress_menu_metadata:
+    exclude_from_objdiff: true
+  owned_progress_menu_coordinates:
+    exclude_from_objdiff: true
   owned_results_metadata:
     exclude_from_objdiff: true
   owned_selection_descriptors:
@@ -6491,6 +6495,52 @@ units:
       FUN_0802cbd0: 0x9C
   - name: main/unknown_0802CC78
     start: 0x02CC78
+    end: 0x02DF68
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0802cc78.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x02CC78, end: 0x02DF68 }
+      - { name: .rodata, start: 0xEDBC7C, end: 0xEDBE94 }
+      - { name: .rodata.coordinates, start: 0x12E5F8, end: 0x12E608 }
+    synthetic_sections:
+      - { name: .bss, size: 1 }
+    bss_address: 0x030052B0
+    bss_sections:
+      - { name: .bss.selected, address: 0x030052B4, size: 1 }
+      - { name: .bss.variant, address: 0x030052B8, size: 1 }
+    base_symbol_size_overrides:
+      FUN_0802cc78: 0x348
+      FUN_0802cfd0: 0xE
+      FUN_0802cfe0: 0x11A
+      FUN_0802d134: 0xAC
+      FUN_0802d1ec: 0x2D8
+      FUN_0802d4dc: 0x186
+      FUN_0802d678: 0xA0
+      FUN_0802d734: 0x1E
+      FUN_0802d75c: 0xE
+      FUN_0802d76c: 0x15E
+      FUN_0802d8d8: 0x7A
+      FUN_0802d95c: 0x1E
+      FUN_0802d980: 0x74
+      FUN_0802da00: 0x7C
+      FUN_0802da8c: 0x7C
+      FUN_0802db10: 0x1E
+      FUN_0802db34: 0x74
+      FUN_0802dbb4: 0x52
+      FUN_0802dc0c: 0x60
+      FUN_0802dc78: 0x18
+      FUN_0802dc90: 0x36
+      FUN_0802dcc8: 0x18
+      FUN_0802dce0: 0x36
+      FUN_0802dd18: 0xF0
+      FUN_0802de2c: 0x94
+      FUN_0802ded4: 0x4A
+      FUN_0802df40: 0x22
+  - name: main/unknown_0802DF68
+    start: 0x02DF68
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
