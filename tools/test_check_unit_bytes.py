@@ -1,10 +1,56 @@
 import unittest
 import struct
+import subprocess
+import tempfile
+from pathlib import Path
 
-from check_unit_bytes import owned_bss_sections, resolve_symbol, section_script, verify_bss
+from check_unit_bytes import BINUTILS, owned_bss_sections, resolve_symbol, section_script, verify_bss
 
 
 class BssLayoutTests(unittest.TestCase):
+    def test_rom_only_sections_have_exact_selectors_and_no_invented_bss(self):
+        script = section_script([
+            {"name": ".rodata", "start": 0x2000},
+            {"name": ".rodata.registers", "start": 0x3000},
+        ])
+        self.assertIn(".rodata 0x8002000 : { *(.rodata) }", script)
+        self.assertIn(".rodata.registers 0x8003000 : { *(.rodata.registers) }", script)
+        self.assertNotIn(".rodata.*", script)
+        self.assertNotIn(".bss", script)
+        with self.assertRaises(ValueError):
+            section_script([], None, [{"name": ".bss.extra", "address": 0x03000000}])
+
+    @unittest.skipUnless(all((BINUTILS / f"arm-none-eabi-{tool}").is_file()
+                             for tool in ("as", "ld", "objcopy")),
+                         "ARM assembler/linker/objcopy not installed")
+    def test_linked_rom_subsection_does_not_merge_into_rodata_without_bss(self):
+        # Synthetic constants only: no game bytes or extracted assembly.
+        assembly = (
+            '.section .text,"ax"\n.word register_table\n'
+            '.section .rodata,"a"\n.word 0x11111111\n'
+            '.section .rodata.registers,"a"\nregister_table:\n.word 0x22222222\n'
+        )
+        sections = [
+            {"name": ".text", "start": 0x1000},
+            {"name": ".rodata", "start": 0x2000},
+            {"name": ".rodata.registers", "start": 0x3000},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            obj, elf = root / "fixture.o", root / "fixture.elf"
+            subprocess.run([str(BINUTILS / "arm-none-eabi-as"), "-mcpu=arm7tdmi",
+                            "-o", str(obj), "-"], input=assembly, text=True, check=True)
+            script = root / "sections.ld"
+            script.write_text(section_script(sections))
+            subprocess.run([str(BINUTILS / "arm-none-eabi-ld"), "--fatal-warnings",
+                            "-e", "0", "-T", str(script), "-o", str(elf), str(obj)], check=True)
+            for section, value in zip(sections, (0x08003000, 0x11111111, 0x22222222)):
+                binary = root / "section.bin"
+                subprocess.run([str(BINUTILS / "arm-none-eabi-objcopy"), "-O", "binary",
+                                f"--only-section={section['name']}", str(elf), str(binary)],
+                               check=True)
+                self.assertEqual(binary.read_bytes(), struct.pack("<I", value))
+
     def test_explicit_sections_do_not_add_trailing_bss_padding(self):
         script = section_script([{"name": ".text", "start": 0x20500}], 0x03004B00)
         self.assertIn(".text 0x8020500 : { *(.text) }", script)

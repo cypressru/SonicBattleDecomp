@@ -118,6 +118,8 @@ address,name,mode,confidence
 0x0812F828,lz77_asset_097,data,lz77-pointer-1
 0x0812F89C,lz77_asset_098,data,lz77-pointer-1
 0x08130054,data_gap_013,data,range-gap
+0x08130324,owned_briefing_registers,data,register-offset-value-pair-owner
+0x08130364,data_gap_after_briefing_registers,data,register-offset-value-pair-size
 0x081303E4,lz77_asset_099,data,lz77-pointer-1
 0x081305C4,lz77_asset_100,data,lz77-pointer-1
 0x08131F70,lz77_asset_101,data,lz77-pointer-1
@@ -556,7 +558,8 @@ address,name,mode,confidence
 0x08EDBBE8,owned_results_metadata,data,results-pointer-and-coordinate-owner
 0x08EDBC7C,owned_progress_menu_metadata,data,progress-menu-position-pointer-and-coordinate-owner
 0x08EDBE94,owned_text_menu_metadata,data,position-language-pointer-and-scroll-owner
-0x08EDC23C,data_gap_after_text_menu_metadata,data,text-menu-metadata-size
+0x08EDC23C,owned_briefing_metadata,data,graphics-pointer-tile-and-coordinate-owner
+0x08EDC2D4,data_gap_after_briefing_metadata,data,briefing-metadata-size
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
