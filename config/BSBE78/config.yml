@@ -5979,6 +5979,16 @@ units:
       FUN_0801f578: 0x72
   - name: main/unknown_0801F5EC
     start: 0x01F5EC
+    end: 0x01F780
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0801f5ec.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+  - name: main/unknown_0801F780
+    start: 0x01F780
     end: 0x020134
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
