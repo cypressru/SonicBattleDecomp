@@ -386,6 +386,10 @@ range_overrides:
     exclude_from_objdiff: true
   owned_unknown_080470e4_rodata:
     exclude_from_objdiff: true
+  owned_scene_3cb64_metadata:
+    exclude_from_objdiff: true
+  owned_scene_3cb64_registers:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -7113,6 +7117,38 @@ units:
       FUN_0803bf68: 0x64
   - name: main/unknown_0803BFCC
     start: 0x03BFCC
+    end: 0x03CB64
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+  - name: main/unknown_0803CB64
+    start: 0x03CB64
+    end: 0x03D1A0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803cb64.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x03005420
+    target_sections:
+      - { name: .text, start: 0x03CB64, end: 0x03D1A0 }
+      - { name: .rodata, start: 0xEDD5B0, end: 0xEDD808 }
+      - { name: .rodata.display_regs, start: 0x171164, end: 0x1711A4 }
+    base_symbol_size_overrides:
+      FUN_0803cb64: 0x438
+      FUN_0803cf9c: 0xE
+      FUN_0803cfac: 0x88
+      FUN_0803d034: 0xCC
+      FUN_0803d100: 0x28
+      FUN_0803d128: 0x40
+      FUN_0803d168: 0x38
+  - name: main/unknown_0803D1A0
+    start: 0x03D1A0
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
