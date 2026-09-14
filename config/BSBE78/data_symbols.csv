@@ -262,6 +262,7 @@ address,name,mode,confidence
 0x08158E1C,lz77_asset_214,data,lz77-pointer-1
 0x08159314,lz77_asset_215,data,lz77-pointer-1
 0x08159770,data_gap_027,data,range-gap
+0x0815A0AC,owned_scene_38a84_registers,data,sixteen-display-register-pairs+statistics-initializer
 0x0815A0EC,lz77_asset_216,data,lz77-pointer-1
 0x0815A2A8,lz77_asset_217,data,lz77-pointer-1
 0x0815A360,lz77_asset_218,data,lz77-pointer-1
@@ -580,7 +581,8 @@ address,name,mode,confidence
 0x08EDCBE4,owned_scene_34f28_tiles,data,four-step-tile-cycle+scene-callback
 0x08EDCBEC,owned_scene_36350_metadata,data,five-position-layouts+label-and-code-pointer-tables
 0x08EDCD0C,owned_scene_37148_metadata,data,position-language-pointer-and-coordinate-layouts
-0x08EDCF00,data_gap_after_scene_37148_metadata,data,next-scene-metadata
+0x08EDCF00,owned_scene_38a84_metadata,data,three-position-records+239-text-pointer-pool+six-language-views
+0x08EDD304,data_gap_after_scene_38a84_metadata,data,next-main-menu-position-record
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
