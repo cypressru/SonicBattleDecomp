@@ -6019,6 +6019,74 @@ units:
       - { offset: 0x54, type: abs32, symbol: .bss }
   - name: main/unknown_08020198
     start: 0x020198
+    end: 0x021050
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+  # Inferred allocator TU and private RAM ownership: docs/memory-tu-cpp.md.
+  - name: main/unknown_08021050
+    start: 0x021050
+    end: 0x021268
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08021050.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    base_symbol_size_overrides:
+      FUN_08021050: 0x82
+      FUN_080210d8: 0x18
+      FUN_080210f8: 0x10
+      FUN_0802110c: 0x10
+      FUN_08021128: 0x56
+      FUN_08021180: 0x58
+      FUN_080211d8: 0x10
+      FUN_080211f0: 0x52
+      FUN_08021244: 0x1E
+    synthetic_sections:
+      - { name: .bss, size: 0x20C }
+    bss_address: 0x03004B30
+    mappings:
+      - { offset: 0x0, mode: thumb }
+      - { offset: 0x10, mode: data }
+      - { offset: 0x14, mode: thumb }
+      - { offset: 0x82, mode: data }
+      - { offset: 0x88, mode: thumb }
+      - { offset: 0xA0, mode: data }
+      - { offset: 0xA8, mode: thumb }
+      - { offset: 0xB8, mode: data }
+      - { offset: 0xBC, mode: thumb }
+      - { offset: 0xCC, mode: data }
+      - { offset: 0xD8, mode: thumb }
+      - { offset: 0xFA, mode: data }
+      - { offset: 0x100, mode: thumb }
+      - { offset: 0x174, mode: data }
+      - { offset: 0x178, mode: thumb }
+      - { offset: 0x198, mode: data }
+      - { offset: 0x1A0, mode: thumb }
+      - { offset: 0x1DA, mode: data }
+      - { offset: 0x1E4, mode: thumb }
+      - { offset: 0x1F2, mode: data }
+      - { offset: 0x1F4, mode: thumb }
+      - { offset: 0x212, mode: data }
+    relocations:
+      - { offset: 0x10, type: abs32, symbol: .bss }
+      - { offset: 0xA0, type: abs32, symbol: .bss }
+      - { offset: 0xB8, type: abs32, symbol: .bss }
+      - { offset: 0xCC, type: abs32, symbol: .bss, addend: 0x200 }
+      - { offset: 0xFC, type: abs32, symbol: .bss, addend: 0x200 }
+      - { offset: 0x174, type: abs32, symbol: .bss, addend: 0x200 }
+      - { offset: 0x198, type: abs32, symbol: .bss, addend: 0x208 }
+      - { offset: 0x19C, type: abs32, symbol: .bss, addend: 0x204 }
+      - { offset: 0x1DC, type: abs32, symbol: .bss, addend: 0x208 }
+      - { offset: 0x1E0, type: abs32, symbol: .bss, addend: 0x204 }
+      - { offset: 0x214, type: abs32, symbol: .bss, addend: 0x204 }
+      - { offset: 0x96, type: thumb_call, symbol: CpuSet }
+      - { offset: 0xD0, type: abs32, symbol: gUnknown_030033e0 }
+  - name: main/unknown_08021268
+    start: 0x021268
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0

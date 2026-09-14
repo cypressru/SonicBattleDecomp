@@ -5,6 +5,7 @@ import argparse
 import csv
 import hashlib
 import re
+import struct
 import subprocess
 import tempfile
 from pathlib import Path
@@ -51,6 +52,38 @@ def resolve_symbol(name, symbols, functions):
         if address in functions:
             return address | (functions[address] == "thumb")
     raise ValueError(f"no reviewed address for undefined symbol {name}")
+
+
+def verify_bss(elf, expected_address, expected_size):
+    """Check linked ELF32 little-endian NOBITS ownership, not ROM contents."""
+    if len(elf) < 52 or elf[:7] != b"\x7fELF\x01\x01\x01":
+        raise ValueError("expected ELF32 little-endian linked object")
+    offset = struct.unpack_from("<I", elf, 32)[0]
+    entry_size, count, names_index = struct.unpack_from("<HHH", elf, 46)
+    if entry_size != 40 or names_index >= count or offset + count * 40 > len(elf):
+        raise ValueError("invalid ELF section table")
+    headers = [struct.unpack_from("<10I", elf, offset + i * 40) for i in range(count)]
+    names_header = headers[names_index]
+    names_start, names_size = names_header[4:6]
+    if names_start + names_size > len(elf):
+        raise ValueError("invalid ELF section names")
+    names = elf[names_start:names_start + names_size]
+    found = []
+    for header in headers:
+        start = header[0]
+        end = names.find(b"\0", start)
+        if start >= len(names) or end < 0:
+            raise ValueError("invalid ELF section name")
+        if names[start:end] == b".bss":
+            found.append(header)
+    if len(found) != 1:
+        raise ValueError("expected exactly one linked .bss section")
+    header = found[0]
+    if header[1] != 8 or header[3] != expected_address or header[5] != expected_size:
+        raise ValueError(
+            f"linked .bss type/address/size mismatch: "
+            f"{header[1]}/{header[3]:#x}/{header[5]:#x}"
+        )
 
 
 def main() -> None:
@@ -106,6 +139,12 @@ def main() -> None:
         if "bss_address" in unit:
             command.append(f"-Tbss={int(unit['bss_address']):#x}")
         subprocess.run([*command, "-o", str(linked), str(base), str(symbol_object)], check=True)
+        if "bss_address" in unit:
+            bss = next(section for section in unit["synthetic_sections"]
+                       if section["name"] == ".bss")
+            verify_bss(linked.read_bytes(), int(unit["bss_address"]), int(bss["size"]))
+            print(f"{args.unit}: .bss NOBITS address/size verified "
+                  f"({int(unit['bss_address']):#x}, {int(bss['size']):#x})")
         for section in sections:
             subprocess.run(
                 [str(BINUTILS / "arm-none-eabi-objcopy"), "-O", "binary",

@@ -1,6 +1,32 @@
 import unittest
+import struct
 
-from check_unit_bytes import resolve_symbol
+from check_unit_bytes import resolve_symbol, verify_bss
+
+
+class BssLayoutTests(unittest.TestCase):
+    def fixture(self, kind=8, address=0x03004B30, size=0x20C):
+        elf = bytearray(52 + 120)
+        elf[:7] = b"\x7fELF\x01\x01\x01"
+        struct.pack_into("<I", elf, 32, 52)
+        struct.pack_into("<HHH", elf, 46, 40, 3, 1)
+        names = b"\0.shstrtab\0.bss\0"
+        struct.pack_into("<10I", elf, 92, 1, 3, 0, 0, len(elf), len(names), 0, 0, 1, 0)
+        struct.pack_into("<10I", elf, 132, 11, kind, 3, address, 0, size, 0, 0, 8, 0)
+        return bytes(elf) + names
+
+    def test_exact_nobits_layout(self):
+        verify_bss(self.fixture(), 0x03004B30, 0x20C)
+
+    def test_wrong_kind_address_or_size(self):
+        for kwargs in ({"kind": 1}, {"address": 0x03004B34}, {"size": 0x208}):
+            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                verify_bss(self.fixture(**kwargs), 0x03004B30, 0x20C)
+
+    def test_invalid_or_truncated_elf(self):
+        for elf in (b"", bytes(52), self.fixture()[:100], self.fixture()[:-1]):
+            with self.subTest(length=len(elf)), self.assertRaises(ValueError):
+                verify_bss(elf, 0x03004B30, 0x20C)
 
 
 class LinkerSymbolTests(unittest.TestCase):
