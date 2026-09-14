@@ -40,7 +40,16 @@ long_branch_targets:
   # long BL. The target relies on the allocation owner's saved frame and
   # then unwinds it, so it cannot be called as an independent function.
   - 0x0801F82A
+  # Text renderers branch to epilogues sharing their entry's saved frame.
+  - 0x0802EA4A
+  - 0x0802F31A
 rejected_function_pointers:
+  # Validated PCM/pixel/payload bytes numerically encode literal-pool addresses.
+  # See docs/text-menu-tu-cpp.md for the containing objects and transfer bounds.
+  - { source: 0x0C94328, destination: 0x0802F1EA }
+  - { source: 0x0C2BDC0, destination: 0x0802F2DE }
+  - { source: 0x03A8144, destination: 0x0803013A }
+  - { source: 0x0F848E8, destination: 0x08030C6E }
   # Opaque data encodes a pointer into the upper halfword of the preceding
   # text routine's 0x0000FFF8 literal; the fill prologue begins at 0x08020C24.
   - { source: 0x0C4E790, destination: 0x08020C22 }
@@ -300,6 +309,10 @@ rejected_function_pointers:
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
   owned_progress_menu_metadata:
+    exclude_from_objdiff: true
+  owned_text_menu_metadata:
+    exclude_from_objdiff: true
+  owned_text_menu_display:
     exclude_from_objdiff: true
   owned_progress_menu_coordinates:
     exclude_from_objdiff: true
@@ -6541,6 +6554,62 @@ units:
       FUN_0802df40: 0x22
   - name: main/unknown_0802DF68
     start: 0x02DF68
+    end: 0x030F38
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0802df68.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x02DF68, end: 0x030F38 }
+      - { name: .rodata, start: 0xEDBE94, end: 0xEDC23C }
+      - { name: .rodata.display, start: 0x12E608, end: 0x12E6F4 }
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x030052F0
+    base_symbol_size_overrides:
+      FUN_0802df68: 0xAF0
+      FUN_0802ea64: 0x8BE
+      FUN_0802f328: 0xF4
+      FUN_0802f428: 0x56
+      FUN_0802f488: 0xD0
+      FUN_0802f560: 0x1CC
+      FUN_0802f748: 0x1E2
+      FUN_0802f94c: 0x1F2
+      FUN_0802fb58: 0x14A
+      FUN_0802fcb4: 0x134
+      FUN_0802fdf8: 0x320
+      FUN_080301f4: 0xAC
+      FUN_080302a0: 0x86
+      FUN_0803035c: 0x20
+      FUN_08030390: 0x26
+      FUN_080303cc: 0x12
+      FUN_080303ec: 0x5A
+      FUN_0803044c: 0x4E
+      FUN_080304a4: 0x34
+      FUN_080304e4: 0x454
+      FUN_08030960: 0x54
+      FUN_080309c0: 0x16
+      FUN_080309e0: 0x1C
+      FUN_08030a08: 0x24
+      FUN_08030a30: 0x4E
+      FUN_08030a8c: 0x34
+      FUN_08030ac8: 0x56
+      FUN_08030b38: 0x28
+      FUN_08030b68: 0x56
+      FUN_08030bd8: 0x28
+      FUN_08030c08: 0x54
+      FUN_08030c78: 0x28
+      FUN_08030ca8: 0x72
+      FUN_08030d20: 0x1C
+      FUN_08030d3c: 0x1C
+      FUN_08030d58: 0x54
+      FUN_08030dac: 0x5C
+      FUN_08030e1c: 0x40
+      FUN_08030e6c: 0x5A
+      FUN_08030ed4: 0x56
+  - name: main/unknown_08030F38
+    start: 0x030F38
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
