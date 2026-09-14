@@ -6301,6 +6301,49 @@ units:
       - { name: .bss.boot_length, address: 0x03004D9C, size: 4 }
   - name: main/unknown_080215A8
     start: 0x0215A8
+    end: 0x027DB8
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+  - name: main/unknown_08027DB8
+    start: 0x027DB8
+    end: 0x0283F8
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08027db8.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x027DB8, end: 0x0283F8 }
+    base_symbol_size_overrides:
+      FUN_08027db8: 0x80
+      FUN_08027e38: 0x80
+      FUN_08027eb8: 0x80
+      FUN_08027f38: 0x80
+      FUN_08027fb8: 0x80
+      FUN_08028038: 0x80
+      FUN_080280b8: 0x48
+      FUN_08028100: 0x2A
+      FUN_0802812c: 0x2A
+      FUN_08028158: 0x32
+      FUN_08028190: 0x32
+      FUN_080281c8: 0x32
+      FUN_08028200: 0x32
+      FUN_08028238: 0x32
+      FUN_08028270: 0x32
+      FUN_080282a8: 0x36
+      FUN_080282e0: 0x36
+      FUN_08028318: 0x36
+      FUN_08028350: 0x36
+      FUN_08028388: 0x36
+      FUN_080283c0: 0x36
+  - name: main/unknown_080283F8
+    start: 0x0283F8
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
