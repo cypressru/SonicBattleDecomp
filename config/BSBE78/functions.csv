@@ -8,6 +8,7 @@ address,name,mode,confidence
 0x080006D0,FUN_080006d0,thumb,direct-call+exact-body
 0x080006EC,FUN_080006ec,thumb,rom-pointer+exact-body
 0x08000724,FUN_08000724,thumb,rom-pointer+exact-body
+0x08000774,FUN_08000774,thumb,recovered-unreferenced+exact-body
 0x08000778,AgbMain,thumb,crt0-pointer+public-linker-order+exact-body
 0x080007FC,FUN_080007fc,thumb,direct-call
 0x08000A2C,FUN_08000a2c,thumb,direct-call

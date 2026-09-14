@@ -796,13 +796,18 @@ literal pool end at the next accepted function at `0x7FC`. Together these facts 
 `engine/core` (`0x210-0x778`) and `main/main` (`0x778-0x7FC`) target objects. This is recorded as a
 strong linker-order correlation rather than a retail-symbol claim.
 
-The `core` object contains six real functions, not the seven initially inferred from raw pointer
-scanning. The candidate at `0x08000422` lands in the middle of an inline DMA descriptor sequence
+The `core` audit rejected the candidate at `0x08000422`, leaving six functions in the initial
+accepted inventory. That candidate lands in the middle of an inline DMA descriptor sequence
 owned by the function at `0x080003A8`: surrounding words are consecutive graphics source,
 `0x06000000` destination, and DMA-control values, and live control flow resumes after the pool.
 The sole pointer-shaped word targeting `0x08000422` occurs at `0x08514CD0` in asset data and is
 therefore recorded as a rejected coincidence. CI verifies both that exact source word and the
 rejected destination so a changed ROM or mapping cannot silently preserve the exception.
+
+The subsequent C++/unmasked-link audit recovered a different seventh function: the terminal
+two-byte leaf at `0x08000774`, after the last literal pool. Both complete core and main TUs now
+use C++ fallback and independently link byte-for-byte, including corrected call and data bindings.
+See [`core-main-cpp.md`](core-main-cpp.md); the original source language remains undetermined.
 
 All Thumb/data transitions in `core` are now explicit. Three small helpers at `0x080006D0`,
 `0x080006EC`, and `0x08000724` compile from C with agbcc `-O2 -mthumb-interwork` and match their
