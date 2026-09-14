@@ -4565,26 +4565,6 @@ void FUN_080200f8(void) {
 
 extern void FUN_08020134(u32 value);
 
-void FUN_0802021c(u8 first, u8 second);
-
-void FUN_080201f8(void) {
-    gUnknown_030048e0.fifth = 0;
-    gUnknown_030048e0.third = 0;
-    gUnknown_030048e0.first = 0;
-    gUnknown_030048e0.second = 0xFFFF;
-    FUN_0802021c(0, 0);
-}
-
-void FUN_0802021c(u8 first, u8 second) {
-    if (first == 0 || second == 0) {
-        first = 15;
-        second = 7;
-    }
-    gUnknown_030048e0.seventh = first;
-    gUnknown_030048e0.sixth = first;
-    gUnknown_030048e0.eighth = second;
-}
-
 void FUN_08020360(void) { gUnknown_030048f0 = 0; }
 
 void FUN_0802036c(u32 first, u32 second, u32 third) {
