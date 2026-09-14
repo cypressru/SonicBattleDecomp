@@ -939,7 +939,6 @@ extern u8 gUnknown_0300019a;
 extern const void *gUnknown_03003150[];
 extern u8 gUnknown_03004470;
 extern struct UnknownQueuedSoundCommand gUnknown_03004480[];
-extern u32 gUnknown_0300019c;
 extern s8 gUnknown_030048d4;
 extern u8 gUnknown_030048d0;
 extern struct UnknownQueuedValue gUnknown_030044d0[];
@@ -4606,7 +4605,7 @@ void FUN_080200f8(void) {
     gUnknown_030044c0 = 0;
 }
 
-void FUN_08020134(u32 value) { gUnknown_0300019c = value | 1; }
+extern void FUN_08020134(u32 value);
 
 void FUN_0802021c(u8 first, u8 second);
 
@@ -9276,22 +9275,6 @@ s16 FUN_08040698(u8 index) {
 void FUN_0801f5ec(void) {
     FUN_08048fb8();
     FUN_08049544((const void *)0x0093e800);
-}
-
-u32 FUN_08020144(void) { return gUnknown_0300019c = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af; }
-
-u32 FUN_08020160(u32 threshold) {
-    u32 random = gUnknown_0300019c * 0x0014fa05 + 0x0000c0af;
-    u32 percent;
-    u32 result;
-
-    gUnknown_0300019c = random;
-    percent = ((random & 0xFFFF) * 100) >> 16;
-    result = 0;
-    if (percent <= threshold) {
-        result = 1;
-    }
-    return result;
 }
 
 void FUN_080402a0(void) {

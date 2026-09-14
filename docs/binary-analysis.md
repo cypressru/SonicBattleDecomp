@@ -144,15 +144,26 @@ frame they never establish.
 
 ### Translation-unit inventory status
 
+The random-helper range `0x08020134-0x08020198` is now separated from the late-gameplay
+placeholder as a complete C++ TU. Its three helpers are the only direct users of a four-byte state
+word; their function order, complete pools, and distinct neighbors support the split. C++ is the
+fallback for undetermined source language. Both the full `0x64`-byte `.text` and four-byte `.bss`
+match in objdiff, and an independent link at the observed addresses reproduces every ROM byte.
+See [`unknown_08020134.md`](unknown_08020134.md) for boundary confidence, source-language and
+linkage limitations, compiler provenance, and verification details. The remainder of the old
+`main/unknown_0801F5EC` bucket is represented by ranges ending at `0x08020134` and resuming at
+`0x08020198`; neither remainder is claimed as an original TU.
+
 Executable-byte coverage and translation-unit recovery are separate measurements. Every byte in
-the executable range is represented in objdiff, but the game TU inventory is not complete. Three
+the executable range is represented in objdiff, but the game TU inventory is not complete. Four
 explicit placeholder objects currently contain nearly all unresolved game code:
 
 | Placeholder | ROM range | Analyzed functions | Instruction bytes | Owned non-code bytes |
 |---|---:|---:|---:|---:|
 | `main/unknown_080007FC` | `0x0007FC-0x017C5C` | 114 | 69,380 | 25,948 |
 | `main/unknown_080198B0` | `0x0198B0-0x01F080` | 93 | 21,138 | 1,342 |
-| `main/unknown_0801F5EC` | `0x01F5EC-0x0470E4` | 806 | 148,878 | 13,674 |
+| `main/unknown_0801F5EC` | `0x01F5EC-0x020134` | 47 | 2,590 | 298 |
+| `main/unknown_08020198` | `0x020198-0x0460AC` | 743 | 142,244 | 13,168 |
 
 These objects are conservative coverage buckets, not claims that any range was one original
 source file. Consequently, decomp.dev's size-weighted unit treemap is structurally incomplete even

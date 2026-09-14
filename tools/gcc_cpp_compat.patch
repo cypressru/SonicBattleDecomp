@@ -1,0 +1,21 @@
+--- a/gcc/configure
++++ b/gcc/configure
+@@ -5527,0 +5528,7 @@
++	thumb-*-elf*)
++		tm_file=arm/telf.h
++		out_file=arm/thumb.c
++		xm_file=arm/xm-thumb.h
++		md_file=arm/thumb.md
++		tmake_file=arm/t-thumb
++		;;
+--- a/gcc/config/arm/telf.h
++++ b/gcc/config/arm/telf.h
+@@ -27,0 +28,8 @@
++
++/* GCC 2.95 requires a profiling hook; this target has no profiling ABI. */
++#define FUNCTION_PROFILER(FILE, LABELNO) abort ()
++
++/* Same explicit zero alignment as pinned agbcc, for modern GNU as. */
++#undef ASM_OUTPUT_ALIGN
++#define ASM_OUTPUT_ALIGN(STREAM, LOG) \
++  do { if ((LOG) > 0) fprintf (STREAM, "\t.align\t%d, 0\n", (LOG)); } while (0)

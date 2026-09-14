@@ -163,7 +163,7 @@ def main() -> None:
         "custom_make": "ninja",
         "build_target": True,
         "build_base": True,
-        "watch_patterns": ["*.c", "*.h", "*.s", "*.inc", "*.py", "*.yml"],
+        "watch_patterns": ["*.c", "*.cpp", "*.cc", "*.cxx", "*.h", "*.s", "*.inc", "*.py", "*.yml"],
         "units": units,
         "progress_categories": [
             {"id": "game", "name": "Game"},
@@ -277,6 +277,10 @@ def main() -> None:
             ])
         if unit.get("source"):
             base = build_dir / "base" / f"{unit['name']}.o"
+            cpp_dependency = (
+                " tools/gcc_cpp/cc1plus"
+                if Path(unit["source"]).suffix in {".cpp", ".cc", ".cxx"} else ""
+            )
             accepted_names = {str(row["name"]) for row in symbol_maps.get(unit["name"], [])}
             symbol_sizes = " ".join(
                 f"@symbol-size:{name}:{int(size)}"
@@ -285,7 +289,7 @@ def main() -> None:
             )
             ninja.extend(
                 [
-                    f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py",
+                    f"build {base.relative_to(ROOT)}: compile_agbcc {unit['source']} | include/types.h tools/compile_agbcc.py{cpp_dependency}",
                     f"  cflags = {' '.join(unit.get('cflags', ['-O2']))} {symbol_sizes}".rstrip(),
                     "",
                 ]
