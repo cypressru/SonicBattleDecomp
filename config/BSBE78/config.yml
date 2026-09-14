@@ -308,6 +308,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_scene_3a4bc_metadata:
+    exclude_from_objdiff: true
+  owned_scene_3a4bc_layout:
+    exclude_from_objdiff: true
   owned_scene_39dd8_metadata:
     exclude_from_objdiff: true
   owned_scene_39dd8_registers:
@@ -7049,6 +7053,66 @@ units:
       FUN_0803a478: 0x44
   - name: main/unknown_0803A4BC
     start: 0x03A4BC
+    end: 0x03BFCC
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803a4bc.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    synthetic_sections:
+      - { name: .bss, size: 1 }
+    bss_address: 0x030053E0
+    bss_sections:
+      - { name: .bss.state_30053e4, address: 0x030053E4, size: 4 }
+      - { name: .bss.state_30053e8, address: 0x030053E8, size: 1 }
+      - { name: .bss.state_30053ec, address: 0x030053EC, size: 4 }
+      - { name: .bss.state_30053f0, address: 0x030053F0, size: 1 }
+      - { name: .bss.state_30053f4, address: 0x030053F4, size: 1 }
+      - { name: .bss.state_30053f8, address: 0x030053F8, size: 1 }
+      - { name: .bss.state_30053fc, address: 0x030053FC, size: 1 }
+      - { name: .bss.state_3005400, address: 0x03005400, size: 4 }
+    target_sections:
+      - { name: .text, start: 0x03A4BC, end: 0x03BFCC }
+      - { name: .rodata, start: 0xEDD344, end: 0xEDD560 }
+      - { name: .rodata.layout, start: 0x16EBEC, end: 0x16EC6C }
+    base_symbol_size_overrides:
+      FUN_0803a4bc: 0x520
+      FUN_0803a9dc: 0x428
+      FUN_0803ae04: 0x5C0
+      FUN_0803b3c4: 0xB4
+      FUN_0803b478: 0xC4
+      FUN_0803b53c: 0xE
+      FUN_0803b54c: 0x3C
+      FUN_0803b588: 0x20
+      FUN_0803b5a8: 0x34
+      FUN_0803b5dc: 0x60
+      FUN_0803b63c: 0x58
+      FUN_0803b694: 0x2
+      FUN_0803b698: 0x2
+      FUN_0803b69c: 0xC8
+      FUN_0803b764: 0xC8
+      FUN_0803b82c: 0x294
+      FUN_0803bac0: 0x48
+      FUN_0803bb08: 0x2C
+      FUN_0803bb34: 0x20
+      FUN_0803bb54: 0x28
+      FUN_0803bb7c: 0x48
+      FUN_0803bbc4: 0x2C
+      FUN_0803bbf0: 0x20
+      FUN_0803bc10: 0x28
+      FUN_0803bc38: 0x38
+      FUN_0803bc70: 0x6C
+      FUN_0803bcdc: 0x30
+      FUN_0803bd0c: 0x50
+      FUN_0803bd5c: 0x30
+      FUN_0803bd8c: 0x78
+      FUN_0803be04: 0x4C
+      FUN_0803be50: 0x58
+      FUN_0803bea8: 0x46
+      FUN_0803bef0: 0x78
+      FUN_0803bf68: 0x64
+  - name: main/unknown_0803BFCC
+    start: 0x03BFCC
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
