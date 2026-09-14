@@ -234,6 +234,8 @@ address,name,mode,confidence
 0x08155C5C,lz77_asset_194,data,lz77-pointer-1
 0x081560A0,lz77_asset_195,data,lz77-pointer-1
 0x081565CC,data_gap_023,data,range-gap
+0x08156C70,owned_scene_36350_registers,data,sixteen-display-register-pairs+text-entry-initializer
+0x08156CB0,data_gap_after_scene_36350_registers,data,external-palette-assets
 0x08156D10,lz77_asset_196,data,lz77-pointer-1
 0x08156DF0,lz77_asset_197,data,lz77-pointer-1
 0x08156EA8,lz77_asset_198,data,lz77-pointer-1
@@ -241,6 +243,8 @@ address,name,mode,confidence
 0x0815711C,lz77_asset_200,data,lz77-pointer-1
 0x08157934,lz77_asset_201,data,lz77-pointer-1
 0x08158194,data_gap_024,data,range-gap
+0x08158660,owned_scene_36350_codes,data,nine-arithmetic-selection-ids+count-and-alignment
+0x08158674,data_gap_after_scene_36350_codes,data,next-scene-external-assets
 0x081586F8,lz77_asset_202,data,lz77-pointer-2
 0x081588EC,lz77_asset_203,data,lz77-pointer-4
 0x08158904,lz77_asset_204,data,lz77-pointer-6
@@ -574,7 +578,8 @@ address,name,mode,confidence
 0x08EDC9B8,owned_scene_34f28_labels,data,text-pointer-slices+coordinate-and-tile-offsets
 0x08EDCA74,data_gap_after_scene_34f28_labels,data,external-palette-and-sprite-assets
 0x08EDCBE4,owned_scene_34f28_tiles,data,four-step-tile-cycle+scene-callback
-0x08EDCBEC,data_gap_after_scene_34f28_tiles,data,next-scene-position-layouts
+0x08EDCBEC,owned_scene_36350_metadata,data,five-position-layouts+label-and-code-pointer-tables
+0x08EDCD0C,data_gap_after_scene_36350_metadata,data,next-scene-metadata
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
