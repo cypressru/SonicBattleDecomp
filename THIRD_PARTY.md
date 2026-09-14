@@ -1,12 +1,12 @@
 # Third-party source references
 
-`tools/setup_gcc_cpp.sh` downloads the GNU GCC 2.95.2 release from
-<https://ftp.gnu.org/gnu/gcc/gcc-2.95.2.tar.gz> and combines its C++ frontend with four Thumb ELF
-backend files from the pinned public `pret/agbcc` revision
+`tools/setup_gcc_cpp.sh` downloads the GNU EGCS 1.1.2 release from
+<https://gcc.gnu.org/pub/gcc/releases/egcs-1.1.2/egcs-1.1.2.tar.gz> and combines its C++ frontend
+with the complete `gcc_arm` code generator and support files from the pinned public `pret/agbcc` revision
 `da598c1d918402c42c0c0d7128ba14567f3175e9`. These compiler sources are licensed under GNU GPL
 version 2 or later; their original notices and COPYING files remain in the retained local source
 tree. The repository distributes only the setup script and compatibility patch, not compiler
-binaries. See `docs/unknown_08020134.md` for the compatibility changes and matching evidence.
+binaries. See `docs/cpp-tus.md` for the compatibility changes and matching evidence.
 
 The reconstructed `src/libc/memcmp.c`, `memcpy.c`, and `memset.c` units correlate to the newlib
 string routines distributed with the pinned `pret/agbcc` toolchain. They are governed by the

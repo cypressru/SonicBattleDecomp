@@ -1,21 +1,29 @@
---- a/gcc/configure
-+++ b/gcc/configure
-@@ -5527,0 +5528,7 @@
-+	thumb-*-elf*)
-+		tm_file=arm/telf.h
-+		out_file=arm/thumb.c
-+		xm_file=arm/xm-thumb.h
-+		md_file=arm/thumb.md
-+		tmake_file=arm/t-thumb
-+		;;
---- a/gcc/config/arm/telf.h
-+++ b/gcc/config/arm/telf.h
-@@ -27,0 +28,8 @@
+--- a/gcc_arm/options.h
++++ b/gcc_arm/options.h
+@@ -0,0 +1 @@
++#include "cp/lang-options.h"
+--- a/gcc_arm/config/arm/telf.h
++++ b/gcc_arm/config/arm/telf.h
+@@ -27,0 +28,5 @@
 +
-+/* GCC 2.95 requires a profiling hook; this target has no profiling ABI. */
-+#define FUNCTION_PROFILER(FILE, LABELNO) abort ()
-+
-+/* Same explicit zero alignment as pinned agbcc, for modern GNU as. */
++/* Same alignment fill convention as pinned agbcc, for modern GNU as. */
 +#undef ASM_OUTPUT_ALIGN
 +#define ASM_OUTPUT_ALIGN(STREAM, LOG) \
 +  do { if ((LOG) > 0) fprintf (STREAM, "\t.align\t%d, 0\n", (LOG)); } while (0)
+--- a/gcc_arm/cp/Makefile.in
++++ b/gcc_arm/cp/Makefile.in
+@@ -159 +159 @@
+-INCLUDES = -I. -I.. -I$(srcdir) -I$(srcdir)/.. -I$(srcdir)/../config
++INCLUDES = -I. -I.. -I$(srcdir) -I$(srcdir)/.. -I$(srcdir)/../config -I$(srcdir)/../../include
+--- a/gcc_arm/cp/decl.c
++++ b/gcc_arm/cp/decl.c
+@@ -5783,2 +5783 @@
+-  builtin_function ("__builtin_fp", ptr_ftype_void, BUILT_IN_FP, NULL_PTR);
+-  builtin_function ("__builtin_sp", ptr_ftype_void, BUILT_IN_SP, NULL_PTR);
++  /* The pinned backend no longer implements these obsolete builtins. */
+--- a/gcc_arm/cp/decl2.c
++++ b/gcc_arm/cp/decl2.c
+@@ -30,0 +31,3 @@
++
++/* The pinned C-family string combiner queries the source language's constness. */
++int flag_const_strings = 1;

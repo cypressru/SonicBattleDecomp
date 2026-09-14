@@ -25,7 +25,7 @@ translation units.
 
 The C++ fallback additionally needs a 32-bit host C development environment (`gcc-multilib` on
 Ubuntu), curl, tar, and patch. Run `tools/setup_gcc_cpp.sh` after the agbcc setup. It builds the
-GCC 2.95.2 C++ frontend with the pinned public Thumb ELF backend; downloaded source and build
+EGCS 1.1.2 C++ frontend with the pinned compiler's complete Thumb ELF code generator; downloaded source and build
 products stay under ignored `tools/gcc_cpp/`. This is a reconstruction toolchain, not a claim
 that the retail game used this exact compiler or C++ for every game unit.
 
@@ -39,6 +39,8 @@ cp "/path/to/Sonic Battle.gba" rom/baserom.gba
 ninja
 sha1sum -c config/BSBE78/build.sha1
 python tools/check_unit_bytes.py main/unknown_08020134
+python tools/check_unit_bytes.py main/unknown_08018444
+python tools/check_unit_bytes.py main/unknown_0801F080
 ```
 
 The required ROM SHA-1 is `8cf4fbbe73f6b1907ab9997caab4c4e7d9708937`.

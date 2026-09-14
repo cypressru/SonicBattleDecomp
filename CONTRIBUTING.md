@@ -18,6 +18,8 @@ python configure.py
 ninja
 sha1sum -c config/BSBE78/build.sha1
 python tools/check_unit_bytes.py main/unknown_08020134
+python tools/check_unit_bytes.py main/unknown_08018444
+python tools/check_unit_bytes.py main/unknown_0801F080
 ```
 
 PRs must use the repository template. Record source-language/linkage evidence, provenance of

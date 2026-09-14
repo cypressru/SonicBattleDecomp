@@ -1153,8 +1153,8 @@ units:
     end: 0x018678
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_08018444.c
-    cflags: [-O2, -mthumb-interwork]
+    source: src/unknown_08018444.cpp
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
     complete: true
     mappings:
       - { offset: 0x14A, mode: data }
@@ -5935,9 +5935,9 @@ units:
     end: 0x01F5EC
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_0801f080.c
+    source: src/unknown_0801f080.cpp
     complete: true
-    cflags: [-O2, -mthumb-interwork]
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
     target_sections:
       - { name: .text, start: 0x01F080, end: 0x01F5EC }
       - { name: .rodata, start: 0xED8B04, end: 0xED8B3C }

@@ -75,6 +75,7 @@ jobs:
           ln -s /usr/bin/arm-none-eabi-as tools/binutils/root/usr/bin/arm-none-eabi-as
           ln -s /usr/bin/arm-none-eabi-ld tools/binutils/root/usr/bin/arm-none-eabi-ld
           ln -s /usr/bin/arm-none-eabi-objcopy tools/binutils/root/usr/bin/arm-none-eabi-objcopy
+          ln -s /usr/bin/arm-none-eabi-nm tools/binutils/root/usr/bin/arm-none-eabi-nm
       - name: Test both installed compiler paths
         run: python -m unittest discover -s tools -p 'test_*.py'
       - name: Configure and build every unit
@@ -85,6 +86,8 @@ jobs:
         run: |
           sha1sum -c config/BSBE78/build.sha1
           python tools/check_unit_bytes.py main/unknown_08020134
+          python tools/check_unit_bytes.py main/unknown_08018444
+          python tools/check_unit_bytes.py main/unknown_0801F080
           python tools/check_payload_map.py rom/baserom.gba
           python tools/check_debug_metadata.py rom/baserom.gba
           python tools/check_function_map.py config/BSBE78/config.yml rom/baserom.gba
