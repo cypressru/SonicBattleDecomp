@@ -5865,11 +5865,6 @@ digits_done: {
 }
 }
 
-void FUN_0803186c(void) {
-    FUN_0801f89c();
-    FUN_0801fda0();
-}
-
 void FUN_08032adc(void) {
     FUN_0801f89c();
     FUN_0801fda0();
@@ -6167,36 +6162,6 @@ void FUN_08035bf0(struct UnknownListNode *node) {
 void FUN_08036244(struct UnknownListNode *node) {
     node->position->x = gUnknown_03005378 + 4;
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_08032778(struct UnknownListNode *node) {
-    u32 *counter = node->allocation;
-
-    FUN_0801fba0(30, *(u8 *)counter);
-    *counter -= 1;
-}
-
-void FUN_08032790(struct UnknownListNode *node) {
-    FUN_0801f92c(node, 104, gUnknown_08edc4a4[node->position->field13]);
-    FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_080327bc(struct UnknownListNode *node) {
-    if ((u8)FUN_0801f9a8(node, -16) != 0) {
-        FUN_08021244(node->position->field14);
-        FUN_0801f8c0(node);
-    } else {
-        FUN_0801fed8(node->field6, 0);
-    }
-}
-
-void FUN_080327ec(struct UnknownListNode *node) {
-    if ((u8)FUN_0801f9a8(node, 160) != 0) {
-        FUN_08021244(node->position->field14);
-        FUN_0801f8c0(node);
-    } else {
-        FUN_0801fed8(node->field6, 0);
-    }
 }
 
 void FUN_08033060(struct UnknownListNode *node) {
@@ -7019,39 +6984,6 @@ void FUN_08038264(u8 index) {
     }
 }
 
-void FUN_08032618(u32 first, u32 second) {
-    u32 destination = first;
-    const void *data;
-    const void *source;
-
-    destination <<= 24;
-    data = gUnknown_030052fc[(second << 24) >> 24];
-    source = (const void *)0x06010420;
-    destination = (destination >> 13) + 0x06015000;
-    FUN_0804a594(source, (void *)destination, 0x200);
-    FUN_08020ecc((u32)gUnknown_08071b7c, gUnknown_0807173c, (u8 *)destination, 16, 4, 0);
-    {
-        u32 width = FUN_08020ad0(data);
-        u32 halfWidth;
-        u32 x;
-
-        halfWidth = width / 2;
-        x = 64 - halfWidth;
-        FUN_08020b74(x, 2, data, 8, 9);
-    }
-}
-
-void FUN_08032724(struct UnknownListNode *node) {
-    u8 pending = FUN_08020500((u16 *)0x05000000, gUnknown_08132774, 16) == 0;
-    u8 result;
-
-    result = FUN_08020500((u16 *)0x050003A0, gUnknown_081329b4, 48);
-    pending |= result == 0;
-    if (pending == 0) {
-        node->data = (const void *)((u32)FUN_0803187c + 1);
-    }
-}
-
 void FUN_0803b694(void) {}
 
 void FUN_0803b698(void) {}
@@ -7064,18 +6996,6 @@ void FUN_08043ee4(struct UnknownState482d0 *state) {
 void FUN_08034ef4(struct UnknownListNode *node) {
     FUN_0801f978(node, -48);
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_0803256c(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_08039e20;
-    }
-}
-
-void FUN_080325f0(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03002030 = FUN_080284b4;
-    }
 }
 
 void FUN_08033038(void) {
