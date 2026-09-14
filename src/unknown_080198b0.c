@@ -6129,11 +6129,6 @@ void FUN_0803bbf0(struct UnknownListNode *node) {
     node->data = (const void *)((u32)FUN_0803bc10 + 1);
 }
 
-void FUN_08034f10(struct UnknownListNode *node) {
-    FUN_0801f978(node, 48);
-    FUN_0801fed8(node->field6, 0);
-}
-
 void FUN_08035b58(struct UnknownListNode *node) {
     node->position->x = gUnknown_03005378 - 4;
     FUN_0801fed8(node->field6, 0);
@@ -6152,18 +6147,6 @@ void FUN_08035bf0(struct UnknownListNode *node) {
 void FUN_08036244(struct UnknownListNode *node) {
     node->position->x = gUnknown_03005378 + 4;
     FUN_0801fed8(node->field6, 0);
-}
-
-void FUN_080344d8(u8 index) {
-    FUN_0802036c(0x05000300, (u32)gUnknown_0814d910 + index * 128, 128);
-    FUN_08020408(0x06014000, gUnknown_08edc8a8[index]);
-}
-
-void FUN_08034ebc(void) {
-    if ((u8)FUN_0802067c((u16 *)0x05000000, 512) != 0) {
-        gUnknown_03001210[0x472] = 0;
-        gUnknown_03002030 = FUN_0802fdf8;
-    }
 }
 
 void FUN_08035760(struct UnknownListNode *node) {
@@ -6900,11 +6883,6 @@ void FUN_0803b698(void) {}
 void FUN_08043ee4(struct UnknownState482d0 *state) {
     FUN_0801fba0(82, 4096);
     state->callback = (const void *)((u32)FUN_08041808 + 1);
-}
-
-void FUN_08034ef4(struct UnknownListNode *node) {
-    FUN_0801f978(node, -48);
-    FUN_0801fed8(node->field6, 0);
 }
 
 void FUN_08038820(void) {
