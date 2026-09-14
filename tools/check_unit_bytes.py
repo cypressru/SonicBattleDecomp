@@ -54,7 +54,7 @@ def resolve_symbol(name, symbols, functions):
     raise ValueError(f"no reviewed address for undefined symbol {name}")
 
 
-def verify_bss(elf, expected_address, expected_size):
+def verify_bss(elf, expected_address, expected_size, section_name=".bss"):
     """Check linked ELF32 little-endian NOBITS ownership, not ROM contents."""
     if len(elf) < 52 or elf[:7] != b"\x7fELF\x01\x01\x01":
         raise ValueError("expected ELF32 little-endian linked object")
@@ -74,19 +74,19 @@ def verify_bss(elf, expected_address, expected_size):
         end = names.find(b"\0", start)
         if start >= len(names) or end < 0:
             raise ValueError("invalid ELF section name")
-        if names[start:end] == b".bss":
+        if names[start:end] == section_name.encode():
             found.append(header)
     if len(found) != 1:
-        raise ValueError("expected exactly one linked .bss section")
+        raise ValueError(f"expected exactly one linked {section_name} section")
     header = found[0]
     if header[1] != 8 or header[3] != expected_address or header[5] != expected_size:
         raise ValueError(
-            f"linked .bss type/address/size mismatch: "
+            f"linked {section_name} type/address/size mismatch: "
             f"{header[1]}/{header[3]:#x}/{header[5]:#x}"
         )
 
 
-def section_script(sections, bss_address):
+def section_script(sections, bss_address, bss_sections=()):
     """Place owned sections without the default script's trailing BSS rounding."""
     lines = ["SECTIONS {"]
     for section in sections:
@@ -96,8 +96,43 @@ def section_script(sections, bss_address):
         address = int(section["start"]) + 0x08000000
         lines.append(f"  {name} {address:#x} : {{ *({name}) }}")
     lines.append(f"  .bss {bss_address:#x} (NOLOAD) : {{ *(.bss) *(COMMON) }}")
+    for section in bss_sections:
+        name = section["name"]
+        if not re.fullmatch(r"\.bss\.[A-Za-z0-9_]+", name):
+            raise ValueError(f"invalid additional BSS section name {name}")
+        address = int(section["address"])
+        lines.append(f"  {name} {address:#x} (NOLOAD) : {{ *({name}) }}")
     lines.append("}")
     return "\n".join(lines) + "\n"
+
+
+def owned_bss_sections(unit):
+    """Validate all separately placed RAM spans, including legacy .bss."""
+    extra = unit.get("bss_sections", [])
+    if "bss_address" not in unit:
+        if extra:
+            raise ValueError("additional BSS sections require bss_address")
+        return []
+    primary = next(section for section in unit["synthetic_sections"]
+                   if section["name"] == ".bss")
+    sections = [{"name": ".bss", "address": int(unit["bss_address"]),
+                 "size": int(primary["size"])}, *extra]
+    names = set()
+    spans = []
+    for section in sections:
+        name = section["name"]
+        if name in names or not re.fullmatch(r"\.bss(?:\.[A-Za-z0-9_]+)?", name):
+            raise ValueError(f"invalid or duplicate BSS section name {name}")
+        names.add(name)
+        start, size = int(section["address"]), int(section["size"])
+        end = start + size
+        if size <= 0 or not any(lo <= start < end <= hi for lo, hi in
+                                ((0x02000000, 0x02040000), (0x03000000, 0x03008000))):
+            raise ValueError(f"invalid RAM span for {name}")
+        if any(start < old_end and old_start < end for old_start, old_end in spans):
+            raise ValueError(f"overlapping RAM span for {name}")
+        spans.append((start, end))
+    return sections
 
 
 def main() -> None:
@@ -106,6 +141,7 @@ def main() -> None:
     args = parser.parse_args()
     config = yaml.safe_load((ROOT / "config/BSBE78/config.yml").read_text())
     unit = next(unit for unit in config["units"] if unit["name"] == args.unit)
+    bss_sections = owned_bss_sections(unit)
     sections = unit.get("target_sections", [
         {"name": ".text", "start": unit["start"], "end": unit["end"]},
     ])
@@ -155,15 +191,14 @@ def main() -> None:
             # is not owned input storage (for example a ten-byte state span).
             # Use explicit output sections so the layout assertion stays exact.
             script = Path(directory) / "sections.ld"
-            script.write_text(section_script(sections, int(unit["bss_address"])))
+            script.write_text(section_script(sections, int(unit["bss_address"]),
+                                             bss_sections[1:]))
             command.extend(["-T", str(script)])
         subprocess.run([*command, "-o", str(linked), str(base), str(symbol_object)], check=True)
-        if "bss_address" in unit:
-            bss = next(section for section in unit["synthetic_sections"]
-                       if section["name"] == ".bss")
-            verify_bss(linked.read_bytes(), int(unit["bss_address"]), int(bss["size"]))
-            print(f"{args.unit}: .bss NOBITS address/size verified "
-                  f"({int(unit['bss_address']):#x}, {int(bss['size']):#x})")
+        for bss in bss_sections:
+            verify_bss(linked.read_bytes(), int(bss["address"]), int(bss["size"]), bss["name"])
+            print(f"{args.unit}: {bss['name']} NOBITS address/size verified "
+                  f"({int(bss['address']):#x}, {int(bss['size']):#x})")
         for section in sections:
             subprocess.run(
                 [str(BINUTILS / "arm-none-eabi-objcopy"), "-O", "binary",
