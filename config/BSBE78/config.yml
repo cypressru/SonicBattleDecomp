@@ -308,6 +308,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_transfer_scene_metadata:
+    exclude_from_objdiff: true
+  owned_transfer_scene_registers:
+    exclude_from_objdiff: true
   owned_extra_menu_metadata:
     exclude_from_objdiff: true
   owned_extra_menu_registers:
@@ -6673,6 +6677,55 @@ units:
       FUN_080327ec: 0x2E
   - name: main/unknown_0803281C
     start: 0x03281C
+    end: 0x0336DC
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803281c.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x03281C, end: 0x0336DC }
+      - { name: .rodata, start: 0xEDC4AC, end: 0xEDC648 }
+      - { name: .rodata.registers, start: 0x137FDC, end: 0x13801C }
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x03005304
+    bss_sections:
+      - { name: .bss.state4, address: 0x03005308, size: 4 }
+      - { name: .bss.state8, address: 0x0300530C, size: 4 }
+      - { name: .bss.state12, address: 0x03005310, size: 4 }
+    base_symbol_size_overrides:
+      FUN_0803281c: 0x226
+      FUN_08032adc: 0xE
+      FUN_08032aec: 0xF2
+      FUN_08032be0: 0x2AE
+      FUN_08032ea0: 0x6E
+      FUN_08032f10: 0x1C
+      FUN_08032f34: 0x66
+      FUN_08032f9c: 0x3E
+      FUN_08032ff8: 0x34
+      FUN_08033038: 0x1E
+      FUN_08033060: 0x2A
+      FUN_08033090: 0x68
+      FUN_08033104: 0x4E
+      FUN_0803315c: 0x22
+      FUN_08033184: 0x40
+      FUN_080331d0: 0x4C
+      FUN_08033228: 0x66
+      FUN_0803329c: 0x78
+      FUN_08033320: 0x62
+      FUN_08033390: 0x44
+      FUN_080333dc: 0x24
+      FUN_08033404: 0x22
+      FUN_0803342c: 0x3A
+      FUN_08033474: 0x64
+      FUN_080334ec: 0xE6
+      FUN_080335dc: 0x4E
+      FUN_0803362c: 0x4E
+      FUN_0803367c: 0x2E
+      FUN_080336ac: 0x2E
+  - name: main/unknown_080336DC
+    start: 0x0336DC
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
