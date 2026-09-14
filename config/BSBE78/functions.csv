@@ -596,6 +596,7 @@ address,name,mode,confidence
 0x08029250,FUN_08029250,thumb,rom-pointer+exact-body
 0x080299C0,FUN_080299c0,thumb,rom-pointer+exact-body
 0x08029BA0,FUN_08029ba0,thumb,rom-pointer+exact-body
+0x08029C28,FUN_08029c28,thumb,reviewed-empty-return+exact-body
 0x08029C2C,FUN_08029c2c,thumb,direct-call+exact-body
 0x08029CC8,FUN_08029cc8,thumb,direct-call+exact-body
 0x08029CFC,FUN_08029cfc,thumb,direct-call+exact-body
