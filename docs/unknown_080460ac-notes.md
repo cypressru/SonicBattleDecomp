@@ -1,7 +1,8 @@
 # `unknown_080460AC` matching notes
 
-`FUN_08046bc4` is the only non-matching function in this translation unit. The other 12
-functions and the unit's `.rodata` match. The function occupies `0x33c` bytes in the ROM.
+These are historical experiments, superseded by the accepted full-TU match and
+the C++/unmasked-link audit in `state-tu-cpp.md`. All 13 functions now match.
+`FUN_08046bc4` occupies `0x33c` bytes in the ROM.
 
 ## Observed target behavior
 
@@ -26,6 +27,6 @@ functions and the unit's `.rodata` match. The function occupies `0x33c` bytes in
 - Changing the mode and loop-control scalar widths, reordering declarations, and making
   the mode-0 assignment volatile do not improve the emitted code.
 
-Resume by reconstructing the interpreter exit structure while preserving the target's
+The historical next step was reconstructing the interpreter exit structure while preserving the target's
 three long-lived registers. Do not retain the saved-mode experiment unless another genuine
 source correction restores the missing four bytes and the full unit still builds.

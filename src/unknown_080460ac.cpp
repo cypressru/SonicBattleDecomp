@@ -1,5 +1,9 @@
 #include "types.h"
 
+/* Original language is unknown; C++ is the reconstruction fallback.
+ * C linkage preserves synthetic address labels, not recovered retail names. */
+extern "C" {
+
 struct UnknownState460ac {
     u8 filler0[2];
     u8 field2;
@@ -88,7 +92,7 @@ struct UnknownPoolNode460ac {
 extern const u8 gUnknown_081a7f18[];
 extern const struct UnknownGraphicsRecord460ac gUnknown_081b94c8[];
 extern void *gUnknown_03005478;
-extern volatile struct UnknownTransferRecord460ac gUnknown_030000d4;
+extern volatile struct UnknownTransferRecord460ac gUnknown_040000d4;
 extern struct UnknownGlobalState460ac gUnknown_03005440;
 extern struct UnknownInputState460ac {
     u16 first;
@@ -158,8 +162,12 @@ static const u16 gUnknown_08edda44[] = {
     0x19b, 0x19d, 0x19c, 0x19c, 0x19c, 0x19d, 0x19b,
 };
 
-static const u8 gUnknown_08edda62[] = {0, 4, 8, 4};
-static const u16 gUnknown_08edda66 = 0;
+/* Four lookup bytes followed by the TU's two owned zero-alignment bytes.
+ * This storage wrapper does not assert an original source structure. */
+static const struct {
+    u8 entries[4];
+    u16 padding;
+} __attribute__((packed)) gUnknown_08edda62 = {{0, 4, 8, 4}, 0};
 
 void FUN_080460ac(struct UnknownState460ac *state) {
     if (state->field37 > 3) {
@@ -173,10 +181,10 @@ void FUN_080460ac(struct UnknownState460ac *state) {
     state->graphics = gUnknown_081a7f18;
     state->field20 = state->field38 * 0x90 + 0x250;
     state->field24 = (state->field38 + 13) * 16 | 8;
-    gUnknown_030000d4.source = gUnknown_081b94c8[state->field36 - 1].first;
-    gUnknown_030000d4.destination = (u8 *)gUnknown_03005478 + (state->field38 * 0x20 + 0x3a0);
-    gUnknown_030000d4.size = 0x80000010;
-    (void)gUnknown_030000d4.size;
+    gUnknown_040000d4.source = gUnknown_081b94c8[state->field36 - 1].first;
+    gUnknown_040000d4.destination = (u8 *)gUnknown_03005478 + (state->field38 * 0x20 + 0x3a0);
+    gUnknown_040000d4.size = 0x80000010;
+    (void)gUnknown_040000d4.size;
     FUN_0804a5b8(gUnknown_081b94c8[state->field36 - 1].variants[state->field37],
                  (void *)(0x02016a00 + state->field38 * 0x3600));
     FUN_0804033c((void *)(0x02016a00 + state->field38 * 0x3600),
@@ -232,7 +240,7 @@ void FUN_080462c8(struct UnknownState460ac *state) {
         }
         state->field3 |= 4;
         state->graphics = gUnknown_081a7f38;
-        state->field10 = -0x30;
+        state->field10 = (u16)-0x30;
         id = state->field2;
         for (index = 0; index < gUnknown_03000278.count; index++) {
             if (gUnknown_0300547c[gUnknown_03000278.indices[index]].field2 == id) {
@@ -502,8 +510,8 @@ void FUN_08046aa4(struct UnknownState460ac *state) {
         state->field26 = 0;
         state->field27++;
     }
-    state->field20 = gUnknown_08edda62[state->field27 & 3] + 0x10;
-    if ((gUnknown_03005440.field4.half.low & 1) != 0) {
+    state->field20 = gUnknown_08edda62.entries[state->field27 & 3] + 0x10;
+    if ((gUnknown_030048e0.third & 1) != 0) {
         FUN_0804051c(state);
     } else {
         FUN_080405a8(state->field2, 0);
@@ -753,14 +761,15 @@ void FUN_08046f00(struct UnknownState460ac *state) {
     {
         volatile u16 fill[1] = {0x1111};
 
-        gUnknown_030000d4.source = (const void *)fill;
-        gUnknown_030000d4.destination = (void *)0x02000600;
-        gUnknown_030000d4.size = 0x81000700;
-        (void)gUnknown_030000d4.size;
+        gUnknown_040000d4.source = (const void *)fill;
+        gUnknown_040000d4.destination = (void *)0x02000600;
+        gUnknown_040000d4.size = 0x81000700;
+        (void)gUnknown_040000d4.size;
         FUN_0804033c((const void *)0x02000600, (void *)0x06008a00, 0xe00);
     }
     state->field28.fixed = gUnknown_08eeb228[gUnknown_03005440.field28][state->field28.half.low];
     state->field37 = 3;
     state->field38 = 5;
     state->callback = FUN_08046bc4;
+}
 }
