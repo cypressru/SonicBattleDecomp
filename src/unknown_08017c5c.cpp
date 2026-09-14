@@ -1,5 +1,8 @@
 #include "types.h"
 
+// Original language is unknown; C++ fallback. Labels are reconstruction linkage.
+extern "C" {
+
 extern u8 gUnknown_03001740[];
 
 extern u8 gUnknown_03001388;
@@ -418,11 +421,16 @@ static inline void UploadQueueEntry08017f80(union UnknownQueueEntry08017f34 entr
 
 void FUN_08017f80(union UnknownQueueEntry08017f34 entry) { UploadQueueEntry08017f80(entry); }
 
+static inline void UploadQueueIndex08017fb0(u8 i) {
+    union UnknownQueueEntry08017f34 *base = gUnknown_03003190;
+    UploadQueueEntry08017f80(base[i]);
+}
+
 void FUN_08017fb0(void) {
     u8 i;
 
     for (i = 0; i < gUnknown_03001388; i++) {
-        UploadQueueEntry08017f80(gUnknown_03003190[i]);
+        UploadQueueIndex08017fb0(i);
     }
 }
 
@@ -565,3 +573,5 @@ void FUN_08018410(void) {
     dma[2] = 0x80000010;
     dma[2];
 }
+
+} // extern "C"

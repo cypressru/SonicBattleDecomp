@@ -1021,8 +1021,8 @@ units:
     end: 0x018444
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_08017c5c.c
-    cflags: [-O2, -mthumb-interwork]
+    source: src/unknown_08017c5c.cpp
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
     complete: true
     mappings:
       # Switch helpers and arithmetic routines branch around literal islands.
