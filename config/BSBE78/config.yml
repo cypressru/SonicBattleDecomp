@@ -7149,6 +7149,31 @@ units:
       FUN_0803d168: 0x38
   - name: main/unknown_0803D1A0
     start: 0x03D1A0
+    end: 0x03E7A8
+    offset_origin: 0x0198B0
+    config_entries_from: main/unknown_080198B0
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_080198b0.c
+    cflags: [-O2, -mthumb-interwork]
+  - name: main/unknown_0803E7A8
+    start: 0x03E7A8
+    end: 0x03F81C
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803e7a8.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x03E7A8, end: 0x03F81C }
+    base_symbol_size_overrides:
+      FUN_0803e7a8: 0x130
+      FUN_0803e8d8: 0x7F0
+      FUN_0803f0c8: 0x5DC
+      FUN_0803f6a4: 0x128
+      FUN_0803f7cc: 0x50
+  - name: main/unknown_0803F81C
+    start: 0x03F81C
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
