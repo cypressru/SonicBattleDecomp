@@ -49,6 +49,7 @@ python tools/check_unit_bytes.py main/unknown_08037148
 python tools/check_unit_bytes.py main/unknown_08038A84
 python tools/check_unit_bytes.py main/unknown_08039DD8
 python tools/check_unit_bytes.py main/unknown_0803A4BC
+python tools/check_unit_bytes.py main/unknown_0803BFCC
 python tools/check_unit_bytes.py main/unknown_0803CB64
 python tools/check_unit_bytes.py main/unknown_0803D1A0
 python tools/check_unit_bytes.py main/unknown_0803E7A8
