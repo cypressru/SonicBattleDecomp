@@ -295,6 +295,8 @@ address,name,mode,confidence
 0x08170B94,lz77_asset_235,data,lz77-pointer-1
 0x08170E10,lz77_asset_236,data,lz77-pointer-1
 0x081710BC,data_gap_035,data,range-gap
+0x08171164,owned_scene_3cb64_registers,data,sixteen-display-register-offset-value-pairs
+0x081711A4,data_gap_after_scene_3cb64_registers,data,external-palettes
 0x081711E4,lz77_asset_237,data,lz77-pointer-1
 0x0817194C,lz77_asset_238,data,lz77-pointer-1
 0x08171A34,lz77_asset_239,data,lz77-pointer-1
@@ -588,6 +590,8 @@ address,name,mode,confidence
 0x08EDD304,owned_scene_39dd8_metadata,data,position-record+two-six-language-graphics-pointer-tables
 0x08EDD344,owned_scene_3a4bc_metadata,data,position-records+coordinates+six-language-pointer-tables+shared-character-names
 0x08EDD560,data_gap_after_scene_3a4bc_metadata,data,next-results-menu-position-records
+0x08EDD5B0,owned_scene_3cb64_metadata,data,six-eight-label-pointer-tables+two-fifty-one-location-name-pointer-tables
+0x08EDD808,data_gap_after_scene_3cb64_metadata,data,next-scene-address-table
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
