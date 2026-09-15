@@ -877,6 +877,7 @@ address,name,mode,confidence
 0x08037148,FUN_08037148,thumb,direct-call+exact-body
 0x080375D8,FUN_080375d8,thumb,direct-call+exact-body
 0x08037B10,FUN_08037b10,thumb,direct-call+exact-body
+0x08037C30,FUN_08037c30,thumb,recovered-unreferenced+exact-body
 0x08037D44,FUN_08037d44,thumb,rom-pointer+exact-body
 0x080380B0,FUN_080380b0,thumb,direct-call+exact-body
 0x080380E4,FUN_080380e4,thumb,rom-pointer+exact-body
