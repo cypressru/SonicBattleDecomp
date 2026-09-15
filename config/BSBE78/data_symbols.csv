@@ -303,6 +303,8 @@ address,name,mode,confidence
 0x08171A34,lz77_asset_239,data,lz77-pointer-1
 0x08171B04,lz77_asset_240,data,lz77-pointer-1
 0x08171B48,data_gap_036,data,range-gap
+0x081731D6,owned_numeric_40684_metadata,data,256-Q14-sine-samples+trailing-zero-halfword
+0x081733D8,data_gap_after_numeric_metadata,data,next-scene-register-metadata
 0x081735EC,lz77_asset_241,data,lz77-pointer-1
 0x08173D64,data_gap_037,data,range-gap
 0x08173D84,lz77_asset_242,data,lz77-pointer-1
