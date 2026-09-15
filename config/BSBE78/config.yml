@@ -7149,6 +7149,21 @@ units:
       FUN_0803d168: 0x38
   - name: main/unknown_0803D1A0
     start: 0x03D1A0
+    end: 0x03D748
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803d1a0.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x03D1A0, end: 0x03D748 }
+    base_symbol_size_overrides:
+      FUN_0803d1a0: 0x268
+      FUN_0803d408: 0x108
+      FUN_0803d510: 0x12C
+      FUN_0803d63c: 0x10C
+  - name: main/unknown_0803D748
+    start: 0x03D748
     end: 0x03E7A8
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
