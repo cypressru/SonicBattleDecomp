@@ -830,6 +830,7 @@ address,name,mode,confidence
 0x080359A4,FUN_080359a4,thumb,rom-pointer+exact-body
 0x080359D8,FUN_080359d8,thumb,rom-pointer+exact-body
 0x08035A2C,FUN_08035a2c,thumb,rom-pointer+exact-body
+0x08035A5C,FUN_08035a5c,thumb,unreferenced-leaf+scene-state+exact-body
 0x08035A8C,FUN_08035a8c,thumb,rom-pointer+exact-body
 0x08035AD8,FUN_08035ad8,thumb,rom-pointer+exact-body
 0x08035B08,FUN_08035b08,thumb,rom-pointer+exact-body
