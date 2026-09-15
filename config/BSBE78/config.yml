@@ -308,6 +308,10 @@ rejected_function_pointers:
   # lands two bytes into FUN_08020144's multiplier/addend literal pool.
   - { source: 0x0F15F0C, destination: 0x0802015A }
 range_overrides:
+  owned_scene_38a84_metadata:
+    exclude_from_objdiff: true
+  owned_scene_38a84_registers:
+    exclude_from_objdiff: true
   owned_scene_37148_metadata:
     exclude_from_objdiff: true
   owned_scene_37148_settings:
@@ -6979,6 +6983,46 @@ units:
       FUN_08038a20: 0x4E
   - name: main/unknown_08038A84
     start: 0x038A84
+    end: 0x039DD8
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_08038a84.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x030053B0
+    bss_sections:
+      - { name: .bss.state_30053b4, address: 0x030053B4, size: 1 }
+      - { name: .bss.state_30053b8, address: 0x030053B8, size: 1 }
+      - { name: .bss.state_30053bc, address: 0x030053BC, size: 4 }
+      - { name: .bss.state_30053c0, address: 0x030053C0, size: 32 }
+    target_sections:
+      - { name: .text, start: 0x038A84, end: 0x039DD8 }
+      - { name: .rodata, start: 0xEDCF00, end: 0xEDD304 }
+      - { name: .rodata.registers, start: 0x15A0AC, end: 0x15A0EC }
+    base_symbol_size_overrides:
+      FUN_08038a84: 0x1EE
+      FUN_08038c74: 0x18E
+      FUN_08038e04: 0x12C
+      FUN_08038f30: 0x112
+      FUN_08039044: 0x12C
+      FUN_08039170: 0xEE
+      FUN_08039260: 0x112
+      FUN_08039374: 0x14C
+      FUN_080394c0: 0x38C
+      FUN_0803984c: 0x360
+      FUN_08039bac: 0x70
+      FUN_08039c1c: 0x20
+      FUN_08039c3c: 0x20
+      FUN_08039c5c: 0xE
+      FUN_08039c6c: 0x94
+      FUN_08039d00: 0x28
+      FUN_08039d28: 0x78
+      FUN_08039da0: 0x1C
+      FUN_08039dbc: 0x1C
+  - name: main/unknown_08039DD8
+    start: 0x039DD8
     end: 0x0460AC
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
