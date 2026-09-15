@@ -390,6 +390,10 @@ range_overrides:
     exclude_from_objdiff: true
   owned_scene_3cb64_registers:
     exclude_from_objdiff: true
+  owned_scene_3bfcc_metadata:
+    exclude_from_objdiff: true
+  owned_scene_3bfcc_registers:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -7118,12 +7122,36 @@ units:
   - name: main/unknown_0803BFCC
     start: 0x03BFCC
     end: 0x03CB64
-    offset_origin: 0x0198B0
-    config_entries_from: main/unknown_080198B0
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_080198b0.c
-    cflags: [-O2, -mthumb-interwork]
+    source: src/unknown_0803bfcc.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x03005404
+    bss_sections:
+      - { name: .bss.result_5408, address: 0x03005408, size: 4 }
+      - { name: .bss.result_540c, address: 0x0300540C, size: 4 }
+      - { name: .bss.result_5410, address: 0x03005410, size: 4 }
+      - { name: .bss.result_5414, address: 0x03005414, size: 4 }
+      - { name: .bss.result_5418, address: 0x03005418, size: 4 }
+      - { name: .bss.result_541c, address: 0x0300541C, size: 4 }
+    target_sections:
+      - { name: .text, start: 0x03BFCC, end: 0x03CB64 }
+      - { name: .rodata, start: 0xEDD560, end: 0xEDD5B0 }
+      - { name: .rodata.display_regs, start: 0x1703D8, end: 0x170418 }
+    base_symbol_size_overrides:
+      FUN_0803bfcc: 0x3AC
+      FUN_0803c378: 0x4CC
+      FUN_0803c844: 0xE
+      FUN_0803c854: 0x94
+      FUN_0803c8e8: 0xD8
+      FUN_0803c9c0: 0xE4
+      FUN_0803caa4: 0x78
+      FUN_0803cb1c: 0x1C
+      FUN_0803cb38: 0x1C
+      FUN_0803cb54: 0xE
   - name: main/unknown_0803CB64
     start: 0x03CB64
     end: 0x03D1A0
