@@ -53,6 +53,7 @@ python tools/check_unit_bytes.py main/unknown_0803BFCC
 python tools/check_unit_bytes.py main/unknown_0803CB64
 python tools/check_unit_bytes.py main/unknown_0803D1A0
 python tools/check_unit_bytes.py main/unknown_0803E7A8
+python tools/check_unit_bytes.py main/unknown_08040684
 ```
 
 PRs must use the repository template. Record source-language/linkage evidence, provenance of
