@@ -122,6 +122,7 @@ jobs:
           python tools/check_unit_bytes.py main/unknown_0803D1A0
           python tools/check_unit_bytes.py main/unknown_0803D748
           python tools/check_unit_bytes.py main/unknown_0803E7A8
+          python tools/check_unit_bytes.py main/unknown_0803FB2C
           python tools/check_unit_bytes.py main/unknown_08040684
           python tools/check_payload_map.py rom/baserom.gba
           python tools/check_debug_metadata.py rom/baserom.gba

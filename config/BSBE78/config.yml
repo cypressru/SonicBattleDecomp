@@ -398,6 +398,10 @@ range_overrides:
     exclude_from_objdiff: true
   owned_intro_metadata:
     exclude_from_objdiff: true
+  owned_services_stage_starts:
+    exclude_from_objdiff: true
+  owned_services_initial_scripts:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -7230,13 +7234,65 @@ units:
       FUN_0803f7cc: 0x50
   - name: main/unknown_0803F81C
     start: 0x03F81C
-    end: 0x040684
+    end: 0x03FB2C
     offset_origin: 0x0198B0
     config_entries_from: main/unknown_080198B0
     category: game
     function_map: config/BSBE78/functions.csv
     source: src/unknown_080198b0.c
     cflags: [-O2, -mthumb-interwork]
+  - name: main/unknown_0803FB2C
+    start: 0x03FB2C
+    end: 0x040684
+    category: game
+    function_map: config/BSBE78/functions.csv
+    source: src/unknown_0803fb2c.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x03FB2C, end: 0x040684 }
+      - { name: .rodata.stage, start: 0x31EAE4, end: 0x31EB14 }
+      - { name: .rodata.scripts, start: 0xEEB240, end: 0xEEB260 }
+    synthetic_sections:
+      - { name: .bss, size: 4 }
+    bss_address: 0x030001A0
+    bss_sections:
+      - { name: .bss.queue_rect, address: 0x030001A4, size: 4 }
+      - { name: .bss.recycle, address: 0x030001A8, size: 4 }
+      - { name: .bss.recycle_write, address: 0x030001AC, size: 1 }
+      - { name: .bss.recycle_read, address: 0x030001AD, size: 1 }
+      - { name: .bss.priority_heads, address: 0x030001B0, size: 4 }
+      - { name: .bss.render_links, address: 0x030001B4, size: 4 }
+      - { name: .bss.render_count, address: 0x030001B8, size: 1 }
+      - { name: .bss.key_counts, address: 0x030001BC, size: 4 }
+      - { name: .bss.sort_pairs, address: 0x030001C0, size: 4 }
+      - { name: .bss.sorted_nodes, address: 0x030001C4, size: 4 }
+      - { name: .bss.sort_count, address: 0x030001C8, size: 1 }
+    base_symbol_size_overrides:
+      FUN_0803fb2c: 0x220
+      FUN_0803fd4c: 0x50
+      FUN_0803fd9c: 0xFC
+      FUN_0803fe98: 0x100
+      FUN_0803ff98: 0xAC
+      FUN_08040044: 0x154
+      FUN_08040198: 0x108
+      FUN_080402a0: 0x10
+      FUN_080402b0: 0x78
+      FUN_08040328: 0x14
+      FUN_0804033c: 0x24
+      FUN_08040360: 0x4C
+      FUN_080403ac: 0x14
+      FUN_080403c0: 0x48
+      FUN_08040408: 0x58
+      FUN_08040460: 0x10
+      FUN_08040470: 0x7C
+      FUN_080404ec: 0x30
+      FUN_0804051c: 0x5C
+      FUN_08040578: 0x30
+      FUN_080405a8: 0x40
+      FUN_080405e8: 0xC
+      FUN_080405f4: 0x30
+      FUN_08040624: 0x60
   - name: main/unknown_08040684
     start: 0x040684
     end: 0x040758
