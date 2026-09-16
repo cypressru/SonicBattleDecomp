@@ -396,6 +396,8 @@ range_overrides:
     exclude_from_objdiff: true
   owned_numeric_40684_metadata:
     exclude_from_objdiff: true
+  owned_intro_metadata:
+    exclude_from_objdiff: true
 units:
   - name: data/gba_header
     start: 0x000000
@@ -7195,12 +7197,21 @@ units:
   - name: main/unknown_0803D748
     start: 0x03D748
     end: 0x03E7A8
-    offset_origin: 0x0198B0
-    config_entries_from: main/unknown_080198B0
     category: game
     function_map: config/BSBE78/functions.csv
-    source: src/unknown_080198b0.c
-    cflags: [-O2, -mthumb-interwork]
+    source: src/unknown_0803d748.cpp
+    complete: true
+    cflags: [-O2, -mthumb-interwork, -fno-exceptions, -fno-rtti]
+    target_sections:
+      - { name: .text, start: 0x03D748, end: 0x03E7A8 }
+      - { name: .rodata, start: 0x172A3C, end: 0x172A78 }
+    base_symbol_size_overrides:
+      FUN_0803d748: 0x118
+      FUN_0803d860: 0x4B4
+      FUN_0803dd14: 0x49C
+      FUN_0803e1b0: 0x538
+      FUN_0803e6e8: 0x64
+      FUN_0803e74c: 0x5C
   - name: main/unknown_0803E7A8
     start: 0x03E7A8
     end: 0x03F81C
