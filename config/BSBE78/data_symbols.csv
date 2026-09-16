@@ -546,6 +546,8 @@ address,name,mode,confidence
 0x081BB914,data_gap_082,data,range-gap
 0x081BB934,lz77_asset_432,data,lz77-pointer-1
 0x081BBBE8,data_gap_083,data,range-gap
+0x0831EAE4,owned_services_stage_starts,data,eight-room-and-coordinate-rows+services-owner
+0x0831EB14,data_gap_after_services_stage_starts,data,stage-table-size
 0x083F1614,lz77_asset_433,data,lz77-pointer-1
 0x083F170C,lz77_asset_434,data,lz77-pointer-1
 0x083F1DA4,lz77_asset_435,data,lz77-pointer-2
@@ -600,6 +602,8 @@ address,name,mode,confidence
 0x08EDDA24,owned_unknown_080460ac_rodata,data,source-object-rodata-owner
 0x08EDDA68,owned_unknown_080470e4_rodata,data,function-pointer-table-owner
 0x08EDDA88,data_gap_after_unknown_080470e4_rodata,data,function-pointer-table-size
+0x08EEB240,owned_services_initial_scripts,data,eight-stage-script-pointers+services-owner
+0x08EEB260,data_gap_after_services_initial_scripts,data,stage-script-pointer-table-size
 0x0847AA18,palette_emerl_sonic,data,public-sbhax-offset+retail-32-byte-record
 0x0847AA38,palette_emerl_tails,data,public-sbhax-offset+retail-32-byte-record
 0x0847AA58,palette_emerl_knuckles,data,public-sbhax-offset+retail-32-byte-record
